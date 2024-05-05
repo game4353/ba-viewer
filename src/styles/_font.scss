@@ -1,0 +1,28 @@
+@mixin font($font-family, $font-file) {
+  @font-face {
+    font-family: $font-family;
+    src: url($font-file + ".eot");
+    src:
+      url($font-file + ".eot?#iefix") format("embedded-opentype"),
+      url($font-file + ".woff") format("woff"),
+      url($font-file + ".otf") format("opentype"),
+      url($font-file + ".ttf") format("truetype"),
+      url($font-file + ".svg#" + $font-family) format("svg");
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+
+@include font("Game-Medium", "../assets/fonts/U-OTF-ShinMGoUpr-Medium");
+@include font("Game-Bold", "../assets/fonts/U-OTF-ShinMGoUpr-DeBold");
+
+.game-font {
+  font-family: Game-Medium;
+}
+.game-font-bold {
+  font-family: Game-Bold;
+}
+
+.v-application {
+  font-family: Game-Medium, arial, sans-serif;
+}
