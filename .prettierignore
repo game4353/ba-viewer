@@ -1,4 +1,5 @@
 **/*.d.ts
 **/*.json
 **/*.js
+**/*.png
 src/assets
