@@ -3,6 +3,7 @@ import type {
   TCharacterGear,
   TCharacterWeapon,
 } from "./character/character";
+import type { TCostume } from "./character/costume";
 import type { TidyParcelItem } from "./parcel";
 import type { TidyEventShop } from "./ts/event/index";
 
@@ -15,4 +16,5 @@ export namespace Tidy {
   export type Character = Dict<TCharacter>;
   export type CharacterGear = Dict<TCharacterGear>;
   export type CharacterWeapon = Dict<TCharacterWeapon>;
+  export type Costume = Dict<TCostume>;
 }

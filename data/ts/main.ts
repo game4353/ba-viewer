@@ -5,6 +5,7 @@ import { writeJson } from "./util.js";
 import path from "path";
 import { AaFolder, AssetFolder, /*MxFolder,*/ PngFolder } from "./path.js";
 import { Character } from "./tidy/character/character.js";
+import { Costume } from "./tidy/character/costume.js";
 
 function copyPaste(fromThis: string, toThisFolder: string) {
   const s = lstatSync(fromThis);
@@ -24,6 +25,7 @@ async function main() {
   writeJson(Character.getGear(), "characterGear", true);
   writeJson(Character.getWeapon(), "characterWeapon", true);
   writeJson(Character.getStat(), "characterStat", true);
+  writeJson(Costume.getCostume(), "costume", true);
   writeJson(tidyEventShop(), "eventShop", true);
 
   await cropAtlas();
