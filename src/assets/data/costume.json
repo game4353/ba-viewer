@@ -651,11 +651,11 @@
     "CollectionBGTexturePath": "UIs/01_Common/14_CharacterCollect/BG_PracticeRoom_Collection"
   },
   "10093": {
-    "SpineResourceName": "UIs/03_Scenario/02_Character/CharacterSpine_CH0161",
-    "SpineResourceNameDiorama": "UIs/03_Scenario/02_Character/CharacterSpine_CH0161",
-    "TextureDir": "UIs/01_Common/01_Character/Student_Portrait_CH0161",
-    "CollectionTexturePath": "UIs/01_Common/14_CharacterCollect/Student_Portrait_CH0161_Collection",
-    "CollectionBGTexturePath": "UIs/01_Common/14_CharacterCollect/BG_Hyakkiyako_Collection"
+    "SpineResourceName": "UIs/03_Scenario/02_Character/CharacterSpine_kirara",
+    "SpineResourceNameDiorama": "UIs/03_Scenario/02_Character/CharacterSpine_kirara",
+    "TextureDir": "UIs/01_Common/01_Character/Student_Portrait_kirara",
+    "CollectionTexturePath": "UIs/01_Common/14_CharacterCollect/Student_Portrait_kirara_Collection",
+    "CollectionBGTexturePath": "UIs/01_Common/14_CharacterCollect/BG_Gehenna_Collection"
   },
   "13000": {
     "SpineResourceName": "UIs/03_Scenario/02_Character/CharacterSpine_akane",

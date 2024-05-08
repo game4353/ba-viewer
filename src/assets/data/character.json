@@ -1674,15 +1674,15 @@
     ]
   },
   "10093": {
-    "DevName": "CH0161",
-    "Localize": "",
+    "DevName": "kirara",
+    "Localize": "キララ",
     "TacticRole": 1,
-    "WeaponType": 7,
-    "TacticRange": 0,
+    "WeaponType": 3,
+    "TacticRange": 2,
     "BulletType": 6,
-    "ArmorType": 1,
-    "School": 1,
-    "Club": 47,
+    "ArmorType": 0,
+    "School": 4,
+    "Club": 48,
     "DefaultStarGrade": 3,
     "SquadType": 1,
     "EquipmentSlot": [

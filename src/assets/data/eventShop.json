@@ -54083,8 +54083,8 @@
               {
                 "obj": {
                   "Rarity": "N",
-                  "Localize": "キーストーンのカケラ",
-                  "Icon": "UIs/01_Common/03_NonEquipment/Item_Icon_CraftItem_0"
+                  "Localize": "サヤの神名文字",
+                  "Icon": "UIs/01_Common/03_NonEquipment/Item_Icon_SecretStone_Saya"
                 },
                 "amount": 1
               }
