@@ -46,6 +46,9 @@ type Items = Partial<Record<number, number>>;
 
 export const usePersonalStore = defineStore("personal", () => {
   const charas = ref({} as Partial<Record<number, Chara>>);
+  const parties = ref({} as Partial<Record<number, Party>>);
+  const items = ref({} as Items);
+  const version = ref(0);
 
-  return {};
+  return { charas, parties, items, version };
 });

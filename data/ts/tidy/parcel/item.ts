@@ -1,7 +1,7 @@
 import type { ItemExcel } from "../type.js";
 import { Excel, cache } from "../../util.js";
-import { Localize } from "../localize/index.js";
-import type { TidyParcelItem } from "./index.js";
+import { Localize } from "../localize/main.js";
+import type { TidyParcelItem } from ".";
 
 export class Item {
   static table(): ItemExcel[] {

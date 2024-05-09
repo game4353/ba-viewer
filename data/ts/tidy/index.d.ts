@@ -2,8 +2,8 @@ import type {
   TCharacter,
   TCharacterGear,
   TCharacterWeapon,
-} from "./character/character";
-import type { TCostume } from "./character/costume";
+  TCostume,
+} from "./character";
 import type { TidyParcelItem } from "./parcel";
 import type { TidyEventShop } from "./ts/event/index";
 

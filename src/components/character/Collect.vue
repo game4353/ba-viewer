@@ -1,11 +1,5 @@
 <template>
-  <v-img
-    :aspect-ratio="404 / 456"
-    :lazy-src="arona"
-    :src="src"
-    :alt="devName"
-    :label="devName"
-  >
+  <v-img :aspect-ratio="404 / 456" :lazy-src="arona" :src="src">
     <template v-slot:placeholder>
       <div class="d-flex align-center justify-center fill-height">
         <v-progress-circular
@@ -20,6 +14,7 @@
 <script setup lang="ts">
 import { Tidy } from "../../../data/ts/tidy";
 import { default as costume } from "@/assets/data/costume.json";
+import { uiPath } from "../GameImg/loader";
 
 const costumes: Tidy.Costume = costume;
 const props = defineProps({
@@ -28,24 +23,8 @@ const props = defineProps({
     required: true,
   },
 });
-const glob = import.meta.glob(
-  "@/assets/UIs/01_Common/14_CharacterCollect/*.png",
-  {
-    eager: true,
-  },
+const src = uiPath(costumes[props.cid].CollectionTexturePath);
+const arona = uiPath(
+  "UIs/01_Common/14_CharacterCollect/NPC_Portrait_Arona_Collection",
 );
-const images = Object.fromEntries(
-  Object.entries(glob).map(([key, value]) => [
-    key
-      .match(/(UIs\/.+).png/)
-      ?.at(1)
-      ?.toLowerCase() ?? "",
-    value.default,
-  ]),
-);
-const src = images[costumes[props.cid].CollectionTexturePath.toLowerCase()];
-const arona =
-  images[
-    "UIs/01_Common/14_CharacterCollect/NPC_Portrait_Arona_Collection".toLowerCase()
-  ];
 </script>

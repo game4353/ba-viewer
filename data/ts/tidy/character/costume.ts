@@ -1,13 +1,6 @@
 import { cache, Excel } from "../../util.js";
 import type { CostumeExcel } from "../type.js";
-
-export type TCostume = {
-  SpineResourceName: string;
-  SpineResourceNameDiorama: string;
-  TextureDir: string;
-  CollectionTexturePath: string;
-  CollectionBGTexturePath: string;
-};
+import type { TCostume } from ".";
 
 export class Costume {
   @cache

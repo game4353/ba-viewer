@@ -7,7 +7,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "~/*": ["src/*"],
+      "~assets/*": ["src/assets/*"],
+      "~data/*": ["src/assets/data/*"]      
     },
     "resolveJsonModule": true,
     "types": [
@@ -25,8 +28,9 @@
     "skipLibCheck": true
   },
   "include": [
-    "./src/typed-router.d.ts"
+    "./src/typed-router.d.ts",
+    "./src/**/*"
   ],
-  "exclude": ["dist", "node_modules", "cypress"],
+  "exclude": ["dist", "node_modules", "cypress", "data"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }

@@ -11,6 +11,11 @@
 import { Tidy } from "../../../data/ts/tidy";
 import { PropType } from "vue";
 import Icon from "./Icon.vue";
+import N from "~assets/Atlas/Common/Card_Item_Bg_N.png";
+import R from "~assets/Atlas/Common/Card_Item_Bg_R.png";
+import SR from "~assets/Atlas/Common/Card_Item_Bg_SR.png";
+import SSR from "~assets/Atlas/Common/Card_Item_Bg_SSR.png";
+
 const imgW = 256 * 0.35;
 const imgH = 210 * 0.35;
 const props = defineProps({
@@ -23,16 +28,7 @@ const props = defineProps({
     required: true,
   },
 });
-const glob = import.meta.glob("@/assets/Atlas/Common/Card_Item_Bg_*.png", {
-  eager: true,
-});
-const images = Object.fromEntries(
-  Object.entries(glob).map(([key, value]) => [
-    key.match(/\/Card_Item_Bg_(.+)\.png/)[1],
-    value.default,
-  ]),
-);
-const src = images[props.parcel.Rarity];
+const src = { N, R, SR, SSR }[props.parcel.Rarity];
 </script>
 
 <style scoped lang="scss">

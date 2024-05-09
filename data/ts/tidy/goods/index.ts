@@ -1,6 +1,6 @@
 import assert from "assert";
 import type { GoodsExcel } from "../type.js";
-import { Parcel } from "../parcel/index.js";
+import { Parcel } from "../parcel/main.js";
 import { Excel } from "../../util.js";
 
 export function getGoods(): GoodsExcel[] {
