@@ -1,6 +1,20 @@
 // @ts-ignore
 import solver from "javascript-lp-solver";
 
+export function cache<T, R>(fn: (arg: T) => R): (arg: T) => R {
+  const cached = new Map<T, R>();
+
+  return function (arg: T): R {
+    if (cached.has(arg)) {
+      return cached.get(arg)!;
+    }
+
+    const result = fn(arg);
+    cached.set(arg, result);
+    return result;
+  };
+}
+
 export class StageDrop {
   stamina: number;
   item1: number;
