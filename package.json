@@ -9,7 +9,8 @@
     "lint": "eslint . --fix --ignore-path .gitignore",
     "pre-ts": "cd data && tsc && cd js && node main.js",
     "pre-py": "cd data/python && python main.py",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "dl": "gdown 1zce7cwrc_ztU7WKpx68uX_XdYoi0zSis"
   },
   "dependencies": {
     "@mdi/font": "6.2.95",
