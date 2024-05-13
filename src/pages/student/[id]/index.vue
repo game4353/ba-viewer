@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { default as m } from "@/assets/game/map_spr.json";
+import { default as m } from "~game/SpineCharacters.json";
 import SpineCharacter from "@/components/character/SpineCharacter.vue";
 
 const id = useRoute().params.id as any as keyof typeof m;
