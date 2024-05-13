@@ -18,5 +18,6 @@ declare module 'vue' {
     ShopItem: typeof import('./components/shop/ShopItem.vue')['default']
     ShopPage: typeof import('./components/shop/ShopPage.vue')['default']
     Slider: typeof import('./components/character/Slider.vue')['default']
+    SpineCharacter: typeof import('./components/character/SpineCharacter.vue')['default']
   }
 }
