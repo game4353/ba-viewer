@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "pre-ts": "cd data && tsc && cd js && node main.js",
+    "pre-py": "cd data/python && pip install -r requirements.txt && python main.py",
     "format": "prettier . --write"
   },
   "dependencies": {
