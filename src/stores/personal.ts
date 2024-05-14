@@ -73,5 +73,5 @@ export const useCharaStore = cache((cid: number) => {
     state: () => useStorage(`charaGoal${cid}`, charaDefault(true)),
   });
 
-  return { now: now(), goal: goal() };
+  return { now: now, goal: goal };
 });

@@ -31,6 +31,7 @@ const images = Object.fromEntries(
     value as string,
   ]),
 );
+/** @param path Starts with 'UIs/', ends without '.png'. */
 export function uiPath(path: string) {
   return images[path.toLowerCase()] ?? "";
 }

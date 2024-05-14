@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <div>
     <div class="box" ref="box" @wheel.stop="onWheel"></div>
     <div class="flex flex-row items-center w-fit gap-2">
       <v-btn
@@ -16,7 +16,7 @@
       <v-btn icon="mdi-magnify-plus" size="small" @click="zoom()"></v-btn>
       <v-btn icon="mdi-magnify-minus" size="small" @click="zoom(true)"></v-btn>
     </div>
-  </v-card>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -66,7 +66,7 @@ function onWheel(e: WheelEvent) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .box {
   @apply p-1 w-fit h-fit border border-red-500 cursor-grab;
 }

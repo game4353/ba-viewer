@@ -8,8 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    BG: typeof import('./components/GameImg/BG.vue')['default']
     Collect: typeof import('./components/character/Collect.vue')['default']
+    Equipment: typeof import('./components/character/Equipment.vue')['default']
     GameImg: typeof import('./components/GameImg/GameImg.vue')['default']
+    Gear: typeof import('./components/character/Gear.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Icon: typeof import('./components/parcel/Icon.vue')['default']
     Item: typeof import('./components/parcel/Item.vue')['default']
@@ -19,5 +22,6 @@ declare module 'vue' {
     ShopPage: typeof import('./components/shop/ShopPage.vue')['default']
     Slider: typeof import('./components/character/Slider.vue')['default']
     SpineCharacter: typeof import('./components/character/SpineCharacter.vue')['default']
+    WIP: typeof import('./components/WIP.vue')['default']
   }
 }

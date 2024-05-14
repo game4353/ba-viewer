@@ -9,6 +9,8 @@
     color="orange"
     :show-ticks="dMax - dMin > 10 ? false : 'always'"
     hide-details
+    @click.stop
+    :disabled
   >
     <template v-slot:prepend>
       <v-text-field
@@ -48,10 +50,10 @@ const props = defineProps({
   max: {
     type: Number,
   },
+  disabled: Boolean,
 });
-
 const dMin = props.min ?? charaDefault()[props.keys];
-const dMax = props.max ?? charaDefault(true)[props.keys];
-const chara = storeToRefs(useCharaStore(props.cid).now);
+const dMax = computed(() => props.max ?? charaDefault(true)[props.keys]);
+const chara = storeToRefs(useCharaStore(props.cid).now());
 const val = chara[props.keys];
 </script>
