@@ -1,5 +1,5 @@
 <template>
-  <div class="box" :style="bgImg">
+  <div :style="bgImg">
     <slot></slot>
   </div>
 </template>
@@ -17,10 +17,11 @@ const bgImg = `background-image: url('${uiPath(props.path)}');`;
 </script>
 
 <style lang="scss" scoped>
-.box {
+div {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  min-height: 100%;
 }
 </style>

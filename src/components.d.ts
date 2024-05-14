@@ -22,6 +22,7 @@ declare module 'vue' {
     ShopPage: typeof import('./components/shop/ShopPage.vue')['default']
     Slider: typeof import('./components/character/Slider.vue')['default']
     SpineCharacter: typeof import('./components/character/SpineCharacter.vue')['default']
+    TabBasic: typeof import('./components/character/TabBasic.vue')['default']
     WIP: typeof import('./components/WIP.vue')['default']
   }
 }

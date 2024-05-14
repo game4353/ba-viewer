@@ -1,30 +1,43 @@
 <template>
-  <v-slider
-    v-model="val"
-    :max="dMax"
-    :min="dMin"
+  <v-range-slider
+    v-model="range"
+    :max="sliderMax"
+    :min="sliderMin"
     :step="1"
     class="ma-4"
     :label="name"
-    color="orange"
-    :show-ticks="dMax - dMin > 10 ? false : 'always'"
+    color="red"
+    :show-ticks="sliderMax - sliderMin > 10 ? false : 'always'"
     hide-details
+    strict
     @click.stop
     :disabled
   >
     <template v-slot:prepend>
       <v-text-field
-        v-model="val"
+        v-model="val1"
         density="compact"
         style="width: 80px"
         type="number"
         variant="outlined"
         hide-details
-        :max="dMax"
-        :min="dMin"
+        :max="leftMax"
+        :min="leftMin"
       ></v-text-field>
     </template>
-  </v-slider>
+    <template v-slot:append>
+      <v-text-field
+        v-model="val2"
+        density="compact"
+        style="width: 80px"
+        type="number"
+        variant="outlined"
+        hide-details
+        :max="rightMax"
+        :min="rightMin"
+      ></v-text-field>
+    </template>
+  </v-range-slider>
 </template>
 
 <script setup lang="ts">
@@ -44,16 +57,31 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  min: {
-    type: Number,
-  },
-  max: {
-    type: Number,
-  },
+  /** Only used for `star` as an absolute minimum. */
+  init: Number,
   disabled: Boolean,
 });
-const dMin = props.min ?? charaDefault()[props.keys];
-const dMax = computed(() => props.max ?? charaDefault(true)[props.keys]);
-const chara = storeToRefs(useCharaStore(props.cid).now());
-const val = chara[props.keys];
+
+const store = useCharaStore(props.cid);
+const charaNow = storeToRefs(store.now());
+const charaGoal = storeToRefs(store.goal());
+const val1 = charaNow[props.keys];
+const val2 = charaGoal[props.keys];
+const range = computed({
+  get() {
+    return [val1.value, val2.value];
+  },
+  set(values) {
+    val1.value = Math.max(values[0], leftMin);
+    val2.value = values[1];
+  },
+});
+
+const sliderMin = charaDefault()[props.keys];
+const sliderMax = charaDefault(true)[props.keys];
+const leftMin = props.init ?? sliderMin;
+if (val1.value < leftMin) val1.value = leftMin;
+const rightMax = sliderMax;
+const leftMax = val2;
+const rightMin = val1;
 </script>
