@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar scroll-behavior="hide" scroll-threshold="500" prominent>
+    <v-app-bar>
       <template v-slot:prepend>
         <v-app-bar-nav-icon
           variant="text"
@@ -56,7 +56,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
+    <v-main scrollable>
       <router-view />
     </v-main>
   </v-app>
