@@ -1,5 +1,5 @@
 <template>
-  <v-img :aspect-ratio="404 / 456" :lazy-src="arona" :src="src">
+  <v-img :aspect-ratio="304 / 240" :src="src">
     <template v-slot:placeholder>
       <div class="d-flex align-center justify-center fill-height">
         <v-progress-circular
@@ -12,19 +12,21 @@
 </template>
 
 <script setup lang="ts">
-import { Tidy } from "../../../data/ts/tidy";
-import { default as costume } from "@/assets/data/costume.json";
+import { CharacterGearExcel } from "~game/type/excel";
+import { default as excel } from "~game/excel/charactergearexceltable.json";
 import { uiPath } from "../GameImg/loader";
 
-const costumes: Tidy.Costume = costume;
 const props = defineProps({
   cid: {
-    type: String,
+    type: Number,
     required: true,
   },
 });
-const src = uiPath(costumes[props.cid].CollectionTexturePath);
-const arona = uiPath(
-  "UIs/01_Common/14_CharacterCollect/NPC_Portrait_Arona_Collection",
+const data = excel.filter(
+  (o) => o.CharacterId === props.cid,
+) as CharacterGearExcel[];
+
+const src = uiPath(
+  data.at(0)?.Icon ?? "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",
 );
 </script>

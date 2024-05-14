@@ -3,8 +3,8 @@ import type {
   EventContentSeasonExcel,
   EventContentShopExcel,
 } from "../type.js";
-import { Localize } from "../localize/index.js";
-import type { TidyParcelItem } from "../parcel/index.js";
+import { Localize } from "../localize/main.js";
+import type { TidyParcelItem } from "../parcel";
 import { Excel, fatal } from "../../util.js";
 
 export function getEventContentSeason(): EventContentSeasonExcel[] {

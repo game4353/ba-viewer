@@ -1,18 +1,5 @@
 import { cache, Excel, fatal } from "../../util.js";
 
-type TLocalizeEtc = {
-  Key: number;
-  NameKr: string;
-  DescriptionKr: string;
-  NameJp: string;
-  DescriptionJp: string;
-};
-
-type TLocalizeEtcExcel = {
-  Key: number;
-  Bytes: TLocalizeEtc;
-};
-
 export class Localize {
   @cache
   static getLocalizeEtc(): Partial<Record<number, TLocalizeEtc>> {

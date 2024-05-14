@@ -26,12 +26,30 @@ import Item from "../parcel/Item.vue";
 import { PropType } from "vue";
 
 const props = defineProps({
-  name: String,
-  amount: Number,
-  gain: Object as PropType<Tidy.ParcelItem>,
-  gainAmount: Number,
-  cost: Object as PropType<Tidy.ParcelItem>,
-  costAmount: Number,
+  name: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  gain: {
+    type: Object as PropType<Tidy.ParcelItem>,
+    required: true,
+  },
+  gainAmount: {
+    type: Number,
+    required: true,
+  },
+  cost: {
+    type: Object as PropType<Tidy.ParcelItem>,
+    required: true,
+  },
+  costAmount: {
+    type: Number,
+    required: true,
+  },
 });
 const name_size =
   props.name!.length > 16 ? "small" : props.name!.length > 7 ? "median" : "big";

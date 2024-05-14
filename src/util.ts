@@ -1,4 +1,19 @@
+// @ts-ignore
 import solver from "javascript-lp-solver";
+
+export function cache<T, R>(fn: (arg: T) => R): (arg: T) => R {
+  const cached = new Map<T, R>();
+
+  return function (arg: T): R {
+    if (cached.has(arg)) {
+      return cached.get(arg)!;
+    }
+
+    const result = fn(arg);
+    cached.set(arg, result);
+    return result;
+  };
+}
 
 export class StageDrop {
   stamina: number;
@@ -54,11 +69,11 @@ export function calc<T extends Record<string, StageDrop>>(
   return solver.Solve(model);
 }
 
-const stages = {
-  Q9: new StageDrop(20, 8, 33, 34),
-  Q10: new StageDrop(20, 10, 54, 11),
-  Q11: new StageDrop(20, 10, 11, 55),
-  Q12: new StageDrop(20, 69, 0, 0),
-};
-const res = calc(stages, 30960, 10295, 12850);
+// const stages = {
+//   Q9: new StageDrop(20, 8, 33, 34),
+//   Q10: new StageDrop(20, 10, 54, 11),
+//   Q11: new StageDrop(20, 10, 11, 55),
+//   Q12: new StageDrop(20, 69, 0, 0),
+// };
+// const res = calc(stages, 30960, 10295, 12850);
 // console.log(res);

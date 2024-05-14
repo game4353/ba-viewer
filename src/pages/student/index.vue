@@ -19,13 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { ref } from "vue";
 import { Tidy } from "../../../data/ts/tidy";
-import { default as character } from "@/assets/data/character.json";
-import Collect from "../../components/character/Collect.vue";
+import { default as character } from "~data/character.json";
+import Collect from "@/components/character/Collect.vue";
 
-const tab = ref(null);
 const charas: Tidy.Character = character;
 function textSize(text: string) {
   const l = text.length;

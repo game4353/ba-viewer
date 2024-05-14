@@ -15,46 +15,9 @@ import {
   type CharacterStatExcel,
   type CharacterWeaponExcel,
 } from "../type.js";
-import { Localize } from "../localize/index.js";
+import { Localize } from "../localize/main.js";
 import assert from "assert";
-
-export type TCharacter = {
-  DevName: string;
-  Localize: string;
-  TacticRole: TacticRole;
-  WeaponType: WeaponType;
-  TacticRange: TacticRange;
-  BulletType: BulletType;
-  ArmorType: ArmorType;
-  School: School;
-  Club: Club;
-  DefaultStarGrade: number;
-  SquadType: SquadType;
-  EquipmentSlot: EquipmentCategory[];
-};
-
-export type TCharacterGear = {
-  // RecipeId: number;
-  // LearnSkillSlot: string;
-  StatType: EquipmentOptionType[];
-  MinStatValue: number[];
-  MaxStatValue: number[];
-  // Icon: string;
-  LocalizeName: string;
-  LocalizeDesc: string;
-};
-
-export type TCharacterWeapon = {
-  ImagePath: string;
-  AttackPower: number;
-  AttackPower100: number;
-  MaxHP: number;
-  MaxHP100: number;
-  HealPower: number;
-  HealPower100: number;
-  StatType: EquipmentOptionType;
-  StatValue: number;
-};
+import type { TCharacter, TCharacterGear, TCharacterWeapon } from ".";
 
 export class Character {
   @cache

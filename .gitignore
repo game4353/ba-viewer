@@ -22,3 +22,6 @@ pnpm-debug.log*
 *.sw?
 
 data/**/*.js
+public/game
+src/assets/game
+*.zip

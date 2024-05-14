@@ -3,3 +3,4 @@
 **/*.js
 **/*.png
 src/assets
+pnpm-lock.yaml
