@@ -10,7 +10,8 @@
       "@/*": ["src/*"],
       "~/*": ["src/*"],
       "~assets/*": ["src/assets/*"],
-      "~data/*": ["src/assets/data/*"]      
+      "~data/*": ["src/assets/data/*"],
+      "~game/*": ["src/assets/game/*"]
     },
     "resolveJsonModule": true,
     "types": [
