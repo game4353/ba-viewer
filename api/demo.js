@@ -1,5 +1,5 @@
 "use strict";
-// don't send large response:
+// Can't send large response (4.5MB)
 // https://vercel.com/guides/how-to-bypass-vercel-body-size-limit-serverless-functions
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");

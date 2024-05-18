@@ -1,5 +1,7 @@
-// don't send large response:
+// Can't send large response (4.5MB)
 // https://vercel.com/guides/how-to-bypass-vercel-body-size-limit-serverless-functions
+
+// Can't read big folder or have big import (500MB)
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import * as path from "path";
