@@ -66,8 +66,8 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/personal";
-import { CharacterExcel } from "~game/type/excel";
-import { default as excel } from "~game/excel/characterexceltable.json";
+import { CharacterExcel } from "~game/types/flatDataExcel";
+import { DataList as excel } from "~game/excel/CharacterExcelTable.json";
 
 const props = defineProps({
   cid: {
