@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { EquipmentExcel, EquipmentCategory } from "~game/type/excel";
-import { default as excel } from "~game/excel/equipmentexceltable.json";
+import { EquipmentExcel, EquipmentCategory } from "~game/types/flatDataExcel";
+import { DataList as excel } from "~game/excel/EquipmentExcelTable.json";
 import { uiPath } from "../GameImg/loader";
 
 const props = defineProps({
@@ -26,9 +26,9 @@ const props = defineProps({
     required: true,
   },
 });
-const data = excel.filter(
+const data = (excel as EquipmentExcel[]).filter(
   (o) => o.EquipmentCategory === props.category,
-) as EquipmentExcel[];
+);
 
 const src = computed(() => uiPath(data[(props.tier || 1) - 1].Icon));
 </script>
