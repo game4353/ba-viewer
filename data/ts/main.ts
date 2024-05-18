@@ -3,7 +3,7 @@ import { cropAtlas } from "./crop/index.js";
 import { tidyEventShop } from "./tidy/event/index.js";
 import { writeJson } from "./util.js";
 import path from "path";
-import { AaFolder, AssetFolder, /*MxFolder,*/ PngFolder } from "./path.js";
+import { AaFolder, AssetFolder, MxFolder, PngFolder } from "./path.js";
 import { Character } from "./tidy/character/character.js";
 import { Costume } from "./tidy/character/costume.js";
 
@@ -31,7 +31,7 @@ async function main() {
   await cropAtlas();
 
   // copyPaste(MxFolder + "/SpineBackground", AssetFolder);
-  // copyPaste(MxFolder + "/SpineCharacters", AssetFolder);
+  copyPaste(MxFolder + "/SpineCharacters", AssetFolder);
   // copyPaste(MxFolder + "/SpineLobbies", AssetFolder);
 
   copyPaste(PngFolder + `/Combat`, AssetFolder + "/Atlas");
