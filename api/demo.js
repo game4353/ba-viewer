@@ -15,9 +15,12 @@ function jsonToTsv(jsonString) {
     const tsvRows = jsonArray.map((row) => {
         return headers
             .map((header) => {
-            var _a, _b;
             const value = row[header];
-            return (_b = (_a = value === null || value === void 0 ? void 0 : value.toString()) === null || _a === void 0 ? void 0 : _a.replace(/\t/g, " ")) !== null && _b !== void 0 ? _b : "";
+            if (value == null)
+                return "";
+            if (typeof value === "object")
+                return JSON.stringify(value).replace(/\t/g, " ");
+            return value.toString().replace(/\t/g, " ");
         })
             .join("\t");
     });
@@ -27,8 +30,12 @@ function handler(req, res) {
     const { name = "" } = req.query;
     const folder = path.join(process.cwd(), "src/assets/game/excel");
     const file = path.join(folder, name + ".json");
-    const json = (0, fs_1.readFileSync)(file, { encoding: "utf-8" });
-    const tsv = jsonToTsv(json);
-    return res.send(tsv);
+    if (!(0, fs_1.existsSync)(file))
+        res.json({ message: "file not found." });
+    else {
+        const json = (0, fs_1.readFileSync)(file, { encoding: "utf-8" });
+        const tsv = jsonToTsv(json);
+        return res.send(tsv);
+    }
 }
 exports.default = handler;

@@ -3,7 +3,7 @@
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import * as path from "path";
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 
 function jsonToTsv(jsonString: string): string | null {
   const excel = JSON.parse(jsonString);
@@ -15,7 +15,10 @@ function jsonToTsv(jsonString: string): string | null {
     return headers
       .map((header) => {
         const value = row[header];
-        return value?.toString()?.replace(/\t/g, " ") ?? "";
+        if (value == null) return "";
+        if (typeof value === "object")
+          return JSON.stringify(value).replace(/\t/g, " ");
+        return value.toString().replace(/\t/g, " ");
       })
       .join("\t");
   });
@@ -26,7 +29,10 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   const { name = "" } = req.query;
   const folder = path.join(process.cwd(), "src/assets/game/excel");
   const file = path.join(folder, name + ".json");
-  const json = readFileSync(file, { encoding: "utf-8" });
-  const tsv = jsonToTsv(json);
-  return res.send(tsv);
+  if (!existsSync(file)) res.json({ message: "file not found." });
+  else {
+    const json = readFileSync(file, { encoding: "utf-8" });
+    const tsv = jsonToTsv(json);
+    return res.send(tsv);
+  }
 }
