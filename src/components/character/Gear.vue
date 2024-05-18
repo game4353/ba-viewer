@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { CharacterGearExcel } from "~game/type/excel";
-import { default as excel } from "~game/excel/charactergearexceltable.json";
+import { CharacterGearExcel } from "~game/types/flatDataExcel";
+import { DataList as excel } from "~game/excel/CharacterGearExcelTable.json";
 import { uiPath } from "../GameImg/loader";
 
 const props = defineProps({
@@ -22,9 +22,9 @@ const props = defineProps({
     required: true,
   },
 });
-const data = excel.filter(
+const data = (excel as CharacterGearExcel[]).filter(
   (o) => o.CharacterId === props.cid,
-) as CharacterGearExcel[];
+);
 
 const src = uiPath(
   data.at(0)?.Icon ?? "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",

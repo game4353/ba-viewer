@@ -30,8 +30,8 @@
 import { useRoute } from "vue-router";
 import { default as m } from "~game/SpineCharacters.json";
 import SpineCharacter from "@/components/character/SpineCharacter.vue";
-import { CostumeExcel } from "~game/type/excel";
-import { default as excel } from "~game/excel/costumeexceltable.json";
+import { CostumeExcel } from "~game/types/flatDataExcel";
+import { DataList as excel } from "~game/excel/CostumeExcelTable.json";
 
 const id = useRoute().params.id as any as keyof typeof m;
 const name = m[id];
