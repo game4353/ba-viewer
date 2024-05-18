@@ -10,7 +10,8 @@
     "pre-ts": "cd data && tsc && cd js && node main.js",
     "format": "prettier . --write",
     "dl": "cd data && tsc && node js/dl/main.mjs",
-    "api": "tsc -p src/api/tsconfig.json"
+    "api": "tsc -p src/api/tsconfig.json",
+    "pre": "pnpm lint && pnpm format && pnpm api"
   },
   "dependencies": {
     "@mdi/font": "6.2.95",

@@ -25,4 +25,3 @@ data/**/*.js
 public/game
 src/assets/game
 *.zip
-/api
