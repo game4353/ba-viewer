@@ -9,7 +9,8 @@
     "lint": "eslint . --fix --ignore-path .gitignore",
     "pre-ts": "cd data && tsc && cd js && node main.js",
     "format": "prettier . --write",
-    "dl": "cd data && tsc && node js/dl/main.mjs"
+    "dl": "cd data && tsc && node js/dl/main.mjs",
+    "api": "tsc -p src/api/tsconfig.json"
   },
   "dependencies": {
     "@mdi/font": "6.2.95",
