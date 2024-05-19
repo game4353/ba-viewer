@@ -1,3 +1,5 @@
+// To deploy api, use `pnpm run api`
+
 // Can't send large response (4.5MB)
 // https://vercel.com/guides/how-to-bypass-vercel-body-size-limit-serverless-functions
 
