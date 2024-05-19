@@ -1,16 +1,18 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="[id, v] in Object.entries(charas)" :key="id" cols="2">
+      <v-col v-for="chara in charas" :key="chara.Id" cols="2">
         <div
           class="cursor-pointer w-full relative min-w-24"
-          @click.stop="$router.push(`/student/${id}`)"
+          @click.stop="$router.push(`/student/${chara.Id}`)"
         >
-          <Collect class="absolute" :cid="id" />
+          <Collect class="absolute" :cid="chara.Id" />
           <div
             class="flex flex-col items-center justify-center absolute bottom-0 w-full min-w-[100px] h-7 bg-blue-900/85 text-center"
           >
-            <p class="" :class="textSize(v.Localize)">{{ v.Localize }}</p>
+            <p class="" :class="textSize(localize.etc(chara.LocalizeEtcId))">
+              {{ localize.etc(chara.LocalizeEtcId) }}
+            </p>
           </div>
         </div>
       </v-col>
@@ -19,11 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import { Tidy } from "../../../data/ts/tidy";
-import { default as character } from "~data/character.json";
 import Collect from "@/components/character/Collect.vue";
+import * as localize from "@/utils/localize";
+import { CharacterExcel } from "~game/types/flatDataExcel";
+// @ts-ignore
+import { DataList } from "~game/excel/CharacterExcelTable.json";
 
-const charas: Tidy.Character = character;
+const charas = (DataList as CharacterExcel[]).filter(
+  (v) => v.IsPlayableCharacter && !v.IsNPC && v.ProductionStep == "Release",
+);
+
 function textSize(text: string) {
   const l = text.length;
   if (l < 7) return "big";

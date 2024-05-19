@@ -68,7 +68,7 @@ function onWheel(e: WheelEvent) {
 
 <style lang="scss" scoped>
 .box {
-  @apply p-1 w-fit h-fit border border-red-500 cursor-grab;
+  @apply w-fit h-fit border border-red-500 cursor-grab;
 }
 .box:active {
   cursor: grabbing;

@@ -11,7 +11,7 @@
     "format": "prettier . --write",
     "dl": "cd data && tsc && node js/dl/main.mjs",
     "api": "tsc -p src/api/tsconfig.json",
-    "pre": "pnpm lint && pnpm format && pnpm api"
+    "pre": "pnpm lint && pnpm format"
   },
   "dependencies": {
     "@mdi/font": "6.2.95",

@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { CharacterGearExcel } from "~game/types/flatDataExcel";
+// @ts-ignore
 import { DataList as excel } from "~game/excel/CharacterGearExcelTable.json";
 import { uiPath } from "../GameImg/loader";
 

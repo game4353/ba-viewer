@@ -28,19 +28,19 @@
             <v-container>
               <v-row>
                 <v-col>
-                  <Equipment
+                  <Equip
                     :category="data.EquipmentSlot[0]"
                     :tier="chara.gear1"
                   />
                 </v-col>
                 <v-col>
-                  <Equipment
+                  <Equip
                     :category="data.EquipmentSlot[1]"
                     :tier="chara.gear2"
                   />
                 </v-col>
                 <v-col>
-                  <Equipment
+                  <Equip
                     :category="data.EquipmentSlot[2]"
                     :tier="chara.gear3"
                   />
@@ -67,7 +67,8 @@
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/personal";
 import { CharacterExcel } from "~game/types/flatDataExcel";
-import { DataList as excel } from "~game/excel/CharacterExcelTable.json";
+// @ts-ignore
+import { DataList } from "~game/excel/CharacterExcelTable.json";
 
 const props = defineProps({
   cid: {
@@ -76,7 +77,7 @@ const props = defineProps({
   },
 });
 
-const data = (excel as CharacterExcel[]).find((o) => o.Id === props.cid)!;
+const data = (DataList as CharacterExcel[]).find((o) => o.Id === props.cid)!;
 if (data == null)
   console.error(`Cannot find ${props.cid} in character excel table.`);
 
