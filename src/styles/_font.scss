@@ -13,8 +13,19 @@
   }
 }
 
-@include font("Game-Medium", "../assets/fonts/U-OTF-ShinMGoUpr-Medium");
-@include font("Game-Bold", "../assets/fonts/U-OTF-ShinMGoUpr-DeBold");
+@font-face {
+  font-family: "Game-Medium";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../assets/fonts/U-OTF-ShinMGoUpr-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Game-Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../assets/fonts/U-OTF-ShinMGoUpr-DeBold.otf") format("opentype");
+}
 
 .game-font {
   font-family: Game-Medium;

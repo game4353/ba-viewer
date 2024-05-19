@@ -1,14 +1,11 @@
 <template>
   <div class="w-[520px]">
     <v-row>
-      <v-col v-for="(obj, index) in page" :key="index" cols="3">
+      <v-col v-for="(shop, index) in shops" :key="index" cols="3">
         <ShopItem
-          :name="obj.name"
-          :gain="obj.goods[0].gain[0].obj"
-          :gainAmount="obj.goods[0].gain[0].amount"
-          :cost="obj.goods[0].cost[0].obj"
-          :costAmount="obj.goods[0].cost[0].amount"
-          :amount="obj.amount"
+          :name="localize.etc(shop.LocalizeEtcId)"
+          :goodsId="shop.GoodsId"
+          :amount="shop.PurchaseCountLimit"
         />
       </v-col>
     </v-row>
@@ -16,13 +13,14 @@
 </template>
 
 <script setup lang="ts">
-import { Tidy } from "../../../data/ts/tidy";
+import * as localize from "@/utils/localize";
 import ShopItem from "./ShopItem.vue";
 import { PropType } from "vue";
+import type { EventContentShopExcel } from "~game/types/flatDataExcel";
 
 defineProps({
-  page: {
-    type: Object as PropType<Tidy.EventShop[]>,
+  shops: {
+    type: Object as PropType<EventContentShopExcel[]>,
     required: true,
   },
 });

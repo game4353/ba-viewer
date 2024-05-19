@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import type { ItemExcel } from "~game/types/flatDataExcel";
+import type { CurrencyExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
-import { DataList } from "~game/excel/ItemExcelTable.json";
+import { DataList } from "~game/excel/CurrencyExcelTable.json";
 
 const props = defineProps({
   pid: {
@@ -17,5 +17,5 @@ const props = defineProps({
   },
   iconOnly: Boolean,
 });
-const item = (DataList as ItemExcel[]).find((o) => o.Id === props.pid)!;
+const item = (DataList as CurrencyExcel[]).find((o) => o.ID === props.pid)!;
 </script>

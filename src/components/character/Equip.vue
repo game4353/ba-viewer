@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { EquipmentExcel, EquipmentCategory } from "~game/types/flatDataExcel";
+// @ts-ignore
 import { DataList as excel } from "~game/excel/EquipmentExcelTable.json";
 import { uiPath } from "../GameImg/loader";
 

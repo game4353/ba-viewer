@@ -57,7 +57,9 @@
     </v-navigation-drawer>
 
     <v-main scrollable>
-      <router-view />
+      <NoError>
+        <router-view />
+      </NoError>
     </v-main>
   </v-app>
 </template>

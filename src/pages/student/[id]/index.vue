@@ -31,7 +31,8 @@ import { useRoute } from "vue-router";
 import { default as m } from "~game/SpineCharacters.json";
 import SpineCharacter from "@/components/character/SpineCharacter.vue";
 import { CostumeExcel } from "~game/types/flatDataExcel";
-import { DataList as excel } from "~game/excel/CostumeExcelTable.json";
+// @ts-ignore
+import { DataList } from "~game/excel/CostumeExcelTable.json";
 
 const id = useRoute().params.id as any as keyof typeof m;
 const name = m[id];
@@ -41,17 +42,7 @@ const cid = Number(id);
 const items = ["basic", "stats", "info", "placeholder"];
 const tab = ref(items[0]);
 
-const data = (excel as CostumeExcel[]).find((o) => o.CostumeGroupId === cid)!;
+const data = (DataList as CostumeExcel[]).find((o) => o.CostumeGroupId === cid);
 if (data == null) console.error(`Cannot find ${cid} in character excel table.`);
-const bgPath = data.CollectionBGTexturePath;
+const bgPath = data?.CollectionBGTexturePath ?? "";
 </script>
-
-<style scoped lang="scss">
-.bg {
-  background-image: url("path/to/your/image.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100%;
-}
-</style>
