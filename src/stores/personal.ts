@@ -27,7 +27,7 @@ export function importJustin(json: string) {
     obj.characters.forEach((o: any) => {
       const c = o.current;
       setCharaDataV0(
-        Number(o.id),
+        o.id,
         "now",
         new CharaData(
           c.level,
@@ -47,7 +47,7 @@ export function importJustin(json: string) {
       );
       const t = o.target;
       setCharaDataV0(
-        Number(o.id),
+        o.id,
         "goal",
         new CharaData(
           t.level,
