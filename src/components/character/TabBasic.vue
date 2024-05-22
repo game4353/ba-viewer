@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCharaStore } from "@/stores/personal";
+import { useCharaStore } from "@/stores/character";
 import { CharacterExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/CharacterExcelTable.json";

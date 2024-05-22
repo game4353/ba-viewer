@@ -1,77 +1,90 @@
-// Utilities
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { useStorage } from "@vueuse/core";
-import { cache } from "@/util";
+import {
+  CharaData,
+  getAllCharaDataV0,
+  setAllCharaDataV0,
+  setCharaDataV0,
+} from "./character";
+import { unreachable } from "@/utils/misc";
 
-type Party = {
-  name: string;
+/*
+class PartyData {
+  name?: string;
   // use chara ID, minus means friend
-  striker: number[];
-  support: number[];
-};
-
+  striker?: number[];
+  support?: number[];
+  constructor(name?: string, striker?: number[], support?: number[]) {
+    this.name = name;
+    this.striker = striker;
+    this.support = support;
+  }
+}
 type Items = Partial<Record<number, number>>;
+*/
 
-export const usePersonalStore = defineStore("personal", () => {
-  const charas = ref({} as Partial<Record<number, Chara>>);
-  const parties = ref({} as Partial<Record<number, Party>>);
-  const items = ref({} as Items);
-  const version = ref(0);
-
-  return { charas, parties, items, version };
-});
-
-export const useCharaStore2 = defineStore("chara1", {
-  state: () =>
-    ({
-      lv: 0,
-      star: 1,
-      weapon: 0,
-      bond: 1,
-      skill0: 1,
-      skill1: 1,
-      skill2: 1,
-      skill3: 1,
-      gear1: 0,
-      gear1lv: 1,
-      gear2: 0,
-      gear2lv: 1,
-      gear3: 0,
-      gear3lv: 1,
-      gear0: 0,
-    }) as Chara,
-});
-
-export function charaDefault(max = false) {
-  return {
-    lv: max ? 90 : 0,
-    star: max ? 8 : 1,
-    weapon: max ? 50 : 0,
-    bond: max ? 100 : 1,
-    skill0: max ? 5 : 1,
-    skill1: max ? 10 : 1,
-    skill2: max ? 10 : 1,
-    skill3: max ? 10 : 1,
-    gear1: max ? 9 : 0,
-    gear1lv: max ? 65 : 1,
-    gear2: max ? 9 : 0,
-    gear2lv: max ? 65 : 1,
-    gear3: max ? 9 : 0,
-    gear3lv: max ? 65 : 1,
-    gear0: max ? 2 : 0,
-  };
+export function importJustin(json: string) {
+  const obj = JSON.parse(json);
+  if (obj.exportVersion === 2) {
+    obj.characters.forEach((o: any) => {
+      const c = o.current;
+      setCharaDataV0(
+        Number(o.id),
+        "now",
+        new CharaData(
+          c.level,
+          c.star,
+          c.ue,
+          c.bond,
+          c.ex,
+          c.basic,
+          c.passive,
+          c.sub,
+          c.gear1,
+          undefined,
+          c.gear2,
+          undefined,
+          c.gear3,
+        ),
+      );
+      const t = o.target;
+      setCharaDataV0(
+        Number(o.id),
+        "goal",
+        new CharaData(
+          t.level,
+          t.star,
+          t.ue,
+          t.bond,
+          t.ex,
+          t.basic,
+          t.passive,
+          t.sub,
+          t.gear1,
+          undefined,
+          t.gear2,
+          undefined,
+          t.gear3,
+        ),
+      );
+    });
+  } else {
+    unreachable();
+  }
 }
 
-export type Chara = ReturnType<typeof charaDefault>;
+export function importVx(json: string) {
+  const obj = JSON.parse(json);
+  if (obj.version === 0) return importV0(obj);
+  unreachable();
+}
 
-export const useCharaStore = cache((cid: number) => {
-  const now = defineStore(`charaNow${cid}`, {
-    state: () => useStorage(`charaNow${cid}`, charaDefault()),
-  });
-  const goal = defineStore(`charaGoal${cid}`, {
-    state: () => useStorage(`charaGoal${cid}`, charaDefault(true)),
-  });
+function importV0(obj: any) {
+  setAllCharaDataV0(obj.characters);
+}
 
-  return { now: now, goal: goal };
-});
+export function exportV0() {
+  const data = {
+    version: 0,
+    characters: getAllCharaDataV0(),
+  };
+  return JSON.stringify(data);
+}

@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { Chara, charaDefault, useCharaStore } from "@/stores/personal";
+import { CharaData, CharaProp, useCharaStore } from "@/stores/character";
 import { storeToRefs } from "pinia";
 
 const props = defineProps({
@@ -50,7 +50,7 @@ const props = defineProps({
     required: true,
   },
   keys: {
-    type: String as PropType<keyof Chara>,
+    type: String as PropType<CharaProp>,
     required: true,
   },
   name: {
@@ -77,8 +77,9 @@ const range = computed({
   },
 });
 
-const sliderMin = charaDefault()[props.keys];
-const sliderMax = charaDefault(true)[props.keys];
+const sliderMin = CharaData.defaultMin()[props.keys]!;
+const sliderMax = CharaData.defaultMax()[props.keys]!;
+
 const leftMin = props.init ?? sliderMin;
 if (val1.value < leftMin) val1.value = leftMin;
 const rightMax = sliderMax;

@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ActionButton: typeof import('./components/ActionButton.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BG: typeof import('./components/GameImg/BG.vue')['default']
     Collect: typeof import('./components/character/Collect.vue')['default']
