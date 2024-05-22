@@ -1,5 +1,5 @@
 // @ts-ignore
-import type { LocalizeEtcExcel } from "@/assets/game/types/flatDataExcelDb";
+import type { LocalizeEtcExcel } from "~game/types/flatDataExcelDb";
 import { default as a1 } from "~game/db/ExcelDB/LocalizeEtc.json";
 import { unreachable } from "./misc";
 
@@ -13,6 +13,10 @@ const etcDict = Object.fromEntries(
 
 export function etc(id: number, desc = false, lang: "JP" | "KR" = "JP") {
   const o = etcDict[String(id)];
+  if (o == null) {
+    console.error(id);
+    return "�";
+  }
   if (lang == "JP") return desc ? o.DescriptionJp : o.NameJp;
   if (lang == "KR") return desc ? o.DescriptionKr : o.NameKr;
   unreachable();
