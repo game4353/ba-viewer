@@ -31,8 +31,8 @@ export function importJustin(json: string) {
         "now",
         new CharaData(
           c.level,
-          c.star,
-          c.ue,
+          c.star + c.ue,
+          c.ue_level,
           c.bond,
           c.ex,
           c.basic,
@@ -51,8 +51,8 @@ export function importJustin(json: string) {
         "goal",
         new CharaData(
           t.level,
-          t.star,
-          t.ue,
+          c.star + c.ue,
+          c.ue_level,
           t.bond,
           t.ex,
           t.basic,

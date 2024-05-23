@@ -35,8 +35,8 @@ import { CostumeExcel } from "~game/types/flatDataExcel";
 import { DataList } from "~game/excel/CostumeExcelTable.json";
 
 const id = useRoute().params.id as any as keyof typeof m;
-const name = m[id];
-const paths = [`/game/SpineCharacters/${name}/${name}.skel`];
+const path = m[id];
+const paths = [`/game/SpineCharacters/${path}`];
 const cid = Number(id);
 
 const items = ["basic", "stats", "info", "placeholder"];
