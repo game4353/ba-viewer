@@ -22,7 +22,12 @@
         <v-btn icon @click.stop="$router.go(-1)">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-
+        <v-btn icon @click.stop="$router.go(1)">
+          <v-icon>mdi-arrow-right</v-icon>
+        </v-btn>
+        <v-btn icon @click.stop="$router.go(0)">
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
         <v-btn icon @click.stop="$router.push('/data')">
           <v-icon>mdi-database</v-icon>
         </v-btn>
