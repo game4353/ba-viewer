@@ -2,6 +2,7 @@ import { copyFileSync, cpSync, lstatSync } from "fs";
 import { cropAtlas } from "./crop/index.js";
 import path from "path";
 import { AssetFolder, PngFolder } from "./path.js";
+import { mapSpr } from "./map/mapSpr.js";
 
 function copyPaste(fromThis: string, toThisFolder: string) {
   const s = lstatSync(fromThis);
@@ -16,20 +17,15 @@ function copyPaste(fromThis: string, toThisFolder: string) {
   }
 }
 
-async function main() {
+export async function cropMain() {
   await cropAtlas();
   copyPaste(PngFolder + `/Combat`, AssetFolder + "/Atlas");
   copyPaste(PngFolder + `/Common`, AssetFolder + "/Atlas");
   copyPaste(PngFolder + `/Event`, AssetFolder + "/Atlas");
 }
 
-function test() {}
+function main() {
+  mapSpr();
+}
 
-main()
-  .then(() => {
-    console.log("done");
-  })
-  .catch((e) => {
-    console.log(e);
-  });
-test();
+main();

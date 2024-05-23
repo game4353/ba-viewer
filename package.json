@@ -6,11 +6,12 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --fix --ignore-path .gitignore",
-    "pre-ts": "cd data && tsc && cd js && node main.js",
-    "format": "prettier . --write",
-    "dl": "cd data && tsc && node js/dl/main.mjs",
+    "ts-map": "cd data && tsc && cd js && node map/main.js",
+    "ts-dl": "cd data && tsc && node js/dl/main.mjs",
+    "dl": "pnpm ts-dl && pnpm ts-map",
     "api": "tsc -p src/api/tsconfig.json",
+    "lint": "eslint . --fix --ignore-path .gitignore",
+    "format": "prettier . --write",
     "pre": "pnpm lint && pnpm format"
   },
   "dependencies": {
