@@ -23,7 +23,7 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
 
-        <v-btn icon>
+        <v-btn icon @click.stop="$router.push('/data')">
           <v-icon>mdi-database</v-icon>
         </v-btn>
 
@@ -57,9 +57,11 @@
     </v-navigation-drawer>
 
     <v-main scrollable>
-      <NoError>
-        <router-view />
-      </NoError>
+      <div class="pr-[2px]">
+        <NoError>
+          <router-view />
+        </NoError>
+      </div>
     </v-main>
   </v-app>
 </template>
