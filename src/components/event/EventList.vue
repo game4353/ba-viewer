@@ -10,7 +10,13 @@
         <div class="flex flex-column items-center">
           <GameImg :path="v.MainBannerImagePath + '_jp'" class="w-56" />
           <div>{{ v.EventContentOpenTime }}</div>
-          <div>{{ v.EventContentCloseTime }}</div>
+          <div>
+            {{
+              v.EventContentCloseTime.startsWith("2099")
+                ? "∞"
+                : v.EventContentCloseTime
+            }}
+          </div>
         </div>
       </v-card>
     </router-link>
