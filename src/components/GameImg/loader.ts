@@ -35,5 +35,8 @@ const images = Object.fromEntries(
 );
 /** @param path Starts with 'UIs/', ends without '.png'. */
 export function uiPath(path: string) {
-  return images[path.toLowerCase()] ?? "";
+  const p = images[path.toLowerCase()];
+  if (p != null) return p;
+  console.error(`Unable to find ${path}`);
+  return "";
 }
