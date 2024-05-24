@@ -11,7 +11,7 @@
     </p>
     <v-img
       :width="300"
-      :src="uiPath('UIs/01_Common/31_ClanEmoji/ClanChat_Emoji_126_Jp.png')"
+      :src="uiPath('UIs/01_Common/31_ClanEmoji/ClanChat_Emoji_126_Jp')"
     ></v-img>
   </v-container>
 </template>
