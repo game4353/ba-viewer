@@ -9,4 +9,12 @@ export function setError(message: string) {
   console.error(message, new Error().stack);
 }
 
+/**
+ * Usage:
+ *
+ * `const setError = inject(INJECT_ERR)!;`
+ *
+ * ```setError(`${something} is missing.`)```
+ *
+ */
 export const INJECT_ERR: InjectionKey<typeof setError> = Symbol("inject err");
