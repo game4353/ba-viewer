@@ -14,6 +14,7 @@ declare module 'vue' {
     Currency: typeof import('./components/parcel/Currency.vue')['default']
     Equip: typeof import('./components/character/Equip.vue')['default']
     Equipment: typeof import('./components/parcel/Equipment.vue')['default']
+    EventBonus: typeof import('./components/event/EventBonus.vue')['default']
     EventList: typeof import('./components/event/EventList.vue')['default']
     FiveOO: typeof import('./components/warn/FiveOO.vue')['default']
     FourOFour: typeof import('./components/warn/FourOFour.vue')['default']
