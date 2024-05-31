@@ -37,6 +37,8 @@ const images = Object.fromEntries(
 export function uiPath(path: string) {
   const p = images[path.toLowerCase()];
   if (p != null) return p;
+  const jp = images[path.toLowerCase() + "_jp"];
+  if (jp != null) return jp;
   console.error(`Unable to find ${path}`);
   return "";
 }

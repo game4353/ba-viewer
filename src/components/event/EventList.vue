@@ -8,7 +8,7 @@
     >
       <v-card>
         <div class="flex flex-column items-center">
-          <GameImg :path="v.MainBannerImagePath + '_jp'" class="w-56" />
+          <GameImg :path="v.MainBannerImagePath" class="w-56" />
           <div>{{ v.EventContentOpenTime }}</div>
           <div>
             {{
