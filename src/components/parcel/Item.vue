@@ -6,6 +6,7 @@
 import type { ItemExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/ItemExcelTable.json";
+import { INJECT_ERR } from "@/utils/error";
 
 const props = defineProps({
   pid: {
@@ -17,5 +18,9 @@ const props = defineProps({
   },
   iconOnly: Boolean,
 });
+
+const setError = inject(INJECT_ERR)!;
+
 const item = (DataList as ItemExcel[]).find((o) => o.Id === props.pid)!;
+if (item == null) setError(`Unable to find item id (${props.pid}).`);
 </script>

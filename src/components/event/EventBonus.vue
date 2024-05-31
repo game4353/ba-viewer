@@ -4,7 +4,7 @@
       <tr>
         <td></td>
         <td v-for="(n, i) in tokens" :key="i">
-          {{ n }}
+          <EventCurrency :eid :eit="n" class="max-w-16" />
         </td>
       </tr>
     </thead>
@@ -29,6 +29,7 @@
 import type { EventContentCharacterBonusExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentCharacterBonusExcelTable.json";
+import EventCurrency from "./EventCurrency.vue";
 
 const props = defineProps({
   eid: {
