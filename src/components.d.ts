@@ -20,6 +20,8 @@ declare module 'vue' {
     FiveOO: typeof import('./components/warn/FiveOO.vue')['default']
     FourOFour: typeof import('./components/warn/FourOFour.vue')['default']
     Furniture: typeof import('./components/parcel/Furniture.vue')['default']
+    GachaGroup: typeof import('./components/parcel/GachaGroup.vue')['default']
+    GachaGroupSub: typeof import('./components/parcel/GachaGroupSub.vue')['default']
     GameImg: typeof import('./components/GameImg/GameImg.vue')['default']
     Gear: typeof import('./components/character/Gear.vue')['default']
     GuideMission: typeof import('./components/guide/GuideMission.vue')['default']

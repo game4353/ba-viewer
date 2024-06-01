@@ -3,6 +3,8 @@
   <Currency v-else-if="type === 'Currency'" :pid :amount :iconOnly :scale />
   <Equipment v-else-if="type === 'Equipment'" :pid :amount :iconOnly :scale />
   <Furniture v-else-if="type === 'Furniture'" :pid :amount :iconOnly :scale />
+  <GachaGroup v-else-if="type === 'GachaGroup'" :pid :amount :iconOnly :scale />
+  <div v-else-if="type === 'Character'">TODO</div>
   <div v-else></div>
 </template>
 
@@ -34,6 +36,9 @@ const done: (keyof typeof ParcelType)[] = [
   "Equipment",
   "Furniture",
   "Item",
+  "GachaGroup",
+  // TODO
+  "Character",
 ];
 if (!done.includes(props.type)) {
   setError(`Type "${props.type}" is not yet implemented.`);
