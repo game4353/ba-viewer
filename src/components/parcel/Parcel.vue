@@ -1,17 +1,13 @@
 <template>
-  <div class="scale-wrapper" :style="cssVars">
-    <div class="scale-content" :style="cssVars">
-      <Item v-if="type === 'Item'" :pid :amount :iconOnly />
-      <Currency v-else-if="type === 'Currency'" :pid :amount :iconOnly />
-      <Equipment v-else-if="type === 'Equipment'" :pid :amount :iconOnly />
-      <Furniture v-else-if="type === 'Furniture'" :pid :amount :iconOnly />
-      <div v-else></div>
-    </div>
-  </div>
+  <Item v-if="type === 'Item'" :pid :amount :iconOnly :scale />
+  <Currency v-else-if="type === 'Currency'" :pid :amount :iconOnly :scale />
+  <Equipment v-else-if="type === 'Equipment'" :pid :amount :iconOnly :scale />
+  <Furniture v-else-if="type === 'Furniture'" :pid :amount :iconOnly :scale />
+  <div v-else></div>
 </template>
 
 <script setup lang="ts">
-import { ParcelType } from "@/assets/game/types/flatDataExcel";
+import type { ParcelType } from "@/assets/game/types/flatDataExcel";
 import { INJECT_ERR } from "@/utils/error";
 import { PropType } from "vue";
 
@@ -42,20 +38,4 @@ const done: (keyof typeof ParcelType)[] = [
 if (!done.includes(props.type)) {
   setError(`Type "${props.type}" is not yet implemented.`);
 }
-
-const cssVars = computed(() => ({
-  "--scale": props.scale ?? 1,
-}));
 </script>
-
-<style lang="scss" scoped>
-.scale-wrapper {
-  @apply relative overflow-hidden;
-  width: calc(var(--scale) * 90px);
-  height: calc(var(--scale) * 74px);
-}
-.scale-content {
-  @apply relative top-0 left-0 origin-top-left;
-  transform: scale(var(--scale));
-}
-</style>
