@@ -6,7 +6,9 @@
 <script setup lang="ts">
 import {
   INJECT_ERR,
+  INJECT_ERR_EQUAL,
   INJECT_ERR_FILTER_UNIQUE,
+  equalOrError,
   err,
   filterUniqueOrError,
   setError,
@@ -15,4 +17,5 @@ import { provide } from "vue";
 
 provide(INJECT_ERR, setError);
 provide(INJECT_ERR_FILTER_UNIQUE, filterUniqueOrError);
+provide(INJECT_ERR_EQUAL, equalOrError);
 </script>

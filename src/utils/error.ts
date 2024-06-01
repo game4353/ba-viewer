@@ -49,3 +49,19 @@ export function filterUniqueOrError<T>(
 export const INJECT_ERR_FILTER_UNIQUE: InjectionKey<
   typeof filterUniqueOrError
 > = Symbol("INJECT_ERR_FILTER_UNIQUE");
+
+export function equalOrError<T>(real: T, expect: T) {
+  if (real !== expect)
+    setError(`Assertion failed.\nExpected: ${expect}. Real: ${real}.`);
+}
+
+/**
+ * Usage:
+ *
+ * `const equalOrError = inject(INJECT_ERR_EQUAL)!;`
+ *
+ * `equalOrError(one, 1);`
+ *
+ */
+export const INJECT_ERR_EQUAL: InjectionKey<typeof equalOrError> =
+  Symbol("INJECT_ERR_EQUAL");
