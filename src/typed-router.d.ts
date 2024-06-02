@@ -22,7 +22,13 @@ declare module 'vue-router/auto-routes' {
     '/[...path]': RouteRecordInfo<'/[...path]', '/:path(.*)', { path: ParamValue<true> }, { path: ParamValue<false> }>,
     '/data/': RouteRecordInfo<'/data/', '/data', Record<never, never>, Record<never, never>>,
     '/event/': RouteRecordInfo<'/event/', '/event', Record<never, never>, Record<never, never>>,
+    '/event/[id]/': RouteRecordInfo<'/event/[id]/', '/event/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/event/[id]/bonus': RouteRecordInfo<'/event/[id]/bonus', '/event/:id/bonus', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/event/[id]/reward': RouteRecordInfo<'/event/[id]/reward', '/event/:id/reward', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/event/[id]/shop': RouteRecordInfo<'/event/[id]/shop', '/event/:id/shop', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/event/[id]/stage': RouteRecordInfo<'/event/[id]/stage', '/event/:id/stage', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/guide/': RouteRecordInfo<'/guide/', '/guide', Record<never, never>, Record<never, never>>,
+    '/guide/[id]/': RouteRecordInfo<'/guide/[id]/', '/guide/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/student/': RouteRecordInfo<'/student/', '/student', Record<never, never>, Record<never, never>>,
     '/student/[id]/': RouteRecordInfo<'/student/[id]/', '/student/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
   }

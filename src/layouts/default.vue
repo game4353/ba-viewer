@@ -101,3 +101,12 @@ watch(group, () => {
   flex: 0 1 auto !important;
 }
 </style>
+
+<style lang="scss">
+.bg-striker-dark {
+  @apply bg-rose-950;
+}
+.bg-support-dark {
+  @apply bg-sky-950;
+}
+</style>
