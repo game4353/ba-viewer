@@ -25,7 +25,7 @@
 import type { EventContentStageExcel } from "~game/types/flatDataExcel";
 import { Icon } from "../GameImg/icon";
 
-const props = defineProps({
+defineProps({
   stage: {
     type: Object as PropType<EventContentStageExcel>,
     required: true,
