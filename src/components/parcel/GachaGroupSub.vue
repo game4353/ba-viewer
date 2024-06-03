@@ -11,7 +11,6 @@
         :amountMax="item.ParcelAmountMax"
         :type="item.ParcelType"
         :pid="item.ParcelID"
-        :rarity="item.Rarity"
       />
     </div>
     <div
