@@ -37,7 +37,7 @@ const props = defineProps({
     type: String as PropType<keyof typeof RewardTag>,
   },
   layout: {
-    type: String as PropType<"icon" | "random" | "default">,
+    type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
   },
 });
 
@@ -71,6 +71,8 @@ const amountStr = computed(() => {
 
 const tagStr = computed(() => {
   if (props.layout === "random") return "ランダム";
+  if (props.layout === "pack") return "パック";
+  if (props.layout === "select") return "セレクト";
   switch (props.tag) {
     case undefined:
     case "Default":

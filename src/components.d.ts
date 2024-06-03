@@ -33,6 +33,8 @@ declare module 'vue' {
     NoError: typeof import('./components/warn/NoError.vue')['default']
     Parcel: typeof import('./components/parcel/Parcel.vue')['default']
     ParcelCommon: typeof import('./components/parcel/ParcelCommon.vue')['default']
+    Recipe: typeof import('./components/parcel/Recipe.vue')['default']
+    RecipeSelection: typeof import('./components/parcel/RecipeSelection.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShopItem: typeof import('./components/shop/ShopItem.vue')['default']
