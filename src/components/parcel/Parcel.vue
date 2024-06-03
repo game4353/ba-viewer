@@ -40,7 +40,11 @@ const done: (keyof typeof ParcelType)[] = [
   // TODO
   "Character",
 ];
-if (!done.includes(props.type)) {
-  setError(`Type "${props.type}" is not yet implemented.`);
-}
+watch(
+  () => props.type,
+  (newVal) => {
+    if (!done.includes(newVal))
+      setError(`Type "${props.type}" is not yet implemented.`);
+  },
+);
 </script>

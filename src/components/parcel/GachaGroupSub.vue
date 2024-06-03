@@ -37,5 +37,10 @@ const props = defineProps({
 });
 
 const setError = inject(INJECT_ERR)!;
-if (props.group[0] == null) setError("GachaGroupSub is empty.");
+watch(
+  () => props.group.at(0),
+  (newVal) => {
+    if (newVal == null) setError("GachaGroupSub is empty.");
+  },
+);
 </script>

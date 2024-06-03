@@ -21,11 +21,11 @@ import { Icon } from "../GameImg/icon";
 const setError = inject(INJECT_ERR)!;
 
 const props = defineProps({
-  amount: {
-    type: Number,
-  },
+  amount: Number,
   amountMin: Number,
   amountMax: Number,
+  scale: Number,
+  iconOnly: Boolean,
   iconPath: {
     type: String,
   },
@@ -33,8 +33,6 @@ const props = defineProps({
     type: String as PropType<keyof typeof Rarity>,
     required: true,
   },
-  scale: Number,
-  iconOnly: Boolean,
   tag: {
     type: String as PropType<keyof typeof RewardTag>,
   },
@@ -43,65 +41,56 @@ const props = defineProps({
   },
 });
 
-const bg =
-  props.rarity === "N"
-    ? Icon.BgN
-    : props.rarity === "R"
-      ? Icon.BgR
-      : props.rarity === "SR"
-        ? Icon.BgSR
-        : props.rarity === "SSR"
-          ? Icon.BgSSR
-          : setError(`Unknown rarity ${props.rarity}`);
+const bg = computed(() => {
+  switch (props.rarity) {
+    case "N":
+      return Icon.BgN;
+    case "R":
+      return Icon.BgR;
+    case "SR":
+      return Icon.BgSR;
+    case "SSR":
+      return Icon.BgSSR;
+    default:
+      setError(`Unknown rarity ${props.rarity}`);
+  }
+});
 
 function convertNum(num: number) {
   if (num >= 10000 && num % 1000 === 0) return `${num / 1000}K`;
   return `${num}`;
 }
-let amountStr: string | null = null;
-if (props.amountMin !== props.amountMax) {
-  amountStr = `x${props.amountMin}~${props.amountMax}`;
-} else if (props.amountMin != null) {
-  amountStr = `x${convertNum(props.amountMin)}`;
-} else if (props.amount != null) {
-  amountStr = `x${convertNum(props.amount)}`;
-}
+const amountStr = computed(() => {
+  if (props.amountMin !== props.amountMax) {
+    return `x${props.amountMin}~${props.amountMax}`;
+  }
+  const num = props.amountMin ?? props.amount;
+  if (num == null) return null;
+  return `x${convertNum(num)}`;
+});
 
-const tags: Record<keyof typeof RewardTag, string | null> = {
-  Default: null,
-  FirstClear: "初回",
-  StrategyObject: "??",
-  Event: null,
-  ThreeStar: "★★★",
-  ProductMonthly: "??",
-  Rare: "レア",
-  EventBonus: "??",
-  TimeWeight: "??",
-  ProductWeekly: "??",
-  ProductBiweekly: "??",
-  EventPermanentReward: "??",
-  ConquestManageEvent: "??",
-  ConquestManageDefault: "??",
-  ConquestCalculateDefault: "??",
-  ConquestCalculateLevel2: "??",
-  ConquestCalculateLevel3: "??",
-  ConquestFootholdUpgrade2: "??",
-  ConquestFootholdUpgrade3: "??",
-  ConquestErosionPenalty: "??",
-  GemBonus: "??",
-  GemPaid: "??",
-  ConquestTileConquer: "??",
-};
-const tagStr =
-  props.layout === "random"
-    ? "ランダム"
-    : props.tag == null
-      ? null
-      : tags[props.tag];
-if (tagStr === "??") setError(`RewardTag ${props.tag} is not implemented yet.`);
+const tagStr = computed(() => {
+  if (props.layout === "random") return "ランダム";
+  switch (props.tag) {
+    case undefined:
+    case "Default":
+    case "Event":
+      return null;
+    case "FirstClear":
+      return "初回";
+    case "ThreeStar":
+      return "★★★";
+    case "Rare":
+      return "レア";
+    default:
+      setError(`RewardTag ${props.tag} is not implemented yet.`);
+  }
+});
 
-const path =
-  props.iconPath ?? "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward";
+const path = computed(
+  () =>
+    props.iconPath ?? "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",
+);
 
 const imgW = 256 * 0.35;
 const imgH = 210 * 0.35;

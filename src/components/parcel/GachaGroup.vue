@@ -54,9 +54,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  amount: {
-    type: Number,
-  },
+  amount: Number,
   scale: Number,
   iconOnly: Boolean,
 });
@@ -91,5 +89,5 @@ function getGroup(id: number): Recursive<GachaElementExcel[]> {
     return elements;
   }
 }
-const group = getGroup(props.pid);
+const group = computed(() => getGroup(props.pid));
 </script>

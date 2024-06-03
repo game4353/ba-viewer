@@ -6,16 +6,21 @@
 import type { FurnitureExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/FurnitureExcelTable.json";
+import { INJECT_ERR } from "@/utils/error";
 
 const props = defineProps({
   pid: {
     type: Number,
     required: true,
   },
-  amount: {
-    type: Number,
-  },
+  amount: Number,
+  scale: Number,
   iconOnly: Boolean,
 });
-const item = (DataList as FurnitureExcel[]).find((o) => o.Id === props.pid)!;
+const setError = inject(INJECT_ERR)!;
+const items = DataList as FurnitureExcel[];
+const dict = Object.fromEntries(items.map((v) => [v.Id, v]));
+
+const item = computed(() => dict[props.pid]);
+if (item == null) setError(`Unable to find item id (${props.pid}).`);
 </script>
