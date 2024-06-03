@@ -1,6 +1,7 @@
 const glob = import.meta.glob(
   [
     "~game/UIs/00_Images/Banner/**/*.png",
+    "~game/UIs/01_Common/01_Character/*.png",
     "~game/UIs/01_Common/02_Equipment/**/*.png",
     "~game/UIs/01_Common/03_NonEquipment/**/*.png",
     "~game/UIs/01_Common/11_SchoolIcon/**/*.png",

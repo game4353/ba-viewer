@@ -10,6 +10,7 @@ declare module 'vue' {
     ActionButton: typeof import('./components/ActionButton.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BG: typeof import('./components/GameImg/BG.vue')['default']
+    Character: typeof import('./components/parcel/Character.vue')['default']
     Collect: typeof import('./components/character/Collect.vue')['default']
     Currency: typeof import('./components/parcel/Currency.vue')['default']
     Equip: typeof import('./components/character/Equip.vue')['default']
