@@ -1,11 +1,70 @@
 <template>
-  <Item v-if="type === 'Item'" :pid :amount :iconOnly :scale />
-  <Currency v-else-if="type === 'Currency'" :pid :amount :iconOnly :scale />
-  <Equipment v-else-if="type === 'Equipment'" :pid :amount :iconOnly :scale />
-  <Furniture v-else-if="type === 'Furniture'" :pid :amount :iconOnly :scale />
-  <GachaGroup v-else-if="type === 'GachaGroup'" :pid :amount :iconOnly :scale />
-  <div v-else-if="type === 'Character'">TODO</div>
-  <div v-else></div>
+  <component :is="route ? 'router-link' : 'div'" :to="`/item/${pid}`">
+    <Item
+      v-if="type === 'Item'"
+      :pid
+      :amount
+      :amountMin
+      :amountMax
+      :iconOnly
+      :scale
+    />
+    <Character
+      v-else-if="type === 'Character'"
+      :pid
+      :amount
+      :amountMin
+      :amountMax
+      :iconOnly
+      :scale
+    />
+    <Currency
+      v-else-if="type === 'Currency'"
+      :pid
+      :amount
+      :amountMin
+      :amountMax
+      :iconOnly
+      :scale
+    />
+    <Equipment
+      v-else-if="type === 'Equipment'"
+      :pid
+      :amount
+      :amountMin
+      :amountMax
+      :iconOnly
+      :scale
+    />
+    <Furniture
+      v-else-if="type === 'Furniture'"
+      :pid
+      :amount
+      :amountMin
+      :amountMax
+      :iconOnly
+      :scale
+    />
+    <GachaGroup
+      v-else-if="type === 'GachaGroup'"
+      :pid
+      :amount
+      :amountMin
+      :amountMax
+      :iconOnly
+      :scale
+    />
+    <Recipe
+      v-else-if="type === 'Recipe'"
+      :pid
+      :amount
+      :amountMin
+      :amountMax
+      :iconOnly
+      :scale
+    />
+    <div v-else></div>
+  </component>
 </template>
 
 <script setup lang="ts">
@@ -24,11 +83,12 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  amount: {
-    type: Number,
-  },
+  amount: Number,
+  amountMin: Number,
+  amountMax: Number,
   scale: Number,
   iconOnly: Boolean,
+  route: Boolean,
 });
 
 const done: (keyof typeof ParcelType)[] = [
@@ -37,7 +97,7 @@ const done: (keyof typeof ParcelType)[] = [
   "Furniture",
   "Item",
   "GachaGroup",
-  // TODO
+  "Recipe",
   "Character",
 ];
 watch(
