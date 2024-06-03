@@ -5,3 +5,7 @@ export function isLastArray<T>(
 ): arr is NotArray<T>[] {
   return !Array.isArray(arr[0]);
 }
+
+export function ObjectKeys<T extends object>(object: T): (keyof T)[] {
+  return Object.keys(object) as (keyof T)[];
+}
