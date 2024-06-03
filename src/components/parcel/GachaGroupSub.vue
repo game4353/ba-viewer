@@ -4,14 +4,16 @@
       v-if="isLastArray(group)"
       class="flex flex-row flex-wrap border border-red"
     >
-      <Parcel
-        v-for="(item, key) in group"
-        :key
-        :amountMin="item.ParcelAmountMin"
-        :amountMax="item.ParcelAmountMax"
-        :type="item.ParcelType"
-        :pid="item.ParcelID"
-      />
+      <div v-for="(item, key) in group" :key>
+        <Parcel
+          :amountMin="item.ParcelAmountMin"
+          :amountMax="item.ParcelAmountMax"
+          :type="item.ParcelType"
+          :pid="item.ParcelID"
+          route
+        />
+        <p class="text-center">weight: {{ item.Prob }}</p>
+      </div>
     </div>
     <div
       v-else
