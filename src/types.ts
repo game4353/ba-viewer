@@ -6,6 +6,14 @@ export function isLastArray<T>(
   return !Array.isArray(arr[0]);
 }
 
+type KeyValuePairs<T> = {
+  [K in keyof T]: [K, T[K]];
+}[keyof T][];
+
 export function ObjectKeys<T extends object>(object: T): (keyof T)[] {
-  return Object.keys(object) as (keyof T)[];
+  return Object.keys(object) as any;
+}
+
+export function ObjectEntries<T extends object>(object: T): KeyValuePairs<T> {
+  return Object.entries(object) as any;
 }

@@ -89,6 +89,8 @@ const props = defineProps({
   scale: Number,
   iconOnly: Boolean,
   route: Boolean,
+  // TODO: hover to show name
+  hover: String,
 });
 
 const done: (keyof typeof ParcelType)[] = [

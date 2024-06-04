@@ -2,35 +2,38 @@
   <div class="flex flex-row flex-wrap">
     <div class="w-1/2 min-w-[364px]">
       <v-tabs center-active v-model="tab" bg-color="primary" show-arrows>
-        <v-tab v-for="(t, key) in tabs" :key :value="t">
-          {{ tabStrs[t] }}
-        </v-tab>
+        <v-tab
+          v-for="[key, name] in ObjectEntries(tabs)"
+          :key
+          :value="key"
+          :disabled="name === '??'"
+          :text="name"
+        />
       </v-tabs>
 
       <v-tabs-window v-model="tab">
         <v-tabs-window-item
-          v-for="t in tabs"
-          :key="t"
-          :value="t"
+          v-for="key in ObjectKeys(tabs)"
+          :key
+          :value="key"
           class="flex flex-row flex-wrap gap-y-2 mt-1 max-h-[600px] overflow-auto"
         >
           <div
-            v-for="item in items.filter((v) => v.ItemCategory === t)"
+            v-for="item in itemByCategory[key]"
             :key="item.Id"
             :class="item === picked ? 'selecting' : 'others'"
           >
-            <v-tooltip
-              location="top"
-              :text="Localize.etc(item.LocalizeEtcId, 'name')"
-            >
-              <template v-slot:activator="{ props }">
-                <Parcel v-bind="props" :pid="item.Id" type="Item" route />
-              </template>
-            </v-tooltip>
+            <Parcel
+              :hover="Localize.etc(item.LocalizeEtcId, 'name')"
+              :pid="item.Id"
+              type="Item"
+              route
+            />
           </div>
         </v-tabs-window-item>
       </v-tabs-window>
     </div>
+
     <div class="w-1/2">
       <div v-if="picked != null">
         <v-card class="mx-auto">
@@ -65,11 +68,13 @@ import type { ItemExcel, ItemCategory } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/ItemExcelTable.json";
 import { Localize } from "@/utils/localize";
-import { ObjectKeys } from "@/types";
+import { ObjectKeys, ObjectEntries } from "@/types";
 
 const items = DataList as ItemExcel[];
-const dict = Object.fromEntries(items.map((v) => [v.Id, v]));
-const tabStrs: Record<keyof typeof ItemCategory, string> = {
+const dict: Partial<Record<string, ItemExcel>> = Object.fromEntries(
+  items.map((v) => [v.Id, v]),
+);
+const tabs: Record<keyof typeof ItemCategory, string> = {
   SecretStone: "神名文字",
   Coin: "コイン",
   Material: "素材",
@@ -80,17 +85,21 @@ const tabStrs: Record<keyof typeof ItemCategory, string> = {
   RecruitCoin: "ポイント",
   InvisibleToken: "??",
 };
-const tabs = ObjectKeys(tabStrs).slice(0, -1);
+const itemByCategory = Object.groupBy(
+  items,
+  ({ ItemCategory }) => ItemCategory,
+);
 
 const route = useRoute<"/item/[[id]]">();
-const id = computed(() => route.params.id ?? "");
-const picked = computed(() => dict[id.value]);
-const tab = ref(picked.value?.ItemCategory ?? tabs[0]);
-
+const picked = ref(dict[route.params.id ?? ""]);
+const tab = ref(picked.value?.ItemCategory ?? "Material");
 watch(
-  () => picked.value,
-  (p) => {
-    tab.value = p?.ItemCategory ?? tab.value;
+  () => route.params.id,
+  (nid) => {
+    picked.value = dict[nid ?? ""];
+    if (picked.value != null) {
+      tab.value = picked.value.ItemCategory;
+    }
   },
 );
 </script>
