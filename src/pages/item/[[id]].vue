@@ -21,7 +21,9 @@
           <div
             v-for="item in itemByCategory[key]"
             :key="item.Id"
-            :class="item === picked ? 'selecting' : 'others'"
+            :class="
+              String(item.Id) === route.params.id ? 'selecting' : 'others'
+            "
           >
             <Parcel
               :hover="Localize.etc(item.LocalizeEtcId, 'name')"
