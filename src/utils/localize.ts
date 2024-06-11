@@ -47,4 +47,20 @@ export class Localize {
     if (Localize.lang === "KR") return o.Kr;
     unreachable();
   }
+  static etc(id: number, type: "name" | "desc") {
+    const o = etcDict[String(id)];
+    if (o == null) {
+      console.error(id);
+      return "�";
+    }
+    if (Localize.lang === "JP") {
+      if (type === "name") return o.NameJp;
+      if (type === "desc") return o.DescriptionJp;
+    }
+    if (Localize.lang === "KR") {
+      if (type === "name") return o.NameKr;
+      if (type === "desc") return o.DescriptionKr;
+    }
+    unreachable();
+  }
 }

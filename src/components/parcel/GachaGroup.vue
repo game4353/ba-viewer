@@ -4,7 +4,7 @@
     class="flex flex-row flex-wrap border border-red"
   >
     <Parcel
-      layout="random"
+      :layout
       :amountMin="group[0].ParcelAmountMin"
       :amountMax="group[0].ParcelAmountMax"
       :type="group[0].ParcelType"
@@ -18,14 +18,14 @@
       <ParcelCommon
         v-bind="activatorProps"
         class="cursor-pointer"
-        layout="random"
+        :layout
         rarity="N"
         :scale
       />
     </template>
 
     <template v-slot:default="{}">
-      <GachaGroupSub :group />
+      <GachaGroupSub class="p-2" :group :scale="0.3" />
     </template>
   </v-dialog>
 </template>
@@ -42,11 +42,7 @@ import { DataList as d1 } from "~game/excel/GachaGroupExcelTable.json";
 import { DataList as d2 } from "~game/excel/GachaElementRecursiveExcelTable.json";
 // @ts-ignore
 import { DataList as d3 } from "~game/excel/GachaElementExcelTable.json";
-import {
-  INJECT_ERR,
-  INJECT_ERR_EQUAL,
-  INJECT_ERR_FILTER_UNIQUE,
-} from "@/utils/error";
+import { INJECT_ERR, INJECT_ERR_EQUAL } from "@/utils/error";
 import { type Recursive, isLastArray } from "@/types";
 
 const props = defineProps({
@@ -54,24 +50,32 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  amount: {
-    type: Number,
-  },
+  amount: Number,
   scale: Number,
-  iconOnly: Boolean,
 });
 
 const setError = inject(INJECT_ERR)!;
-if (props.iconOnly) setError("GachaGroup cannot set iconOnly.");
-
-const filterUniqueOrError = inject(INJECT_ERR_FILTER_UNIQUE)!;
-
 const equalOrError = inject(INJECT_ERR_EQUAL)!;
 
+const groups = d1 as GachaGroupExcel[];
+const dict = Object.fromEntries(groups.map((v) => [v.ID, v]));
+const obj = computed(() => dict[props.pid]);
+if (obj == null) setError(`Unable to find id ${props.pid}`);
+
+const layout = computed(() => {
+  switch (obj.value.GroupType) {
+    case "Reward_General":
+      return "random";
+    case "Reward_Pack":
+      return "pack";
+    default:
+      setError(`Unimplemented GroupType ${obj.value.GroupType}.`);
+  }
+});
+
 function getGroup(id: number): Recursive<GachaElementExcel[]> {
-  const group = filterUniqueOrError("GachaGroup", d1 as GachaGroupExcel[], [
-    ["ID", id],
-  ]);
+  const group = dict[id];
+  if (group == null) setError(`Unable to find id ${id}`);
   if (group.IsRecursive) {
     const subGroups = (d2 as GachaElementRecursiveExcel[]).filter(
       (v) => v.GachaGroupID === id,
@@ -91,5 +95,5 @@ function getGroup(id: number): Recursive<GachaElementExcel[]> {
     return elements;
   }
 }
-const group = getGroup(props.pid);
+const group = computed(() => getGroup(props.pid));
 </script>

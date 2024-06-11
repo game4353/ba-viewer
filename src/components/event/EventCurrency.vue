@@ -1,5 +1,5 @@
 <template>
-  <Item :pid icon-only />
+  <Item :pid layout="icon" />
 </template>
 
 <script setup lang="ts">

@@ -10,8 +10,8 @@
         <Parcel
           :type="stage.StageEnterCostType"
           :pid="stage.StageEnterCostId"
-          icon-only
-          class="h-8"
+          layout="icon"
+          class="w-9"
         />
         {{ stage.StageEnterCostAmount }}
       </div>

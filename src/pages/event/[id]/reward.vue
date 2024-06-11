@@ -14,7 +14,8 @@
         :pid="reward.RewardParcelId[i]"
         :type="reward.RewardParcelType[i]"
         :amount="reward.RewardParcelAmount[i]"
-        :scale="0.7"
+        :scale="0.3"
+        route
       />
     </div>
   </div>
