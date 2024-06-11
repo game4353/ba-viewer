@@ -1,22 +1,24 @@
 <template>
-  <GameImg v-if="iconOnly" :path />
-  <div v-else class="scale-wrapper" :style="cssVars">
-    <div class="scale-content" :style="cssVars">
-      <div class="box">
-        <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
-          <GameImg :path class="absolute top-0 left-0 p-1 w-auto" />
-          <span v-if="amountStr != null" class="amount">{{ amountStr }}</span>
-          <span v-if="tagStr != null" class="tag">{{ tagStr }}</span>
-        </v-img>
-      </div>
-    </div>
-  </div>
+  <GameImg v-if="layout == 'icon'" :path />
+  <Scaled v-else :scale :width="imgW" :height="imgH">
+    <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
+      <GameImg :path class="absolute top-0 left-0 p-1 w-auto" />
+      <span
+        v-if="amountStr != null"
+        class="amount"
+        :class="amountStr.length > 5 ? 'smallText' : ''"
+        >{{ amountStr }}</span
+      >
+      <span v-if="tagStr != null" class="tag">{{ tagStr }}</span>
+    </v-img>
+  </Scaled>
 </template>
 
 <script setup lang="ts">
 import { INJECT_ERR } from "@/utils/error";
 import type { Rarity, RewardTag } from "~game/types/flatDataExcel";
 import { Icon } from "../GameImg/icon";
+import Scaled from "../misc/Scaled.vue";
 
 const setError = inject(INJECT_ERR)!;
 
@@ -24,20 +26,19 @@ const props = defineProps({
   amount: Number,
   amountMin: Number,
   amountMax: Number,
-  scale: Number,
-  iconOnly: Boolean,
   iconPath: {
     type: String,
+  },
+  layout: {
+    type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
   },
   rarity: {
     type: String as PropType<keyof typeof Rarity>,
     required: true,
   },
+  scale: Number,
   tag: {
     type: String as PropType<keyof typeof RewardTag>,
-  },
-  layout: {
-    type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
   },
 });
 
@@ -62,7 +63,7 @@ function convertNum(num: number) {
 }
 const amountStr = computed(() => {
   if (props.amountMin !== props.amountMax) {
-    return `x${props.amountMin}~${props.amountMax}`;
+    return `x${props.amountMin}–${props.amountMax}`;
   }
   const num = props.amountMin ?? props.amount;
   if (num == null) return null;
@@ -94,41 +95,30 @@ const path = computed(
     props.iconPath ?? "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",
 );
 
-const imgW = 256 * 0.35;
-const imgH = 210 * 0.35;
-const cssVars = computed(() => ({
-  "--scale": props.scale ?? 1,
-}));
+const imgW = 256;
+const imgH = 210;
 </script>
 
 <style scoped lang="scss">
-.scale-wrapper {
-  @apply relative overflow-hidden;
-  width: calc(var(--scale) * 90px);
-  height: calc(var(--scale) * 74px);
-}
-.scale-content {
-  @apply relative top-0 left-0 origin-top-left;
-  transform: scale(var(--scale));
-}
-.box {
-  width: 90px;
-  height: 74px;
-}
 .tag {
-  @apply text-black bg-yellow-200 absolute text-sm px-1;
-  left: 0px;
-  top: 1px;
+  @apply text-black bg-yellow-200 absolute px-3 left-1 top-0;
+  font-size: 42px;
 }
 // https://stackoverflow.com/questions/2570972/css-font-border
 .amount {
-  @apply text-black absolute text-sm;
-  right: 15px;
-  bottom: 4px;
+  @apply text-black absolute right-11 bottom-4 text-5xl;
   text-shadow:
-    -2px 0 white,
-    2px 0 white,
-    0 -2px white,
-    0 2px white;
+    -5px 0 white,
+    5px 0 white,
+    0 -5px white,
+    0 5px white,
+    3px -3px white,
+    -3px -3px white,
+    3px 3px white,
+    -3px 3px white;
+}
+.smallText {
+  font-size: 36px !important;
+  line-height: 48px !important;
 }
 </style>

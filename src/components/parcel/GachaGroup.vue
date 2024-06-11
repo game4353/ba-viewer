@@ -25,7 +25,7 @@
     </template>
 
     <template v-slot:default="{}">
-      <GachaGroupSub :group />
+      <GachaGroupSub class="p-2" :group :scale="0.3" />
     </template>
   </v-dialog>
 </template>
@@ -52,11 +52,9 @@ const props = defineProps({
   },
   amount: Number,
   scale: Number,
-  iconOnly: Boolean,
 });
 
 const setError = inject(INJECT_ERR)!;
-if (props.iconOnly) setError("GachaGroup cannot set iconOnly.");
 const equalOrError = inject(INJECT_ERR_EQUAL)!;
 
 const groups = d1 as GachaGroupExcel[];

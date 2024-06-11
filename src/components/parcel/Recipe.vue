@@ -1,10 +1,12 @@
 <template>
   <RecipeSelection
     v-if="item.RecipeType === 'SelectionItem'"
+    :scale
     :gid="item.RecipeSelectionGroupId"
   />
   <RecipeSelection
     v-else-if="item.RecipeType === 'SelectRecruit'"
+    :scale
     :gid="item.RecipeSelectionGroupId"
   />
   <div v-else>{{ item }}</div>
@@ -23,7 +25,6 @@ const props = defineProps({
   },
   amount: Number,
   scale: Number,
-  iconOnly: Boolean,
 });
 const setError = inject(INJECT_ERR)!;
 const items = DataList as RecipeExcel[];

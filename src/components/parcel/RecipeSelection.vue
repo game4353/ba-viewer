@@ -11,8 +11,8 @@
     </template>
 
     <template v-slot:default="{}">
-      <v-sheet border rounded :elevation="8">
-        <div class="flex flex-row flex-wrap border border-red">
+      <v-sheet border rounded :elevation="8" class="p-2">
+        <div class="flex flex-row flex-wrap gap-y-2">
           <Parcel
             v-for="(item, key) in items"
             :key
@@ -20,6 +20,7 @@
             :amountMax="item.ResultAmountMax"
             :type="item.ParcelType"
             :pid="item.ParcelId"
+            :scale="0.3"
             route
           />
         </div>
@@ -41,7 +42,6 @@ const props = defineProps({
   },
   amount: Number,
   scale: Number,
-  iconOnly: Boolean,
 });
 const setError = inject(INJECT_ERR)!;
 const arr = DataList as RecipeSelectionGroupExcel[];

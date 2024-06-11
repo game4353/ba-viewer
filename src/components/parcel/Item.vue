@@ -1,9 +1,17 @@
 <template>
-  <ParcelCommon :amount :iconPath="item.Icon" :rarity="item.Rarity" :iconOnly />
+  <component :is="route ? 'router-link' : 'div'" :to="`/item/${pid}`">
+    <ParcelCommon
+      :amount
+      :iconPath="item.Icon"
+      :layout
+      :rarity="item.Rarity"
+      :scale
+      :tag
+  /></component>
 </template>
 
 <script setup lang="ts">
-import type { ItemExcel } from "~game/types/flatDataExcel";
+import type { ItemExcel, RewardTag } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/ItemExcelTable.json";
 import { INJECT_ERR } from "@/utils/error";
@@ -14,8 +22,14 @@ const props = defineProps({
     required: true,
   },
   amount: Number,
+  layout: {
+    type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
+  },
+  route: Boolean,
   scale: Number,
-  iconOnly: Boolean,
+  tag: {
+    type: String as PropType<keyof typeof RewardTag>,
+  },
 });
 const setError = inject(INJECT_ERR)!;
 const items = DataList as ItemExcel[];

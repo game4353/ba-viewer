@@ -11,7 +11,7 @@
         :pid="is[i]"
         :type="t"
         :amount="as[i]"
-        :scale="0.8"
+        :scale="0.3"
       />
     </div>
   </div>

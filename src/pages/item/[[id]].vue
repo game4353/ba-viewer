@@ -29,6 +29,7 @@
               :hover="Localize.etc(item.LocalizeEtcId, 'name')"
               :pid="item.Id"
               type="Item"
+              :scale="0.35"
               route
             />
           </div>
@@ -45,7 +46,7 @@
             }}</span>
           </template>
           <template v-slot:prepend>
-            <Item :pid="picked.Id" />
+            <Item :pid="picked.Id" :scale="0.4" />
           </template>
           <v-card-text class="bg-surface-light pt-4">
             {{ Localize.etc(picked.LocalizeEtcId, "desc") }}
@@ -58,6 +59,7 @@
             :pid="picked.UsingResultId"
             :type="picked.UsingResultParcelType"
             :amount="picked.UsingResultAmount"
+            :scale="0.3"
           />
         </v-card>
       </div>

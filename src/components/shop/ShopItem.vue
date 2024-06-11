@@ -3,7 +3,7 @@
     v-if="onlyCostIcon"
     :type="good.ConsumeParcelType[0]"
     :pid="good.ConsumeParcelId[0]"
-    iconOnly
+    layout="icon"
   />
   <div
     v-else
@@ -26,7 +26,7 @@
       <Parcel
         :type="good.ConsumeParcelType[0]"
         :pid="good.ConsumeParcelId[0]"
-        iconOnly
+        layout="icon"
         class="w-8"
       />
       <span class="bg-blue-900 h-4 w-16 text-center text-xs">{{
