@@ -17,6 +17,8 @@
       :type="good.ParcelType[0]"
       :pid="good.ParcelId[0]"
       :amount="good.ParcelAmount[0]"
+      :scale="0.33"
+      route
     />
     <div v-if="(amount ?? 0) === 0" class="h-4 w-full"></div>
     <div v-else class="bg-blue-950 text-white h-4 text-xs text-center w-full">

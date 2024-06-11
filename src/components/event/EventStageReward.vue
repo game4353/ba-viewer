@@ -7,6 +7,7 @@
         :amount="reward.RewardAmount"
         :tag="reward.RewardTag"
         :scale="0.3"
+        route
       />
       <p class="text-center" v-if="reward.RewardProb !== 10000">
         {{ reward.RewardProb / 100 }}%
