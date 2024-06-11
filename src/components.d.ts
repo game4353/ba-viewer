@@ -37,6 +37,7 @@ declare module 'vue' {
     RecipeSelection: typeof import('./components/parcel/RecipeSelection.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Scaled: typeof import('./components/misc/Scaled.vue')['default']
     ShopItem: typeof import('./components/shop/ShopItem.vue')['default']
     ShopPage: typeof import('./components/shop/ShopPage.vue')['default']
     Slider: typeof import('./components/character/Slider.vue')['default']
