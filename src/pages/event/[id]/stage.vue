@@ -5,22 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
 import type {
   EventContentStageExcel,
   StageDifficulty,
 } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentStageExcelTable.json";
-import { INJECT_ERR } from "@/utils/error";
 
-const route = useRoute();
-const id = route.params.id;
-
-const setError = inject(INJECT_ERR)!;
-if (Array.isArray(id)) setError(`Invalid id (${id}) from url.`);
-const eid = Number(id);
-
+const route = useRoute<"/event/[id]/stage">();
+const eid = Number(route.params.id);
 const stages = (DataList as EventContentStageExcel[]).filter(
   (v) => v.EventContentId === eid,
 );

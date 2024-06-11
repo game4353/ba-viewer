@@ -27,14 +27,15 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
 import { default as m } from "~game/SpineCharacters.json";
 import SpineCharacter from "@/components/character/SpineCharacter.vue";
 import { CostumeExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/CostumeExcelTable.json";
 
-const id = useRoute().params.id as any as keyof typeof m;
+const route = useRoute<"/student/[id]/">();
+const id = route.params.id as keyof typeof m;
+// TODO: 404
 const path = m[id];
 const paths = [`/game/SpineCharacters/${path}`];
 const cid = Number(id);
