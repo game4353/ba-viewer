@@ -12,6 +12,7 @@ const glob = import.meta.glob(
     "~game/UIs/01_Common/27_EventContent/Enter_Parcel/**/*.png",
     "~game/UIs/01_Common/27_EventContent/Main_BgImage/**/*.png",
     "~game/UIs/01_Common/29_GuideMission/**/*.png",
+    "~game/UIs/01_Common/31_ClanEmoji/ClanChat_Emoji_87_Jp.png",
     "~game/UIs/01_Common/31_ClanEmoji/ClanChat_Emoji_113_Jp.png",
     "~game/UIs/01_Common/31_ClanEmoji/ClanChat_Emoji_126_Jp.png",
     "~game/UIs/01_Common/35_TimeAttack/**/*.png",
