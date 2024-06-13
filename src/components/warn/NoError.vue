@@ -1,21 +1,23 @@
 <template>
-  <FiveOO v-if="err.error" />
-  <slot v-else></slot>
+  <slot v-if="!err.error"></slot>
+  <FiveOOne v-else-if="err.code === 501">{{ err.display }}</FiveOOne>
+  <FourOFour v-else-if="err.code === 404">{{ err.display }}</FourOFour>
+  <FiveOO v-else />
 </template>
 
 <script setup lang="ts">
 import {
-  INJECT_ERR,
-  INJECT_ERR_EQUAL,
-  INJECT_ERR_FILTER_UNIQUE,
-  equalOrError,
   err,
-  filterUniqueOrError,
-  setError,
-} from "@/utils/error";
-import { provide } from "vue";
+  provideAssertEqual,
+  provideAssertSole,
+  provideAssertSome,
+  provideAssertUniqueFilter,
+  provideAssertUnreachable,
+} from "./error";
 
-provide(INJECT_ERR, setError);
-provide(INJECT_ERR_FILTER_UNIQUE, filterUniqueOrError);
-provide(INJECT_ERR_EQUAL, equalOrError);
+provideAssertUnreachable();
+provideAssertSome();
+provideAssertSole();
+provideAssertEqual();
+provideAssertUniqueFilter();
 </script>

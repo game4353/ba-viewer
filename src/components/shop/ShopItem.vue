@@ -43,7 +43,7 @@ import { PropType } from "vue";
 import type { GoodsExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/GoodsExcelTable.json";
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_SOLE } from "../warn/error";
 
 const props = defineProps({
   name: {
@@ -63,21 +63,20 @@ const goods = props.goodsId
   .map((i) => (DataList as GoodsExcel[]).find((o) => o.Id === i)!)
   .filter((v) => v != null);
 
-const setError = inject(INJECT_ERR)!;
-function assert(b: boolean) {
-  if (!b) {
-    setError(`Unexpected shop structure: ${goods}`);
-  }
-}
+const assertSole = inject(ASSERT_SOLE)!;
 
-assert(goods.length === 1);
+assertSole(goods, 500, `Unexpected shop structure: ${goods}`);
 const good = goods[0];
-assert(good.ConsumeParcelAmount.length === 1);
-assert(good.ConsumeParcelId.length === 1);
-assert(good.ConsumeParcelType.length === 1);
-assert(good.ParcelAmount.length === 1);
-assert(good.ParcelId.length === 1);
-assert(good.ParcelType.length === 1);
+assertSole(
+  good.ConsumeParcelAmount,
+  500,
+  `Unexpected shop structure: ${goods}`,
+);
+assertSole(good.ConsumeParcelId, 500, `Unexpected shop structure: ${goods}`);
+assertSole(good.ConsumeParcelType, 500, `Unexpected shop structure: ${goods}`);
+assertSole(good.ParcelAmount, 500, `Unexpected shop structure: ${goods}`);
+assertSole(good.ParcelId, 500, `Unexpected shop structure: ${goods}`);
+assertSole(good.ParcelType, 500, `Unexpected shop structure: ${goods}`);
 
 const nameLen = props.name?.length ?? 0;
 const nameSize = nameLen > 16 ? "small" : nameLen > 7 ? "median" : "big";

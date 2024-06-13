@@ -9,7 +9,7 @@ import type {
 } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentCurrencyItemExcelTable.json";
-import { INJECT_ERR_FILTER_UNIQUE } from "@/utils/error";
+import { ASSERT_UNIQUE_FILTER } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -22,14 +22,10 @@ const props = defineProps({
   },
 });
 
-const filterUniqueOrError = inject(INJECT_ERR_FILTER_UNIQUE)!;
-const item = filterUniqueOrError(
-  "EventContentCurrencyItem",
-  DataList as EventContentCurrencyItemExcel[],
-  [
-    ["EventContentId", props.eid],
-    ["EventContentItemType", props.eit],
-  ],
-);
+const assertUniqueFilter = inject(ASSERT_UNIQUE_FILTER)!;
+const item = assertUniqueFilter(DataList as EventContentCurrencyItemExcel[], [
+  ["EventContentId", props.eid],
+  ["EventContentItemType", props.eit],
+]);
 const pid = item.ItemUniqueId;
 </script>

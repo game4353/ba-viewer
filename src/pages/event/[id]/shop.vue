@@ -28,10 +28,10 @@ import type {
 } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentShopExcelTable.json";
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_SOME_FILTER } from "@/components/warn/error";
 import ShopItem from "@/components/shop/ShopItem.vue";
 
-const setError = inject(INJECT_ERR)!;
+const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
 
 const tab = ref(null);
 const route = useRoute<"/event/[id]/shop">();
@@ -42,8 +42,12 @@ const shops = (DataList as EventContentShopExcel[]).filter(
 
 const shopTypes = [...new Set(shops.map((o) => o.CategoryType))];
 function getShop(t: keyof typeof ShopCategoryType) {
-  const res = shops.filter((o) => o.CategoryType === t);
-  if (res.length === 0) setError(`Empty shop category: ${t}`);
+  const res = assertSomeFilter(
+    shops,
+    [["CategoryType", t]],
+    500,
+    `Empty shop category: ${t}`,
+  );
   return res;
 }
 </script>

@@ -1,3 +1,4 @@
+export type NotNullable<T> = T extends null | undefined ? never : T;
 type NotArray<T> = T extends any[] ? never : T;
 export type Recursive<T> = T | Recursive<T>[];
 export function isLastArray<T>(
@@ -6,7 +7,7 @@ export function isLastArray<T>(
   return !Array.isArray(arr[0]);
 }
 
-type KeyValuePairs<T> = {
+export type KeyValuePairs<T> = {
   [K in keyof T]: [K, T[K]];
 }[keyof T][];
 

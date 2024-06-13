@@ -16,7 +16,7 @@
 import type { RecipeExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/RecipeExcelTable.json";
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_SOME } from "../warn/error";
 
 const props = defineProps({
   pid: {
@@ -26,10 +26,10 @@ const props = defineProps({
   amount: Number,
   scale: Number,
 });
-const setError = inject(INJECT_ERR)!;
+const assertSome = inject(ASSERT_SOME)!;
 const items = DataList as RecipeExcel[];
 const dict = Object.fromEntries(items.map((v) => [v.Id, v]));
 
 const item = computed(() => dict[props.pid]);
-if (item == null) setError(`Unable to find item id (${props.pid}).`);
+assertSome(item.value, 500, `Unable to find recipe id (${props.pid}).`);
 </script>
