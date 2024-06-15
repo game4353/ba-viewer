@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import type { GachaElementExcel } from "~game/types/flatDataExcel";
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_SOME } from "../warn/error";
 import { PropType } from "vue";
 import { type Recursive, isLastArray } from "@/types";
 
@@ -43,12 +43,7 @@ const props = defineProps({
   },
   scale: Number,
 });
-
-const setError = inject(INJECT_ERR)!;
-watch(
-  () => props.group.at(0),
-  (newVal) => {
-    if (newVal == null) setError("GachaGroupSub is empty.");
-  },
-);
+const assertSome = inject(ASSERT_SOME)!;
+const first = computed(() => props.group.at(0));
+assertSome(first.value, 500, "GachaGroupSub is empty.");
 </script>

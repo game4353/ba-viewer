@@ -14,7 +14,7 @@
 import type { ItemExcel, RewardTag } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/ItemExcelTable.json";
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_SOME } from "../warn/error";
 
 const props = defineProps({
   pid: {
@@ -31,10 +31,10 @@ const props = defineProps({
     type: String as PropType<keyof typeof RewardTag>,
   },
 });
-const setError = inject(INJECT_ERR)!;
+const assertSome = inject(ASSERT_SOME)!;
 const items = DataList as ItemExcel[];
 const dict = Object.fromEntries(items.map((v) => [v.Id, v]));
 
 const item = computed(() => dict[props.pid]);
-if (item == null) setError(`Unable to find item id (${props.pid}).`);
+assertSome(item.value, 500, `Unable to find item id (${props.pid}).`);
 </script>

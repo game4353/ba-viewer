@@ -15,12 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_UNREACHABLE } from "@/components/warn/error";
 import type { Rarity, RewardTag } from "~game/types/flatDataExcel";
 import { Icon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
 
-const setError = inject(INJECT_ERR)!;
+const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
 
 const props = defineProps({
   amount: Number,
@@ -53,7 +53,7 @@ const bg = computed(() => {
     case "SSR":
       return Icon.BgSSR;
     default:
-      setError(`Unknown rarity ${props.rarity}`);
+      assertUnreachable(`Unknown rarity ${props.rarity}`);
   }
 });
 
@@ -86,7 +86,7 @@ const tagStr = computed(() => {
     case "Rare":
       return "レア";
     default:
-      setError(`RewardTag ${props.tag} is not implemented yet.`);
+      assertUnreachable(`RewardTag ${props.tag} is not implemented yet.`);
   }
 });
 

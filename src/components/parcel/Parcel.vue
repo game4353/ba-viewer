@@ -73,10 +73,10 @@
 
 <script setup lang="ts">
 import type { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_SOLE } from "../warn/error";
 import { PropType } from "vue";
 
-const setError = inject(INJECT_ERR)!;
+const assertSole = inject(ASSERT_SOLE)!;
 
 const props = defineProps({
   type: {
@@ -111,11 +111,20 @@ const done: (keyof typeof ParcelType)[] = [
   "Recipe",
   "Character",
 ];
+assertSole(
+  done.filter((v) => v === props.type),
+  501,
+  `Type "${props.type}" is not yet implemented.`,
+);
 watch(
   () => props.type,
   (newVal) => {
-    if (!done.includes(newVal))
-      setError(`Type "${props.type}" is not yet implemented.`);
+    console.log(newVal);
+    assertSole(
+      done.filter((v) => v === newVal),
+      501,
+      `Type "${props.type}" is not yet implemented.`,
+    );
   },
 );
 </script>

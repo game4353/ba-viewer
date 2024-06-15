@@ -42,7 +42,7 @@ import { DataList as d1 } from "~game/excel/GachaGroupExcelTable.json";
 import { DataList as d2 } from "~game/excel/GachaElementRecursiveExcelTable.json";
 // @ts-ignore
 import { DataList as d3 } from "~game/excel/GachaElementExcelTable.json";
-import { INJECT_ERR, INJECT_ERR_EQUAL } from "@/utils/error";
+import { ASSERT_EQUAL, ASSERT_SOME, ASSERT_UNREACHABLE } from "../warn/error";
 import { type Recursive, isLastArray } from "@/types";
 
 const props = defineProps({
@@ -54,13 +54,13 @@ const props = defineProps({
   scale: Number,
 });
 
-const setError = inject(INJECT_ERR)!;
-const equalOrError = inject(INJECT_ERR_EQUAL)!;
+const assertSome = inject(ASSERT_SOME)!;
+const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
+const assertEqual = inject(ASSERT_EQUAL)!;
 
 const groups = d1 as GachaGroupExcel[];
 const dict = Object.fromEntries(groups.map((v) => [v.ID, v]));
 const obj = computed(() => dict[props.pid]);
-if (obj == null) setError(`Unable to find id ${props.pid}`);
 
 const layout = computed(() => {
   switch (obj.value.GroupType) {
@@ -69,23 +69,26 @@ const layout = computed(() => {
     case "Reward_Pack":
       return "pack";
     default:
-      setError(`Unimplemented GroupType ${obj.value.GroupType}.`);
+      assertUnreachable(`Unimplemented GroupType ${obj.value.GroupType}.`);
   }
 });
 
 function getGroup(id: number): Recursive<GachaElementExcel[]> {
-  const group = dict[id];
-  if (group == null) setError(`Unable to find id ${id}`);
+  const group = assertSome(
+    dict[id],
+    500,
+    `Unable to find gacha element id (${id}).`,
+  );
   if (group.IsRecursive) {
     const subGroups = (d2 as GachaElementRecursiveExcel[]).filter(
       (v) => v.GachaGroupID === id,
     );
     return subGroups.map((v) => {
-      equalOrError(v.ParcelType, "GachaGroup");
-      equalOrError(v.ParcelAmountMin, 1);
-      equalOrError(v.ParcelAmountMax, 1);
-      equalOrError(v.Prob, 0);
-      equalOrError(v.State, 1);
+      assertEqual(v.ParcelType, "GachaGroup");
+      assertEqual(v.ParcelAmountMin, 1);
+      assertEqual(v.ParcelAmountMax, 1);
+      assertEqual(v.Prob, 0);
+      assertEqual(v.State, 1);
       return getGroup(v.ParcelID);
     });
   } else {

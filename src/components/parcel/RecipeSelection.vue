@@ -33,7 +33,7 @@
 import type { RecipeSelectionGroupExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/RecipeSelectionGroupExcelTable.json";
-import { INJECT_ERR } from "@/utils/error";
+import { ASSERT_SOME } from "../warn/error";
 
 const props = defineProps({
   gid: {
@@ -43,7 +43,7 @@ const props = defineProps({
   amount: Number,
   scale: Number,
 });
-const setError = inject(INJECT_ERR)!;
+const assertSome = inject(ASSERT_SOME)!;
 const arr = DataList as RecipeSelectionGroupExcel[];
 const dict = Object.groupBy(
   arr,
@@ -51,6 +51,9 @@ const dict = Object.groupBy(
 );
 
 const items = computed(() => dict[props.gid]);
-if (items == null)
-  setError(`Unable to find RecipeSelectionGroupId (${props.gid}).`);
+assertSome(
+  items.value,
+  500,
+  `Unable to find recipe selection group id (${props.gid}).`,
+);
 </script>

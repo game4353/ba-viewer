@@ -62,11 +62,9 @@
     </v-navigation-drawer>
 
     <v-main scrollable>
-      <div class="pr-[2px]">
-        <NoError>
-          <router-view />
-        </NoError>
-      </div>
+      <NoError>
+        <router-view />
+      </NoError>
     </v-main>
   </v-app>
 </template>
@@ -108,5 +106,8 @@ watch(group, () => {
 }
 .bg-support-dark {
   @apply bg-sky-950;
+}
+html {
+  overflow-y: auto;
 }
 </style>
