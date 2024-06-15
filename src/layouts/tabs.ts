@@ -35,7 +35,7 @@ export const TABS = {
     "mdi-clock-fast",
   ),
   grandAssault: new Tab("大決戦", "/grandassault", "mdi-emoticon-devil"),
-  set: new Tab("制約解除決戦", "/set", "custom:evilTower"),
+  set: new Tab("制約解除決戦", "/multifloor", "custom:evilTower"),
   message: new Tab("メッセージ", "/message", "mdi-chat"),
   storyBond: new Tab("絆ストーリー", "/story/bond", "mdi-heart"),
   gift: new Tab("プレゼント", "/gift", "mdi-gift"),
