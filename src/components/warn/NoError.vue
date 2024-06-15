@@ -11,6 +11,7 @@ import {
   provideAssertEqual,
   provideAssertSole,
   provideAssertSome,
+  provideAssertSomeFilter,
   provideAssertUniqueFilter,
   provideAssertUnreachable,
 } from "./error";
@@ -20,4 +21,5 @@ provideAssertSome();
 provideAssertSole();
 provideAssertEqual();
 provideAssertUniqueFilter();
+provideAssertSomeFilter();
 </script>
