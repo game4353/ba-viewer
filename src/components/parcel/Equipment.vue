@@ -1,12 +1,13 @@
 <template>
-  <ParcelCommon
-    :amount
-    :iconPath="item.Icon"
-    :layout
-    :rarity="item.Rarity"
-    :scale
-    :tag
-  />
+  <component :is="route ? 'router-link' : 'div'" :to="`/equipment/${pid}`">
+    <ParcelCommon
+      :amount
+      :iconPath="item.Icon"
+      :layout
+      :rarity="item.Rarity"
+      :scale
+      :tag
+  /></component>
 </template>
 
 <script setup lang="ts">
@@ -24,6 +25,7 @@ const props = defineProps({
   layout: {
     type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
   },
+  route: Boolean,
   scale: Number,
   tag: {
     type: String as PropType<keyof typeof RewardTag>,

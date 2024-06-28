@@ -37,6 +37,7 @@
     :amountMin
     :amountMax
     :layout
+    :route
     :scale
     :tag
   />
