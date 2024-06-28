@@ -24,7 +24,7 @@ declare module 'vue-router/auto-routes' {
     '/commissions/': RouteRecordInfo<'/commissions/', '/commissions', Record<never, never>, Record<never, never>>,
     '/craft/': RouteRecordInfo<'/craft/', '/craft', Record<never, never>, Record<never, never>>,
     '/data/': RouteRecordInfo<'/data/', '/data', Record<never, never>, Record<never, never>>,
-    '/equipment/': RouteRecordInfo<'/equipment/', '/equipment', Record<never, never>, Record<never, never>>,
+    '/equipment/[[id]]': RouteRecordInfo<'/equipment/[[id]]', '/equipment/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
     '/event/': RouteRecordInfo<'/event/', '/event', Record<never, never>, Record<never, never>>,
     '/event/[id]/': RouteRecordInfo<'/event/[id]/', '/event/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/event/[id]/bonus': RouteRecordInfo<'/event/[id]/bonus', '/event/:id/bonus', { id: ParamValue<true> }, { id: ParamValue<false> }>,
