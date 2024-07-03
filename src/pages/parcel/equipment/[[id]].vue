@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { equipmentDict } from "../../components/parcel/equipment";
+import { equipmentDict } from "~/components/parcel/equipment";
 
-const route = useRoute<"/equipment/[[id]]">();
+const route = useRoute<"/parcel/equipment/[[id]]">();
 const picked = computed(() => route.params.id);
 </script>
 

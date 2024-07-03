@@ -44,10 +44,10 @@
 </template>
 
 <script setup lang="ts">
-import { currencyDict } from "../../components/parcel/currency";
+import { currencyDict } from "~/components/parcel/currency";
 
 const parcelType = "Currency";
-const route = useRoute<"/currency/[[id]]">();
+const route = useRoute<"/parcel/currency/[[id]]">();
 const picked = computed(() => route.params.id);
 </script>
 

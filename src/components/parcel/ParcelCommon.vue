@@ -1,7 +1,7 @@
 <template>
   <component
     :is="route ? 'router-link' : 'div'"
-    :to="`/${parcel.type.toLowerCase()}/${parcel.id}`"
+    :to="`/parcel/${parcel.type.toLowerCase()}/${parcel.id}`"
   >
     <GameImg v-if="layout == 'icon'" :path="parcel.iconPath" />
     <Scaled v-else :scale :width="imgW" :height="imgH">
