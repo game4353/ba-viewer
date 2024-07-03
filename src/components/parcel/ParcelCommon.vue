@@ -1,49 +1,61 @@
 <template>
-  <GameImg v-if="layout == 'icon'" :path />
-  <Scaled v-else :scale :width="imgW" :height="imgH">
-    <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
-      <GameImg :path class="absolute top-0 left-0 p-1 w-auto" />
-      <span
-        v-if="amountStr != null"
-        class="amount"
-        :class="amountStr.length > 5 ? 'smallText' : ''"
-        >{{ amountStr }}</span
-      >
-      <span v-if="tagStr != null" class="tag">{{ tagStr }}</span>
-    </v-img>
-  </Scaled>
+  <component
+    :is="route ? 'router-link' : 'div'"
+    :to="`/parcel/${parcel.type.toLowerCase()}/${parcel.id}`"
+  >
+    <GameImg v-if="layout == 'icon'" :path="parcel.iconPath" />
+    <Scaled v-else :scale :width="imgW" :height="imgH">
+      <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
+        <GameImg
+          :path="parcel.iconPath"
+          class="absolute top-0 left-0 p-1 w-auto"
+        />
+        <span
+          v-if="amountStr != null"
+          class="amount"
+          :class="amountStr.length > 5 ? 'smallText' : ''"
+        >
+          {{ amountStr }}
+        </span>
+        <span v-if="tagStr != null" class="tag">{{ tagStr }}</span>
+      </v-img>
+    </Scaled>
+  </component>
 </template>
 
 <script setup lang="ts">
-import { ASSERT_UNREACHABLE } from "@/components/warn/error";
-import type { Rarity, RewardTag } from "~game/types/flatDataExcel";
+import type { RewardTag } from "~game/types/flatDataExcel";
+import { ASSERT_UNREACHABLE } from "../warn/error";
 import { Icon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
+import { IParcel } from "./parcel";
 
 const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
 
+const imgW = 256;
+const imgH = 210;
+
 const props = defineProps({
+  parcel: {
+    type: Object as PropType<IParcel>,
+    required: true,
+  },
   amount: Number,
   amountMin: Number,
   amountMax: Number,
-  iconPath: {
-    type: String,
-  },
   layout: {
     type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
   },
-  rarity: {
-    type: String as PropType<keyof typeof Rarity>,
-    required: true,
-  },
+  route: Boolean,
   scale: Number,
   tag: {
     type: String as PropType<keyof typeof RewardTag>,
   },
 });
 
+// background
 const bg = computed(() => {
-  switch (props.rarity) {
+  switch (props.parcel.rarity) {
     case "N":
       return Icon.BgN;
     case "R":
@@ -53,10 +65,11 @@ const bg = computed(() => {
     case "SSR":
       return Icon.BgSSR;
     default:
-      assertUnreachable(`Unknown rarity ${props.rarity}`);
+      assertUnreachable(`Unknown rarity ${props.parcel.rarity}`);
   }
 });
 
+// amount
 function convertNum(num: number) {
   if (num >= 10000 && num % 1000 === 0) return `${num / 1000}K`;
   return `${num}`;
@@ -70,6 +83,7 @@ const amountStr = computed(() => {
   return `x${convertNum(num)}`;
 });
 
+// tag
 const tagStr = computed(() => {
   if (props.layout === "random") return "ランダム";
   if (props.layout === "pack") return "パック";
@@ -89,14 +103,6 @@ const tagStr = computed(() => {
       assertUnreachable(`RewardTag ${props.tag} is not implemented yet.`);
   }
 });
-
-const path = computed(
-  () =>
-    props.iconPath ?? "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",
-);
-
-const imgW = 256;
-const imgH = 210;
 </script>
 
 <style scoped lang="scss">

@@ -15,13 +15,7 @@
   </div>
   <v-dialog v-else max-width="500">
     <template v-slot:activator="{ props: activatorProps }">
-      <ParcelCommon
-        v-bind="activatorProps"
-        class="cursor-pointer"
-        :layout
-        rarity="N"
-        :scale
-      />
+      <ParcelBox v-bind="activatorProps" :layout :scale />
     </template>
 
     <template v-slot:default="{}">
@@ -47,7 +41,7 @@ import { type Recursive, isLastArray } from "@/types";
 
 const props = defineProps({
   pid: {
-    type: Number,
+    type: [Number, String],
     required: true,
   },
   amount: Number,
@@ -73,7 +67,8 @@ const layout = computed(() => {
   }
 });
 
-function getGroup(id: number): Recursive<GachaElementExcel[]> {
+function getGroup(pid: number | string): Recursive<GachaElementExcel[]> {
+  const id = Number(pid);
   const group = assertSome(
     dict[id],
     500,

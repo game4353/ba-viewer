@@ -1,22 +1,16 @@
 <template>
-  <Parcel
-    v-if="onlyCostIcon"
-    :type="good.ConsumeParcelType[0]"
-    :pid="good.ConsumeParcelId[0]"
-    layout="icon"
-  />
   <div
-    v-else
     class="bg flex flex-col items-center pt-2 w-[120px] h-44 border rounded border-white"
   >
     <div class="text-center text-black h-8 mx-1" :class="nameSize">
-      {{ name ?? "" }}
+      {{ nameStr }}
     </div>
     <div class="bg-gray-400 h-[1px] w-[80%] mb-2"></div>
-    <Parcel
-      :type="good.ParcelType[0]"
-      :pid="good.ParcelId[0]"
-      :amount="good.ParcelAmount[0]"
+    <ParcelCommon
+      v-for="(v, i) in gain"
+      :key="i"
+      :parcel="v.parcel"
+      :amount="v.amount"
       :scale="0.33"
       route
     />
@@ -43,7 +37,8 @@ import { PropType } from "vue";
 import type { GoodsExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/GoodsExcelTable.json";
-import { ASSERT_SOLE } from "../warn/error";
+import { ASSERT_SOLE, ASSERT_SOME } from "../warn/error";
+import { type IParcel, getParcel } from "../parcel/parcel";
 
 const props = defineProps({
   name: {
@@ -56,29 +51,35 @@ const props = defineProps({
     type: Object as PropType<Number[]>,
     required: true,
   },
-  onlyCostIcon: Boolean,
 });
 
 const goods = props.goodsId
   .map((i) => (DataList as GoodsExcel[]).find((o) => o.Id === i)!)
   .filter((v) => v != null);
 
+const assertSome = inject(ASSERT_SOME)!;
 const assertSole = inject(ASSERT_SOLE)!;
+const message = `Unexpected shop structure: ${JSON.stringify(goods)}`;
 
-assertSole(goods, 500, `Unexpected shop structure: ${goods}`);
+assertSole(goods, 500, message);
 const good = goods[0];
-assertSole(
-  good.ConsumeParcelAmount,
-  500,
-  `Unexpected shop structure: ${goods}`,
-);
-assertSole(good.ConsumeParcelId, 500, `Unexpected shop structure: ${goods}`);
-assertSole(good.ConsumeParcelType, 500, `Unexpected shop structure: ${goods}`);
-assertSole(good.ParcelAmount, 500, `Unexpected shop structure: ${goods}`);
-assertSole(good.ParcelId, 500, `Unexpected shop structure: ${goods}`);
-assertSole(good.ParcelType, 500, `Unexpected shop structure: ${goods}`);
 
-const nameLen = props.name?.length ?? 0;
+const gain: {
+  parcel: IParcel;
+  amount: number;
+}[] = [];
+good.ParcelAmount.forEach((amount, i) => {
+  const parcel = getParcel(good.ParcelType[i], good.ParcelId[i])!;
+  assertSome(parcel);
+  gain.push({ parcel, amount });
+});
+
+assertSole(good.ConsumeParcelAmount, 500, message);
+assertSole(good.ConsumeParcelId, 500, message);
+assertSole(good.ConsumeParcelType, 500, message);
+
+const nameStr = props.name ?? gain[0].parcel.name;
+const nameLen = nameStr?.length ?? 0;
 const nameSize = nameLen > 16 ? "small" : nameLen > 7 ? "median" : "big";
 </script>
 

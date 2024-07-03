@@ -78,7 +78,17 @@ const group = ref(null);
 const open = ref([]);
 const items: Array<[string, Tab[]]> = [
   ["生徒", [TABS.student, TABS.party, TABS.gacha]],
-  ["アイテム", [TABS.item, TABS.equipment, TABS.craft, TABS.shop]],
+  [
+    "アイテム",
+    [
+      TABS.item,
+      TABS.equipment,
+      TABS.furniture,
+      TABS.currency,
+      TABS.craft,
+      TABS.shop,
+    ],
+  ],
   ["ステージ", [TABS.mission, TABS.bounty, TABS.commissions, TABS.scrimmage]],
   ["イベント", [TABS.event, TABS.guide]],
   [

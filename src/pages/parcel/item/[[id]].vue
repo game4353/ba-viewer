@@ -21,17 +21,9 @@
           <div
             v-for="item in itemByCategory[key]"
             :key="item.Id"
-            :class="
-              String(item.Id) === route.params.id ? 'selecting' : 'others'
-            "
+            :class="item.Id === picked?.id ? 'selecting' : 'others'"
           >
-            <Parcel
-              :hover="Localize.etc(item.LocalizeEtcId, 'name')"
-              :pid="item.Id"
-              type="Item"
-              :scale="0.35"
-              route
-            />
+            <Parcel :pid="item.Id" type="Item" :scale="0.35" route />
           </div>
         </v-tabs-window-item>
       </v-tabs-window>
@@ -41,24 +33,22 @@
       <div v-if="picked != null">
         <v-card class="mx-auto">
           <template v-slot:title>
-            <span class="font-weight-black">{{
-              Localize.etc(picked.LocalizeEtcId, "name")
-            }}</span>
+            <span class="font-weight-black">{{ picked.name }}</span>
           </template>
           <template v-slot:prepend>
-            <Item :pid="picked.Id" :scale="0.4" />
+            <Parcel type="Item" :pid="picked.id" :scale="0.4" />
           </template>
           <v-card-text class="bg-surface-light pt-4">
-            {{ Localize.etc(picked.LocalizeEtcId, "desc") }}
+            {{ picked.desc }}
           </v-card-text>
         </v-card>
 
-        <v-card v-if="picked.UsingResultParcelType !== 'None'">
+        <v-card v-if="picked.obj.UsingResultParcelType !== 'None'">
           <v-card-title>使用</v-card-title>
           <Parcel
-            :pid="picked.UsingResultId"
-            :type="picked.UsingResultParcelType"
-            :amount="picked.UsingResultAmount"
+            :pid="picked.obj.UsingResultId"
+            :type="picked.obj.UsingResultParcelType"
+            :amount="picked.obj.UsingResultAmount"
             :scale="0.3"
           />
         </v-card>
@@ -68,16 +58,10 @@
 </template>
 
 <script setup lang="ts">
-import type { ItemExcel, ItemCategory } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/ItemExcelTable.json";
-import { Localize } from "@/utils/localize";
+import type { ItemCategory } from "~game/types/flatDataExcel";
 import { ObjectKeys, ObjectEntries } from "@/types";
+import { itemArr, itemDict } from "@/components/parcel/item";
 
-const items = DataList as ItemExcel[];
-const dict: Partial<Record<string, ItemExcel>> = Object.fromEntries(
-  items.map((v) => [v.Id, v]),
-);
 const tabs: Record<keyof typeof ItemCategory, string> = {
   SecretStone: "神名文字",
   Coin: "コイン",
@@ -90,22 +74,19 @@ const tabs: Record<keyof typeof ItemCategory, string> = {
   InvisibleToken: "??",
 };
 const itemByCategory = Object.groupBy(
-  items,
+  itemArr,
   ({ ItemCategory }) => ItemCategory,
 );
 
-const route = useRoute<"/item/[[id]]">();
-const picked = ref(dict[route.params.id ?? ""]);
-const tab = ref(picked.value?.ItemCategory ?? "Material");
-watch(
-  () => route.params.id,
-  (nid) => {
-    picked.value = dict[nid ?? ""];
-    if (picked.value != null) {
-      tab.value = picked.value.ItemCategory;
-    }
-  },
-);
+const route = useRoute<"/parcel/item/[[id]]">();
+const picked = computed(() => {
+  const id = route.params.id ?? "";
+  return itemDict[id];
+});
+const tab = ref(picked.value?.obj.ItemCategory ?? "Material");
+watch(picked, (newPicked) => {
+  tab.value = newPicked?.obj.ItemCategory ?? "Material";
+});
 </script>
 
 <style lang="scss" scoped>
