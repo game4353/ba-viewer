@@ -2,18 +2,32 @@ import type { EquipmentExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EquipmentExcelTable.json";
 import { Localize } from "@/utils/localize";
+import type { IParcel } from "./parcel";
 
-export const equipments = DataList as EquipmentExcel[];
-export const equipmentDict: Partial<Record<string, EquipmentExcel>> =
-  Object.fromEntries(equipments.map((v) => [v.Id, v]));
+const equipmentArr = DataList as EquipmentExcel[];
 
-export function equipmentGetName(id: number) {
-  const equipment = equipmentDict[id];
-  if (equipment == null) return null;
-  return Localize.etc(equipment.LocalizeEtcId, "name");
+export class CEquipment implements IParcel {
+  type = "Equipment" as const;
+  obj: EquipmentExcel;
+  constructor(obj: EquipmentExcel) {
+    this.obj = obj;
+  }
+  get desc() {
+    return Localize.etc(this.obj.LocalizeEtcId, "desc");
+  }
+  get iconPath() {
+    return this.obj.Icon;
+  }
+  get id() {
+    return this.obj.Id;
+  }
+  get name() {
+    return Localize.etc(this.obj.LocalizeEtcId, "name");
+  }
+  get rarity() {
+    return this.obj.Rarity;
+  }
 }
-export function equipmentGetDesc(id: number) {
-  const equipment = equipmentDict[id];
-  if (equipment == null) return null;
-  return Localize.etc(equipment.LocalizeEtcId, "desc");
-}
+
+export const equipmentDict: Partial<Record<string, CEquipment>> =
+  Object.fromEntries(equipmentArr.map((v) => [v.Id, new CEquipment(v)]));

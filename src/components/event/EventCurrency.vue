@@ -1,5 +1,5 @@
 <template>
-  <Item :pid layout="icon" />
+  <Parcel type="Item" :pid layout="icon" />
 </template>
 
 <script setup lang="ts">

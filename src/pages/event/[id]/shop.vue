@@ -3,7 +3,7 @@
     <div class="d-flex flex-row">
       <v-tabs v-model="tab" bg-color="primary" direction="vertical">
         <v-tab v-for="(t, i) in shopTypes" :key="i" :value="t">
-          <ShopItem :goodsId="getShop(t)[0].GoodsId" onlyCostIcon class="w-8" />
+          <ShopItemCostIcon :goodsId="getShop(t)[0].GoodsId" class="w-8" />
           アイテム
         </v-tab>
       </v-tabs>
@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import ShopPage from "../../../components/shop/ShopPage.vue";
 import { ref } from "vue";
 import type {
   ShopCategoryType,
@@ -29,7 +28,6 @@ import type {
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentShopExcelTable.json";
 import { ASSERT_SOME_FILTER } from "@/components/warn/error";
-import ShopItem from "@/components/shop/ShopItem.vue";
 
 const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
 

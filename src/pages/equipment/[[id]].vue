@@ -6,16 +6,15 @@
           class="flex flex-row flex-wrap gap-y-2 mt-1 max-h-[600px] overflow-auto"
         >
           <div
-            v-for="item in equipments"
-            :key="item.Id"
+            v-for="item in Object.values(equipmentDict)"
+            :key="item!.id"
             :class="
-              String(item.Id) === route.params.id ? 'selecting' : 'others'
+              String(item!.id) === route.params.id ? 'selecting' : 'others'
             "
           >
-            <Parcel
-              :hover="equipmentGetName(item.Id)"
-              :pid="item.Id"
-              type="Equipment"
+            <ParcelCommon
+              :hover="item!.name"
+              :parcel="item!"
               :scale="0.35"
               route
             />
@@ -29,14 +28,14 @@
         <v-card class="mx-auto">
           <template v-slot:title>
             <span class="font-weight-black">
-              {{ equipmentGetName(picked) }}
+              {{ equipmentDict[picked!]?.name }}
             </span>
           </template>
           <template v-slot:prepend>
-            <Equipment :pid="picked" :scale="0.4" />
+            <Parcel type="Equipment" :pid="picked!" :scale="0.4" />
           </template>
           <v-card-text class="bg-surface-light pt-4">
-            {{ equipmentGetDesc(picked) }}
+            {{ equipmentDict[picked!]?.desc }}
           </v-card-text>
         </v-card>
       </div>
@@ -45,11 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  equipments,
-  equipmentGetName,
-  equipmentGetDesc,
-} from "../../components/parcel/equipment";
+import { equipmentDict } from "../../components/parcel/equipment";
 
 const route = useRoute<"/equipment/[[id]]">();
 const picked = computed(() => route.params.id);

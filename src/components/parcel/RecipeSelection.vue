@@ -1,13 +1,7 @@
 <template>
   <v-dialog max-width="500">
     <template v-slot:activator="{ props: activatorProps }">
-      <ParcelCommon
-        v-bind="activatorProps"
-        class="cursor-pointer"
-        layout="select"
-        rarity="N"
-        :scale
-      />
+      <ParcelBox v-bind="activatorProps" layout="select" :scale />
     </template>
 
     <template v-slot:default="{}">

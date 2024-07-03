@@ -1,53 +1,14 @@
 <template>
-  <Item
-    v-if="type === 'Item'"
-    :pid
+  <ParcelCommon
+    v-if="
+      ['Character', 'Currency', 'Equipment', 'Furniture', 'Item'].includes(type)
+    "
+    :parcel="assert(getParcel(type, pid), `Unable to find ${type} ${pid}`)"
     :amount
     :amountMin
     :amountMax
     :layout
     :route
-    :scale
-    :tag
-  />
-  <Character
-    v-else-if="type === 'Character'"
-    :pid
-    :amount
-    :amountMin
-    :amountMax
-    :layout
-    :scale
-    :tag
-  />
-  <Currency
-    v-else-if="type === 'Currency'"
-    :pid
-    :amount
-    :amountMin
-    :amountMax
-    :layout
-    :scale
-    :tag
-  />
-  <Equipment
-    v-else-if="type === 'Equipment'"
-    :pid
-    :amount
-    :amountMin
-    :amountMax
-    :layout
-    :route
-    :scale
-    :tag
-  />
-  <Furniture
-    v-else-if="type === 'Furniture'"
-    :pid
-    :amount
-    :amountMin
-    :amountMax
-    :layout
     :scale
     :tag
   />
@@ -76,6 +37,8 @@
 import type { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
 import { ASSERT_SOLE } from "../warn/error";
 import { PropType } from "vue";
+import { getParcel } from "./parcel";
+import { assert } from "@/utils/misc";
 
 const assertSole = inject(ASSERT_SOLE)!;
 
@@ -85,7 +48,7 @@ const props = defineProps({
     required: true,
   },
   pid: {
-    type: Number,
+    type: [String, Number],
     required: true,
   },
   amount: Number,
@@ -120,7 +83,6 @@ assertSole(
 watch(
   () => props.type,
   (newVal) => {
-    console.log(newVal);
     assertSole(
       done.filter((v) => v === newVal),
       501,
