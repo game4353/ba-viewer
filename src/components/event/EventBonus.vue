@@ -10,13 +10,17 @@
     </thead>
     <tbody>
       <tr v-for="(r, i) in striker" :key="i">
-        <td class="bg-striker-dark">{{ r[0] }}</td>
+        <td class="bg-striker-dark">
+          <MyCharacter :cid="r[0]" :scale="0.3" />
+        </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
           {{ n == null ? "" : `${n / 100}%` }}
         </td>
       </tr>
       <tr v-for="(r, i) in support" :key="i">
-        <td class="bg-support-dark">{{ r[0] }}</td>
+        <td class="bg-support-dark">
+          <MyCharacter :cid="r[0]" :scale="0.3" />
+        </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
           {{ n == null ? "" : `${n / 100}%` }}
         </td>
