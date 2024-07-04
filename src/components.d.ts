@@ -27,6 +27,7 @@ declare module 'vue' {
     Gear: typeof import('./components/character/Gear.vue')['default']
     GuideMission: typeof import('./components/guide/GuideMission.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    MyCharacter: typeof import('./components/character/MyCharacter.vue')['default']
     NoError: typeof import('./components/warn/NoError.vue')['default']
     Parcel: typeof import('./components/parcel/Parcel.vue')['default']
     ParcelBox: typeof import('./components/parcel/ParcelBox.vue')['default']
