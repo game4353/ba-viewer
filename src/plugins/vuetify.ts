@@ -9,6 +9,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "vuetify/styles";
 import "../styles/tw.scss";
+import "../styles/_variables.scss";
 import "../styles/_font.scss";
 
 // Composables
