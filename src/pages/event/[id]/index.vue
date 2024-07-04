@@ -1,6 +1,6 @@
 <template>
   <router-link :to="`${$route.fullPath}/bonus`">
-    <v-card> bonus </v-card>
+    <v-card> ボーナス生徒 </v-card>
   </router-link>
   <router-link :to="`${$route.fullPath}/shop`">
     <v-card> shop </v-card>
