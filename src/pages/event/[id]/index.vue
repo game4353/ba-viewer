@@ -11,6 +11,9 @@
   <router-link :to="`${$route.fullPath}/reward`">
     <v-card> reward </v-card>
   </router-link>
+  <router-link :to="`${$route.fullPath}/box`">
+    <v-card> 報酬交換 </v-card>
+  </router-link>
 </template>
 
 <script setup lang="ts"></script>
