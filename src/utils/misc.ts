@@ -15,3 +15,10 @@ export function unreachable(
   console.error(message);
   throw new Error(message);
 }
+
+export function* range(from: number, to: number, step: number = 1) {
+  let count = 0;
+  if (step > 0) for (; from < to; from += step, count++) yield from;
+  else if (step < 0) for (; from > to; from += step, count++) yield from;
+  return count;
+}
