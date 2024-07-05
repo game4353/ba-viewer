@@ -32,6 +32,7 @@ declare module 'vue' {
     Parcel: typeof import('./components/parcel/Parcel.vue')['default']
     ParcelBox: typeof import('./components/parcel/ParcelBox.vue')['default']
     ParcelCommon: typeof import('./components/parcel/ParcelCommon.vue')['default']
+    RaidList: typeof import('./components/raid/RaidList.vue')['default']
     Recipe: typeof import('./components/parcel/Recipe.vue')['default']
     RecipeSelection: typeof import('./components/parcel/RecipeSelection.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
