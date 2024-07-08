@@ -42,6 +42,39 @@
             {{ picked.desc }}
           </v-card-text>
         </v-card>
+        <v-card
+          class="border rounded-xl m-4"
+          v-if="picked.group != null"
+          :title="picked.group.groupName"
+        >
+          <v-card-text class="bg-surface-light pt-4">
+            {{ picked.group.groupDesc }}
+          </v-card-text>
+        </v-card>
+        <v-card class="border rounded-xl m-4" title="家具モーション">
+          <div class="bg-surface-light pl-4 flex flex-row flex-wrap">
+            <v-card-text v-if="picked.getInteract('All').length === 0">
+              N/A
+            </v-card-text>
+            <div v-for="tag in ObjectKeys(interactionTypes)" :key="tag">
+              <div
+                v-if="picked.getInteract(tag).length > 0"
+                class="flex flex-col w-min gap-2 items-center py-4"
+              >
+                <div class="flex flex-row">
+                  <div v-for="c in picked.getInteract(tag)" :key="c">
+                    <MyCharacter :cid="c" :scale="0.35" />
+                  </div>
+                </div>
+                <v-tooltip :text="interactionTypes[tag]">
+                  <template v-slot:activator="{ props }">
+                    <v-btn class="w-4/5" v-bind="props">{{ tag }}</v-btn>
+                  </template>
+                </v-tooltip>
+              </div>
+            </div>
+          </div>
+        </v-card>
       </div>
     </div>
   </div>
@@ -50,6 +83,13 @@
 <script setup lang="ts">
 import { ObjectKeys, ObjectEntries, ObjectValues } from "@/types";
 import { CFurniture, furnitureDict } from "~/components/parcel/furniture";
+
+const interactionTypes = {
+  Req: "Requires all REQ characters to interact.",
+  Add: "Requires all REQ characters to interact.",
+  Make: "No restriction.",
+  Only: "Only one character in ONLY will interact.",
+};
 
 const tabs: Record<CFurniture["category"], string> = {
   Furnitures: "家具",
