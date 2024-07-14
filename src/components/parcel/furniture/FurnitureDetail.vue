@@ -40,8 +40,6 @@
               <template v-slot:activator="{ props }">
                 <v-btn class="w-4/5" v-bind="props">
                   {{ tag }}
-                  <!-- ↑ TODO: an issue
-                    TypeError: can't convert Proxy to string -->
                 </v-btn>
               </template>
             </v-tooltip>
