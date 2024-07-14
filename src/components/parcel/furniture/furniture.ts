@@ -14,6 +14,7 @@ import { furnitureInteract } from "./interact";
 import type { CTag, IFilterable } from "../tag";
 import {
   FurnitureTagCategoryGroup,
+  FurnitureTagInteractionGroup,
   FurnitureTagRarityGroup,
   FurnitureTagSubCategoryGroup,
 } from "./tag";
@@ -35,6 +36,7 @@ export class CFurniture implements IFilterable, IParcel {
     this.name = Localize.etc(this.obj.LocalizeEtcId, "name");
     this.search = [toHiragana(this.name), toKatakana(this.name)];
     this.tags = [
+      FurnitureTagInteractionGroup.getTag(this.isInteractive),
       FurnitureTagRarityGroup.getTag(toEnum(Rarity, obj.Rarity)),
       FurnitureTagCategoryGroup.getTag(toEnum(FurnitureCategory, obj.Category)),
       FurnitureTagSubCategoryGroup.getTag(
@@ -72,6 +74,9 @@ export class CFurniture implements IFilterable, IParcel {
   }
   getInteract(type: "Req" | "Add" | "Make" | "Only" | "All") {
     return furnitureInteract(type, this.obj);
+  }
+  get isInteractive() {
+    return this.getInteract("All").length > 0;
   }
 }
 

@@ -5,6 +5,20 @@ import {
 } from "~game/types/flatDataExcel";
 import { CTag, CTagGroup } from "../tag";
 
+class FurnitureTagInteraction extends CTag<boolean> {}
+
+export class FurnitureTagInteractionGroup extends CTagGroup {
+  static picked: number[] = [];
+  static tags = [
+    new FurnitureTagInteraction(true, "モーション有り"),
+    new FurnitureTagInteraction(false, "モーション無し"),
+  ];
+  static dict = Object.fromEntries(this.tags.map((v) => [v.value, v]));
+  static getTag(type: boolean) {
+    return this.dict[String(type)];
+  }
+}
+
 class FurnitureTagRarity extends CTag<Rarity> {}
 
 export class FurnitureTagRarityGroup extends CTagGroup {
@@ -83,4 +97,5 @@ export const furnitureTags = [
   FurnitureTagRarityGroup,
   FurnitureTagCategoryGroup,
   FurnitureTagSubCategoryGroup,
+  FurnitureTagInteractionGroup,
 ];
