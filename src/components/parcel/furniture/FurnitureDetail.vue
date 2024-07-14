@@ -20,11 +20,12 @@
         {{ picked.group.groupDesc }}
       </v-card-text>
     </v-card>
-    <v-card class="border rounded-xl m-4" title="家具モーション">
+    <v-card
+      class="border rounded-xl m-4"
+      v-if="picked.isInteractive"
+      title="家具モーション"
+    >
       <div class="bg-surface-light pl-4 flex flex-row flex-wrap">
-        <v-card-text v-if="picked.getInteract('All').length === 0">
-          N/A
-        </v-card-text>
         <div v-for="tag in ObjectKeys(interactionTypes)" :key="tag">
           <div
             v-if="picked.getInteract(tag).length > 0"
