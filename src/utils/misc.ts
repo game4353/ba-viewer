@@ -22,3 +22,12 @@ export function* range(from: number, to: number, step: number = 1) {
   else if (step < 0) for (; from > to; from += step, count++) yield from;
   return count;
 }
+
+/** TODO: temporary function to convert string/number to enum */
+export function toEnum<T extends Object, U extends keyof T | number>(
+  enumObj: T,
+  key: U,
+) {
+  if (typeof key === "number") return key;
+  return enumObj[key as keyof T];
+}
