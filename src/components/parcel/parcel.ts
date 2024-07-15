@@ -1,7 +1,7 @@
 import type { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
 import { characterDict } from "./character";
 import { equipmentDict } from "./equipment";
-import { furnitureDict } from "./furniture";
+import { furnitureDict } from "./furniture/furniture";
 import { currencyDict } from "./currency";
 import { itemDict } from "./item";
 

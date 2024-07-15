@@ -18,6 +18,13 @@
           {{ amountStr }}
         </span>
         <span v-if="tagStr != null" class="tag">{{ tagStr }}</span>
+        <v-img
+          class="!absolute right-4 top-4"
+          v-if="interactive"
+          :width="64"
+          :height="56"
+          :src="Icon.Interaction"
+        ></v-img>
       </v-img>
     </Scaled>
   </component>
@@ -29,6 +36,7 @@ import { ASSERT_UNREACHABLE } from "../warn/error";
 import { Icon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
 import { IParcel } from "./parcel";
+import { CFurniture } from "./furniture/furniture";
 
 const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
 
@@ -102,6 +110,12 @@ const tagStr = computed(() => {
     default:
       assertUnreachable(`RewardTag ${props.tag} is not implemented yet.`);
   }
+});
+
+const interactive = computed(() => {
+  const p = props.parcel;
+  if (p instanceof CFurniture) return p.isInteractive;
+  return false;
 });
 </script>
 
