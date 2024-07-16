@@ -11,94 +11,83 @@ export type CharaProp = Exclude<
   undefined
 >;
 
+function numberOr<T>(input: any, default_: T) {
+  const n = parseInt(input);
+  if (isNaN(n)) {
+    console.error(`Parse an invalid number: ${input}`);
+    return default_;
+  }
+  return n;
+}
+
 export class CharaData {
-  lv?: number;
-  star?: number;
-  weapon?: number;
-  bond?: number;
-  skill0?: number;
-  skill1?: number;
-  skill2?: number;
-  skill3?: number;
-  gear1?: number;
-  gear1lv?: number;
-  gear2?: number;
-  gear2lv?: number;
-  gear3?: number;
-  gear3lv?: number;
-  gear0?: number;
-  break1?: number;
-  break2?: number;
-  break3?: number;
   constructor(
-    lv?: number,
-    star?: number,
-    weapon?: number,
-    bond?: number,
-    skill0?: number,
-    skill1?: number,
-    skill2?: number,
-    skill3?: number,
-    gear1?: number,
-    gear1lv?: number,
-    gear2?: number,
-    gear2lv?: number,
-    gear3?: number,
-    gear3lv?: number,
-    gear0?: number,
-    break1?: number,
-    break2?: number,
-    break3?: number,
+    public lv: number,
+    public star: number,
+    public weapon: number,
+    public bond: number,
+    public skill0: number,
+    public skill1: number,
+    public skill2: number,
+    public skill3: number,
+    public gear1: number,
+    public gear1lv: number,
+    public gear2: number,
+    public gear2lv: number,
+    public gear3: number,
+    public gear3lv: number,
+    public gear0: number,
+    public break1: number,
+    public break2: number,
+    public break3: number,
   ) {
-    this.lv = CharaData.numOrNone(lv);
-    this.star = CharaData.numOrNone(star);
-    this.weapon = CharaData.numOrNone(weapon);
-    this.bond = CharaData.numOrNone(bond);
-    this.skill0 = CharaData.numOrNone(skill0);
-    this.skill1 = CharaData.numOrNone(skill1);
-    this.skill2 = CharaData.numOrNone(skill2);
-    this.skill3 = CharaData.numOrNone(skill3);
-    this.gear1 = CharaData.numOrNone(gear1);
-    this.gear1lv = CharaData.numOrNone(gear1lv);
-    this.gear2 = CharaData.numOrNone(gear2);
-    this.gear2lv = CharaData.numOrNone(gear2lv);
-    this.gear3 = CharaData.numOrNone(gear3);
-    this.gear3lv = CharaData.numOrNone(gear3lv);
-    this.gear0 = CharaData.numOrNone(gear0);
-    this.break1 = CharaData.numOrNone(break1);
-    this.break2 = CharaData.numOrNone(break2);
-    this.break3 = CharaData.numOrNone(break3);
+    this.lv = lv;
+    this.star = star;
+    this.weapon = weapon;
+    this.bond = bond;
+    this.skill0 = skill0;
+    this.skill1 = skill1;
+    this.skill2 = skill2;
+    this.skill3 = skill3;
+    this.gear1 = gear1;
+    this.gear1lv = gear1lv;
+    this.gear2 = gear2;
+    this.gear2lv = gear2lv;
+    this.gear3 = gear3;
+    this.gear3lv = gear3lv;
+    this.gear0 = gear0;
+    this.break1 = break1;
+    this.break2 = break2;
+    this.break3 = break3;
   }
 
-  private static numOrNone(num: any) {
-    const n = Number(num);
-    if (isNaN(n)) return undefined;
-    return n;
-  }
-
-  toObj() {
-    return Object.fromEntries(Object.entries(this));
+  toObj(): Record<CharaProp, number> {
+    return Object.fromEntries(Object.entries(this)) as any;
   }
   toString() {
     return JSON.stringify(this.toObj());
   }
   static fromObj(obj: Record<string, any>) {
+    const min = CharaData.defaultMin();
     return new CharaData(
-      obj.lv,
-      obj.star,
-      obj.weapon,
-      obj.bond,
-      obj.skill0,
-      obj.skill1,
-      obj.skill2,
-      obj.skill3,
-      obj.gear1,
-      obj.gear1lv,
-      obj.gear2,
-      obj.gear2lv,
-      obj.gear3,
-      obj.gear3lv,
-      obj.gear0,
+      numberOr(obj.lv, min.lv),
+      numberOr(obj.star, min.star),
+      numberOr(obj.weapon, min.weapon),
+      numberOr(obj.bond, min.bond),
+      numberOr(obj.skill0, min.skill0),
+      numberOr(obj.skill1, min.skill1),
+      numberOr(obj.skill2, min.skill2),
+      numberOr(obj.skill3, min.skill3),
+      numberOr(obj.gear1, min.gear1),
+      numberOr(obj.gear1lv, min.gear1lv),
+      numberOr(obj.gear2, min.gear2),
+      numberOr(obj.gear2lv, min.gear2lv),
+      numberOr(obj.gear3, min.gear3),
+      numberOr(obj.gear3lv, min.gear3lv),
+      numberOr(obj.gear0, min.gear0),
+      numberOr(obj.break1, min.break1),
+      numberOr(obj.break2, min.break2),
+      numberOr(obj.break3, min.break3),
     );
   }
   static fromString(json: string) {
