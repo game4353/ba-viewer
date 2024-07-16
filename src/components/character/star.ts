@@ -14,7 +14,11 @@ export function transcendenceBonusRate(
   star: number,
 ) {
   const key = `StatBonusRate${type}` as const;
-  return transcendenceDict[this.id]![key][star];
+  const excel = transcendenceDict[this.id];
+  if (excel == null) return null;
+  const arr = excel[key];
+  const b = arr.reduce((a, v, i) => a + (i < star ? v : 0));
+  return 1 + b / 10000;
 }
 export function transcendenceRecipeIngredient(this: CCharacter, star: number) {
   const rid = transcendenceDict[this.id]!.RecipeId[star];
