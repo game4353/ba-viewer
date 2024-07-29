@@ -8,6 +8,7 @@ import BgSSR from "~assets/Atlas/Common/Card_Item_Bg_SSR.png";
 import Star from "~assets/Atlas/Common/Common_Icon_Formation_Star.png";
 import Star2 from "~assets/Atlas/Common/Common_Icon_Formation_Star_2.png";
 import Interaction from "~assets/Atlas/Common/Cafe_Icon_Interaction.png";
+import Heart from "~assets/Atlas/Common/Common_Icon_Heart.png";
 
 export const Icon = {
   Outdoor,
@@ -20,4 +21,5 @@ export const Icon = {
   Star,
   Star2,
   Interaction,
+  Heart,
 };
