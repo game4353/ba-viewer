@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import { cache } from "@/util";
-import { unreachable } from "@/utils/misc";
+import { interpolation, unreachable } from "@/utils/misc";
 import { playable } from "@/components/character/main";
+import { characterDict } from "@/components/parcel/character";
+import { statDict } from "@/components/character/stat";
 
 export type CharaProp = Exclude<
   {
@@ -127,11 +129,94 @@ export class CharaData {
 }
 
 export const useCharaStore = cache((cid: number) => {
+  const chara = characterDict[cid];
+  const stat = statDict[cid];
+
+  function baseHP(state: Record<CharaProp, number>) {
+    const raw = interpolation(
+      1,
+      100,
+      stat?.MaxHP1 ?? 0,
+      stat?.MaxHP100 ?? 0,
+      state.lv,
+    );
+    const bonus = chara?.starBonus("HP", state.star) ?? 0;
+    return Math.ceil(raw * bonus);
+  }
+  function baseATK(state: Record<CharaProp, number>) {
+    const raw = interpolation(
+      1,
+      100,
+      stat?.AttackPower1 ?? 0,
+      stat?.AttackPower100 ?? 0,
+      state.lv,
+    );
+    const bonus = chara?.starBonus("Attack", state.star) ?? 0;
+    return Math.ceil(raw * bonus);
+  }
+  function baseDEF(state: Record<CharaProp, number>) {
+    const raw = interpolation(
+      1,
+      100,
+      stat?.DefensePower1 ?? 0,
+      stat?.DefensePower100 ?? 0,
+      state.lv,
+    );
+    return Math.ceil(raw);
+  }
+  function baseHEA(state: Record<CharaProp, number>) {
+    const raw = interpolation(
+      1,
+      100,
+      stat?.HealPower1 ?? 0,
+      stat?.HealPower100 ?? 0,
+      state.lv,
+    );
+    const bonus = chara?.starBonus("Heal", state.star) ?? 0;
+    return Math.ceil(raw * bonus);
+  }
+  function baseDFX(state: Record<CharaProp, number>) {
+    const raw = interpolation(
+      1,
+      100,
+      stat?.DefensePenetration1 ?? 0,
+      stat?.DefensePenetration100 ?? 0,
+      state.lv,
+    );
+    return Math.ceil(raw);
+  }
+  function baseDFXX(state: Record<CharaProp, number>) {
+    const raw = interpolation(
+      1,
+      100,
+      stat?.DefensePenetrationResist1 ?? 0,
+      stat?.DefensePenetrationResist100 ?? 0,
+      state.lv,
+    );
+    return Math.ceil(raw);
+  }
+
   const now = defineStore(`charaNow${cid}`, {
     state: () => useStorage(`charaNow${cid}`, CharaData.defaultMin().toObj()),
+    getters: {
+      baseHP,
+      baseATK,
+      baseDEF,
+      baseHEA,
+      baseDFX,
+      baseDFXX,
+    },
   });
   const goal = defineStore(`charaGoal${cid}`, {
     state: () => useStorage(`charaGoal${cid}`, CharaData.defaultMax().toObj()),
+    getters: {
+      baseHP,
+      baseATK,
+      baseDEF,
+      baseHEA,
+      baseDFX,
+      baseDFXX,
+    },
   });
 
   return { now, goal };
