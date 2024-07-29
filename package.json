@@ -27,6 +27,7 @@
     "roboto-fontface": "*",
     "sharp": "^0.33.3",
     "tough-cookie": "^4.1.4",
+    "type-fest": "^4.23.0",
     "vue": "^3.4.21",
     "vuetify": "^3.6.12",
     "wanakana": "^5.3.1",

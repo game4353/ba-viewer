@@ -31,3 +31,18 @@ export function toEnum<T extends Object, U extends keyof T | number>(
   if (typeof key === "number") return key;
   return enumObj[key as keyof T];
 }
+
+export function interpolation(
+  xMin: number,
+  xMax: number,
+  yMin: number,
+  yMax: number,
+  x: number,
+) {
+  const fx = xMax - xMin;
+  const dx = x - xMin;
+  const r = Math.round((dx / fx) * 1e4) / 1e4;
+  const fy = yMax - yMin;
+  const dy = Math.round(fy * r);
+  return dy + yMin;
+}
