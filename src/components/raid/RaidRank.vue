@@ -30,5 +30,5 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import { default as data } from "../../../data/json/score_39716000_26161600.json";
+import { default as data } from "../../../data/json/test.json";
 </script>
