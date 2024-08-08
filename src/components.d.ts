@@ -14,6 +14,7 @@ declare module 'vue' {
     Equip: typeof import('./components/character/Equip.vue')['default']
     ErrorPage: typeof import('./components/warn/ErrorPage.vue')['default']
     EventBonus: typeof import('./components/event/EventBonus.vue')['default']
+    EventCard: typeof import('./components/event/EventCard.vue')['default']
     EventCurrency: typeof import('./components/event/EventCurrency.vue')['default']
     EventList: typeof import('./components/event/EventList.vue')['default']
     EventStage: typeof import('./components/event/EventStage.vue')['default']
