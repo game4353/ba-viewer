@@ -1,11 +1,6 @@
 <template>
   <div class="flex flex-row gap-4 h">
-    <v-tabs
-      center-active
-      v-model="tab"
-      bg-color="secondary"
-      direction="vertical"
-    >
+    <v-tabs v-model="tab" bg-color="secondary" direction="vertical">
       <v-tab
         v-for="key in ObjectKeys(rolls)"
         :key
