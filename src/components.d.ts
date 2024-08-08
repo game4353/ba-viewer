@@ -40,6 +40,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Scaled: typeof import('./components/misc/Scaled.vue')['default']
+    Scroll: typeof import('./components/misc/Scroll.vue')['default']
     ShopItem: typeof import('./components/shop/ShopItem.vue')['default']
     ShopItemCostIcon: typeof import('./components/shop/ShopItemCostIcon.vue')['default']
     ShopPage: typeof import('./components/shop/ShopPage.vue')['default']
