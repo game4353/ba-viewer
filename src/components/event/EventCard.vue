@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-4 h">
+  <div class="flex flex-row gap-2 h">
     <v-tabs v-model="tab" bg-color="secondary" direction="vertical">
       <v-tab
         v-for="key in ObjectKeys(rolls)"
@@ -16,8 +16,8 @@
         :value="key"
         class="flex flex-col gap-y-2 mt-2 h overflow-auto"
       >
-        <div v-for="r in rolls[key]" :key="r.Id">
-          <div class="flex flex-row">
+        <Scroll>
+          <div class="flex flex-row mx-2" v-for="r in rolls[key]" :key="r.Id">
             <div class="w-16">
               <GameImg :path="cards[r.CardGroupId].IconPath" />
             </div>
@@ -35,7 +35,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </Scroll>
       </v-tabs-window-item>
     </v-tabs-window>
   </div>

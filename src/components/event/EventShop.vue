@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-4 h">
+  <div class="flex flex-row gap-2 h">
     <v-tabs v-model="tab" bg-color="secondary" direction="vertical">
       <v-tab v-for="(t, i) in shopTypes" :key="i" :value="t">
         <ShopItemCostIcon :goodsId="getShop(t)[0].GoodsId" class="w-8" />
@@ -14,7 +14,7 @@
         :key="i"
         :value="t"
       >
-        <ShopPage :shops="getShop(t)" />
+        <Scroll class="pl-2"><ShopPage :shops="getShop(t)" /></Scroll>
       </v-tabs-window-item>
     </v-tabs-window>
   </div>
@@ -59,6 +59,5 @@ function getShop(t: keyof typeof ShopCategoryType) {
 <style scoped lang="scss">
 .h {
   height: 800px;
-  overflow: auto;
 }
 </style>
