@@ -1,14 +1,12 @@
 <template>
-  <div class="w-[520px]">
-    <v-row>
-      <v-col v-for="(shop, index) in shops" :key="index" cols="3">
-        <ShopItem
-          :name="localize.etc(shop.LocalizeEtcId)"
-          :goodsId="shop.GoodsId"
-          :amount="shop.PurchaseCountLimit"
-        />
-      </v-col>
-    </v-row>
+  <div class="flex flex-row flex-wrap gap-3 max-w-[540px]">
+    <div v-for="(shop, index) in shops" :key="index">
+      <ShopItem
+        :name="localize.etc(shop.LocalizeEtcId)"
+        :goodsId="shop.GoodsId"
+        :amount="shop.PurchaseCountLimit"
+      />
+    </div>
   </div>
 </template>
 

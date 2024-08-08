@@ -1,51 +1,8 @@
 <template>
-  <v-card>
-    <div class="d-flex flex-row">
-      <v-tabs v-model="tab" bg-color="primary" direction="vertical">
-        <v-tab v-for="(t, i) in shopTypes" :key="i" :value="t">
-          <ShopItemCostIcon :goodsId="getShop(t)[0].GoodsId" class="w-8" />
-          アイテム
-        </v-tab>
-      </v-tabs>
-
-      <v-card-text>
-        <v-tabs-window v-model="tab">
-          <v-tabs-window-item v-for="(t, i) in shopTypes" :key="i" :value="t">
-            <ShopPage :shops="getShop(t)" />
-          </v-tabs-window-item>
-        </v-tabs-window>
-      </v-card-text>
-    </div>
-  </v-card>
+  <EventShop :eid />
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import type {
-  ShopCategoryType,
-  EventContentShopExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentShopExcelTable.json";
-import { ASSERT_SOME_FILTER } from "@/components/warn/error";
-
-const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
-
-const tab = ref(null);
 const route = useRoute<"/event/[id]/shop">();
 const eid = Number(route.params.id);
-const shops = (DataList as EventContentShopExcel[]).filter(
-  (o) => o.EventContentId === eid,
-);
-
-const shopTypes = [...new Set(shops.map((o) => o.CategoryType))];
-function getShop(t: keyof typeof ShopCategoryType) {
-  const res = assertSomeFilter(
-    shops,
-    [["CategoryType", t]],
-    500,
-    `Empty shop category: ${t}`,
-  );
-  return res;
-}
 </script>
