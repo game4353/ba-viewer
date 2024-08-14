@@ -18,6 +18,11 @@
       <v-tabs-window-item value="card">
         <EventCard :eid />
       </v-tabs-window-item>
+      <v-tabs-window-item value="fortune">
+        <div class="relative h-[800px]">
+          <EventFortune :eid />
+        </div>
+      </v-tabs-window-item>
       <v-tabs-window-item value="reward">
         <EventReward :eid />
       </v-tabs-window-item>
@@ -39,6 +44,7 @@ const tabs = {
   bonus: "ボーナス生徒",
   box: "報酬交換",
   card: "カード",
+  fortune: "fortune",
   reward: "reward",
   shop: "shop",
   stage: "stage",
