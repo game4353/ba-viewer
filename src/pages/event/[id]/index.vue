@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2 h">
+  <div class="flex flex-col gap-2">
     <v-tabs v-model="tab" bg-color="primary">
       <v-tab v-for="(v, k) in tabs" :key="k" :value="k">
         {{ v }}
@@ -25,7 +25,9 @@
         <EventShop :eid />
       </v-tabs-window-item>
       <v-tabs-window-item value="stage">
-        <EventStages :eid />
+        <div class="relative h-[800px]">
+          <EventStages :eid />
+        </div>
       </v-tabs-window-item>
     </v-tabs-window>
   </div>
