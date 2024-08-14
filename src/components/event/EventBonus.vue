@@ -1,7 +1,7 @@
 <template>
-  <v-table fixed-header class="h-full">
+  <v-table fixed-header fixed-footer class="h-full">
     <thead>
-      <tr>
+      <tr class="blur-top">
         <td></td>
         <td v-for="(n, i) in tokens" :key="i">
           <EventCurrency :eid :eit="n" class="max-w-16" />
@@ -25,7 +25,12 @@
           {{ n == null ? "" : `${n / 100}%` }}
         </td>
       </tr>
+      <tr class="h-[70px]"></tr>
     </tbody>
+
+    <template v-slot:bottom>
+      <div class="absolute w-full blur-bottom"></div>
+    </template>
   </v-table>
 </template>
 
@@ -54,3 +59,20 @@ const rows = bonus.map((v) => [
 const striker = rows.filter((v) => v[0] < 20000);
 const support = rows.filter((v) => v[0] >= 20000);
 </script>
+
+<style scoped lang="scss">
+@mixin blur {
+  height: 70px;
+  @apply from-white/70;
+}
+.blur-top {
+  @include blur;
+  @apply bg-gradient-to-b;
+  top: 0;
+}
+.blur-bottom {
+  @include blur;
+  @apply bg-gradient-to-t;
+  bottom: 0;
+}
+</style>

@@ -8,7 +8,9 @@
 
     <v-tabs-window v-model="tab">
       <v-tabs-window-item value="bonus">
-        <EventBonus :eid />
+        <div class="relative w-[640px] h-[800px]">
+          <EventBonus :eid />
+        </div>
       </v-tabs-window-item>
       <v-tabs-window-item value="box">
         <EventBox :eid />

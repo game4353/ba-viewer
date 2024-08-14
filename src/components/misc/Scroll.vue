@@ -9,6 +9,8 @@
 </template>
 
 <script setup lang="ts">
+import { isScrollEnd, isScrollTop } from "./scroll";
+
 const isTop = ref(true);
 const isEnd = ref(true);
 const container = ref<HTMLDivElement | undefined>(undefined);
@@ -16,8 +18,8 @@ const container = ref<HTMLDivElement | undefined>(undefined);
 const handleScroll = () => {
   const el = container.value;
   if (el) {
-    isTop.value = el.scrollTop < 1;
-    isEnd.value = el.scrollTop + 1 > el.scrollHeight - el.clientHeight;
+    isTop.value = isScrollTop(el);
+    isEnd.value = isScrollEnd(el);
   }
 };
 
