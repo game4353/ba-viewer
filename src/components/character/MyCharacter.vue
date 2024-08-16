@@ -1,7 +1,13 @@
 <template>
   <router-link :to="`/student/${parcel.id}`">
     <Scaled :scale :width="imgW" :height="imgH">
-      <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
+      <v-img
+        class="absolute"
+        :class="dark ? 'opacity-25' : gray ? 'opacity-75' : ''"
+        :width="imgW"
+        :height="imgH"
+        :src="bg"
+      >
         <GameImg
           :path="parcel.iconPath"
           class="absolute top-0 left-0 p-1 w-auto"
@@ -48,13 +54,19 @@ const props = defineProps({
   star: Number,
 });
 
-const chara = CharaData.fromObj(useCharaStore(Number(props.cid)).now());
-const levelNum = computed(() => props.level ?? chara.lv ?? 0);
-const starNum = computed(() => props.star ?? chara.star ?? 0);
+const chara = computed(() =>
+  CharaData.fromObj(useCharaStore(Number(props.cid)).now()),
+);
+const levelNum = computed(() => props.level ?? chara.value.lv ?? 0);
+const dark = computed(() => (chara.value.lv ?? 0) === 0);
+const starNum = computed(() => props.star ?? chara.value.star ?? 0);
+const gray = computed(() => (chara.value.star ?? 0) < (props.star ?? 0));
 
-const parcel: CCharacter = getParcel("Character", props.cid) as any;
+const parcel = computed(
+  () => getParcel("Character", props.cid) as unknown as CCharacter,
+);
 const bg = computed(() => {
-  switch (parcel.rarity) {
+  switch (parcel.value.rarity) {
     case "N":
       return Icon.BgN;
     case "R":
@@ -64,7 +76,7 @@ const bg = computed(() => {
     case "SSR":
       return Icon.BgSSR;
     default:
-      assertUnreachable(`Unknown rarity ${parcel.rarity}`);
+      assertUnreachable(`Unknown rarity ${parcel.value.rarity}`);
   }
 });
 </script>
