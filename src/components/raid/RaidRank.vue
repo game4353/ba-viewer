@@ -2,16 +2,16 @@
   <input type="file" @change="handleFileUpload" accept=".json" />
   <v-data-iterator :items="filtered" :items-per-page="3">
     <template v-slot:default="{ items }">
-      <div v-for="(item, key) in items" :key>
+      <div class="w-min" v-for="(item, key) in items" :key>
         <div class="bg-slate-800 mt-3 mb-1">
           # {{ item.raw.no + 1 }} Score {{ item.raw.score }}
         </div>
         <div
-          class="flex flex-row"
+          class="flex flex-row w-full"
           v-for="(team, i) in item.raw.parties"
           :key="i"
         >
-          <div v-for="(c, j) in team" :key="j">
+          <div class="flex-1" v-for="(c, j) in team" :key="j">
             <MyCharacter
               v-if="c != null"
               :cid="c.cid"
