@@ -56,7 +56,7 @@
               "
               :value="page"
               density="compact"
-              width="4rem"
+              width="5rem"
               variant="outlined"
               hide-details
               single-line
