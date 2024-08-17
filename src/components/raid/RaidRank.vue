@@ -2,28 +2,26 @@
   <input type="file" @change="handleFileUpload" accept=".json" />
   <v-data-iterator :items="filtered" :items-per-page="3">
     <template v-slot:default="{ items }">
-      <template v-for="(item, x) in items" :key="x">
-        <div>
-          <div class="bg-slate-800 mt-3 mb-1">
-            # {{ item.raw.no + 1 }} Score {{ item.raw.score }}
-          </div>
-          <div
-            class="flex flex-row"
-            v-for="(team, i) in item.raw.parties"
-            :key="i"
-          >
-            <div v-for="(c, j) in team" :key="j">
-              <MyCharacter
-                v-if="c != null"
-                :cid="c.cid"
-                :scale="0.3"
-                :level="c.lv"
-                :star="c.star"
-              />
-            </div>
+      <div v-for="(item, key) in items" :key>
+        <div class="bg-slate-800 mt-3 mb-1">
+          # {{ item.raw.no + 1 }} Score {{ item.raw.score }}
+        </div>
+        <div
+          class="flex flex-row"
+          v-for="(team, i) in item.raw.parties"
+          :key="i"
+        >
+          <div v-for="(c, j) in team" :key="j">
+            <MyCharacter
+              v-if="c != null"
+              :cid="c.cid"
+              :scale="0.3"
+              :level="c.lv"
+              :star="c.star"
+            />
           </div>
         </div>
-      </template>
+      </div>
     </template>
 
     <template v-slot:header="{ page, prevPage, nextPage, pageCount, setPage }">
