@@ -42,26 +42,7 @@ export class CharaData {
     public break1: number,
     public break2: number,
     public break3: number,
-  ) {
-    this.lv = lv;
-    this.star = star;
-    this.weapon = weapon;
-    this.bond = bond;
-    this.skill0 = skill0;
-    this.skill1 = skill1;
-    this.skill2 = skill2;
-    this.skill3 = skill3;
-    this.gear1 = gear1;
-    this.gear1lv = gear1lv;
-    this.gear2 = gear2;
-    this.gear2lv = gear2lv;
-    this.gear3 = gear3;
-    this.gear3lv = gear3lv;
-    this.gear0 = gear0;
-    this.break1 = break1;
-    this.break2 = break2;
-    this.break3 = break3;
-  }
+  ) {}
 
   toObj(): Record<CharaProp, number> {
     return Object.fromEntries(Object.entries(this)) as any;
@@ -197,7 +178,10 @@ export const useCharaStore = cache((cid: number) => {
   }
 
   const now = defineStore(`charaNow${cid}`, {
-    state: () => useStorage(`charaNow${cid}`, CharaData.defaultMin().toObj()),
+    state: () =>
+      useStorage(`charaNow${cid}`, CharaData.defaultMin().toObj(), undefined, {
+        mergeDefaults: true,
+      }),
     getters: {
       baseHP,
       baseATK,
@@ -208,7 +192,10 @@ export const useCharaStore = cache((cid: number) => {
     },
   });
   const goal = defineStore(`charaGoal${cid}`, {
-    state: () => useStorage(`charaGoal${cid}`, CharaData.defaultMax().toObj()),
+    state: () =>
+      useStorage(`charaGoal${cid}`, CharaData.defaultMax().toObj(), undefined, {
+        mergeDefaults: true,
+      }),
     getters: {
       baseHP,
       baseATK,
