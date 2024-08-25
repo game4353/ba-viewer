@@ -72,6 +72,9 @@ export class CCharacter implements IParcel {
         v.obj.ProductionStep == "Release",
     );
   }
+  get starMin() {
+    return this.obj.DefaultStarGrade;
+  }
 
   starBonus = transcendenceBonusRate;
   starRecipe = transcendenceRecipeIngredient;
