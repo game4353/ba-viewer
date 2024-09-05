@@ -1,40 +1,26 @@
-// @ts-ignore
-import { default as challenge } from "~game/db/LevelSkillDataDBSchema/Challenge.json";
-// @ts-ignore
-import { default as common } from "~game/db/LevelSkillDataDBSchema/Common.json";
-// @ts-ignore
-import { default as enemy } from "~game/db/LevelSkillDataDBSchema/Enemy.json";
-// @ts-ignore
-import { default as ground } from "~game/db/LevelSkillDataDBSchema/Ground.json";
-// @ts-ignore
-import { default as manual } from "~game/db/LevelSkillDataDBSchema/Manual.json";
-// @ts-ignore
-import { default as npc } from "~game/db/LevelSkillDataDBSchema/NPC.json";
-// @ts-ignore
-import { default as student } from "~game/db/LevelSkillDataDBSchema/Student.json";
-// @ts-ignore
-import { default as testCharacter } from "~game/db/LevelSkillDataDBSchema/TestCharacter.json";
-// @ts-ignore
-import { default as timeAttack } from "~game/db/LevelSkillDataDBSchema/TimeAttack.json";
-// @ts-ignore
-import { default as tss } from "~game/db/LevelSkillDataDBSchema/TSS.json";
+const cache: Partial<Record<string, any[]>> = {};
 
-function findKey(key: string, arr: any[]) {
-  return arr.find((v) => v.Key === key)?.Bytes;
+async function findKey(key: string, filename: string) {
+  if (!(filename in cache)) {
+    const url = `/game/db/LevelSkillDataDBSchema/${filename}.json`;
+    const res = await fetch(url);
+    cache[filename] = await res.json();
+  }
+  return cache[filename]!.find((v) => v.Key === key)?.Bytes;
 }
 
-export function getLevelSkillData(key: string) {
+export async function getLevelSkillData(key: string) {
   return (
-    findKey(key, student as any[]) ??
-    findKey(key, enemy as any[]) ??
-    findKey(key, timeAttack as any[]) ??
-    findKey(key, challenge as any[]) ??
-    findKey(key, common as any[]) ??
-    findKey(key, manual as any[]) ??
-    findKey(key, npc as any[]) ??
-    findKey(key, ground as any[]) ??
-    findKey(key, tss as any[]) ??
-    findKey(key, testCharacter as any[]) ??
+    (await findKey(key, "Student")) ??
+    (await findKey(key, "Enemy")) ??
+    (await findKey(key, "TimeAttack")) ??
+    (await findKey(key, "Challenge")) ??
+    (await findKey(key, "Common")) ??
+    (await findKey(key, "Manual")) ??
+    (await findKey(key, "NPC")) ??
+    (await findKey(key, "Ground")) ??
+    (await findKey(key, "TSS")) ??
+    (await findKey(key, "TestCharacter")) ??
     console.error(`Unable to find LevelSkillData "${key}".`)
   );
 }
