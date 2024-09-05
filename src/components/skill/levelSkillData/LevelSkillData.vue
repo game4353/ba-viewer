@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import { computedAsync } from "@vueuse/core";
 import { tidyGeneralEntity } from "../entity/timeline";
 import { getLevelSkillData } from "./levelSkillData";
 
@@ -28,7 +29,10 @@ const props = defineProps({
   },
 });
 
-const data = computed(() => getLevelSkillData(props.group));
+const data = computedAsync(
+  async () => await getLevelSkillData(props.group),
+  {},
+);
 const mainEntity = computed(() => {
   const e = data.value?.MainEntityData;
   if (e == null) return null;
