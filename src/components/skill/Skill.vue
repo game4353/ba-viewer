@@ -22,7 +22,7 @@
 
       <v-card-text class="bg-surface-light pt-4">
         <div class="flex flex-col gap-2">
-          <RichText :text="skill.desc" />
+          <RichText :text="desc" />
           <!-- <template v-if="layout === 'full'">
             <v-divider></v-divider>
             <LevelSkillData :group="sid" />
@@ -51,7 +51,9 @@ const props = defineProps({
 });
 
 const skill = computed(() => new CSkill(props.sid));
+const desc = ref("");
 watchEffect(() => {
   if (props.lv != null) skill.value.level = props.lv;
+  desc.value = skill.value.desc;
 });
 </script>
