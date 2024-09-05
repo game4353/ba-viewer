@@ -23,10 +23,10 @@
       <v-card-text class="bg-surface-light pt-4">
         <div class="flex flex-col gap-2">
           <RichText :text="desc" />
-          <!-- <template v-if="layout === 'full'">
+          <template v-if="layout === 'full'">
             <v-divider></v-divider>
             <LevelSkillData :group="sid" />
-          </template> -->
+          </template>
         </div>
       </v-card-text>
     </v-card>
