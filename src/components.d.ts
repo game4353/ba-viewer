@@ -10,7 +10,11 @@ declare module 'vue' {
     ActionButton: typeof import('./components/ActionButton.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BG: typeof import('./components/GameImg/BG.vue')['default']
+    Character: typeof import('./components/parcel/character/Character.vue')['default']
+    CharacterDetail: typeof import('./components/parcel/character/CharacterDetail.vue')['default']
+    CharacterSkill: typeof import('./components/parcel/character/CharacterSkill.vue')['default']
     Collect: typeof import('./components/character/Collect.vue')['default']
+    EnemyIcon: typeof import('./components/parcel/character/EnemyIcon.vue')['default']
     Equip: typeof import('./components/character/Equip.vue')['default']
     ErrorPage: typeof import('./components/warn/ErrorPage.vue')['default']
     EventBonus: typeof import('./components/event/EventBonus.vue')['default']
@@ -53,6 +57,7 @@ declare module 'vue' {
     SpineCharacter: typeof import('./components/character/SpineCharacter.vue')['default']
     TabBasic: typeof import('./components/character/TabBasic.vue')['default']
     TabSkill: typeof import('./components/character/TabSkill.vue')['default']
+    TabStat: typeof import('./components/character/TabStat.vue')['default']
     WIP: typeof import('./components/warn/WIP.vue')['default']
   }
 }

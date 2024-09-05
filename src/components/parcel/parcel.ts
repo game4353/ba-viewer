@@ -1,5 +1,5 @@
 import type { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
-import { characterDict } from "./character";
+import { characterDict, type CCharacter } from "./character";
 import { equipmentDict } from "./equipment";
 import { furnitureDict } from "./furniture/furniture";
 import { currencyDict } from "./currency";
@@ -16,7 +16,15 @@ export interface IParcel {
 
 // iconPath "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward"
 
-export function getParcel(type: keyof typeof ParcelType, id: number | string) {
+export function getParcel(type: "Character", id: number | string): CCharacter;
+export function getParcel(
+  type: keyof typeof ParcelType,
+  id: number | string,
+): IParcel | undefined | null;
+export function getParcel(
+  type: keyof typeof ParcelType,
+  id: number | string,
+): IParcel | undefined | null {
   switch (type) {
     case "Character":
       return characterDict[id];

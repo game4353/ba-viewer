@@ -1,16 +1,15 @@
-import type {
-  CharacterExcel,
-  CharacterStatExcel,
-  CostumeExcel,
+import {
+  ProductionStep,
+  type CharacterExcel,
+  type CharacterStatExcel,
+  type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
 // @ts-ignore
 import { DataList as d1 } from "~game/excel/CharacterExcelTable.json";
 // @ts-ignore
 import { DataList as d2 } from "~game/excel/CostumeExcelTable.json";
-// @ts-ignore
-import { DataList as d4 } from "~game/excel/CharacterStatExcelTable.json";
 import type { IParcel } from "./parcel";
-import { unreachable } from "@/utils/misc";
+import { toEnum, unreachable } from "@/utils/misc";
 import { Localize } from "@/utils/localize";
 import { ObjectValues } from "@/types";
 import {
@@ -21,21 +20,25 @@ import {
   transcendenceBonusRate,
   transcendenceRecipeIngredient,
 } from "../character/star";
+import type { CTag, IFilterable } from "./tag";
+import { toHiragana, toKatakana } from "wanakana";
+import { CharacterTagProductionGroup } from "./character/tag";
+import { statDict } from "../character/stat";
 
 const characterArr = d1 as CharacterExcel[];
 const costumeArr = d2 as CostumeExcel[];
-const statArr = d4 as CharacterStatExcel[];
 
 export const costumeDict: Partial<Record<string, CostumeExcel>> =
   Object.fromEntries(costumeArr.map((v) => [v.CostumeGroupId, v]));
-const statDict: Partial<Record<string, CharacterStatExcel>> =
-  Object.fromEntries(statArr.map((v) => [v.CharacterId, v]));
 
-export class CCharacter implements IParcel {
+export class CCharacter implements IFilterable, IParcel {
   type = "Character" as const;
   obj: CharacterExcel;
   costume: CostumeExcel;
   stat: CharacterStatExcel;
+  tags: CTag<Object>[];
+  search: string[];
+  hideCount: number = 0;
   constructor(obj: CharacterExcel) {
     this.obj = obj;
     this.costume =
@@ -48,6 +51,13 @@ export class CCharacter implements IParcel {
       unreachable(
         `Unable to find the CharacterId ${obj.Id} in CharacterStatExcelTable.`,
       );
+    this.search = [toHiragana(this.name), toKatakana(this.name)];
+    this.tags = [
+      CharacterTagProductionGroup.getTag(
+        toEnum(ProductionStep, this.obj.ProductionStep),
+      ),
+    ];
+    this.tags.forEach((v) => v.add(this));
   }
   get desc() {
     return Localize.etc(this.obj.LocalizeEtcId, "desc");
