@@ -18,7 +18,6 @@ import { default as testCharacter } from "~game/db/LevelSkillDataDBSchema/TestCh
 import { default as timeAttack } from "~game/db/LevelSkillDataDBSchema/TimeAttack.json";
 // @ts-ignore
 import { default as tss } from "~game/db/LevelSkillDataDBSchema/TSS.json";
-import { getLogicEffect } from "../logicEffect";
 
 function findKey(key: string, arr: any[]) {
   return arr.find((v) => v.Key === key)?.Bytes;
