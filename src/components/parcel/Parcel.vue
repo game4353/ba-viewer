@@ -1,8 +1,14 @@
 <template>
+  <Character
+    v-if="type === 'Character'"
+    :cid="pid"
+    :layout
+    :route
+    :scale
+    :tag
+  />
   <ParcelCommon
-    v-if="
-      ['Character', 'Currency', 'Equipment', 'Furniture', 'Item'].includes(type)
-    "
+    v-else-if="['Currency', 'Equipment', 'Furniture', 'Item'].includes(type)"
     :parcel="assert(getParcel(type, pid), `Unable to find ${type} ${pid}`)"
     :amount
     :amountMin
@@ -39,6 +45,7 @@ import { ASSERT_SOLE } from "../warn/error";
 import { PropType } from "vue";
 import { getParcel } from "./parcel";
 import { assert } from "@/utils/misc";
+import Character from "./character/Character.vue";
 
 const assertSole = inject(ASSERT_SOLE)!;
 

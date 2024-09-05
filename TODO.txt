@@ -1,0 +1,18 @@
+## Urgent
+
+- store not update after IMPORT
+
+- character store computed stat to another store
+base + lv + star + equip + bond
+
+## Data
+
+- add clear cache
+- add GachaGroup cache
+add all data cache also to handle item usage
+
+
+## Idea
+
+- use vitest
+

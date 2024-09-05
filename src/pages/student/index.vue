@@ -1,11 +1,8 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col v-for="chara in charas" :key="chara.Id" cols="2">
-        <div
-          class="cursor-pointer w-full relative min-w-24"
-          @click.stop="$router.push(`/student/${chara.Id}`)"
-        >
+  <div class="flex flex-row flex-wrap gap-5">
+    <div class="min-w-40" v-for="chara in charas" :key="chara.Id">
+      <router-link :to="`/student/${chara.Id}`">
+        <div class="cursor-pointer w-full relative min-w-24">
           <Collect class="absolute" :cid="chara.Id" />
           <div
             class="flex flex-col items-center justify-center absolute bottom-0 w-full min-w-[100px] h-7 bg-blue-900/85 text-center"
@@ -15,9 +12,9 @@
             </p>
           </div>
         </div>
-      </v-col>
-    </v-row>
-  </v-container>
+      </router-link>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

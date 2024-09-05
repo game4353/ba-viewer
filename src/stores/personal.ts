@@ -22,49 +22,27 @@ type Items = Partial<Record<number, number>>;
 */
 
 export function importJustin(json: string) {
+  function dict2char(d: any) {
+    return CharaData.fromObj({
+      lv: d.level,
+      star: d.star + d.ue,
+      weapon: d.ue_level,
+      bond: d.bond,
+      skill0: d.ex,
+      skill1: d.basid,
+      skill2: d.passive,
+      skill3: d.sub,
+      gear1: d.gear1,
+      gear2: d.gear2,
+      gear3: d.gear3,
+    });
+  }
+
   const obj = JSON.parse(json);
   if (obj.exportVersion === 2) {
     obj.characters.forEach((o: any) => {
-      const c = o.current;
-      setCharaDataV0(
-        o.id,
-        "now",
-        new CharaData(
-          c.level,
-          c.star + c.ue,
-          c.ue_level,
-          c.bond,
-          c.ex,
-          c.basic,
-          c.passive,
-          c.sub,
-          c.gear1,
-          undefined,
-          c.gear2,
-          undefined,
-          c.gear3,
-        ),
-      );
-      const t = o.target;
-      setCharaDataV0(
-        o.id,
-        "goal",
-        new CharaData(
-          t.level,
-          c.star + c.ue,
-          c.ue_level,
-          t.bond,
-          t.ex,
-          t.basic,
-          t.passive,
-          t.sub,
-          t.gear1,
-          undefined,
-          t.gear2,
-          undefined,
-          t.gear3,
-        ),
-      );
+      setCharaDataV0(o.id, "now", dict2char(o.current));
+      setCharaDataV0(o.id, "goal", dict2char(o.target));
     });
   } else {
     unreachable();

@@ -17,9 +17,13 @@
           <v-tabs-window-item value="basic">
             <TabBasic :cid />
           </v-tabs-window-item>
-          <v-tabs-window-item value="stats"> </v-tabs-window-item>
+          <v-tabs-window-item value="stats">
+            <!-- <TabStat :cid /> -->
+          </v-tabs-window-item>
+          <v-tabs-window-item value="skill">
+            <TabSkill :cid />
+          </v-tabs-window-item>
           <v-tabs-window-item value="info"> </v-tabs-window-item>
-          <v-tabs-window-item value="placeholder"> </v-tabs-window-item>
         </v-tabs-window>
       </div>
     </div>
@@ -40,7 +44,7 @@ const path = m[id];
 const paths = [`/game/SpineCharacters/${path}`];
 const cid = Number(id);
 
-const items = ["basic", "stats", "info", "placeholder"];
+const items = ["basic", "stats", "skill", "info"];
 const tab = ref(items[0]);
 
 const data = (DataList as CostumeExcel[]).find((o) => o.CostumeGroupId === cid);

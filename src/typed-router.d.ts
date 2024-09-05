@@ -41,6 +41,7 @@ declare module 'vue-router/auto-routes' {
     '/message/': RouteRecordInfo<'/message/', '/message', Record<never, never>, Record<never, never>>,
     '/mission/': RouteRecordInfo<'/mission/', '/mission', Record<never, never>, Record<never, never>>,
     '/multifloor/': RouteRecordInfo<'/multifloor/', '/multifloor', Record<never, never>, Record<never, never>>,
+    '/parcel/character/[[id]]': RouteRecordInfo<'/parcel/character/[[id]]', '/parcel/character/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
     '/parcel/currency/[[id]]': RouteRecordInfo<'/parcel/currency/[[id]]', '/parcel/currency/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
     '/parcel/equipment/[[id]]': RouteRecordInfo<'/parcel/equipment/[[id]]', '/parcel/equipment/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
     '/parcel/furniture/[[id]]': RouteRecordInfo<'/parcel/furniture/[[id]]', '/parcel/furniture/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
