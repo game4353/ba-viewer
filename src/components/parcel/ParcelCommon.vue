@@ -4,7 +4,15 @@
     :to="`/parcel/${parcel.type.toLowerCase()}/${parcel.id}`"
   >
     <GameImg v-if="layout == 'icon'" :path="parcel.iconPath" />
-    <Scaled v-else :scale :width="imgW" :height="imgH">
+    <Scaled
+      v-else
+      :scale
+      :scaledW
+      :scaledH
+      :scaleType
+      :width="imgW"
+      :height="imgH"
+    >
       <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
         <GameImg
           :path="parcel.iconPath"
@@ -56,6 +64,9 @@ const props = defineProps({
   },
   route: Boolean,
   scale: Number,
+  scaledW: Number,
+  scaledH: Number,
+  scaleType: String as PropType<"min" | "max">,
   tag: {
     type: String as PropType<keyof typeof RewardTag>,
   },
