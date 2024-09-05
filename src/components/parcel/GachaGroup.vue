@@ -15,7 +15,7 @@
   </div>
   <v-dialog v-else max-width="500">
     <template v-slot:activator="{ props: activatorProps }">
-      <ParcelBox v-bind="activatorProps" :layout :scale />
+      <ParcelBox v-bind="activatorProps" :layout :scale :amount />
     </template>
 
     <template v-slot:default="{}">

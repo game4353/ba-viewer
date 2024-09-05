@@ -1,19 +1,54 @@
 <template>
-  <router-link :to="`${$route.fullPath}/bonus`">
-    <v-card> ボーナス生徒 </v-card>
-  </router-link>
-  <router-link :to="`${$route.fullPath}/shop`">
-    <v-card> shop </v-card>
-  </router-link>
-  <router-link :to="`${$route.fullPath}/stage`">
-    <v-card> stage </v-card>
-  </router-link>
-  <router-link :to="`${$route.fullPath}/reward`">
-    <v-card> reward </v-card>
-  </router-link>
-  <router-link :to="`${$route.fullPath}/box`">
-    <v-card> 報酬交換 </v-card>
-  </router-link>
+  <div class="flex flex-col gap-2">
+    <v-tabs v-model="tab" bg-color="primary">
+      <v-tab v-for="(v, k) in tabs" :key="k" :value="k">
+        {{ v }}
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item value="bonus">
+        <div class="relative w-[640px] h-[800px]">
+          <EventBonus :eid />
+        </div>
+      </v-tabs-window-item>
+      <v-tabs-window-item value="box">
+        <EventBox :eid />
+      </v-tabs-window-item>
+      <v-tabs-window-item value="card">
+        <EventCard :eid />
+      </v-tabs-window-item>
+      <v-tabs-window-item value="fortune">
+        <div class="relative h-[800px]">
+          <EventFortune :eid />
+        </div>
+      </v-tabs-window-item>
+      <v-tabs-window-item value="reward">
+        <EventReward :eid />
+      </v-tabs-window-item>
+      <v-tabs-window-item value="shop">
+        <EventShop :eid />
+      </v-tabs-window-item>
+      <v-tabs-window-item value="stage">
+        <div class="relative h-[800px]">
+          <EventStages :eid />
+        </div>
+      </v-tabs-window-item>
+    </v-tabs-window>
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const tab = ref("bonus");
+const tabs = {
+  bonus: "ボーナス生徒",
+  box: "報酬交換",
+  card: "カード",
+  fortune: "fortune",
+  reward: "reward",
+  shop: "shop",
+  stage: "stage",
+};
+const route = useRoute<"/event/[id]/">();
+const eid = Number(route.params.id);
+</script>
