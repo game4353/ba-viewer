@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { useStorage } from "@vueuse/core";
+import { clamp, useStorage } from "@vueuse/core";
 import { cache } from "@/util";
 import { interpolation, unreachable } from "@/utils/misc";
 import { playable } from "@/components/character/main";
@@ -13,13 +13,14 @@ export type CharaProp = Exclude<
   undefined
 >;
 
-function numberOr<T>(input: any, default_: T) {
+function parseBetween(input: any, min: number, max: number) {
+  if (input == null) return min;
   const n = parseInt(input);
   if (isNaN(n)) {
     console.error(`Parse an invalid number: ${input}`);
-    return default_;
+    return min;
   }
-  return n;
+  return clamp(n, min, max);
 }
 
 export class CharaData {
@@ -52,25 +53,26 @@ export class CharaData {
   }
   static fromObj(obj: Record<string, any>) {
     const min = CharaData.defaultMin();
+    const max = CharaData.defaultMax();
     return new CharaData(
-      numberOr(obj.lv, min.lv),
-      numberOr(obj.star, min.star),
-      numberOr(obj.weapon, min.weapon),
-      numberOr(obj.bond, min.bond),
-      numberOr(obj.skill0, min.skill0),
-      numberOr(obj.skill1, min.skill1),
-      numberOr(obj.skill2, min.skill2),
-      numberOr(obj.skill3, min.skill3),
-      numberOr(obj.gear1, min.gear1),
-      numberOr(obj.gear1lv, min.gear1lv),
-      numberOr(obj.gear2, min.gear2),
-      numberOr(obj.gear2lv, min.gear2lv),
-      numberOr(obj.gear3, min.gear3),
-      numberOr(obj.gear3lv, min.gear3lv),
-      numberOr(obj.gear0, min.gear0),
-      numberOr(obj.break1, min.break1),
-      numberOr(obj.break2, min.break2),
-      numberOr(obj.break3, min.break3),
+      parseBetween(obj.lv, min.lv, max.lv),
+      parseBetween(obj.star, min.star, max.star),
+      parseBetween(obj.weapon, min.weapon, max.weapon),
+      parseBetween(obj.bond, min.bond, max.bond),
+      parseBetween(obj.skill0, min.skill0, max.skill0),
+      parseBetween(obj.skill1, min.skill1, max.skill1),
+      parseBetween(obj.skill2, min.skill2, max.skill2),
+      parseBetween(obj.skill3, min.skill3, max.skill3),
+      parseBetween(obj.gear1, min.gear1, max.gear1),
+      parseBetween(obj.gear1lv, min.gear1lv, max.gear1lv),
+      parseBetween(obj.gear2, min.gear2, max.gear2),
+      parseBetween(obj.gear2lv, min.gear2lv, max.gear2lv),
+      parseBetween(obj.gear3, min.gear3, max.gear3),
+      parseBetween(obj.gear3lv, min.gear3lv, max.gear3lv),
+      parseBetween(obj.gear0, min.gear0, max.gear0),
+      parseBetween(obj.break1, min.break1, max.break1),
+      parseBetween(obj.break2, min.break2, max.break2),
+      parseBetween(obj.break3, min.break3, max.break3),
     );
   }
   static fromString(json: string) {
