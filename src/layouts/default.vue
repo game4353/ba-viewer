@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar scroll-behavior="hide" scroll-threshold="500" prominent>
+    <v-app-bar>
       <template v-slot:prepend>
         <v-app-bar-nav-icon
           variant="text"
@@ -22,14 +22,19 @@
         <v-btn icon @click.stop="$router.go(-1)">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-
-        <v-btn icon>
+        <v-btn icon @click.stop="$router.go(1)">
+          <v-icon>mdi-arrow-right</v-icon>
+        </v-btn>
+        <v-btn icon @click.stop="$router.go(0)">
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+        <v-btn icon @click.stop="$router.push('/data')">
           <v-icon>mdi-database</v-icon>
         </v-btn>
 
-        <v-btn icon>
+        <!-- <v-btn icon>
           <v-icon>mdi-cog</v-icon>
-        </v-btn>
+        </v-btn> -->
       </template>
     </v-app-bar>
 
@@ -56,8 +61,10 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
-      <router-view />
+    <v-main scrollable>
+      <NoError>
+        <router-view />
+      </NoError>
     </v-main>
   </v-app>
 </template>
@@ -70,15 +77,25 @@ const drawer = ref(false);
 const group = ref(null);
 const open = ref([]);
 const items: Array<[string, Tab[]]> = [
-  ["生徒", [TABS.student, TABS.party, TABS.gacha]],
-  ["アイテム", [TABS.item, TABS.equipment, TABS.craft, TABS.shop]],
-  ["ステージ", [TABS.mission, TABS.bounty, TABS.commissions, TABS.scrimmage]],
-  ["イベント", [TABS.event, TABS.guide]],
+  ["生徒", [TABS.student /*, TABS.party, TABS.gacha*/]],
   [
-    "競技",
-    [TABS.totalAssault, TABS.jointFiringDrill, TABS.grandAssault, TABS.set],
+    "アイテム",
+    [
+      TABS.item,
+      TABS.equipment,
+      TABS.furniture,
+      TABS.currency,
+      // TABS.craft,
+      // TABS.shop,
+    ],
   ],
-  ["モモトーク", [TABS.message, TABS.storyBond, TABS.gift]],
+  // ["ステージ", [TABS.mission, TABS.bounty, TABS.commissions, TABS.scrimmage]],
+  ["イベント", [TABS.event, TABS.guide]],
+  // [
+  //   "競技",
+  //   [TABS.totalAssault, TABS.jointFiringDrill, TABS.grandAssault, TABS.set],
+  // ],
+  // ["モモトーク", [TABS.message, TABS.storyBond, TABS.gift]],
   // ["ストーリー", []],
 ];
 watch(group, () => {
@@ -90,5 +107,17 @@ watch(group, () => {
 .title {
   @apply cursor-pointer;
   flex: 0 1 auto !important;
+}
+</style>
+
+<style lang="scss">
+.bg-striker-dark {
+  @apply bg-rose-950;
+}
+.bg-support-dark {
+  @apply bg-sky-950;
+}
+html {
+  overflow-y: auto;
 }
 </style>

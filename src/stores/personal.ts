@@ -1,51 +1,68 @@
-// Utilities
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import {
+  CharaData,
+  getAllCharaDataV0,
+  setAllCharaDataV0,
+  setCharaDataV0,
+} from "./character";
+import { unreachable } from "@/utils/misc";
 
-type Chara = {
-  // 0~90
-  lv: number;
-  // 1~8
-  star: number;
-  // 0~50
-  weapon: number;
-  // 0~100
-  bond: number;
-  // 1~5
-  skill0: number;
-  // 1~10
-  skill1: number;
-  // 0~10
-  skill2: number;
-  // 0~10
-  skill3: number;
-  // 0~9
-  gear1: number;
-  // 0~65
-  gear1lv: number;
-  // 0~9
-  gear2: number;
-  // 0~65
-  gear2lv: number;
-  // 0~9
-  gear3: number;
-  // 0~65
-  gear3lv: number;
-  // 0~2
-  gear0: number;
-};
-
-type Party = {
-  name: string;
+/*
+class PartyData {
+  name?: string;
   // use chara ID, minus means friend
-  striker: number[];
-  support: number[];
-};
-
+  striker?: number[];
+  support?: number[];
+  constructor(name?: string, striker?: number[], support?: number[]) {
+    this.name = name;
+    this.striker = striker;
+    this.support = support;
+  }
+}
 type Items = Partial<Record<number, number>>;
+*/
 
-export const usePersonalStore = defineStore("personal", () => {
-  const charas = ref({} as Partial<Record<number, Chara>>);
+export function importJustin(json: string) {
+  function dict2char(d: any) {
+    return CharaData.fromObj({
+      lv: d.level,
+      star: d.star + d.ue,
+      weapon: d.ue_level,
+      bond: d.bond,
+      skill0: d.ex,
+      skill1: d.basid,
+      skill2: d.passive,
+      skill3: d.sub,
+      gear1: d.gear1,
+      gear2: d.gear2,
+      gear3: d.gear3,
+    });
+  }
 
-  return {};
-});
+  const obj = JSON.parse(json);
+  if (obj.exportVersion === 2) {
+    obj.characters.forEach((o: any) => {
+      setCharaDataV0(o.id, "now", dict2char(o.current));
+      setCharaDataV0(o.id, "goal", dict2char(o.target));
+    });
+  } else {
+    unreachable();
+  }
+}
+
+export function importVx(json: string) {
+  const obj = JSON.parse(json);
+  if (obj.version === 0) return importV0(obj);
+  unreachable();
+}
+
+function importV0(obj: any) {
+  setAllCharaDataV0(obj.characters);
+}
+
+export function exportV0() {
+  const data = {
+    version: 0,
+    characters: getAllCharaDataV0(),
+  };
+  return JSON.stringify(data);
+}
