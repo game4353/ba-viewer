@@ -1,5 +1,4 @@
 <template>
-  <WIP />
   <div class="flex flex-column w-min">
     <div class="w-full h-16">
       <p :class="descSize">{{ desc }}</p>

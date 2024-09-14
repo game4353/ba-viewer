@@ -1,4 +1,5 @@
 <template>
+  <WIP />
   <div class="flex flex-col gap-8 w-min">
     <div class="flex flex-row">
       <GameImg :path="guide.LobbyBannerImage" class="h-40" />
