@@ -1,6 +1,7 @@
 import {
   ProductionStep,
   type CharacterExcel,
+  type CharacterGearExcel,
   type CharacterStatExcel,
   type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
@@ -8,6 +9,8 @@ import {
 import { DataList as d1 } from "~game/excel/CharacterExcelTable.json";
 // @ts-ignore
 import { DataList as d2 } from "~game/excel/CostumeExcelTable.json";
+// @ts-ignore
+import { DataList as d3 } from "~game/excel/CharacterGearExcelTable.json";
 import type { IParcel } from "./parcel";
 import { toEnum, unreachable } from "@/utils/misc";
 import { Localize } from "@/utils/localize";
@@ -27,13 +30,17 @@ import { statDict } from "../character/stat";
 
 const characterArr = d1 as CharacterExcel[];
 const costumeArr = d2 as CostumeExcel[];
+const gearArr = d3 as CharacterGearExcel[];
 
 export const costumeDict: Partial<Record<string, CostumeExcel>> =
   Object.fromEntries(costumeArr.map((v) => [v.CostumeGroupId, v]));
 
+const gearDict = Object.groupBy(gearArr, (o) => o.CharacterId);
+
 export class CCharacter implements IFilterable, IParcel {
   type = "Character" as const;
   obj: CharacterExcel;
+  gear?: CharacterGearExcel[];
   costume: CostumeExcel;
   stat: CharacterStatExcel;
   tags: CTag<Object>[];
@@ -46,6 +53,7 @@ export class CCharacter implements IFilterable, IParcel {
       unreachable(
         `Unable to find the CostumeGroupId from ${JSON.stringify(obj)}`,
       );
+    this.gear = gearDict[this.id];
     this.stat =
       statDict[obj.Id] ??
       unreachable(

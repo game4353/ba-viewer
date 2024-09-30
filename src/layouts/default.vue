@@ -111,13 +111,37 @@ watch(group, () => {
 </style>
 
 <style lang="scss">
+@use "@/styles/variables" as var;
+
+html {
+  overflow-y: auto;
+}
+
 .bg-striker-dark {
   @apply bg-rose-950;
 }
 .bg-support-dark {
   @apply bg-sky-950;
 }
-html {
-  overflow-y: auto;
+
+// atk / def color
+.Explosion,
+.LightArmor {
+  background-color: var.$color-explosion;
 }
+.Pierce,
+.HeavyArmor {
+  background-color: var.$color-pierce;
+}
+.Mystic,
+.Unarmed {
+  background-color: var.$color-mystic;
+}
+.Sonic,
+.ElasticArmor {
+  background-color: var.$color-sonic;
+}
+// .Normal{}
+// .None, .Structure {}
+// .Siege{}
 </style>

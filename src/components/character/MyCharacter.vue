@@ -142,23 +142,4 @@ const bg = computed(() => {
     @apply h-full w-1/2;
   }
 }
-.Explosion,
-.LightArmor {
-  background-color: var.$color-explosion;
-}
-.Pierce,
-.HeavyArmor {
-  background-color: var.$color-pierce;
-}
-.Mystic,
-.Unarmed {
-  background-color: var.$color-mystic;
-}
-.Sonic,
-.ElasticArmor {
-  background-color: var.$color-sonic;
-}
-// .Normal{}
-// .None, .Structure {}
-// .Siege{}
 </style>
