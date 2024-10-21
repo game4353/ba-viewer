@@ -29,7 +29,7 @@ export function importJustin(json: string) {
       weapon: d.ue_level,
       bond: d.bond,
       skill0: d.ex,
-      skill1: d.basid,
+      skill1: d.basic,
       skill2: d.passive,
       skill3: d.sub,
       gear1: d.gear1,
