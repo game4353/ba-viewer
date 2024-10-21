@@ -1,11 +1,7 @@
-import {
-  CharaData,
-  getAllCharaDataV0,
-  setAllCharaDataV0,
-  setCharaDataV0,
-} from "./character";
+import { CharaData, getAllCharaDataV0, setCharaDataV0 } from "./character";
 import { unreachable } from "@/utils/misc";
 import { parseLoginSync } from "./schema/loginSync";
+import { parseV0 } from "./schema/ver0";
 
 /*
 class PartyData {
@@ -100,13 +96,17 @@ export function importJustin(json: string) {
 }
 
 export function importVx(json: string) {
-  const obj = JSON.parse(json);
-  if (obj.version === 0) return importV0(obj);
-  unreachable();
+  return tryImportV0(json) || unreachable();
 }
 
-function importV0(obj: any) {
-  setAllCharaDataV0(obj.characters);
+function tryImportV0(json: string) {
+  const obj = parseV0(json);
+  if (obj == null) return false;
+  Object.entries(obj.characters).forEach(([id, v]) => {
+    if (v.now != null) setCharaDataV0(id, "now", CharaData.fromObj(v.now));
+    if (v.goal != null) setCharaDataV0(id, "goal", CharaData.fromObj(v.goal));
+  });
+  return true;
 }
 
 export function exportV0() {

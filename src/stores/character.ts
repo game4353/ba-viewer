@@ -245,7 +245,7 @@ export function getAllCharaDataV0() {
 export function setCharaDataV0(
   id: number | string,
   type: "now" | "goal",
-  data: CharaData | string,
+  data: CharaData,
 ) {
   const key =
     type === "now"
@@ -254,11 +254,4 @@ export function setCharaDataV0(
         ? `charaGoal${id}`
         : unreachable();
   return localStorage.setItem(key, data.toString());
-}
-
-export function setAllCharaDataV0(data: CharaDataV0) {
-  Object.entries(data).forEach(([id, v]) => {
-    if (v.now != null) setCharaDataV0(id, "now", JSON.stringify(v.now));
-    if (v.goal != null) setCharaDataV0(id, "goal", JSON.stringify(v.goal));
-  });
 }
