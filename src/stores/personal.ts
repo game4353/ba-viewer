@@ -5,6 +5,7 @@ import {
   setCharaDataV0,
 } from "./character";
 import { unreachable } from "@/utils/misc";
+import { parseLoginSync } from "./schema/loginSync";
 
 /*
 class PartyData {
@@ -20,6 +21,55 @@ class PartyData {
 }
 type Items = Partial<Record<number, number>>;
 */
+
+export function importLoginSync(json: string) {
+  const obj = parseLoginSync(json);
+
+  const weapons = new Map(
+    obj.CharacterListResponse.WeaponDBs.map((d) => [
+      d.BoundCharacterServerId,
+      d,
+    ]),
+  );
+  const gears = new Map(
+    obj.CharacterGearListResponse.GearDBs.map((d) => [
+      d.BoundCharacterServerId,
+      d,
+    ]),
+  );
+  const equips = new Map(
+    obj.EquipmentItemListResponse.EquipmentDBs.map((d) => [
+      d.ServerId ?? -1,
+      d,
+    ]),
+  );
+
+  obj.CharacterListResponse.CharacterDBs.forEach((d) => {
+    const g = gears.get(d.ServerId);
+    const w = weapons.get(d.ServerId);
+    const c = CharaData.fromObj({
+      lv: d.Level,
+      star: d.StarGrade + (w?.StarGrade ?? 0),
+      weapon: w?.Level ?? 0,
+      bond: d.FavorRank,
+      skill0: d.ExSkillLevel,
+      skill1: d.PublicSkillLevel,
+      skill2: d.PassiveSkillLevel,
+      skill3: d.ExtraPassiveSkillLevel,
+      gear1: equips.get(d.EquipmentServerIds[0])?.Tier ?? 0,
+      gear1lv: equips.get(d.EquipmentServerIds[0])?.Level ?? 0,
+      gear2: equips.get(d.EquipmentServerIds[1])?.Tier ?? 0,
+      gear2lv: equips.get(d.EquipmentServerIds[1])?.Level ?? 0,
+      gear3: equips.get(d.EquipmentServerIds[2])?.Tier ?? 0,
+      gear3lv: equips.get(d.EquipmentServerIds[2])?.Level ?? 0,
+      gear0: g?.Tier ?? 0,
+      break1: d.PotentialStats["1"],
+      break2: d.PotentialStats["2"],
+      break3: d.PotentialStats["3"],
+    });
+    setCharaDataV0(d.UniqueId, "now", c);
+  });
+}
 
 export function importJustin(json: string) {
   function dict2char(d: any) {

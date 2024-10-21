@@ -23,9 +23,9 @@
         <div>JSON</div>
       </template>
     </v-radio>
-    <v-radio value="wip">
+    <v-radio value="loginSync" :disabled="task === 'export'">
       <template v-slot:label>
-        <div>WIP</div>
+        <div>loginSync</div>
       </template>
     </v-radio>
     <v-radio value="justin163" :disabled="task === 'export'">
@@ -73,7 +73,12 @@
 
 <script setup lang="ts">
 import ActionButton from "@/components/ActionButton.vue";
-import { exportV0, importJustin, importVx } from "@/stores/personal";
+import {
+  exportV0,
+  importJustin,
+  importLoginSync,
+  importVx,
+} from "@/stores/personal";
 import { unreachable } from "@/utils/misc";
 
 const task = ref("export");
@@ -92,6 +97,8 @@ function importData() {
     importVx(content.value);
   } else if (format.value === "justin163") {
     importJustin(content.value);
+  } else if (format.value === "loginSync") {
+    importLoginSync(content.value);
   } else {
     unreachable();
   }
