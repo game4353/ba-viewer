@@ -1,7 +1,5 @@
 ## Urgent
 
-- store not update after IMPORT
-
 - character store computed stat to another store
 base + lv + star + equip + bond
 

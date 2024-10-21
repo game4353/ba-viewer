@@ -1,10 +1,7 @@
-import {
-  CharaData,
-  getAllCharaDataV0,
-  setAllCharaDataV0,
-  setCharaDataV0,
-} from "./character";
+import { CharaData, getAllCharaDataV0, setCharaDataV0 } from "./character";
 import { unreachable } from "@/utils/misc";
+import { parseLoginSync } from "./schema/loginSync";
+import { parseV0 } from "./schema/ver0";
 
 /*
 class PartyData {
@@ -20,6 +17,55 @@ class PartyData {
 }
 type Items = Partial<Record<number, number>>;
 */
+
+export function importLoginSync(json: string) {
+  const obj = parseLoginSync(json);
+
+  const weapons = new Map(
+    obj.CharacterListResponse.WeaponDBs.map((d) => [
+      d.BoundCharacterServerId,
+      d,
+    ]),
+  );
+  const gears = new Map(
+    obj.CharacterGearListResponse.GearDBs.map((d) => [
+      d.BoundCharacterServerId,
+      d,
+    ]),
+  );
+  const equips = new Map(
+    obj.EquipmentItemListResponse.EquipmentDBs.map((d) => [
+      d.ServerId ?? -1,
+      d,
+    ]),
+  );
+
+  obj.CharacterListResponse.CharacterDBs.forEach((d) => {
+    const g = gears.get(d.ServerId);
+    const w = weapons.get(d.ServerId);
+    const c = CharaData.fromObj({
+      lv: d.Level,
+      star: d.StarGrade + (w?.StarGrade ?? 0),
+      weapon: w?.Level ?? 0,
+      bond: d.FavorRank,
+      skill0: d.ExSkillLevel,
+      skill1: d.PublicSkillLevel,
+      skill2: d.PassiveSkillLevel,
+      skill3: d.ExtraPassiveSkillLevel,
+      gear1: equips.get(d.EquipmentServerIds[0])?.Tier ?? 0,
+      gear1lv: equips.get(d.EquipmentServerIds[0])?.Level ?? 0,
+      gear2: equips.get(d.EquipmentServerIds[1])?.Tier ?? 0,
+      gear2lv: equips.get(d.EquipmentServerIds[1])?.Level ?? 0,
+      gear3: equips.get(d.EquipmentServerIds[2])?.Tier ?? 0,
+      gear3lv: equips.get(d.EquipmentServerIds[2])?.Level ?? 0,
+      gear0: g?.Tier ?? 0,
+      break1: d.PotentialStats["1"],
+      break2: d.PotentialStats["2"],
+      break3: d.PotentialStats["3"],
+    });
+    setCharaDataV0(d.UniqueId, "now", c);
+  });
+}
 
 export function importJustin(json: string) {
   function dict2char(d: any) {
@@ -50,13 +96,17 @@ export function importJustin(json: string) {
 }
 
 export function importVx(json: string) {
-  const obj = JSON.parse(json);
-  if (obj.version === 0) return importV0(obj);
-  unreachable();
+  return tryImportV0(json) || unreachable();
 }
 
-function importV0(obj: any) {
-  setAllCharaDataV0(obj.characters);
+function tryImportV0(json: string) {
+  const obj = parseV0(json);
+  if (obj == null) return false;
+  Object.entries(obj.characters).forEach(([id, v]) => {
+    if (v.now != null) setCharaDataV0(id, "now", CharaData.fromObj(v.now));
+    if (v.goal != null) setCharaDataV0(id, "goal", CharaData.fromObj(v.goal));
+  });
+  return true;
 }
 
 export function exportV0() {
