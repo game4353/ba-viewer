@@ -18,9 +18,9 @@
     <template v-slot:label>
       <div>Format:</div>
     </template>
-    <v-radio value="json">
+    <v-radio value="BA Viewer">
       <template v-slot:label>
-        <div>JSON</div>
+        <div>BA Viewer</div>
       </template>
     </v-radio>
     <v-radio value="loginSync" :disabled="task === 'export'">
@@ -82,18 +82,18 @@ import {
 import { unreachable } from "@/utils/misc";
 
 const task = ref("export");
-const format = ref("json");
+const format = ref("BA Viewer");
 const content = ref("");
 
 function exportData() {
-  if (format.value === "json") {
+  if (format.value === "BA Viewer") {
     content.value = exportV0();
   } else {
     unreachable();
   }
 }
 function importData() {
-  if (format.value === "json") {
+  if (format.value === "BA Viewer") {
     importVx(content.value);
   } else if (format.value === "justin163") {
     importJustin(content.value);
