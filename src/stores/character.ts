@@ -184,6 +184,11 @@ export const useCharaStore = cache((cid: number) => {
       useStorage(`charaNow${cid}`, CharaData.defaultMin().toObj(), undefined, {
         mergeDefaults: true,
       }),
+    actions: {
+      update(data: CharaData) {
+        this.$state = data.toObj();
+      },
+    },
     getters: {
       baseHP,
       baseATK,
@@ -198,6 +203,11 @@ export const useCharaStore = cache((cid: number) => {
       useStorage(`charaGoal${cid}`, CharaData.defaultMax().toObj(), undefined, {
         mergeDefaults: true,
       }),
+    actions: {
+      update(data: CharaData) {
+        this.$state = data.toObj();
+      },
+    },
     getters: {
       baseHP,
       baseATK,
@@ -247,11 +257,6 @@ export function setCharaDataV0(
   type: "now" | "goal",
   data: CharaData,
 ) {
-  const key =
-    type === "now"
-      ? `charaNow${id}`
-      : type === "goal"
-        ? `charaGoal${id}`
-        : unreachable();
-  return localStorage.setItem(key, data.toString());
+  const store = useCharaStore(Number(id))[type]();
+  store.update(data);
 }
