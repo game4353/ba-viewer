@@ -3,7 +3,7 @@
     <template v-slot:label>
       <div>Task:</div>
     </template>
-    <v-radio value="export">
+    <v-radio value="export" @change="format = 'BA Viewer'">
       <template v-slot:label>
         <div>Export</div>
       </template>
