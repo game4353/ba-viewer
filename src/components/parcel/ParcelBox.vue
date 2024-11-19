@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import { Rarity } from "@/assets/game/types/flatDataExcel";
 import type { IParcel } from "./parcel";
 
 defineProps({
@@ -14,7 +15,7 @@ defineProps({
 });
 
 const parcel = {
-  rarity: "N",
+  rarity: Rarity.N,
   iconPath: "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",
   id: -1,
   desc: "",

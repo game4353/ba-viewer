@@ -19,7 +19,10 @@
 
 <script setup lang="ts">
 import { Localize } from "@/utils/localize";
-import type { GuideMissionExcel } from "~game/types/flatDataExcel";
+import {
+  MissionCompleteConditionType,
+  type GuideMissionExcel,
+} from "~game/types/flatDataExcel";
 
 function format(str: string, ...args: any[]) {
   args.forEach((v, i) => (str = str.replace(`{${i}}`, String(v))));
@@ -37,18 +40,18 @@ let desc = Localize.localize(m.Description);
 const p = m.CompleteConditionParameter[0];
 const c = m.CompleteConditionCount;
 switch (m.CompleteConditionType) {
-  case "Reset_ClearSpecificChaserDungeonCount":
-  case "Reset_ClearSchoolDungeonTimeLimitFromSecond":
-  case "Reset_ClearSpecificSchoolDungeonCount":
-  case "Reset_ClearSpecificFindGiftAndBloodDungeonCount":
-  case "Reset_ClearFindGiftAndBloodDungeonTimeLimitFromSecond":
-  case "Reset_ClearChaserDungeonTimeLimitFromSecond":
+  case MissionCompleteConditionType.Reset_ClearSpecificChaserDungeonCount:
+  case MissionCompleteConditionType.Reset_ClearSchoolDungeonTimeLimitFromSecond:
+  case MissionCompleteConditionType.Reset_ClearSpecificSchoolDungeonCount:
+  case MissionCompleteConditionType.Reset_ClearSpecificFindGiftAndBloodDungeonCount:
+  case MissionCompleteConditionType.Reset_ClearFindGiftAndBloodDungeonTimeLimitFromSecond:
+  case MissionCompleteConditionType.Reset_ClearChaserDungeonTimeLimitFromSecond:
     desc = format(desc, p, c); // TODO: id to stage name
     break;
-  case "Reset_GetSpecificItemCount":
+  case MissionCompleteConditionType.Reset_GetSpecificItemCount:
     desc = format(desc, p, c); // TODO: id to item
     break;
-  case "Reset_ClearCampaignStageTimeLimitFromSecond":
+  case MissionCompleteConditionType.Reset_ClearCampaignStageTimeLimitFromSecond:
     // TODO: id(?) to stage number
     desc = format(
       desc,
@@ -58,7 +61,7 @@ switch (m.CompleteConditionType) {
       c,
     );
     break;
-  case "Reset_ClearSpecificCampaignStageCount":
+  case MissionCompleteConditionType.Reset_ClearSpecificCampaignStageCount:
     // TODO: id(?) to stage number
     desc = format(
       desc,
@@ -67,45 +70,45 @@ switch (m.CompleteConditionType) {
       { "1": "Normal", "2": "Hard" }[String(p).slice(3, 4)],
     );
     break;
-  case "Reset_ClearSpecificScenario":
+  case MissionCompleteConditionType.Reset_ClearSpecificScenario:
     // TODO: id(?) to scenario number
     desc = format(desc, String(p).slice(1, 2), String(p).slice(2, 4));
     break;
-  case "Reset_CharacterAtSpecificLevelCount":
+  case MissionCompleteConditionType.Reset_CharacterAtSpecificLevelCount:
     desc = format(desc, p, c);
     break;
-  case "Reset_GetEquipmentWithTagCount":
-  case "Reset_KillEnemyWithTagCount":
-  case "Reset_CraftCount":
-  case "Reset_ClearBattleWithTagCount":
-  case "Reset_CompleteScheduleWithTagCount":
-  case "Reset_CompleteScheduleGroupCount":
-  case "Reset_ShopBuyActionPointCount":
-  case "Reset_UseActionPoint":
-  case "Reset_AccountLevelUp":
-  case "Achieve_TotalLoginCount":
-  case "Reset_ClearCampaignStageDifficultyNormal":
-  case "Reset_ClearCampaignStageDifficultyHard":
-  case "Reset_GetItemWithTagCount":
-  case "Achieve_EquipmentLevelUpCount":
-  case "Achieve_TotalGetClearStarCount":
-  case "Achieve_ClearFindGiftAndBloodDungeonCount":
-  case "Reset_UseGem":
-  case "Reset_GetFurnitureWithTagCount":
-  case "Achieve_CharacterLevelUpCount":
-  case "Reset_KillSpecificEnemyCount":
-  case "Achieve_JoinArenaCount":
-  case "Achieve_UseGold":
-  case "Reset_GetCharacterCount":
-  case "Reset_GetCharacterWithTagCount":
-  case "Reset_AcademyLocationAtSpecificRank":
-  case "Reset_GetCafeRank":
-  case "Reset_CompleteScheduleCount":
-  case "Reset_CharacterTranscendenceCount":
-  case "Achieve_ClearSchoolDungeonCount":
-  case "Achieve_EquipmentTierUpCount":
-  case "Achieve_GetComfortPoint":
-  case "Achieve_CharacterSkillLevelUpCount":
+  case MissionCompleteConditionType.Reset_GetEquipmentWithTagCount:
+  case MissionCompleteConditionType.Reset_KillEnemyWithTagCount:
+  case MissionCompleteConditionType.Reset_CraftCount:
+  case MissionCompleteConditionType.Reset_ClearBattleWithTagCount:
+  case MissionCompleteConditionType.Reset_CompleteScheduleWithTagCount:
+  case MissionCompleteConditionType.Reset_CompleteScheduleGroupCount:
+  case MissionCompleteConditionType.Reset_ShopBuyActionPointCount:
+  case MissionCompleteConditionType.Reset_UseActionPoint:
+  case MissionCompleteConditionType.Reset_AccountLevelUp:
+  case MissionCompleteConditionType.Achieve_TotalLoginCount:
+  case MissionCompleteConditionType.Reset_ClearCampaignStageDifficultyNormal:
+  case MissionCompleteConditionType.Reset_ClearCampaignStageDifficultyHard:
+  case MissionCompleteConditionType.Reset_GetItemWithTagCount:
+  case MissionCompleteConditionType.Achieve_EquipmentLevelUpCount:
+  case MissionCompleteConditionType.Achieve_TotalGetClearStarCount:
+  case MissionCompleteConditionType.Achieve_ClearFindGiftAndBloodDungeonCount:
+  case MissionCompleteConditionType.Reset_UseGem:
+  case MissionCompleteConditionType.Reset_GetFurnitureWithTagCount:
+  case MissionCompleteConditionType.Achieve_CharacterLevelUpCount:
+  case MissionCompleteConditionType.Reset_KillSpecificEnemyCount:
+  case MissionCompleteConditionType.Achieve_JoinArenaCount:
+  case MissionCompleteConditionType.Achieve_UseGold:
+  case MissionCompleteConditionType.Reset_GetCharacterCount:
+  case MissionCompleteConditionType.Reset_GetCharacterWithTagCount:
+  case MissionCompleteConditionType.Reset_AcademyLocationAtSpecificRank:
+  case MissionCompleteConditionType.Reset_GetCafeRank:
+  case MissionCompleteConditionType.Reset_CompleteScheduleCount:
+  case MissionCompleteConditionType.Reset_CharacterTranscendenceCount:
+  case MissionCompleteConditionType.Achieve_ClearSchoolDungeonCount:
+  case MissionCompleteConditionType.Achieve_EquipmentTierUpCount:
+  case MissionCompleteConditionType.Achieve_GetComfortPoint:
+  case MissionCompleteConditionType.Achieve_CharacterSkillLevelUpCount:
     desc = format(desc, c);
     break;
   default:

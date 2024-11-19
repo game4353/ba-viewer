@@ -32,7 +32,7 @@
             </span>
           </template>
           <template v-slot:prepend>
-            <Parcel :type="parcelType" :pid="picked!" :scale="0.4" />
+            <Parcel :type="ParcelType.Currency" :pid="picked!" :scale="0.4" />
           </template>
           <v-card-text class="bg-surface-light pt-4">
             {{ currencyDict[picked!]?.desc }}
@@ -45,8 +45,8 @@
 
 <script setup lang="ts">
 import { currencyDict } from "~/components/parcel/currency";
+import { ParcelType } from "~game/types/flatDataExcel";
 
-const parcelType = "Currency";
 const route = useRoute<"/parcel/currency/[[id]]">();
 const picked = computed(() => route.params.id);
 </script>

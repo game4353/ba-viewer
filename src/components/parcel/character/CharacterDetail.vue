@@ -5,7 +5,7 @@
         <span class="font-weight-black">{{ picked.name }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel type="Character" :pid :scaledW="80" />
+        <Parcel :type="ParcelType.Character" :pid :scaledW="80" />
       </template>
       <div class="flex flex-col gap-2">
         <div class="flex flex-row gap-4 mx-2">
@@ -84,6 +84,7 @@
 <script setup lang="ts">
 import { getSkillListFull } from "@/components/skill/skillList";
 import { characterDict } from "../character";
+import { ParcelType } from "~game/types/flatDataExcel";
 
 const props = defineProps({
   pid: {

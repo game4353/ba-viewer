@@ -63,7 +63,12 @@
               v-for="item in items"
               :key="item.raw.id"
             >
-              <Parcel :pid="item.raw.id" type="Character" :scaledW="80" route />
+              <Parcel
+                :pid="item.raw.id"
+                :type="ParcelType.Character"
+                :scaledW="80"
+                route
+              />
             </div>
           </div>
         </template>
@@ -86,6 +91,7 @@ import { ObjectValues } from "@/types";
 import { toHiragana } from "wanakana";
 import { characterTags } from "@/components/parcel/character/tag";
 import { characterDict } from "@/components/parcel/character";
+import { ParcelType } from "~game/types/flatDataExcel";
 
 const currPage = ref(1);
 const search = ref("");

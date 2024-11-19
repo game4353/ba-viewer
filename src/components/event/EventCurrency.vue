@@ -1,11 +1,12 @@
 <template>
-  <Parcel type="Item" :pid layout="icon" />
+  <Parcel :type="ParcelType.Item" :pid layout="icon" />
 </template>
 
 <script setup lang="ts">
-import type {
-  EventContentCurrencyItemExcel,
-  EventContentItemType,
+import {
+  ParcelType,
+  type EventContentCurrencyItemExcel,
+  type EventContentItemType,
 } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentCurrencyItemExcelTable.json";
@@ -17,7 +18,7 @@ const props = defineProps({
     required: true,
   },
   eit: {
-    type: String as PropType<keyof typeof EventContentItemType>,
+    type: Number as PropType<EventContentItemType>,
     required: true,
   },
 });

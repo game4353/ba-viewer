@@ -45,7 +45,7 @@ const shops = (DataList as EventContentShopExcel[]).filter(
 );
 
 const shopTypes = [...new Set(shops.map((o) => o.CategoryType))];
-function getShop(t: keyof typeof ShopCategoryType) {
+function getShop(t: ShopCategoryType) {
   const res = assertSomeFilter(
     shops,
     [["CategoryType", t]],

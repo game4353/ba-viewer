@@ -1,6 +1,6 @@
 <template>
   <ParcelCommon
-    v-if="chara.obj.TacticEntityType === 'Student'"
+    v-if="chara.obj.TacticEntityType === TacticEntityType.Student"
     :parcel="chara"
     :layout
     :route
@@ -10,13 +10,13 @@
   <EnemyIcon
     v-else-if="
       [
-        'Minion',
-        'Elite',
-        'Champion',
-        'Boss',
-        'Summoned',
-        'Vehicle',
-        'None',
+        TacticEntityType.Minion,
+        TacticEntityType.Elite,
+        TacticEntityType.Champion,
+        TacticEntityType.Boss,
+        TacticEntityType.Summoned,
+        TacticEntityType.Vehicle,
+        TacticEntityType.None,
       ].includes(chara.obj.TacticEntityType)
     "
     :cid
@@ -32,7 +32,11 @@
 <script setup lang="ts">
 import { ASSERT_SOME } from "@/components/warn/error";
 import { getParcel } from "../parcel";
-import { RewardTag } from "@/assets/game/types/flatDataExcel";
+import {
+  ParcelType,
+  RewardTag,
+  TacticEntityType,
+} from "@/assets/game/types/flatDataExcel";
 
 const props = defineProps({
   cid: {
@@ -46,10 +50,12 @@ const props = defineProps({
   route: Boolean,
   scale: Number,
   tag: {
-    type: String as PropType<keyof typeof RewardTag>,
+    type: Number as PropType<RewardTag>,
   },
 });
 const assertSome = inject(ASSERT_SOME)!;
 
-const chara = computed(() => assertSome(getParcel("Character", props.cid)));
+const chara = computed(() =>
+  assertSome(getParcel(ParcelType.Character, props.cid)),
+);
 </script>

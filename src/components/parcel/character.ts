@@ -87,7 +87,7 @@ export class CCharacter implements IFilterable, IParcel {
       (v) =>
         v.obj.IsPlayableCharacter &&
         !v.obj.IsNPC &&
-        v.obj.ProductionStep == "Release",
+        v.obj.ProductionStep === ProductionStep.Release,
     );
   }
   get starMin() {

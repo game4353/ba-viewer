@@ -24,7 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import type { EventContentStageExcel } from "~game/types/flatDataExcel";
+import {
+  StageDifficulty,
+  type EventContentStageExcel,
+} from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentStageExcelTable.json";
 
@@ -46,15 +49,19 @@ const tabContents: Partial<
   Record<(typeof tabs)[number], EventContentStageExcel[]>
 > = {};
 stages.forEach((v) => {
-  const key = (
-    {
-      None: null,
-      Normal: "story",
-      Hard: "quest",
-      VeryHard: "challenge",
-      VeryHard_Ex: "challenge",
-    } as const
-  )[v.StageDifficulty];
+  const key =
+    v.StageDifficulty === StageDifficulty.None
+      ? null
+      : v.StageDifficulty === StageDifficulty.Normal
+        ? "story"
+        : v.StageDifficulty === StageDifficulty.Hard
+          ? "quest"
+          : v.StageDifficulty === StageDifficulty.VeryHard
+            ? "challenge"
+            : v.StageDifficulty === StageDifficulty.VeryHard_Ex
+              ? "challenge"
+              : undefined;
+
   if (key == null) return;
   tabContents[key] ??= [];
   tabContents[key]!.push(v);

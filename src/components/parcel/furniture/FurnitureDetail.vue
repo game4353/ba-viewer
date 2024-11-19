@@ -5,7 +5,7 @@
         <span class="font-weight-black">{{ picked.name }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel type="Furniture" :pid="picked.id" :scale="0.4" />
+        <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
       <v-card-text class="bg-surface-light pt-4">
         {{ picked.desc }}
@@ -53,6 +53,7 @@
 <script setup lang="ts">
 import { ObjectKeys } from "@/types";
 import { furnitureDict } from "./furniture";
+import { ParcelType } from "~game/types/flatDataExcel";
 
 const props = defineProps({
   pid: {

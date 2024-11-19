@@ -19,7 +19,7 @@ import { uiPath } from "../GameImg/loader";
 
 const props = defineProps({
   category: {
-    type: String as PropType<keyof typeof EquipmentCategory>,
+    type: Number as PropType<EquipmentCategory>,
     required: true,
   },
   tier: {

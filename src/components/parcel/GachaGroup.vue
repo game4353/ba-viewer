@@ -25,10 +25,12 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  GachaGroupExcel,
-  GachaElementRecursiveExcel,
-  GachaElementExcel,
+import {
+  type GachaGroupExcel,
+  type GachaElementRecursiveExcel,
+  type GachaElementExcel,
+  GachaGroupType,
+  ParcelType,
 } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList as d1 } from "~game/excel/GachaGroupExcelTable.json";
@@ -58,9 +60,9 @@ const obj = computed(() => dict[props.pid]);
 
 const layout = computed(() => {
   switch (obj.value.GroupType) {
-    case "Reward_General":
+    case GachaGroupType.Reward_General:
       return "random";
-    case "Reward_Pack":
+    case GachaGroupType.Reward_Pack:
       return "pack";
     default:
       assertUnreachable(`Unimplemented GroupType ${obj.value.GroupType}.`);
@@ -79,7 +81,7 @@ function getGroup(pid: number | string): Recursive<GachaElementExcel[]> {
       (v) => v.GachaGroupID === id,
     );
     return subGroups.map((v) => {
-      assertEqual(v.ParcelType, "GachaGroup");
+      assertEqual(v.ParcelType, ParcelType.GachaGroup);
       assertEqual(v.ParcelAmountMin, 1);
       assertEqual(v.ParcelAmountMax, 1);
       assertEqual(v.Prob, 0);

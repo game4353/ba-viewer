@@ -63,7 +63,12 @@
               v-for="item in items"
               :key="item.raw.id"
             >
-              <Parcel :pid="item.raw.id" type="Furniture" :scale="0.35" route />
+              <Parcel
+                :pid="item.raw.id"
+                :type="ParcelType.Furniture"
+                :scale="0.35"
+                route
+              />
             </div>
           </div>
         </template>
@@ -86,6 +91,7 @@ import { ObjectValues } from "@/types";
 import { toHiragana } from "wanakana";
 import { furnitureDict } from "@/components/parcel/furniture/furniture";
 import { furnitureTags } from "@/components/parcel/furniture/tag";
+import { ParcelType } from "~game/types/flatDataExcel";
 
 const currPage = ref(1);
 const search = ref("");

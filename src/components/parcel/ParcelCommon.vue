@@ -39,9 +39,9 @@
 </template>
 
 <script setup lang="ts">
-import type { RewardTag } from "~game/types/flatDataExcel";
+import { RewardTag } from "~game/types/flatDataExcel";
 import { ASSERT_UNREACHABLE } from "../warn/error";
-import { Icon } from "../GameImg/icon";
+import { Icon, rarityBgIcon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
 import { IParcel } from "./parcel";
 import { CFurniture } from "./furniture/furniture";
@@ -68,25 +68,12 @@ const props = defineProps({
   scaledH: Number,
   scaleType: String as PropType<"min" | "max">,
   tag: {
-    type: String as PropType<keyof typeof RewardTag>,
+    type: Number as PropType<RewardTag>,
   },
 });
 
 // background
-const bg = computed(() => {
-  switch (props.parcel.rarity) {
-    case "N":
-      return Icon.BgN;
-    case "R":
-      return Icon.BgR;
-    case "SR":
-      return Icon.BgSR;
-    case "SSR":
-      return Icon.BgSSR;
-    default:
-      assertUnreachable(`Unknown rarity ${props.parcel.rarity}`);
-  }
-});
+const bg = computed(() => rarityBgIcon(props.parcel.rarity));
 
 // amount
 function convertNum(num: number) {
@@ -109,14 +96,14 @@ const tagStr = computed(() => {
   if (props.layout === "select") return "セレクト";
   switch (props.tag) {
     case undefined:
-    case "Default":
-    case "Event":
+    case RewardTag.Default:
+    case RewardTag.Event:
       return null;
-    case "FirstClear":
+    case RewardTag.FirstClear:
       return "初回";
-    case "ThreeStar":
+    case RewardTag.ThreeStar:
       return "★★★";
-    case "Rare":
+    case RewardTag.Rare:
       return "レア";
     default:
       assertUnreachable(`RewardTag ${props.tag} is not implemented yet.`);

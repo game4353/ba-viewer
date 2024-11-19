@@ -22,7 +22,10 @@
 </template>
 
 <script setup lang="ts">
-import type { EventContentSeasonExcel } from "~game/types/flatDataExcel";
+import {
+  EventContentType,
+  type EventContentSeasonExcel,
+} from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/EventContentSeasonExcelTable.json";
 
@@ -45,8 +48,9 @@ const tabs = {
 
 events.forEach((v) => {
   const type = v.EventContentType;
-  if (!["Stage", "MiniEvent"].includes(type)) return;
-  if (type === "MiniEvent") mini.push(v);
+  if (![EventContentType.Stage, EventContentType.MiniEvent].includes(type))
+    return;
+  if (type === EventContentType.MiniEvent) mini.push(v);
   else if (v.EventContentCloseTime.startsWith("2099")) forever.push(v);
   else if (!v.IsReturn) normal.push(v);
   else rerun.push(v);

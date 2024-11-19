@@ -40,6 +40,7 @@ import Scaled from "../misc/Scaled.vue";
 import { getParcel } from "../parcel/parcel";
 import { CCharacter } from "../parcel/character";
 import { ASSERT_UNREACHABLE } from "../warn/error";
+import { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
 
 const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
 
@@ -56,7 +57,7 @@ const props = defineProps({
   star: Number,
   bond: Number,
 });
-const parcel: CCharacter = getParcel("Character", props.cid) as any;
+const parcel: CCharacter = getParcel(ParcelType.Character, props.cid) as any;
 
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
@@ -77,13 +78,13 @@ watchEffect(() => {
 
 const bg = computed(() => {
   switch (parcel.rarity) {
-    case "N":
+    case Rarity.N:
       return Icon.BgN;
-    case "R":
+    case Rarity.R:
       return Icon.BgR;
-    case "SR":
+    case Rarity.SR:
       return Icon.BgSR;
-    case "SSR":
+    case Rarity.SSR:
       return Icon.BgSSR;
     default:
       assertUnreachable(`Unknown rarity ${parcel.rarity}`);

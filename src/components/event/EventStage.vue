@@ -4,7 +4,10 @@
       <div>{{ stage.StageNumber }}</div>
       <div>Lv. {{ stage.RecommandLevel }}</div>
       <div class="w-8 h-auto">
-        <v-img :src="Icon[stage.StageTopography]" height="30px" />
+        <v-img
+          :src="stageTopographyIcon(stage.StageTopography)"
+          height="30px"
+        />
       </div>
       <div class="flex flex-row flex-wrap">
         <Parcel
@@ -23,7 +26,7 @@
 
 <script setup lang="ts">
 import type { EventContentStageExcel } from "~game/types/flatDataExcel";
-import { Icon } from "../GameImg/icon";
+import { stageTopographyIcon } from "../GameImg/icon";
 
 defineProps({
   stage: {

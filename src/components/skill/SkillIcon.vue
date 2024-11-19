@@ -14,7 +14,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  type: String as PropType<keyof typeof BulletType>,
+  type: Number as PropType<BulletType>,
 });
 
 const color = props.type ?? "None";

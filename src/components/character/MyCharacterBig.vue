@@ -65,6 +65,7 @@ import Scaled from "../misc/Scaled.vue";
 import { getParcel } from "../parcel/parcel";
 import { CCharacter } from "../parcel/character";
 import { uiPath } from "../GameImg/loader";
+import { ParcelType } from "@/assets/game/types/flatDataExcel";
 
 const imgW = 404;
 const imgH = 456;
@@ -82,7 +83,7 @@ const props = defineProps({
   star: Number,
   bond: Number,
 });
-const parcel: CCharacter = getParcel("Character", props.cid) as any;
+const parcel: CCharacter = getParcel(ParcelType.Character, props.cid) as any;
 
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);

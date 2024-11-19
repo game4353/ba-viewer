@@ -18,7 +18,7 @@ const stages = (DataList as EventContentStageExcel[]).filter(
   (v) => v.EventContentId === eid,
 );
 
-const diffs: (keyof typeof StageDifficulty)[] = [];
+const diffs: StageDifficulty[] = [];
 const tabs: EventContentStageExcel[][] = [];
 stages.forEach((v) => {
   const diff = v.StageDifficulty;

@@ -19,11 +19,16 @@
           class="flex flex-row flex-wrap gap-y-2 mt-1 max-h-[600px] overflow-auto"
         >
           <div
-            v-for="item in itemByCategory[key]"
+            v-for="item in itemByCategory[ItemCategory[key]]"
             :key="item.Id"
             :class="item.Id === picked?.id ? 'selecting' : 'others'"
           >
-            <Parcel :pid="item.Id" type="Item" :scale="0.35" route />
+            <Parcel
+              :pid="item.Id"
+              :type="ParcelType.Item"
+              :scale="0.35"
+              route
+            />
           </div>
         </v-tabs-window-item>
       </v-tabs-window>
@@ -36,14 +41,14 @@
             <span class="font-weight-black">{{ picked.name }}</span>
           </template>
           <template v-slot:prepend>
-            <Parcel type="Item" :pid="picked.id" :scale="0.4" />
+            <Parcel :type="ParcelType.Item" :pid="picked.id" :scale="0.4" />
           </template>
           <v-card-text class="bg-surface-light pt-4">
             {{ picked.desc }}
           </v-card-text>
         </v-card>
 
-        <v-card v-if="picked.obj.UsingResultParcelType !== 'None'">
+        <v-card v-if="picked.obj.UsingResultParcelType !== ParcelType.None">
           <v-card-title>使用</v-card-title>
           <Parcel
             :pid="picked.obj.UsingResultId"
@@ -58,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ItemCategory } from "~game/types/flatDataExcel";
+import { ItemCategory, ParcelType } from "~game/types/flatDataExcel";
 import { ObjectKeys, ObjectEntries } from "@/types";
 import { itemArr, itemDict } from "@/components/parcel/item";
 
@@ -83,9 +88,11 @@ const picked = computed(() => {
   const id = route.params.id ?? "";
   return itemDict[id];
 });
-const tab = ref(picked.value?.obj.ItemCategory ?? "Material");
-watch(picked, (newPicked) => {
-  tab.value = newPicked?.obj.ItemCategory ?? "Material";
+const tab = ref("Material");
+watchEffect(() => {
+  const cat = picked.value?.obj.ItemCategory;
+  if (cat == null) tab.value = "Material";
+  else tab.value = ItemCategory[cat];
 });
 </script>
 

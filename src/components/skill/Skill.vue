@@ -45,7 +45,7 @@ const props = defineProps({
     required: true,
   },
   lv: Number,
-  type: String as PropType<keyof typeof BulletType>,
+  type: Number as PropType<BulletType>,
   layout: String as PropType<"icon" | "default" | "full">,
   normalAttack: Boolean,
 });
