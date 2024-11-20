@@ -9,6 +9,11 @@ export function assert<T>(
   return obj;
 }
 
+export function fail(error: any) {
+  console.error(error);
+  return undefined;
+}
+
 export function unreachable(
   message: string = "This code path should be unreachable",
 ): never {
