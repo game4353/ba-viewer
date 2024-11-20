@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 // Plugins
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
@@ -13,6 +15,7 @@ import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  test: { environment: "jsdom" },
   plugins: [
     VueRouter({
       dts: "src/typed-router.d.ts",
