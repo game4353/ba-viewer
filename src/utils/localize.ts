@@ -39,7 +39,10 @@ export function setLang(lang: Lang) {
   settings.lang = lang;
 }
 
-const localizeMap = useExcelDbMapSingle<LocalizeExcel>("Localize", "Key");
+const localizeMap = useExcelDbMapSingle<LocalizeExcel, "Key">(
+  "Localize",
+  "Key",
+);
 function useLocalize(id: number) {
   return computed(() =>
     localizeMap.value?.andThen((map) => {
@@ -82,7 +85,7 @@ export function skill(id: number, desc = false) {
   return withDesc(skillDict, id, desc);
 }
 
-const localizeEtcMap = useExcelDbMapSingle<LocalizeEtcExcel>(
+const localizeEtcMap = useExcelDbMapSingle<LocalizeEtcExcel, "Key">(
   "LocalizeEtc",
   "Key",
 );
@@ -116,7 +119,7 @@ export function localize(id: number) {
   }
 }
 
-const localizeSkillMap = useExcelDbMapSingle<LocalizeSkillExcel>(
+const localizeSkillMap = useExcelDbMapSingle<LocalizeSkillExcel, "Key">(
   "LocalizeSkill",
   "Key",
 );

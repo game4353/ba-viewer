@@ -12,34 +12,37 @@ import type {
 } from "~game/types/flatDataExcelDb";
 
 export const useExcelCharacter = () =>
-  useExcelMapSingle<CharacterExcelTable>("CharacterExcelTable", "Id");
+  useExcelMapSingle<CharacterExcelTable, "Id">("CharacterExcelTable", "Id");
 
 export const useExcelCostume = () =>
-  useExcelMapSingle<CostumeExcelTable>("CostumeExcelTable", "CostumeGroupId");
+  useExcelMapSingle<CostumeExcelTable, "CostumeGroupId">(
+    "CostumeExcelTable",
+    "CostumeGroupId",
+  );
 
 export const useExcelCharacterStat = () =>
-  useExcelMapSingle<CharacterStatExcelTable>(
+  useExcelMapSingle<CharacterStatExcelTable, "CharacterId">(
     "CharacterStatExcelTable",
     "CharacterId",
   );
 
 export const useExcelCharacterTranscendence = () =>
-  useExcelMapSingle<CharacterTranscendenceExcelTable>(
+  useExcelMapSingle<CharacterTranscendenceExcelTable, "CharacterId">(
     "CharacterTranscendenceExcelTable",
     "CharacterId",
   );
 
 export const useExcelCharacterGear = () =>
-  useExcelMapMany<CharacterGearExcelTable>(
+  useExcelMapMany<CharacterGearExcelTable, "CharacterId">(
     "CharacterGearExcelTable",
     "CharacterId",
   );
 
 export const useExcelDbCharacterPotential = () =>
-  useExcelDbMapMany<CharacterPotentialExcel>("CharacterPotential", "Id");
+  useExcelDbMapMany<CharacterPotentialExcel, "Id">("CharacterPotential", "Id");
 
 export const useExcelDbCharacterPotentialStat = () =>
-  useExcelDbMapMany<CharacterPotentialStatExcel>(
+  useExcelDbMapMany<CharacterPotentialStatExcel, "PotentialStatGroupId">(
     "CharacterPotentialStat",
     "PotentialStatGroupId",
   );

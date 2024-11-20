@@ -8,10 +8,10 @@ import type { Result } from "@/utils/result";
 
 export const useExcelRecipe = (): globalThis.ComputedRef<
   Result<MapResult<number, RecipeExcel>, Error> | undefined
-> => useExcelMapSingle<RecipeExcelTable>("RecipeExcelTable", "Id") as any;
+> => useExcelMapSingle<RecipeExcelTable, "Id">("RecipeExcelTable", "Id") as any;
 
 export const useExcelRecipeIngredient = () =>
-  useExcelMapSingle<RecipeIngredientExcelTable>(
+  useExcelMapSingle<RecipeIngredientExcelTable, "Id">(
     "RecipeIngredientExcelTable",
     "Id",
   );

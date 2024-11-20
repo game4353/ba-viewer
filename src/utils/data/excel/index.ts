@@ -1,3 +1,4 @@
+import type { ReadonlyDeep } from "type-fest";
 import { useFetch } from "../index";
 import { Err, Ok } from "~/utils/result";
 
@@ -25,53 +26,64 @@ export function useExcelDb<T>(name: string) {
 
 export function useExcelMapSingle<
   T extends {
-    DataList: unknown[];
+    DataList: any[];
   },
->(name: string, key: keyof T["DataList"][number]) {
+  K extends keyof T["DataList"][number],
+>(name: string, key: K) {
   const state = useExcel<T>(name);
   return computed(() =>
     state.value?.map(
-      (table) =>
-        new MapResult(
-          table.DataList.map((o: T["DataList"][number]) => [o[key], o]),
-        ),
+      (
+        table,
+      ): MapResult<
+        T["DataList"][number][K],
+        ReadonlyDeep<T["DataList"][number]>
+      > => new MapResult(table.DataList.map((o) => [o[key], o])),
     ),
   );
 }
 
 export function useExcelMapMany<
   T extends {
-    DataList: unknown[];
+    DataList: any[];
   },
->(name: string, key: keyof T["DataList"][number]) {
+  K extends keyof T["DataList"][number],
+>(name: string, key: K) {
   const state = useExcel<T>(name);
   return computed(() =>
-    state.value?.map((table) =>
-      MapResult.groupBy(
-        table.DataList as Array<T["DataList"][number]>,
-        (o) => o[key],
-      ),
+    state.value?.map(
+      (
+        table,
+      ): MapResult<
+        T["DataList"][number][K],
+        ReadonlyDeep<T["DataList"][number]>[]
+      > => MapResult.groupBy(table.DataList, (o) => o[key]),
     ),
   );
 }
 
-export function useExcelDbMapSingle<T>(name: string, key: keyof T) {
+export function useExcelDbMapSingle<T, K extends keyof T>(
+  name: string,
+  key: K,
+) {
   const state = useExcelDb<T>(name);
   return computed(() =>
     state.value?.map(
-      (arr) => new MapResult(arr.map((o) => [o.Bytes[key], o.Bytes])),
+      (arr): MapResult<T[K], ReadonlyDeep<T>> =>
+        new MapResult(arr.map((o) => [o.Bytes[key], o.Bytes as any])),
     ),
   );
 }
 
-export function useExcelDbMapMany<T>(name: string, key: keyof T) {
+export function useExcelDbMapMany<T, K extends keyof T>(name: string, key: K) {
   const state = useExcelDb<T>(name);
   return computed(() =>
-    state.value?.map((arr) =>
-      MapResult.groupBy(
-        arr.map((o) => o.Bytes),
-        (o) => o[key],
-      ),
+    state.value?.map(
+      (arr): MapResult<T[K], ReadonlyDeep<T>[]> =>
+        MapResult.groupBy(
+          arr.map((o) => o.Bytes as any),
+          (o) => o[key],
+        ),
     ),
   );
 }

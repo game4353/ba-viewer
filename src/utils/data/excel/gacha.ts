@@ -6,16 +6,16 @@ import type {
 import { useExcelMapMany, useExcelMapSingle } from ".";
 
 export const useExcelGachaGroup = () =>
-  useExcelMapSingle<GachaGroupExcelTable>("GachaGroupExcelTable", "ID");
+  useExcelMapSingle<GachaGroupExcelTable, "ID">("GachaGroupExcelTable", "ID");
 
 export const useExcelGachaElementRecursive = () =>
-  useExcelMapMany<GachaElementRecursiveExcelTable>(
+  useExcelMapMany<GachaElementRecursiveExcelTable, "GachaGroupID">(
     "GachaElementRecursiveExcelTable",
     "GachaGroupID",
   );
 
 export const useExcelGachaElement = () =>
-  useExcelMapMany<GachaElementExcelTable>(
+  useExcelMapMany<GachaElementExcelTable, "GachaGroupID">(
     "GachaElementExcelTable",
     "GachaGroupID",
   );
