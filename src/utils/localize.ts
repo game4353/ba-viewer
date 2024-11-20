@@ -1,9 +1,10 @@
-// @ts-ignore
 import type {
   LocalizeEtcExcel,
   LocalizeExcel,
   LocalizeSkillExcel,
 } from "~game/types/flatDataExcelDb";
+import { useExcelDbMapSingle } from "./data/excel";
+import { Err, Ok } from "./result";
 import { default as a0 } from "~game/db/ExcelDB/Localize.json";
 import { default as a1 } from "~game/db/ExcelDB/LocalizeEtc.json";
 import { default as a2 } from "~game/db/ExcelDB/LocalizeSkill.json";
@@ -38,6 +39,23 @@ export function setLang(lang: Lang) {
   settings.lang = lang;
 }
 
+const localizeMap = useExcelDbMapSingle<LocalizeExcel>("Localize", "Key");
+function useLocalize(id: number) {
+  return computed(() =>
+    localizeMap.value?.andThen((map) => {
+      const o = map.get(id);
+      if (o == null)
+        return Err(new Error(`Unable to find '${id}' in Localize.`));
+      switch (settings.lang) {
+        case Lang.JP:
+          return Ok(o.Jp);
+        case Lang.KR:
+          return Ok(o.Kr);
+      }
+    }),
+  );
+}
+
 function withDesc(
   dict: Record<string, LocalizeEtcExcel | LocalizeSkillExcel>,
   id: number,
@@ -64,6 +82,26 @@ export function skill(id: number, desc = false) {
   return withDesc(skillDict, id, desc);
 }
 
+const localizeEtcMap = useExcelDbMapSingle<LocalizeEtcExcel>(
+  "LocalizeEtc",
+  "Key",
+);
+function useLocalizeEtc(id: number, desc = false) {
+  return computed(() =>
+    localizeEtcMap.value?.andThen((map) => {
+      const o = map.get(id);
+      if (o == null)
+        return Err(new Error(`Unable to find '${id}' in Localize.`));
+      switch (settings.lang) {
+        case Lang.JP:
+          return desc ? Ok(o.DescriptionJp) : Ok(o.NameJp);
+        case Lang.KR:
+          return desc ? Ok(o.DescriptionKr) : Ok(o.NameKr);
+      }
+    }),
+  );
+}
+
 export function localize(id: number) {
   const o = localizeDict[String(id)];
   if (o == null) {
@@ -78,10 +116,35 @@ export function localize(id: number) {
   }
 }
 
+const localizeSkillMap = useExcelDbMapSingle<LocalizeSkillExcel>(
+  "LocalizeSkill",
+  "Key",
+);
+function useLocalizeSkill(id: number, desc = false) {
+  return computed(() =>
+    localizeSkillMap.value?.andThen((map) => {
+      const o = map.get(id);
+      if (o == null)
+        return Err(new Error(`Unable to find '${id}' in Localize.`));
+      switch (settings.lang) {
+        case Lang.JP:
+          return desc ? Ok(o.DescriptionJp) : Ok(o.NameJp);
+        case Lang.KR:
+          return desc ? Ok(o.DescriptionKr) : Ok(o.NameKr);
+      }
+    }),
+  );
+}
+
 export const Local = {
   etc,
   skill,
   localize,
+  Lang,
+  setLang,
+  useLocalizeEtc,
+  useLocalizeSkill,
+  useLocalize,
 };
 
 export class Localize {
