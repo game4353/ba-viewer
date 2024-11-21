@@ -4,18 +4,22 @@ import type {
   GachaElementExcelTable,
 } from "~game/types/flatDataExcel";
 import { useExcelMapMany, useExcelMapSingle } from ".";
+import { cache } from "@/util";
 
-export const useExcelGachaGroup = () =>
-  useExcelMapSingle<GachaGroupExcelTable, "ID">("GachaGroupExcelTable", "ID");
+export const useExcelGachaGroup = cache(() =>
+  useExcelMapSingle<GachaGroupExcelTable, "ID">("GachaGroupExcelTable", "ID"),
+);
 
-export const useExcelGachaElementRecursive = () =>
+export const useExcelGachaElementRecursive = cache(() =>
   useExcelMapMany<GachaElementRecursiveExcelTable, "GachaGroupID">(
     "GachaElementRecursiveExcelTable",
     "GachaGroupID",
-  );
+  ),
+);
 
-export const useExcelGachaElement = () =>
+export const useExcelGachaElement = cache(() =>
   useExcelMapMany<GachaElementExcelTable, "GachaGroupID">(
     "GachaElementExcelTable",
     "GachaGroupID",
-  );
+  ),
+);

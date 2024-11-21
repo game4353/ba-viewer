@@ -1,16 +1,19 @@
 // @ts-ignore
 import solver from "javascript-lp-solver";
 
-export function cache<T, R>(fn: (arg: T) => R): (arg: T) => R {
-  const cached = new Map<T, R>();
+export function cache<R>(fn: () => R): () => R;
+export function cache<T, R>(fn: (arg: T) => R): (arg: T) => R;
+export function cache<T, R>(fn: (...args: T[]) => R): (...args: T[]) => R {
+  const cached = new Map<string, R>();
 
-  return function (arg: T): R {
-    if (cached.has(arg)) {
-      return cached.get(arg)!;
+  return function (...args: T[]) {
+    const key = JSON.stringify(args);
+    if (cached.has(key)) {
+      return cached.get(key)!;
     }
 
-    const result = fn(arg);
-    cached.set(arg, result);
+    const result = fn(...args);
+    cached.set(key, result);
     return result;
   };
 }
