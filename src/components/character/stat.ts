@@ -3,11 +3,6 @@ import {
   StatType,
 } from "@/assets/game/types/flatDataExcel";
 import type { NumberKeys } from "@/types";
-// @ts-ignore
-import { DataList } from "~game/excel/CharacterStatExcelTable.json";
-const statArr = DataList as CharacterStatExcel[];
-export const statDict: Partial<Record<string, CharacterStatExcel>> =
-  Object.fromEntries(statArr.map((v) => [v.CharacterId, v]));
 
 enum StatBuffType {
   Base,

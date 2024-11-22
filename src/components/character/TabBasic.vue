@@ -1,5 +1,5 @@
 <template>
-  <v-card style="margin: auto" width="600">
+  <v-card v-if="chara?.isOk()" style="margin: auto" width="600">
     <v-card-text>
       <v-expansion-panels>
         <v-expansion-panel>
@@ -14,7 +14,7 @@
               name="★"
               keys="star"
               :cid
-              :init="chara.obj.DefaultStarGrade"
+              :init="chara.unwrap().obj.DefaultStarGrade"
             />
             <Slider name="Weapon" keys="weapon" :cid />
             <Slider name="❤" keys="bond" :cid />
@@ -55,7 +55,7 @@
               <div class="w-1/4 max-w-16" v-for="([n, v], key) in skills" :key>
                 <Skill
                   :sid="n"
-                  :type="chara.obj.BulletType"
+                  :type="chara.unwrap().obj.BulletType"
                   :lv="v"
                   layout="icon"
                 />
@@ -75,19 +75,19 @@
               <v-row>
                 <v-col>
                   <Equip
-                    :category="chara.obj.EquipmentSlot[0]"
+                    :category="chara.unwrap().obj.EquipmentSlot[0]"
                     :tier="charaParam.gear1"
                   />
                 </v-col>
                 <v-col>
                   <Equip
-                    :category="chara.obj.EquipmentSlot[1]"
+                    :category="chara.unwrap().obj.EquipmentSlot[1]"
                     :tier="charaParam.gear2"
                   />
                 </v-col>
                 <v-col>
                   <Equip
-                    :category="chara.obj.EquipmentSlot[2]"
+                    :category="chara.unwrap().obj.EquipmentSlot[2]"
                     :tier="charaParam.gear3"
                   />
                 </v-col>
@@ -112,12 +112,9 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { characterDict } from "../parcel/character";
-import { ASSERT_SOME } from "../warn/error";
-import { getSkillList } from "../skill/skillList";
 import { storeToRefs } from "pinia";
-
-const assertSome = inject(ASSERT_SOME)!;
+import { useCharacter } from "../parcel/character/character";
+import { getSkillList } from "../skill/skillList";
 
 const props = defineProps({
   cid: {
@@ -126,13 +123,7 @@ const props = defineProps({
   },
 });
 
-const chara = computed(() =>
-  assertSome(
-    characterDict[props.cid],
-    501,
-    `Unable to find ${props.cid} in character excel table.`,
-  ),
-);
+const chara = useCharacter(props.cid);
 const store = useCharaStore(props.cid);
 const charaNow = storeToRefs(store.now());
 const charaParam = useCharaStore(props.cid).now();

@@ -1,19 +1,18 @@
 <template>
   <div class="h-full">
     <Scroll class="mx-6 px-2">
-      <StudentList :students />
+      <StudentList :character-ids="studentIds" />
     </Scroll>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ProductionStep } from "@/assets/game/types/flatDataExcel";
-import { type CCharacter, characterDict } from "@/components/parcel/character";
+import { usePlayableIds } from "@/components/parcel/character/character";
 
-const students = Object.values(characterDict).filter(
-  (v): v is CCharacter =>
-    v?.obj.IsPlayableCharacter == true &&
-    v?.obj.IsNPC == false &&
-    v?.obj.ProductionStep === ProductionStep.Release,
-);
+const playableIds = usePlayableIds();
+const studentIds = computed(() => {
+  if (playableIds.value == null) return [];
+  if (playableIds.value.isErr()) return [];
+  return playableIds.value.unwrap();
+});
 </script>

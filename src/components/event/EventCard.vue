@@ -42,15 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  EventContentCardExcel,
-  EventContentCardShopExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as d1 } from "~game/excel/EventContentCardExcelTable.json";
-// @ts-ignore
-import { DataList as d2 } from "~game/excel/EventContentCardShopExcelTable.json";
 import { ObjectKeys } from "@/types";
+import {
+  useExcelEventContentCard,
+  useExcelEventContentCardShop,
+} from "@/utils/data/excel/event";
+import { fail } from "@/utils/misc";
 
 const props = defineProps({
   eid: {
@@ -60,17 +57,24 @@ const props = defineProps({
 });
 
 const tab = ref(0);
-const cards = Object.fromEntries(
-  (d1 as EventContentCardExcel[])
-    .filter((v) => v.EventContentId === props.eid)
-    .map((v) => [v.CardGroupId, v]),
-);
-const rolls = Object.groupBy(
-  (d2 as EventContentCardShopExcel[]).filter(
-    (v) => v.EventContentId === props.eid,
-  ),
-  (v) => v.RefreshGroup,
-);
+
+const cardTable = useExcelEventContentCard();
+const cards = computed(() => {
+  return Object.fromEntries(
+    (cardTable.value?.unwrapOrElse(fail)?.get(props.eid) ?? []).map((v) => [
+      v.CardGroupId,
+      v,
+    ]),
+  );
+});
+
+const shopTable = useExcelEventContentCardShop();
+const rolls = computed(() => {
+  return Object.groupBy(
+    shopTable.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
+    (v) => v.RefreshGroup,
+  );
+});
 </script>
 
 <style scoped lang="scss">

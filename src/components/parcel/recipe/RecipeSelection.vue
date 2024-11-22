@@ -27,7 +27,7 @@
 import type { RecipeSelectionGroupExcel } from "~game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/RecipeSelectionGroupExcelTable.json";
-import { ASSERT_SOME } from "../warn/error";
+import { ASSERT_SOME } from "../../warn/error";
 
 const props = defineProps({
   gid: {

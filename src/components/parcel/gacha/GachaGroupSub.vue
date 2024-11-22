@@ -31,10 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import type { GachaElementExcel } from "~game/types/flatDataExcel";
-import { ASSERT_SOME } from "../warn/error";
+import { isLastArray, type Recursive } from "@/types";
 import { PropType } from "vue";
-import { type Recursive, isLastArray } from "@/types";
+import type { GachaElementExcel } from "~game/types/flatDataExcel";
+import { ASSERT_SOME } from "../../warn/error";
 
 const props = defineProps({
   group: {

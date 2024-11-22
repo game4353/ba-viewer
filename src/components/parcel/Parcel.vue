@@ -14,9 +14,9 @@
         ParcelType.Equipment,
         ParcelType.Furniture,
         ParcelType.Item,
-      ].includes(type)
+      ].includes(type) && parcel
     "
-    :parcel="assert(getParcel(type, pid), `Unable to find ${type} ${pid}`)"
+    :parcel
     :amount
     :amountMin
     :amountMax
@@ -48,11 +48,11 @@
 
 <script setup lang="ts">
 import { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
-import { ASSERT_SOLE } from "../warn/error";
+import { fail } from "@/utils/misc";
 import { PropType } from "vue";
-import { getParcel } from "./parcel";
-import { assert } from "@/utils/misc";
+import { ASSERT_SOLE } from "../warn/error";
 import Character from "./character/Character.vue";
+import { getParcel } from "./parcel";
 
 const assertSole = inject(ASSERT_SOLE)!;
 
@@ -62,7 +62,7 @@ const props = defineProps({
     required: true,
   },
   pid: {
-    type: [String, Number],
+    type: Number,
     required: true,
   },
   amount: Number,
@@ -103,5 +103,9 @@ watch(
       `Type "${props.type}" is not yet implemented.`,
     );
   },
+);
+
+const parcel = computed(() =>
+  getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(fail),
 );
 </script>

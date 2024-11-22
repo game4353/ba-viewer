@@ -12,10 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import { EquipmentExcel, EquipmentCategory } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as excel } from "~game/excel/EquipmentExcelTable.json";
+import {
+  EquipmentCategory,
+  EquipmentExcelTable,
+} from "~game/types/flatDataExcel";
 import { uiPath } from "../GameImg/loader";
+import { useExcel } from "@/utils/data/excel";
 
 const props = defineProps({
   category: {
@@ -27,9 +29,16 @@ const props = defineProps({
     required: true,
   },
 });
-const data = (excel as EquipmentExcel[]).filter(
-  (o) => o.EquipmentCategory === props.category,
-);
 
-const src = computed(() => uiPath(data[(props.tier || 1) - 1].Icon));
+const equipmentTable = useExcel<EquipmentExcelTable>("EquipmentExcelTable");
+
+const data = computed(() =>
+  equipmentTable.value?.map((t) =>
+    t.DataList.filter((o) => o.EquipmentCategory === props.category),
+  ),
+);
+const src = computed(() => {
+  const item = data.value?.map((a) => a[(props.tier || 1) - 1]);
+  return item?.isOk() ? uiPath(item.unwrap().Icon) : null;
+});
 </script>

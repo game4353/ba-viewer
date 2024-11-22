@@ -1,45 +1,64 @@
 import { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
-import { characterDict, type CCharacter } from "./character";
-import { equipmentDict } from "./equipment";
-import { furnitureDict } from "./furniture/furniture";
-import { currencyDict } from "./currency";
-import { itemDict } from "./item";
+import { Err, type Result } from "@/utils/result";
+import { useCharacter, type CCharacter } from "./character/character";
+import { useCurrency, type CCurrency } from "./currency/currency";
+import { useEquipment, type CEquipment } from "./equipment/equipment";
+import { useFurniture, type CFurniture } from "./furniture/furniture";
+import { useItem, type CItem } from "./item/item";
 
 export interface IParcel {
-  desc: string;
+  desc: globalThis.ComputedRef<Result<string, Error> | undefined>;
   iconPath: string;
   id: number;
-  name: string;
+  name: globalThis.ComputedRef<Result<string, Error> | undefined>;
   rarity: Rarity;
-  type: keyof typeof ParcelType;
+  type: ParcelType;
 }
 
 // iconPath "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward"
 
 export function getParcel(
   type: ParcelType.Character,
-  id: number | string,
-): CCharacter;
+  id: number,
+): globalThis.ComputedRef<Result<CCharacter, Error> | undefined>;
+export function getParcel(
+  type: ParcelType.Currency,
+  id: number,
+): globalThis.ComputedRef<Result<CCurrency, Error> | undefined>;
+export function getParcel(
+  type: ParcelType.Equipment,
+  id: number,
+): globalThis.ComputedRef<Result<CEquipment, Error> | undefined>;
+export function getParcel(
+  type: ParcelType.Furniture,
+  id: number,
+): globalThis.ComputedRef<Result<CFurniture, Error> | undefined>;
+export function getParcel(
+  type: ParcelType.Item,
+  id: number,
+): globalThis.ComputedRef<Result<CItem, Error> | undefined>;
 export function getParcel(
   type: ParcelType,
-  id: number | string,
-): IParcel | undefined | null;
+  id: number,
+): globalThis.ComputedRef<Result<IParcel, Error> | undefined>;
 export function getParcel(
   type: ParcelType,
-  id: number | string,
-): IParcel | undefined | null {
+  id: number,
+): globalThis.ComputedRef<Result<IParcel, Error> | undefined> {
   switch (type) {
     case ParcelType.Character:
-      return characterDict[id];
+      return useCharacter(id);
     case ParcelType.Currency:
-      return currencyDict[id];
+      return useCurrency(id);
     case ParcelType.Equipment:
-      return equipmentDict[id];
+      return useEquipment(id);
     case ParcelType.Furniture:
-      return furnitureDict[id];
+      return useFurniture(id);
     case ParcelType.Item:
-      return itemDict[id];
+      return useItem(id);
     default:
-      return null;
+      return computed(() =>
+        Err(new Error(`Parcel type ${type} is not implemented.`)),
+      );
   }
 }

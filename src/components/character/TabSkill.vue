@@ -1,31 +1,31 @@
 <template>
   <div class="w-[560px]">
-    <div class="flex flex-col gap-1">
+    <div v-if="chara?.isOk()" class="flex flex-col gap-1">
       <Skill
         v-if="skillEX"
         :sid="skillEX"
-        :type="chara.obj.BulletType"
+        :type="chara.unwrap().obj.BulletType"
         :lv="charaNow.skill0.value"
         layout="default"
       />
       <Skill
         v-if="skillNS"
         :sid="skillNS"
-        :type="chara.obj.BulletType"
+        :type="chara.unwrap().obj.BulletType"
         :lv="charaNow.skill1.value"
         layout="default"
       />
       <Skill
         v-if="skillPS"
         :sid="skillPS"
-        :type="chara.obj.BulletType"
+        :type="chara.unwrap().obj.BulletType"
         :lv="charaNow.skill2.value"
         layout="default"
       />
       <Skill
         v-if="skillSS"
         :sid="skillSS"
-        :type="chara.obj.BulletType"
+        :type="chara.unwrap().obj.BulletType"
         :lv="charaNow.skill3.value"
         layout="default"
       />
@@ -35,12 +35,9 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { characterDict } from "../parcel/character";
-import { ASSERT_SOME } from "../warn/error";
-import { getSkillList } from "../skill/skillList";
 import { storeToRefs } from "pinia";
-
-const assertSome = inject(ASSERT_SOME)!;
+import { useCharacter } from "../parcel/character/character";
+import { getSkillList } from "../skill/skillList";
 
 const props = defineProps({
   cid: {
@@ -49,13 +46,7 @@ const props = defineProps({
   },
 });
 
-const chara = computed(() =>
-  assertSome(
-    characterDict[props.cid],
-    501,
-    `Unable to find ${props.cid} in character excel table.`,
-  ),
-);
+const chara = useCharacter(props.cid);
 const store = useCharaStore(props.cid);
 const charaNow = storeToRefs(store.now());
 

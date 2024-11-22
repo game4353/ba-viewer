@@ -2,13 +2,15 @@
   <div v-if="picked != null">
     <v-card class="mx-auto">
       <template v-slot:title>
-        <span class="font-weight-black">{{ picked.name }}</span>
+        <span class="font-weight-black">{{
+          picked.name.value?.unwrapOrElse(fail) ?? ""
+        }}</span>
       </template>
       <template v-slot:prepend>
         <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.desc }}
+        {{ picked.desc.value?.unwrapOrElse(fail) ?? "" }}
       </v-card-text>
     </v-card>
     <v-card
@@ -52,12 +54,13 @@
 
 <script setup lang="ts">
 import { ObjectKeys } from "@/types";
-import { furnitureDict } from "./furniture";
+import { fail } from "@/utils/misc";
 import { ParcelType } from "~game/types/flatDataExcel";
+import { useFurniture } from "./furniture";
 
 const props = defineProps({
   pid: {
-    type: [String, Number],
+    type: Number,
     required: true,
   },
 });
@@ -69,7 +72,7 @@ const interactionTypes = {
   Only: "Only one character in ONLY will interact.",
 };
 
-const picked = computed(() => {
-  return furnitureDict[props.pid];
-});
+const picked = computed(() =>
+  useFurniture(props.pid).value?.unwrapOrElse(fail),
+);
 </script>

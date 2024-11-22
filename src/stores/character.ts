@@ -1,10 +1,12 @@
-import { defineStore } from "pinia";
-import { clamp, useStorage } from "@vueuse/core";
+import {
+  playable,
+  useCharacter,
+} from "@/components/parcel/character/character";
 import { cache } from "@/util";
-import { interpolation, unreachable } from "@/utils/misc";
-import { playable } from "@/components/character/main";
-import { characterDict } from "@/components/parcel/character";
-import { statDict } from "@/components/character/stat";
+import { useExcelCharacterStat } from "@/utils/data/excel/character";
+import { fail, interpolation, unreachable } from "@/utils/misc";
+import { clamp, useStorage } from "@vueuse/core";
+import { defineStore } from "pinia";
 
 export type CharaProp = Exclude<
   {
@@ -112,37 +114,45 @@ export class CharaData {
 }
 
 export const useCharaStore = cache((cid: number) => {
-  const chara = characterDict[cid];
-  const stat = statDict[cid];
+  const chara = useCharacter(cid);
+  const stat = useExcelCharacterStat();
 
   function baseHP(state: Record<CharaProp, number>) {
     const raw = interpolation(
       1,
       100,
-      stat?.MaxHP1 ?? 0,
-      stat?.MaxHP100 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.MaxHP1 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.MaxHP100 ?? 0,
       state.lv,
     );
-    const bonus = chara?.starBonus("HP", state.star) ?? 0;
+    const bonus =
+      chara.value
+        ?.unwrapOrElse(fail)
+        ?.starBonus("HP", state.star)
+        .value?.unwrapOrElse(fail) ?? 0;
     return Math.ceil(raw * bonus);
   }
   function baseATK(state: Record<CharaProp, number>) {
     const raw = interpolation(
       1,
       100,
-      stat?.AttackPower1 ?? 0,
-      stat?.AttackPower100 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.AttackPower1 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.AttackPower100 ?? 0,
       state.lv,
     );
-    const bonus = chara?.starBonus("Attack", state.star) ?? 0;
+    const bonus =
+      chara.value
+        ?.unwrapOrElse(fail)
+        ?.starBonus("Attack", state.star)
+        .value?.unwrapOrElse(fail) ?? 0;
     return Math.ceil(raw * bonus);
   }
   function baseDEF(state: Record<CharaProp, number>) {
     const raw = interpolation(
       1,
       100,
-      stat?.DefensePower1 ?? 0,
-      stat?.DefensePower100 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePower1 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePower100 ?? 0,
       state.lv,
     );
     return Math.ceil(raw);
@@ -151,19 +161,23 @@ export const useCharaStore = cache((cid: number) => {
     const raw = interpolation(
       1,
       100,
-      stat?.HealPower1 ?? 0,
-      stat?.HealPower100 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.HealPower1 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.HealPower100 ?? 0,
       state.lv,
     );
-    const bonus = chara?.starBonus("Heal", state.star) ?? 0;
+    const bonus =
+      chara.value
+        ?.unwrapOrElse(fail)
+        ?.starBonus("Heal", state.star)
+        .value?.unwrapOrElse(fail) ?? 0;
     return Math.ceil(raw * bonus);
   }
   function baseDFX(state: Record<CharaProp, number>) {
     const raw = interpolation(
       1,
       100,
-      stat?.DefensePenetration1 ?? 0,
-      stat?.DefensePenetration100 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetration1 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetration100 ?? 0,
       state.lv,
     );
     return Math.ceil(raw);
@@ -172,8 +186,9 @@ export const useCharaStore = cache((cid: number) => {
     const raw = interpolation(
       1,
       100,
-      stat?.DefensePenetrationResist1 ?? 0,
-      stat?.DefensePenetrationResist100 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetrationResist1 ?? 0,
+      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetrationResist100 ??
+        0,
       state.lv,
     );
     return Math.ceil(raw);

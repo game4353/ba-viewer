@@ -35,10 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import type { EventContentCharacterBonusExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentCharacterBonusExcelTable.json";
 import EventCurrency from "./EventCurrency.vue";
+import { useExcelEventContentCharacterBonus } from "@/utils/data/excel/event";
+import { fail } from "@/utils/misc";
 
 const props = defineProps({
   eid: {
@@ -47,17 +46,36 @@ const props = defineProps({
   },
 });
 
-const bonus = (DataList as EventContentCharacterBonusExcel[]).filter(
-  (v) => v.EventContentId === props.eid,
-);
-const tokenSet = new Set(bonus.map((v) => v.EventContentItemType).flat());
-const tokens = Array.from(tokenSet).sort();
-const rows = bonus.map((v) => [
-  v.CharacterId,
-  ...tokens.map((t) => v.BonusPercentage[v.EventContentItemType.indexOf(t)]),
-]);
-const striker = rows.filter((v) => v[0] < 20000);
-const support = rows.filter((v) => v[0] >= 20000);
+const table = useExcelEventContentCharacterBonus();
+
+const bonus = computed(() => table.value?.unwrapOrElse(fail)?.get(props.eid));
+
+const tokenSet = computed(() => {
+  if (bonus.value == null) return null;
+  return new Set(bonus.value.map((v) => v.EventContentItemType).flat());
+});
+
+const tokens = computed(() => {
+  if (tokenSet.value == null) return null;
+  return Array.from(tokenSet.value).sort();
+});
+
+const rows = computed(() => {
+  return bonus.value?.map((v) => [
+    v.CharacterId,
+    ...tokens.value!.map(
+      (t) => v.BonusPercentage[v.EventContentItemType.indexOf(t)] || 0,
+    ),
+  ]);
+});
+
+const striker = computed(() => {
+  return rows.value?.filter((v) => v[0] < 20000);
+});
+
+const support = computed(() => {
+  return rows.value?.filter((v) => v[0] >= 20000);
+});
 </script>
 
 <style scoped lang="scss">

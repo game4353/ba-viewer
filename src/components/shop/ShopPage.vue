@@ -12,13 +12,15 @@
 
 <script setup lang="ts">
 import * as localize from "@/utils/localize";
-import ShopItem from "./ShopItem.vue";
-import { PropType } from "vue";
+import { ReadonlyDeep } from "type-fest";
 import type { EventContentShopExcel } from "~game/types/flatDataExcel";
+import ShopItem from "./ShopItem.vue";
 
 defineProps({
   shops: {
-    type: Object as PropType<EventContentShopExcel[]>,
+    type: Object as PropType<
+      EventContentShopExcel[] | ReadonlyDeep<EventContentShopExcel[]>
+    >,
     required: true,
   },
 });

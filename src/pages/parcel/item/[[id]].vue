@@ -19,12 +19,12 @@
           class="flex flex-row flex-wrap gap-y-2 mt-1 max-h-[600px] overflow-auto"
         >
           <div
-            v-for="item in itemByCategory[ItemCategory[key]]"
-            :key="item.Id"
-            :class="item.Id === picked?.id ? 'selecting' : 'others'"
+            v-for="item in itemByCategory.get(ItemCategory[key])"
+            :key="item.id"
+            :class="item.id === pid ? 'selecting' : 'others'"
           >
             <Parcel
-              :pid="item.Id"
+              :pid="item.id"
               :type="ParcelType.Item"
               :scale="0.35"
               route
@@ -35,37 +35,18 @@
     </div>
 
     <div class="w-1/2">
-      <div v-if="picked != null">
-        <v-card class="mx-auto">
-          <template v-slot:title>
-            <span class="font-weight-black">{{ picked.name }}</span>
-          </template>
-          <template v-slot:prepend>
-            <Parcel :type="ParcelType.Item" :pid="picked.id" :scale="0.4" />
-          </template>
-          <v-card-text class="bg-surface-light pt-4">
-            {{ picked.desc }}
-          </v-card-text>
-        </v-card>
-
-        <v-card v-if="picked.obj.UsingResultParcelType !== ParcelType.None">
-          <v-card-title>使用</v-card-title>
-          <Parcel
-            :pid="picked.obj.UsingResultId"
-            :type="picked.obj.UsingResultParcelType"
-            :amount="picked.obj.UsingResultAmount"
-            :scale="0.3"
-          />
-        </v-card>
+      <div v-if="pid != null">
+        <ItemDetail :pid />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { CItem, useItem, useItemIds } from "@/components/parcel/item/item";
+import { ObjectEntries, ObjectKeys } from "@/types";
+import { fail } from "@/utils/misc";
 import { ItemCategory, ParcelType } from "~game/types/flatDataExcel";
-import { ObjectKeys, ObjectEntries } from "@/types";
-import { itemArr, itemDict } from "@/components/parcel/item";
 
 const tabs: Record<keyof typeof ItemCategory, string> = {
   SecretStone: "神名文字",
@@ -78,19 +59,29 @@ const tabs: Record<keyof typeof ItemCategory, string> = {
   RecruitCoin: "ポイント",
   InvisibleToken: "??",
 };
-const itemByCategory = Object.groupBy(
-  itemArr,
-  ({ ItemCategory }) => ItemCategory,
-);
+
+const itemIds = useItemIds();
+const itemByCategory = computed(() => {
+  const items =
+    itemIds.value
+      ?.unwrapOrElse(fail)
+      ?.map((id) => useItem(id).value?.unwrapOrElse(fail))
+      .filter((v): v is CItem => v != null) ?? [];
+
+  return Map.groupBy(items, (item) => item.obj.ItemCategory);
+});
 
 const route = useRoute<"/parcel/item/[[id]]">();
-const picked = computed(() => {
-  const id = route.params.id ?? "";
-  return itemDict[id];
+const pid = computed(() => {
+  const id = parseInt(route.params.id ?? "");
+  return isNaN(id) ? undefined : id;
 });
+const picked = computed(() =>
+  pid.value == null ? undefined : useItem(pid.value).value,
+);
 const tab = ref("Material");
 watchEffect(() => {
-  const cat = picked.value?.obj.ItemCategory;
+  const cat = picked.value?.unwrapOrElse(fail)?.obj.ItemCategory;
   if (cat == null) tab.value = "Material";
   else tab.value = ItemCategory[cat];
 });

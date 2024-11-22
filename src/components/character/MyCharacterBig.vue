@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="`/student/${parcel.id}`">
+  <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
     <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
       <v-img
         class="absolute"
@@ -18,12 +18,12 @@
         </template>
         <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>
         <div class="atk-def">
-          <div :class="parcel.obj.BulletType"></div>
-          <div :class="parcel.obj.ArmorType"></div>
+          <div :class="parcel.unwrap().bulletType"></div>
+          <div :class="parcel.unwrap().armorType"></div>
         </div>
         <div class="name">
-          <p :class="textSize(parcel.name)">
-            {{ parcel.name }}
+          <p :class="textSize(name)">
+            {{ name }}
           </p>
         </div>
         <v-img
@@ -60,12 +60,11 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
+import { fail } from "@/utils/misc";
 import { Icon } from "../GameImg/icon";
-import Scaled from "../misc/Scaled.vue";
-import { getParcel } from "../parcel/parcel";
-import { CCharacter } from "../parcel/character";
 import { uiPath } from "../GameImg/loader";
-import { ParcelType } from "@/assets/game/types/flatDataExcel";
+import Scaled from "../misc/Scaled.vue";
+import { useCharacter } from "../parcel/character/character";
 
 const imgW = 404;
 const imgH = 456;
@@ -83,8 +82,11 @@ const props = defineProps({
   star: Number,
   bond: Number,
 });
-const parcel: CCharacter = getParcel(ParcelType.Character, props.cid) as any;
+const parcel = useCharacter(props.cid);
 
+const name = computed(
+  () => parcel.value?.unwrapOrElse(fail)?.name.value?.unwrapOrElse(fail) ?? "",
+);
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
 watchEffect(() => {
@@ -94,7 +96,9 @@ watchEffect(() => {
 const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
-  starNum.value = levelNum.value === 0 ? parcel.starMin : chara.star;
+  if (parcel.value == null) return;
+  const starMin = parcel.value.unwrapOrElse(fail)?.starMin ?? 0;
+  starNum.value = levelNum.value === 0 ? starMin : chara.star;
 });
 const bondNum = ref(props.bond);
 watchEffect(() => {
@@ -118,10 +122,13 @@ watchEffect(() => {
   gearTexts.value[1] = chara.gear2.toString();
   gearTexts.value[2] = chara.gear3.toString();
   gearTexts.value[3] = chara.gear0.toString();
-  if (parcel.gear == null) gearTexts.value[3] = "";
+  if (parcel.value?.unwrapOrElse(fail)?.gear == null) gearTexts.value[3] = "";
 });
 
-const bg = computed(() => uiPath(parcel.costume.CollectionTexturePath));
+const bg = computed(() => {
+  if (parcel.value?.unwrapOrElse(fail)?.costume.value == null) return null;
+  return uiPath(parcel.value.unwrap().costume.value!.CollectionTexturePath);
+});
 const folder = "/src/assets/game/UIs/01_Common/14_CharacterCollect/";
 const arona = folder + "NPC_Portrait_Arona_Collection.png";
 const plana = folder + "NPC_Portrait_NP0035_Collection.png";

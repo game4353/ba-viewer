@@ -46,6 +46,7 @@ declare module 'vue-router/auto-routes' {
     '/parcel/equipment/[[id]]': RouteRecordInfo<'/parcel/equipment/[[id]]', '/parcel/equipment/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
     '/parcel/furniture/[[id]]': RouteRecordInfo<'/parcel/furniture/[[id]]', '/parcel/furniture/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
     '/parcel/item/[[id]]': RouteRecordInfo<'/parcel/item/[[id]]', '/parcel/item/:id?', { id?: ParamValueZeroOrOne<true> }, { id?: ParamValueZeroOrOne<false> }>,
+    '/parcel/recipe/[id]': RouteRecordInfo<'/parcel/recipe/[id]', '/parcel/recipe/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/party/': RouteRecordInfo<'/party/', '/party', Record<never, never>, Record<never, never>>,
     '/scrimmage/': RouteRecordInfo<'/scrimmage/', '/scrimmage', Record<never, never>, Record<never, never>>,
     '/shop/': RouteRecordInfo<'/shop/', '/shop', Record<never, never>, Record<never, never>>,

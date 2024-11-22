@@ -1,26 +1,55 @@
-import type { CharacterTranscendenceExcel } from "@/assets/game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as d3 } from "~game/excel/CharacterTranscendenceExcelTable.json";
-import type { CCharacter } from "../parcel/character";
-import { ingredientDict } from "../parcel/recipe";
+import { useExcelCharacterTranscendence } from "@/utils/data/excel/character";
+import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
+import { Err, Ok } from "~/utils/result";
+import type { CCharacter } from "../parcel/character/character";
 
-const transcendenceArr = d3 as CharacterTranscendenceExcel[];
-const transcendenceDict: Partial<Record<string, CharacterTranscendenceExcel>> =
-  Object.fromEntries(transcendenceArr.map((v) => [v.CharacterId, v]));
-
-export function transcendenceBonusRate(
+export function useTranscendenceBonusRate(
   this: CCharacter,
   type: "Attack" | "HP" | "Heal",
   star: number,
 ) {
   const key = `StatBonusRate${type}` as const;
-  const excel = transcendenceDict[this.id];
-  if (excel == null) return null;
-  const arr = excel[key];
-  const b = arr.reduce((a, v, i) => a + (i < star ? v : 0));
-  return 1 + b / 10000;
+  const table = useExcelCharacterTranscendence();
+  return computed(() =>
+    table.value?.andThen((map) => {
+      const b = map
+        .get(this.id)
+        ?.[key].reduce((a, v, i) => a + (i < star ? v : 0));
+      return b == null
+        ? Err(
+            new Error(
+              `Unable to find CharacterTranscendenceExcel '${this.id}'.`,
+            ),
+          )
+        : Ok(1 + b / 10000);
+    }),
+  );
 }
-export function transcendenceRecipeIngredient(this: CCharacter, star: number) {
-  const rid = transcendenceDict[this.id]!.RecipeId[star];
-  return ingredientDict[rid ?? ""];
+
+export function useTranscendenceRecipeIngredient(
+  this: CCharacter,
+  star: number,
+) {
+  const transcendenceMap = useExcelCharacterTranscendence();
+  const ingredientMap = useExcelRecipeIngredient();
+  return computed(
+    () =>
+      transcendenceMap.value &&
+      ingredientMap.value &&
+      transcendenceMap.value
+        .andThen((map) => map.getResult(this.id))
+        .andThen((rids) => {
+          const rid = rids.RecipeId?.[star];
+          return rid == null
+            ? Err(
+                new Error(
+                  `Unable to index '${star}'-th RecipeId of CharacterTranscendenceExcel '${this.id}'.`,
+                ),
+              )
+            : Ok(rid);
+        })
+        .andThen((rid) =>
+          ingredientMap.value!.andThen((map) => map.getResult(rid)),
+        ),
+  );
 }

@@ -27,10 +27,11 @@
 <script setup lang="ts">
 import type { EventContentStageExcel } from "~game/types/flatDataExcel";
 import { stageTopographyIcon } from "../GameImg/icon";
+import { ReadonlyDeep } from "type-fest";
 
 defineProps({
   stage: {
-    type: Object as PropType<EventContentStageExcel>,
+    type: Object as PropType<ReadonlyDeep<EventContentStageExcel>>,
     required: true,
   },
 });

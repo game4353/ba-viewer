@@ -3,8 +3,9 @@ import type {
   FurnitureExcel,
 } from "~game/types/flatDataExcel";
 // @ts-ignore
-import { DataList as d3 } from "~game/excel/CafeInteractionExcelTable.json";
 import { unreachable } from "@/utils/misc";
+import type { ReadonlyDeep } from "type-fest";
+import { DataList as d3 } from "~game/excel/CafeInteractionExcelTable.json";
 
 const cafeInteractionArr = d3 as CafeInteractionExcel[];
 const cafeInteractionDict: Partial<Record<string, number>> = Object.fromEntries(
@@ -20,7 +21,7 @@ function getFurnitureInteractCid(key: string) {
 
 export function furnitureInteract(
   type: "Req" | "Add" | "Make" | "Only" | "All",
-  excel: FurnitureExcel,
+  excel: ReadonlyDeep<FurnitureExcel>,
 ) {
   switch (type) {
     case "Req":

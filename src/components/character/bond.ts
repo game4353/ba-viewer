@@ -1,7 +1,7 @@
 import type { FavorLevelRewardExcel } from "@/assets/game/types/flatDataExcel";
 // @ts-ignore
 import { DataList } from "~game/excel/FavorLevelRewardExcelTable.json";
-import type { CCharacter } from "../parcel/character";
+import type { CCharacter } from "../parcel/character/character";
 
 const favorArr = DataList as FavorLevelRewardExcel[];
 const favorDict: Partial<Record<string, FavorLevelRewardExcel>> =

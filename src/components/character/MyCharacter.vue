@@ -1,15 +1,15 @@
 <template>
-  <router-link :to="`/student/${parcel.id}`">
+  <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
     <Scaled :scale :width="imgW" :height="imgH">
       <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
         <GameImg
-          :path="parcel.iconPath"
+          :path="parcel.unwrap().iconPath"
           class="absolute top-0 left-0 p-1 w-auto"
         />
         <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>
         <div class="atk-def">
-          <div :class="parcel.obj.BulletType"></div>
-          <div :class="parcel.obj.ArmorType"></div>
+          <div :class="parcel.unwrap().bulletType"></div>
+          <div :class="parcel.unwrap().armorType"></div>
         </div>
         <v-img
           class="star"
@@ -35,14 +35,10 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { Icon } from "../GameImg/icon";
+import { fail } from "@/utils/misc";
+import { Icon, rarityBgIcon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
-import { getParcel } from "../parcel/parcel";
-import { CCharacter } from "../parcel/character";
-import { ASSERT_UNREACHABLE } from "../warn/error";
-import { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
-
-const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
+import { useCharacter } from "../parcel/character/character";
 
 const imgW = 256;
 const imgH = 210;
@@ -57,7 +53,7 @@ const props = defineProps({
   star: Number,
   bond: Number,
 });
-const parcel: CCharacter = getParcel(ParcelType.Character, props.cid) as any;
+const parcel = useCharacter(props.cid);
 
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
@@ -68,7 +64,9 @@ watchEffect(() => {
 const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
-  starNum.value = levelNum.value === 0 ? parcel.starMin : chara.star;
+  if (parcel.value == null) return;
+  const starMin = parcel.value.unwrapOrElse(fail)?.starMin ?? 0;
+  starNum.value = levelNum.value === 0 ? starMin : chara.star;
 });
 const bondNum = ref(props.bond);
 watchEffect(() => {
@@ -77,18 +75,8 @@ watchEffect(() => {
 });
 
 const bg = computed(() => {
-  switch (parcel.rarity) {
-    case Rarity.N:
-      return Icon.BgN;
-    case Rarity.R:
-      return Icon.BgR;
-    case Rarity.SR:
-      return Icon.BgSR;
-    case Rarity.SSR:
-      return Icon.BgSSR;
-    default:
-      assertUnreachable(`Unknown rarity ${parcel.rarity}`);
-  }
+  if (parcel.value?.unwrapOrElse(fail) == null) return;
+  return rarityBgIcon(parcel.value.unwrap().rarity);
 });
 </script>
 
