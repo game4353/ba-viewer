@@ -1,3 +1,4 @@
+import { cache } from "@/util";
 import type {
   CharacterExcelTable,
   CharacterGearExcelTable,
@@ -5,14 +6,11 @@ import type {
   CharacterTranscendenceExcelTable,
   CostumeExcelTable,
 } from "~game/types/flatDataExcel";
-import { useExcelDbMapMany, useExcelMapMany, useExcelMapSingle } from ".";
 import type {
   CharacterPotentialExcel,
   CharacterPotentialStatExcel,
-  CharacterVoiceExcel,
-  CharacterVoiceSubtitleExcel,
 } from "~game/types/flatDataExcelDb";
-import { cache } from "@/util";
+import { useExcelDbMapMany, useExcelMapMany, useExcelMapSingle } from ".";
 
 export const useExcelCharacter = cache(() =>
   useExcelMapSingle<CharacterExcelTable, "Id">("CharacterExcelTable", "Id"),
@@ -54,19 +52,5 @@ export const useExcelDbCharacterPotentialStat = cache(() =>
   useExcelDbMapMany<CharacterPotentialStatExcel, "PotentialStatGroupId">(
     "CharacterPotentialStat",
     "PotentialStatGroupId",
-  ),
-);
-
-export const useExcelDbCharacterVoice = cache(() =>
-  useExcelDbMapMany<CharacterVoiceExcel, "CharacterVoiceGroupId">(
-    "CharacterVoice",
-    "CharacterVoiceGroupId",
-  ),
-);
-
-export const useExcelDbCharacterVoiceSubtitle = cache(() =>
-  useExcelDbMapMany<CharacterVoiceSubtitleExcel, "CharacterVoiceGroupId">(
-    "CharacterVoiceSubtitle",
-    "CharacterVoiceGroupId",
   ),
 );

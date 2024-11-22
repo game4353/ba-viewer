@@ -25,7 +25,7 @@
           </v-tabs-window-item>
           <v-tabs-window-item value="info"> </v-tabs-window-item>
           <v-tabs-window-item value="voice">
-            <!-- <TabVoice :cid /> -->
+            <TabVoice :cid />
           </v-tabs-window-item>
         </v-tabs-window>
       </div>
