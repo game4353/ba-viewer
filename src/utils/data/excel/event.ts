@@ -1,3 +1,4 @@
+import { cache } from "@/util";
 import type {
   EventContentBoxGachaManageExcelTable,
   EventContentBoxGachaShopExcelTable,
@@ -12,9 +13,9 @@ import type {
   EventContentShopExcelTable,
   EventContentStageExcelTable,
   EventContentStageRewardExcelTable,
+  EventContentStageTotalRewardExcelTable,
 } from "~game/types/flatDataExcel";
 import { useExcelMapMany, useExcelMapSingle } from ".";
-import { cache } from "@/util";
 
 export const useExcelEventContentSeason = cache(() =>
   useExcelMapMany<EventContentSeasonExcelTable, "EventContentId">(
@@ -34,6 +35,12 @@ export const useExcelEventContentStageReward = cache(() =>
   useExcelMapMany<EventContentStageRewardExcelTable, "GroupId">(
     "EventContentStageRewardExcelTable",
     "GroupId",
+  ),
+);
+export const useExcelEventContentStageTotalReward = cache(() =>
+  useExcelMapMany<EventContentStageTotalRewardExcelTable, "EventContentId">(
+    "EventContentStageTotalRewardExcelTable",
+    "EventContentId",
   ),
 );
 

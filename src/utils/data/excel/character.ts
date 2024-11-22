@@ -9,6 +9,8 @@ import { useExcelDbMapMany, useExcelMapMany, useExcelMapSingle } from ".";
 import type {
   CharacterPotentialExcel,
   CharacterPotentialStatExcel,
+  CharacterVoiceExcel,
+  CharacterVoiceSubtitleExcel,
 } from "~game/types/flatDataExcelDb";
 import { cache } from "@/util";
 
@@ -52,5 +54,19 @@ export const useExcelDbCharacterPotentialStat = cache(() =>
   useExcelDbMapMany<CharacterPotentialStatExcel, "PotentialStatGroupId">(
     "CharacterPotentialStat",
     "PotentialStatGroupId",
+  ),
+);
+
+export const useExcelDbCharacterVoice = cache(() =>
+  useExcelDbMapMany<CharacterVoiceExcel, "CharacterVoiceGroupId">(
+    "CharacterVoice",
+    "CharacterVoiceGroupId",
+  ),
+);
+
+export const useExcelDbCharacterVoiceSubtitle = cache(() =>
+  useExcelDbMapMany<CharacterVoiceSubtitleExcel, "CharacterVoiceGroupId">(
+    "CharacterVoiceSubtitle",
+    "CharacterVoiceGroupId",
   ),
 );
