@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column w-min">
     <div class="w-full h-16">
-      <p :class="descSize">{{ desc }}</p>
+      <p :class="descSize">{{ desc?.unwrapOrElse(fail) }}</p>
     </div>
     <div class="flex flex-row w-36">
       <Parcel

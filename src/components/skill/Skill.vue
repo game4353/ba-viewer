@@ -13,7 +13,9 @@
       </template>
 
       <template v-slot:title>
-        <div class="font-weight-black">{{ skill.name }}</div>
+        <div class="font-weight-black">
+          {{ skill.name?.value?.unwrapOrElse(fail) }}
+        </div>
         <v-card-subtitle>
           <div class="flex flex-row gap-2">
             <span class="text-sm" v-if="lv != null">LV {{ lv }}</span>
