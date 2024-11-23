@@ -15,6 +15,24 @@
       ></v-btn>
       <v-btn icon="mdi-magnify-plus" size="small" @click="zoom()"></v-btn>
       <v-btn icon="mdi-magnify-minus" size="small" @click="zoom(true)"></v-btn>
+      <v-btn
+        :icon="mute ? 'mdi-volume-off' : 'mdi-volume-high'"
+        size="small"
+        @click="mute = !mute"
+      ></v-btn>
+      <v-text-field
+        class="w-24"
+        label="width"
+        type="number"
+        v-model="width"
+      ></v-text-field>
+      <v-text-field
+        class="w-24"
+        label="height"
+        type="number"
+        v-model="height"
+      ></v-text-field>
+      <MusicPlayer v-if="bgm" :filename="bgm" />
     </div>
   </div>
 </template>
@@ -28,30 +46,63 @@ const props = defineProps({
     type: Array as PropType<Array<string>>,
     required: true,
   },
+  bgm: {
+    type: String,
+  },
 });
-
+const path = props.paths[0];
 const l2d = new Live2DViewer();
 const box = ref();
 const animations = ref([] as string[]);
 const scale = ref(0);
+const mute = ref(true);
+const width = ref(
+  {
+    SpineLobbies: 1108,
+  }[path.split("/")[2]] ?? 600,
+);
+const height = ref(
+  {
+    SpineLobbies: 831,
+  }[path.split("/")[2]] ?? 800,
+);
+const offsetX =
+  {
+    SpineLobbies: 551,
+  }[path.split("/")[2]] ?? 290;
+
+const offsetY =
+  {
+    SpineLobbies: 831,
+  }[path.split("/")[2]] ?? 700;
 
 onMounted(() => {
-  l2d.loadModel(props.paths[0]).then(() => {
-    l2d
-      .scaleAssets(0.43)
-      .move(290, 700)
-      .resizeCanvas(600, 800)
-      .appendTo(box.value);
-    animations.value = l2d.getAnimations();
-  });
+  l2d
+    .loadModel(...props.paths)
+    .then(() => {
+      l2d
+        .scaleAssets(0.43)
+        .move(offsetX, offsetY)
+        .resizeCanvas(width.value, height.value)
+        .appendTo(box.value);
+      animations.value = l2d.getAnimations();
+    })
+    .catch((e) => console.error(e));
+});
+
+watch([width, height], () => {
+  l2d.resizeCanvas(width.value, height.value);
+});
+watch([mute], () => {
+  if (mute.value) l2d.mute();
+  else l2d.unmute();
 });
 
 function nextAnimation(prev = false) {
   if (animations.value.length === 0) return;
   if (prev) animations.value.unshift(animations.value.pop()!);
   else animations.value.push(animations.value.shift()!);
-  const state = l2d.char?.state;
-  state?.setAnimation(1, animations.value[0], false);
+  l2d.playAnimation(animations.value[0]);
 }
 
 function zoom(out = false) {

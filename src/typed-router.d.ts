@@ -36,6 +36,8 @@ declare module 'vue-router/auto-routes' {
     '/guide/': RouteRecordInfo<'/guide/', '/guide', Record<never, never>, Record<never, never>>,
     '/guide/[id]/': RouteRecordInfo<'/guide/[id]/', '/guide/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/jointfiringdrill/': RouteRecordInfo<'/jointfiringdrill/', '/jointfiringdrill', Record<never, never>, Record<never, never>>,
+    '/l2d/': RouteRecordInfo<'/l2d/', '/l2d', Record<never, never>, Record<never, never>>,
+    '/l2d/query/': RouteRecordInfo<'/l2d/query/', '/l2d/query', Record<never, never>, Record<never, never>>,
     '/message/': RouteRecordInfo<'/message/', '/message', Record<never, never>, Record<never, never>>,
     '/mission/': RouteRecordInfo<'/mission/', '/mission', Record<never, never>, Record<never, never>>,
     '/multifloor/': RouteRecordInfo<'/multifloor/', '/multifloor', Record<never, never>, Record<never, never>>,
