@@ -10,7 +10,7 @@
     "api": "tsc -p src/api/tsconfig.json",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "format": "prettier . --write",
-    "pre": "pnpm lint && pnpm format",
+    "pre": "pnpm format && pnpm lint && vue-tsc --noEmit",
     "test": "vitest"
   },
   "dependencies": {
