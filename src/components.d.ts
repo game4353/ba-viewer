@@ -52,7 +52,6 @@ declare module 'vue' {
     ParcelBox: typeof import('./components/parcel/ParcelBox.vue')['default']
     ParcelCommon: typeof import('./components/parcel/ParcelCommon.vue')['default']
     Recipe: typeof import('./components/parcel/recipe/Recipe.vue')['default']
-    RecipeDetail: typeof import('./components/parcel/recipe/RecipeDetail.vue')['default']
     RecipeIngredient: typeof import('./components/parcel/recipe/RecipeIngredient.vue')['default']
     RecipeSelection: typeof import('./components/parcel/recipe/RecipeSelection.vue')['default']
     RichText: typeof import('./components/misc/RichText.vue')['default']
@@ -77,7 +76,6 @@ declare module 'vue' {
     TabVoice: typeof import('./components/character/TabVoice.vue')['default']
     Voice: typeof import('./components/audio/Voice.vue')['default']
     VoiceByEvent: typeof import('./components/audio/VoiceByEvent.vue')['default']
-    Voices: typeof import('./components/audio/Voices.vue')['default']
     WIP: typeof import('./components/warn/WIP.vue')['default']
   }
 }

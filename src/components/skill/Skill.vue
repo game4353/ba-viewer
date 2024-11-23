@@ -1,10 +1,14 @@
 <template>
-  <SkillIcon v-if="layout === 'icon'" :path="skill.iconPath" :type />
+  <SkillIcon
+    v-if="layout === 'icon' && skill.iconPath"
+    :path="skill.iconPath"
+    :type
+  />
   <div v-else>
     <v-card>
       <template v-slot:prepend>
         <div class="w-12">
-          <SkillIcon :path="skill.iconPath" :type />
+          <SkillIcon v-if="skill.iconPath" :path="skill.iconPath" :type />
         </div>
       </template>
 
@@ -13,8 +17,8 @@
         <v-card-subtitle>
           <div class="flex flex-row gap-2">
             <span class="text-sm" v-if="lv != null">LV {{ lv }}</span>
-            <span class="text-sm" v-if="skill.rawExcel.SkillCost > 0">
-              cost {{ skill.rawExcel.SkillCost }}
+            <span class="text-sm" v-if="(skill.obj?.SkillCost ?? 0) > 0">
+              cost {{ skill.obj!.SkillCost }}
             </span>
           </div>
         </v-card-subtitle>
@@ -37,6 +41,7 @@
 
 <script setup lang="ts">
 import { BulletType } from "@/assets/game/types/flatDataExcel";
+import { fail } from "@/utils/misc";
 import { CSkill } from "./skill";
 
 const props = defineProps({
@@ -54,6 +59,6 @@ const skill = computed(() => new CSkill(props.sid));
 const desc = ref("");
 watchEffect(() => {
   if (props.lv != null) skill.value.level = props.lv;
-  desc.value = skill.value.desc;
+  desc.value = skill.value.desc?.value?.unwrapOrElse(fail) ?? "";
 });
 </script>

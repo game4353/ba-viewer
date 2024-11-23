@@ -31,7 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import ShopItem from "@/components/shop/ShopItem.vue";
 import {
   useExcelEventContentBoxGachaManage,
   useExcelEventContentBoxGachaShop,

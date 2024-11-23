@@ -35,13 +35,14 @@
 
 <script setup lang="ts">
 import { useExcelGoods } from "@/utils/data/excel/shop";
+import { Local } from "@/utils/localize";
 import { fail } from "@/utils/misc";
 import { PropType } from "vue";
 import { getParcel } from "../parcel/parcel";
 
 const props = defineProps({
-  name: {
-    type: String,
+  nameEtcId: {
+    type: Number,
   },
   amount: {
     type: Number,
@@ -71,9 +72,10 @@ const gain = computed(() =>
   }),
 );
 
-const nameStr = computed(
-  () =>
-    props.name ?? gain.value?.[0].parcel?.name.value?.unwrapOrElse(fail) ?? "",
+const nameStr = computed(() =>
+  props.nameEtcId == null
+    ? gain.value?.[0].parcel?.name.value?.unwrapOrElse(fail)
+    : Local.useLocalizeEtc(props.nameEtcId).value?.unwrapOrElse(fail),
 );
 const nameLen = computed(() => nameStr.value?.length ?? 0);
 const nameSize = computed(() =>
