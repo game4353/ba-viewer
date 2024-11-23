@@ -39,10 +39,15 @@ const images = Object.fromEntries(
   ]),
 );
 /** @param path Starts with 'UIs/', ends without '.png'. */
-export function uiPath(path: string) {
-  const p = images[path.toLowerCase()];
+export function uiPath(path?: string) {
+  if (path == null) return "";
+  if (path === "") {
+    console.error("UI path is empty.");
+    return "";
+  }
+  const p = images[path!.toLowerCase()];
   if (p != null) return p;
-  const jp = images[path.toLowerCase() + "_jp"];
+  const jp = images[path!.toLowerCase() + "_jp"];
   if (jp != null) return jp;
   console.error(`Unable to find ${path}`);
   return "";
