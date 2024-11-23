@@ -24,18 +24,19 @@ export function unzip(zipFilePath: string, outputDir: string) {
           fs.mkdirSync(extractPath, { recursive: true });
           zipfile.readEntry();
         } else {
-          // Ensure parent directory exists
-          const parentDir = path.dirname(extractPath);
-          fs.mkdirSync(parentDir, { recursive: true });
-
           // Extract file
           zipfile.openReadStream(entry, (err, readStream) => {
             if (err) {
               reject(err);
               return;
             }
-            readStream.on("end", () => zipfile.readEntry());
-            readStream.pipe(fs.createWriteStream(extractPath));
+            const parentDir = path.dirname(extractPath);
+            fs.mkdirSync(parentDir, { recursive: true });
+
+            const writeStream = fs.createWriteStream(extractPath);
+            writeStream.on("error", reject); // Catch write errors
+            readStream.on("end", () => zipfile.readEntry()); // Read next entry
+            readStream.pipe(writeStream);
           });
         }
       });
