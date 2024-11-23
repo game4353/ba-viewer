@@ -1,6 +1,7 @@
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
 import { Local } from "@/utils/localize";
 import { fail, toEnum } from "@/utils/misc";
+import type { Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import {
@@ -12,8 +13,8 @@ import {
 } from "~game/types/flatDataExcel";
 import type { IParcel } from "../parcel";
 import type { CTag, IFilterable } from "../tag";
-import { furnitureInteract } from "./interact";
-import { furnitureGroupDict, type CFurnitureGroup } from "./series";
+import { useFurnitureInteract } from "./interact";
+import { useFurnitureGroup, type CFurnitureGroup } from "./series";
 import {
   FurnitureTagCategoryGroup,
   FurnitureTagInteractionGroup,
@@ -24,12 +25,12 @@ import {
 export class CFurniture implements IFilterable, IParcel {
   type = ParcelType.Furniture as const;
 
-  group?: CFurnitureGroup;
+  group: globalThis.ComputedRef<Result<CFurnitureGroup, Error> | undefined>;
   search: globalThis.ComputedRef<string[]>;
   tags: CTag<Object>[];
   hideCount: number = 0;
   constructor(public obj: ReadonlyDeep<FurnitureExcel>) {
-    this.group = furnitureGroupDict[this.obj.SetGroudpId];
+    this.group = useFurnitureGroup(this.obj.SetGroudpId);
     this.search = computed(() => {
       const name = this.name.value?.unwrapOrElse(fail);
       if (name == null) return [];
@@ -76,7 +77,7 @@ export class CFurniture implements IFilterable, IParcel {
     return this.getInteract("Only");
   }
   getInteract(type: "Req" | "Add" | "Make" | "Only" | "All") {
-    return furnitureInteract(type, this.obj);
+    return useFurnitureInteract(type, this.obj);
   }
   get isInteractive() {
     return this.getInteract("All").length > 0;

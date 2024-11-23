@@ -27,9 +27,6 @@ import type { IParcel } from "../parcel";
 import type { CTag, IFilterable } from "../tag";
 import { CharacterTagProductionGroup } from "./tag";
 
-// @ts-ignore
-import { DataList } from "~game/excel/CharacterExcelTable.json";
-
 export class CCharacter implements IFilterable, IParcel {
   type = ParcelType.Character as const;
   tags: CTag<Object>[];
@@ -111,13 +108,6 @@ export function useCharacter(id: number) {
       .map((c) => new CCharacter(c));
   });
 }
-
-export const playable = (DataList as CharacterExcel[]).filter(
-  (v) =>
-    v.IsPlayableCharacter &&
-    !v.IsNPC &&
-    v.ProductionStep === ProductionStep.Release,
-);
 
 function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
   return (

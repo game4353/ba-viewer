@@ -1,7 +1,4 @@
-import {
-  playable,
-  useCharacter,
-} from "@/components/parcel/character/character";
+import { useCharacter } from "@/components/parcel/character/character";
 import { cache } from "@/util";
 import { useExcelCharacterStat } from "@/utils/data/excel/character";
 import { fail, interpolation, unreachable } from "@/utils/misc";
@@ -257,13 +254,21 @@ export function getCharaDataV0(id: number, type: "now" | "goal") {
 
 export function getAllCharaDataV0() {
   const characters: CharaDataV0 = {};
-  playable.forEach((o) => {
-    const now = getCharaDataV0(o.Id, "now");
-    const goal = getCharaDataV0(o.Id, "goal");
-    if ((now ?? goal) != null) {
-      characters[o.Id] = { now, goal };
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key?.startsWith("charaNow")) {
+      characters[Number(key.slice(8))] ??= {};
+      characters[Number(key.slice(8))].now = CharaData.fromString(
+        localStorage.getItem(key)!,
+      );
     }
-  });
+    if (key?.startsWith("charaGoal")) {
+      characters[Number(key.slice(9))] ??= {};
+      characters[Number(key.slice(9))].goal = CharaData.fromString(
+        localStorage.getItem(key)!,
+      );
+    }
+  }
   return characters;
 }
 

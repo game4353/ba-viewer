@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { Localize } from "@/utils/localize";
+import { ReadonlyDeep } from "type-fest";
 import {
   MissionCompleteConditionType,
   type GuideMissionExcel,
@@ -31,7 +32,7 @@ function format(str: string, ...args: any[]) {
 
 const props = defineProps({
   mission: {
-    type: Object as PropType<GuideMissionExcel>,
+    type: Object as PropType<ReadonlyDeep<GuideMissionExcel>>,
     required: true,
   },
 });

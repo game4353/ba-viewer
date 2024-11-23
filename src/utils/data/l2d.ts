@@ -1,7 +1,8 @@
+import { cache } from "@/util";
 import { Err, Ok } from "~/utils/result";
 import { useFetch } from "./index";
 
-export function useSpineLobbyPath() {
+export const useSpineLobbyPath = cache(() => {
   const url = computed(() => `/data/lobby.json`);
   const { data, error } = useFetch<Partial<Record<number, string[]>>>(url);
   const state = computed(() => {
@@ -10,9 +11,9 @@ export function useSpineLobbyPath() {
     return Err(error.value as Error);
   });
   return readonly(state);
-}
+});
 
-export function useSpineCharacterPath() {
+export const useSpineCharacterPath = cache(() => {
   const url = computed(() => `/data/l2d.json`);
   const { data, error } = useFetch<Partial<Record<number, string[]>>>(url);
   const state = computed(() => {
@@ -21,4 +22,4 @@ export function useSpineCharacterPath() {
     return Err(error.value as Error);
   });
   return readonly(state);
-}
+});

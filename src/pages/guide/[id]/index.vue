@@ -1,6 +1,6 @@
 <template>
   <WIP />
-  <div class="flex flex-col gap-8 w-min">
+  <div class="flex flex-col gap-8 w-min" v-if="guide && tabs">
     <div class="flex flex-row">
       <GameImg :path="guide.LobbyBannerImage" class="h-40" />
       <div class="flex grow items-center">
@@ -16,36 +16,28 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  GuideMissionExcel,
-  GuideMissionSeasonExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/GuideMissionExcelTable.json";
-// @ts-ignore
-import { DataList as d2 } from "~game/excel/GuideMissionSeasonExcelTable.json";
-
-import { ASSERT_UNIQUE_FILTER } from "@/components/warn/error";
 import GuideMission from "@/components/guide/GuideMission.vue";
+import {
+  useExcelGuideMission,
+  useExcelGuideMissionSeason,
+} from "@/utils/data/excel/guide";
+import { fail } from "@/utils/misc";
 
 const route = useRoute<"/guide/[id]/">();
 const gid = Number(route.params.id);
 
-const tabs: GuideMissionExcel[][] = [];
-const assertUniqueFilter = inject(ASSERT_UNIQUE_FILTER)!;
-
-const guide = assertUniqueFilter(
-  d2 as GuideMissionSeasonExcel[],
-  [["Id", gid]],
-  404,
+const guide = computed(() =>
+  useExcelGuideMissionSeason()
+    .value?.andThen((map) => map.getResult(gid))
+    .unwrapOrElse(fail),
 );
 
-const missions = (DataList as GuideMissionExcel[]).filter(
-  (v) => v.SeasonId === gid,
-);
-missions.forEach((v) => {
-  const tab = v.TabNumber;
-  if (tabs[tab] == null) tabs[tab] = [];
-  tabs[tab].push(v);
+const tabs = computed(() => {
+  const missions = useExcelGuideMission()
+    .value?.andThen((map) => map.getResult(gid))
+    .unwrapOrElse(fail);
+  if (missions == null) return undefined;
+  const map = Map.groupBy(missions, (m) => m.TabNumber);
+  return Array.from({ length: map.size }, (_, i) => map.get(i));
 });
 </script>

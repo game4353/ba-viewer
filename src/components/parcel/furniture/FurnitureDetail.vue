@@ -15,11 +15,11 @@
     </v-card>
     <v-card
       class="border rounded-xl m-4"
-      v-if="picked.group != null"
-      :title="picked.group.groupName"
+      v-if="picked.group.value?.isOk()"
+      :title="picked.group.value.unwrap().groupName.value?.unwrapOrElse(fail)"
     >
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.group.groupDesc }}
+        {{ picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(fail) }}
       </v-card-text>
     </v-card>
     <v-card
@@ -34,8 +34,8 @@
             class="flex flex-col w-min gap-2 items-center py-4"
           >
             <div class="flex flex-row">
-              <div v-for="c in picked.getInteract(tag)" :key="c">
-                <MyCharacter :cid="c" :scale="0.35" />
+              <div v-for="(c, key) in picked.getInteract(tag)" :key>
+                <MyCharacter v-if="c.value" :cid="c.value" :scale="0.35" />
               </div>
             </div>
             <v-tooltip :text="interactionTypes[tag]">

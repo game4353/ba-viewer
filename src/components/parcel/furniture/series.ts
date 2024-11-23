@@ -1,30 +1,29 @@
+import { useExcelFurnitureGroup } from "@/utils/data/excel/parcel";
+import { Local } from "@/utils/localize";
+import type { ReadonlyDeep } from "type-fest";
 import type { FurnitureGroupExcel } from "~game/types/flatDataExcel";
-import { Localize } from "@/utils/localize";
-// @ts-ignore
-import { DataList } from "~game/excel/FurnitureGroupExcelTable.json";
-
-const furnitureGroupArr = DataList as FurnitureGroupExcel[];
 
 export class CFurnitureGroup {
-  obj: FurnitureGroupExcel;
-  constructor(obj: FurnitureGroupExcel) {
-    this.obj = obj;
-  }
+  constructor(public obj: ReadonlyDeep<FurnitureGroupExcel>) {}
   get groupDesc() {
-    return Localize.etc(this.obj.GroupNameLocalize, "desc");
+    return Local.useLocalizeEtc(this.obj.GroupNameLocalize, true);
   }
   get groupName() {
-    return Localize.etc(this.obj.GroupNameLocalize, "name");
+    return Local.useLocalizeEtc(this.obj.GroupNameLocalize);
   }
   get id() {
     return this.obj.Id;
   }
   get name() {
-    return Localize.etc(this.obj.LocalizeEtcId, "name");
+    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
   }
 }
 
-export const furnitureGroupDict: Partial<Record<string, CFurnitureGroup>> =
-  Object.fromEntries(
-    furnitureGroupArr.map((v) => [v.Id, new CFurnitureGroup(v)]),
+export function useFurnitureGroup(id: number) {
+  const table = useExcelFurnitureGroup();
+  return computed(() =>
+    table.value
+      ?.andThen((map) => map.getResult(id))
+      .map((c) => new CFurnitureGroup(c)),
   );
+}

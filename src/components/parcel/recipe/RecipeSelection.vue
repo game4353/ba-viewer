@@ -24,10 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import type { RecipeSelectionGroupExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/RecipeSelectionGroupExcelTable.json";
-import { ASSERT_SOME } from "../../warn/error";
+import { useExcelRecipeSelectionGroup } from "@/utils/data/excel/recipe";
+import { fail } from "@/utils/misc";
+// import { ASSERT_SOME } from "../../warn/error";
 
 const props = defineProps({
   gid: {
@@ -37,17 +36,17 @@ const props = defineProps({
   amount: Number,
   scale: Number,
 });
-const assertSome = inject(ASSERT_SOME)!;
-const arr = DataList as RecipeSelectionGroupExcel[];
-const dict = Object.groupBy(
-  arr,
-  ({ RecipeSelectionGroupId }) => RecipeSelectionGroupId,
+
+const items = computed(() =>
+  useExcelRecipeSelectionGroup()
+    .value?.andThen((map) => map.getResult(props.gid))
+    .unwrapOrElse(fail),
 );
 
-const items = computed(() => dict[props.gid]);
-assertSome(
-  items.value,
-  500,
-  `Unable to find recipe selection group id (${props.gid}).`,
-);
+// const assertSome = inject(ASSERT_SOME)!;
+// assertSome(
+//   items.value,
+//   500,
+//   `Unable to find recipe selection group id (${props.gid}).`,
+// );
 </script>
