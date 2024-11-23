@@ -37,7 +37,7 @@
 import { useCharaStore } from "@/stores/character";
 import { storeToRefs } from "pinia";
 import { useCharacter } from "../parcel/character/character";
-import { getSkillList } from "../skill/skillList";
+import { useSkillList } from "../skill/skillList";
 
 const props = defineProps({
   cid: {
@@ -50,13 +50,11 @@ const chara = useCharacter(props.cid);
 const store = useCharaStore(props.cid);
 const charaNow = storeToRefs(store.now());
 
-const skillList = computed(() => {
-  return getSkillList(
-    props.cid,
-    charaNow.star.value > 6 ? 2 : 0,
-    charaNow.gear0.value > 1 ? 2 : 0,
-  );
-});
+const skillList = useSkillList(
+  props.cid,
+  charaNow.star.value > 6 ? 2 : 0,
+  charaNow.gear0.value > 1 ? 2 : 0,
+);
 const skillEX = computed(() => skillList.value?.ExSkillGroupId?.at(0));
 const skillNS = computed(() => skillList.value?.PublicSkillGroupId?.at(0));
 const skillPS = computed(() => skillList.value?.PassiveSkillGroupId?.at(0));

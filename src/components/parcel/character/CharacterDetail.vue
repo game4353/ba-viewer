@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { getSkillListFull } from "@/components/skill/skillList";
+import { useSkillListFull } from "@/components/skill/skillList";
 import { fail } from "@/utils/misc";
 import { ParcelType } from "~game/types/flatDataExcel";
 import { useCharacter } from "./character";
@@ -109,7 +109,7 @@ const picked = computed(() => {
 const skills = computed(() => {
   const sid = picked.value?.id;
   if (sid == null) return null;
-  return getSkillListFull(sid);
+  return useSkillListFull(sid).value;
 });
 const skill = computed(() => {
   const obj1 = skills.value;
