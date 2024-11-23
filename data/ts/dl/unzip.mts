@@ -24,6 +24,10 @@ export function unzip(zipFilePath: string, outputDir: string) {
           fs.mkdirSync(extractPath, { recursive: true });
           zipfile.readEntry();
         } else {
+          // Ensure parent directory exists
+          const parentDir = path.dirname(extractPath);
+          fs.mkdirSync(parentDir, { recursive: true });
+
           // Extract file
           zipfile.openReadStream(entry, (err, readStream) => {
             if (err) {
