@@ -1,40 +1,41 @@
+import { useExcelFurniture } from "@/utils/data/excel/parcel";
+import { Local } from "@/utils/localize";
+import { fail, toEnum } from "@/utils/misc";
+import type { Result } from "@/utils/result";
+import type { ReadonlyDeep } from "type-fest";
+import { toHiragana, toKatakana } from "wanakana";
 import {
   FurnitureCategory,
   FurnitureSubCategory,
+  ParcelType,
   Rarity,
   type FurnitureExcel,
 } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as d1 } from "~game/excel/FurnitureExcelTable.json";
-import { Localize } from "@/utils/localize";
 import type { IParcel } from "../parcel";
-import { toHiragana, toKatakana } from "wanakana";
-import { furnitureGroupDict, type CFurnitureGroup } from "./series";
-import { furnitureInteract } from "./interact";
 import type { CTag, IFilterable } from "../tag";
+import { useFurnitureInteract } from "./interact";
+import { useFurnitureGroup, type CFurnitureGroup } from "./series";
 import {
   FurnitureTagCategoryGroup,
   FurnitureTagInteractionGroup,
   FurnitureTagRarityGroup,
   FurnitureTagSubCategoryGroup,
 } from "./tag";
-import { toEnum } from "@/utils/misc";
-
-const furnitureArr = d1 as FurnitureExcel[];
 
 export class CFurniture implements IFilterable, IParcel {
-  type = "Furniture" as const;
-  obj: FurnitureExcel;
-  group?: CFurnitureGroup;
-  name: string;
-  search: string[];
+  type = ParcelType.Furniture as const;
+
+  group: globalThis.ComputedRef<Result<CFurnitureGroup, Error> | undefined>;
+  search: globalThis.ComputedRef<string[]>;
   tags: CTag<Object>[];
   hideCount: number = 0;
-  constructor(obj: FurnitureExcel) {
-    this.obj = obj;
-    this.group = furnitureGroupDict[this.obj.SetGroudpId];
-    this.name = Localize.etc(this.obj.LocalizeEtcId, "name");
-    this.search = [toHiragana(this.name), toKatakana(this.name)];
+  constructor(public obj: ReadonlyDeep<FurnitureExcel>) {
+    this.group = useFurnitureGroup(this.obj.SetGroudpId);
+    this.search = computed(() => {
+      const name = this.name.value?.unwrapOrElse(fail);
+      if (name == null) return [];
+      return [toHiragana(name), toKatakana(name)];
+    });
     this.tags = [
       FurnitureTagInteractionGroup.getTag(this.isInteractive),
       FurnitureTagRarityGroup.getTag(toEnum(Rarity, obj.Rarity)),
@@ -46,13 +47,16 @@ export class CFurniture implements IFilterable, IParcel {
     this.tags.forEach((v) => v.add(this));
   }
   get desc() {
-    return Localize.etc(this.obj.LocalizeEtcId, "desc");
+    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
   }
   get iconPath() {
     return this.obj.Icon;
   }
   get id() {
     return this.obj.Id;
+  }
+  get name() {
+    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
   }
   get rarity() {
     return this.obj.Rarity;
@@ -73,12 +77,23 @@ export class CFurniture implements IFilterable, IParcel {
     return this.getInteract("Only");
   }
   getInteract(type: "Req" | "Add" | "Make" | "Only" | "All") {
-    return furnitureInteract(type, this.obj);
+    return useFurnitureInteract(type, this.obj);
   }
   get isInteractive() {
     return this.getInteract("All").length > 0;
   }
 }
 
-export const furnitureDict: Partial<Record<string, CFurniture>> =
-  Object.fromEntries(furnitureArr.map((v) => [v.Id, new CFurniture(v)]));
+export function useFurniture(id: number) {
+  const table = useExcelFurniture();
+  return computed(() =>
+    table.value
+      ?.andThen((map) => map.getResult(id))
+      .map((c) => new CFurniture(c)),
+  );
+}
+
+export function useFurnitureIds() {
+  const table = useExcelFurniture();
+  return computed(() => table.value?.map((map) => Array.from(map.keys())));
+}

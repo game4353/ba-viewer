@@ -1,15 +1,19 @@
 <template>
-  <Parcel type="Item" :pid layout="icon" />
+  <Parcel
+    v-if="item"
+    :type="ParcelType.Item"
+    :pid="item.ItemUniqueId"
+    layout="icon"
+  />
 </template>
 
 <script setup lang="ts">
-import type {
-  EventContentCurrencyItemExcel,
-  EventContentItemType,
+import {
+  ParcelType,
+  type EventContentItemType,
 } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentCurrencyItemExcelTable.json";
-import { ASSERT_UNIQUE_FILTER } from "../warn/error";
+import { useExcelEventContentCurrencyItem } from "@/utils/data/excel/event";
+import { fail } from "@/utils/misc";
 
 const props = defineProps({
   eid: {
@@ -17,15 +21,16 @@ const props = defineProps({
     required: true,
   },
   eit: {
-    type: String as PropType<keyof typeof EventContentItemType>,
+    type: Number as PropType<EventContentItemType>,
     required: true,
   },
 });
 
-const assertUniqueFilter = inject(ASSERT_UNIQUE_FILTER)!;
-const item = assertUniqueFilter(DataList as EventContentCurrencyItemExcel[], [
-  ["EventContentId", props.eid],
-  ["EventContentItemType", props.eit],
-]);
-const pid = item.ItemUniqueId;
+const table = useExcelEventContentCurrencyItem();
+const item = computed(() =>
+  table.value
+    ?.unwrapOrElse(fail)
+    ?.get(props.eid)
+    ?.find((v) => v.EventContentItemType === props.eit),
+);
 </script>

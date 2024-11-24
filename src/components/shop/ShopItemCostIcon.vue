@@ -1,5 +1,6 @@
 <template>
   <Parcel
+    v-if="good"
     :type="good.ConsumeParcelType[0]"
     :pid="good.ConsumeParcelId[0]"
     layout="icon"
@@ -8,27 +9,23 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import type { GoodsExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/GoodsExcelTable.json";
-import { ASSERT_SOLE } from "../warn/error";
+import { fail } from "@/utils/misc";
+import { useExcelGoods } from "@/utils/data/excel/shop";
 
 const props = defineProps({
   goodsId: {
-    type: Object as PropType<Number[]>,
+    type: Object as PropType<number[] | Readonly<number[]>>,
     required: true,
   },
 });
 
-const goods = props.goodsId
-  .map((i) => (DataList as GoodsExcel[]).find((o) => o.Id === i)!)
-  .filter((v) => v != null);
-
-const assertSole = inject(ASSERT_SOLE)!;
-const message = `Unexpected shop structure: ${JSON.stringify(goods)}`;
-
-assertSole(goods, 500, message);
-const good = goods[0];
+const table = useExcelGoods();
+const good = computed(() => {
+  // TODO: deal with multiple goods
+  const good = table.value?.unwrapOrElse(fail)?.get(props.goodsId[0]);
+  if (good == null) return undefined;
+  return good;
+});
 </script>
 
 <style scoped lang="scss">

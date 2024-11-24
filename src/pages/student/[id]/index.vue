@@ -2,7 +2,7 @@
   <WIP />
   <BG :path="bgPath">
     <div class="flex flex-row">
-      <div><SpineCharacter :paths="paths" /></div>
+      <div><SpineCharacter v-if="paths" :paths="paths" /></div>
 
       <div>
         <v-tabs v-model="tab" bg-color="red-darken-4" color="basil" grow>
@@ -24,6 +24,9 @@
             <TabSkill :cid />
           </v-tabs-window-item>
           <v-tabs-window-item value="info"> </v-tabs-window-item>
+          <v-tabs-window-item value="voice">
+            <TabVoice :cid />
+          </v-tabs-window-item>
         </v-tabs-window>
       </div>
     </div>
@@ -31,23 +34,34 @@
 </template>
 
 <script setup lang="ts">
-import { default as m } from "~game/SpineCharacters.json";
 import SpineCharacter from "@/components/character/SpineCharacter.vue";
-import { CostumeExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/CostumeExcelTable.json";
+import { useExcelCostume } from "@/utils/data/excel/character";
+import { useSpineCharacterPath } from "@/utils/data/l2d";
+import { fail } from "@/utils/misc";
+import { undefinedIsError } from "@/utils/result";
 
 const route = useRoute<"/student/[id]/">();
-const id = route.params.id as keyof typeof m;
-// TODO: 404
-const path = m[id];
-const paths = [`/game/SpineCharacters/${path}`];
+const id = route.params.id;
 const cid = Number(id);
 
-const items = ["basic", "stats", "skill", "info"];
+const items = ["basic", "stats", "skill", "info", "voice"];
 const tab = ref(items[0]);
 
-const data = (DataList as CostumeExcel[]).find((o) => o.CostumeGroupId === cid);
-if (data == null) console.error(`Cannot find ${cid} in character excel table.`);
-const bgPath = data?.CollectionBGTexturePath ?? "";
+const spr = computed(() =>
+  useSpineCharacterPath()
+    .value?.andThen((dict) =>
+      undefinedIsError(dict[cid]?.find((p) => p.endsWith("_spr.skel"))),
+    )
+    .unwrapOrElse(fail),
+);
+const paths = computed(() =>
+  spr.value ? ["/assets/" + spr.value] : undefined,
+);
+
+const data = computed(() =>
+  useExcelCostume()
+    .value?.andThen((map) => map.getResult(cid))
+    .unwrapOrElse(fail),
+);
+const bgPath = computed(() => data.value?.CollectionBGTexturePath ?? "");
 </script>

@@ -36,14 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  EventContentFortuneGachaModifyExcel,
-  EventContentFortuneGachaShopExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as d2 } from "~game/excel/EventContentFortuneGachaModifyExcelTable.json";
-// @ts-ignore
-import { DataList as d3 } from "~game/excel/EventContentFortuneGachaShopExcelTable.json";
+import type { EventContentFortuneGachaShopExcel } from "~game/types/flatDataExcel";
+import { ReadonlyDeep } from "type-fest";
+import {
+  useExcelEventContentFortuneGachaModify,
+  useExcelEventContentFortuneGachaShop,
+} from "@/utils/data/excel/event";
+import { fail } from "@/utils/misc";
 
 const props = defineProps({
   eid: {
@@ -53,16 +52,21 @@ const props = defineProps({
 });
 
 const slider = ref(1);
-const modify =
-  (d2 as EventContentFortuneGachaModifyExcel[]).find(
-    (v) => v.EventContentId === props.eid,
-  )?.ProbModifyStartCount ?? 0;
-const rolls = (d3 as EventContentFortuneGachaShopExcel[])
-  .filter((v) => v.EventContentId === props.eid)
-  .reverse();
 
-function calcProb(r: EventContentFortuneGachaShopExcel) {
-  const step = Math.max(0, slider.value - modify);
+const modifyTable = useExcelEventContentFortuneGachaModify();
+const modify = computed(
+  () =>
+    modifyTable.value?.unwrapOrElse(fail)?.get(props.eid)
+      ?.ProbModifyStartCount ?? 0,
+);
+
+const shopTable = useExcelEventContentFortuneGachaShop();
+const rolls = computed(() => {
+  return shopTable.value?.unwrapOrElse(fail)?.get(props.eid)?.reverse() || [];
+});
+
+function calcProb(r: ReadonlyDeep<EventContentFortuneGachaShopExcel>) {
+  const step = Math.max(0, slider.value - modify.value);
   const prob = r.Prob + step * r.ProbModifyValue;
   if (r.ProbModifyValue > 0) return Math.min(prob, r.ProbModifyLimit);
   else return Math.max(prob, r.ProbModifyLimit);

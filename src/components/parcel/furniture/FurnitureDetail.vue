@@ -2,22 +2,24 @@
   <div v-if="picked != null">
     <v-card class="mx-auto">
       <template v-slot:title>
-        <span class="font-weight-black">{{ picked.name }}</span>
+        <span class="font-weight-black">{{
+          picked.name.value?.unwrapOrElse(fail) ?? ""
+        }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel type="Furniture" :pid="picked.id" :scale="0.4" />
+        <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.desc }}
+        {{ picked.desc.value?.unwrapOrElse(fail) ?? "" }}
       </v-card-text>
     </v-card>
     <v-card
       class="border rounded-xl m-4"
-      v-if="picked.group != null"
-      :title="picked.group.groupName"
+      v-if="picked.group.value?.isOk()"
+      :title="picked.group.value.unwrap().groupName.value?.unwrapOrElse(fail)"
     >
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.group.groupDesc }}
+        {{ picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(fail) }}
       </v-card-text>
     </v-card>
     <v-card
@@ -32,8 +34,8 @@
             class="flex flex-col w-min gap-2 items-center py-4"
           >
             <div class="flex flex-row">
-              <div v-for="c in picked.getInteract(tag)" :key="c">
-                <MyCharacter :cid="c" :scale="0.35" />
+              <div v-for="(c, key) in picked.getInteract(tag)" :key>
+                <MyCharacter v-if="c.value" :cid="c.value" :scale="0.35" />
               </div>
             </div>
             <v-tooltip :text="interactionTypes[tag]">
@@ -52,11 +54,13 @@
 
 <script setup lang="ts">
 import { ObjectKeys } from "@/types";
-import { furnitureDict } from "./furniture";
+import { fail } from "@/utils/misc";
+import { ParcelType } from "~game/types/flatDataExcel";
+import { useFurniture } from "./furniture";
 
 const props = defineProps({
   pid: {
-    type: [String, Number],
+    type: Number,
     required: true,
   },
 });
@@ -68,7 +72,7 @@ const interactionTypes = {
   Only: "Only one character in ONLY will interact.",
 };
 
-const picked = computed(() => {
-  return furnitureDict[props.pid];
-});
+const picked = computed(() =>
+  useFurniture(props.pid).value?.unwrapOrElse(fail),
+);
 </script>

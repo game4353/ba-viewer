@@ -1,5 +1,5 @@
-import { CharaData, getAllCharaDataV0, setCharaDataV0 } from "./character";
 import { unreachable } from "@/utils/misc";
+import { CharaData, getAllCharaDataV0, setCharaDataV0 } from "./character";
 import { parseLoginSync } from "./schema/loginSync";
 import { parseV0 } from "./schema/ver0";
 

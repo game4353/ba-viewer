@@ -24,7 +24,7 @@
         </div>
       </v-tabs-window-item>
       <v-tabs-window-item value="reward">
-        <EventReward :eid />
+        <EventRewards :eid />
       </v-tabs-window-item>
       <v-tabs-window-item value="shop">
         <EventShop :eid />

@@ -63,7 +63,12 @@
               v-for="item in items"
               :key="item.raw.id"
             >
-              <Parcel :pid="item.raw.id" type="Furniture" :scale="0.35" route />
+              <Parcel
+                :pid="item.raw.id"
+                :type="ParcelType.Furniture"
+                :scale="0.35"
+                route
+              />
             </div>
           </div>
         </template>
@@ -82,17 +87,44 @@
 </template>
 
 <script setup lang="ts">
-import { ObjectValues } from "@/types";
-import { toHiragana } from "wanakana";
-import { furnitureDict } from "@/components/parcel/furniture/furniture";
+import {
+  CFurniture,
+  useFurniture,
+  useFurnitureIds,
+} from "@/components/parcel/furniture/furniture";
 import { furnitureTags } from "@/components/parcel/furniture/tag";
+import { fail } from "@/utils/misc";
+import { toHiragana } from "wanakana";
+import { ParcelType } from "~game/types/flatDataExcel";
 
 const currPage = ref(1);
 const search = ref("");
-const furniture = ObjectValues(furnitureDict);
-const sortedItems = ref(furniture);
-const filteredItems = ref(sortedItems.value);
-const searchedItems = ref(filteredItems.value);
+
+const furnitureIds = useFurnitureIds();
+const furnitures = computed(
+  () =>
+    furnitureIds.value
+      ?.unwrapOrElse(fail)
+      ?.map((id) => useFurniture(id).value?.unwrapOrElse(fail))
+      .filter((v): v is CFurniture => v != null) ?? [],
+);
+
+const sortedItems = computed(() => furnitures.value);
+const filteredItems = computed(() => {
+  if (fire.value) return sortedItems.value.filter((v) => v.hideCount === 0);
+  else return sortedItems.value.filter((v) => v.hideCount === 0);
+});
+const searchedItems = computed(() => {
+  const newSearch = search.value ?? "";
+  if (newSearch === "") return filteredItems.value;
+  else {
+    const q = toHiragana(newSearch);
+    return filteredItems.value.filter((f) => {
+      if (f.search.value[0]?.indexOf(q) > -1) return true;
+      return false;
+    });
+  }
+});
 
 const expand = ref("no");
 function switchExpand() {
@@ -106,20 +138,6 @@ const route = useRoute<"/parcel/furniture/[[id]]">();
 const pid = computed(() => {
   const id = route.params.id ?? "";
   return id === "" ? undefined : Number(id);
-});
-watch(fire, () => {
-  filteredItems.value = sortedItems.value.filter((v) => v.hideCount === 0);
-});
-watch([search, filteredItems], () => {
-  const newSearch = search.value ?? "";
-  if (newSearch === "") searchedItems.value = filteredItems.value;
-  else {
-    const q = toHiragana(newSearch);
-    searchedItems.value = filteredItems.value.filter((f) => {
-      if (f.search[0].indexOf(q) > -1) return true;
-      return false;
-    });
-  }
 });
 </script>
 

@@ -1,7 +1,8 @@
 <template>
   <component
+    v-if="parcel"
     :is="route ? 'router-link' : 'div'"
-    :to="`/parcel/${parcel.type.toLowerCase()}/${parcel.id}`"
+    :to="`/parcel/${ParcelType[parcel.type].toLowerCase()}/${parcel.id}`"
   >
     <GameImg v-if="layout == 'icon'" :path="parcel.iconPath" />
     <Scaled
@@ -39,12 +40,12 @@
 </template>
 
 <script setup lang="ts">
-import type { RewardTag } from "~game/types/flatDataExcel";
-import { ASSERT_UNREACHABLE } from "../warn/error";
-import { Icon } from "../GameImg/icon";
+import { ParcelType, RewardTag } from "~game/types/flatDataExcel";
+import { Icon, rarityBgIcon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
-import { IParcel } from "./parcel";
+import { ASSERT_UNREACHABLE } from "../warn/error";
 import { CFurniture } from "./furniture/furniture";
+import { IParcel } from "./parcel";
 
 const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
 
@@ -54,7 +55,6 @@ const imgH = 210;
 const props = defineProps({
   parcel: {
     type: Object as PropType<IParcel>,
-    required: true,
   },
   amount: Number,
   amountMin: Number,
@@ -68,25 +68,14 @@ const props = defineProps({
   scaledH: Number,
   scaleType: String as PropType<"min" | "max">,
   tag: {
-    type: String as PropType<keyof typeof RewardTag>,
+    type: Number as PropType<RewardTag>,
   },
 });
 
 // background
-const bg = computed(() => {
-  switch (props.parcel.rarity) {
-    case "N":
-      return Icon.BgN;
-    case "R":
-      return Icon.BgR;
-    case "SR":
-      return Icon.BgSR;
-    case "SSR":
-      return Icon.BgSSR;
-    default:
-      assertUnreachable(`Unknown rarity ${props.parcel.rarity}`);
-  }
-});
+const bg = computed(() =>
+  props.parcel ? rarityBgIcon(props.parcel.rarity) : "",
+);
 
 // amount
 function convertNum(num: number) {
@@ -109,14 +98,14 @@ const tagStr = computed(() => {
   if (props.layout === "select") return "セレクト";
   switch (props.tag) {
     case undefined:
-    case "Default":
-    case "Event":
+    case RewardTag.Default:
+    case RewardTag.Event:
       return null;
-    case "FirstClear":
+    case RewardTag.FirstClear:
       return "初回";
-    case "ThreeStar":
+    case RewardTag.ThreeStar:
       return "★★★";
-    case "Rare":
+    case RewardTag.Rare:
       return "レア";
     default:
       assertUnreachable(`RewardTag ${props.tag} is not implemented yet.`);

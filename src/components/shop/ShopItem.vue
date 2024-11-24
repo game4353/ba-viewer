@@ -1,6 +1,7 @@
 <template>
   <div
     class="bg flex flex-col items-center pt-2 w-[120px] h-44 border rounded border-white"
+    v-if="good"
   >
     <div class="text-center text-black h-8 mx-1" :class="nameSize">
       {{ nameStr }}
@@ -33,54 +34,53 @@
 </template>
 
 <script setup lang="ts">
+import { useExcelGoods } from "@/utils/data/excel/shop";
+import { Local } from "@/utils/localize";
+import { fail } from "@/utils/misc";
 import { PropType } from "vue";
-import type { GoodsExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/GoodsExcelTable.json";
-import { ASSERT_SOLE, ASSERT_SOME } from "../warn/error";
-import { type IParcel, getParcel } from "../parcel/parcel";
+import { getParcel } from "../parcel/parcel";
 
 const props = defineProps({
-  name: {
-    type: String,
+  nameEtcId: {
+    type: Number,
   },
   amount: {
     type: Number,
   },
   goodsId: {
-    type: Object as PropType<Number[]>,
+    type: Object as PropType<number[] | Readonly<number[]>>,
     required: true,
   },
 });
 
-const goods = props.goodsId
-  .map((i) => (DataList as GoodsExcel[]).find((o) => o.Id === i)!)
-  .filter((v) => v != null);
+const table = useExcelGoods();
 
-const assertSome = inject(ASSERT_SOME)!;
-const assertSole = inject(ASSERT_SOLE)!;
-const message = `Unexpected shop structure: ${JSON.stringify(goods)}`;
-
-assertSole(goods, 500, message);
-const good = goods[0];
-
-const gain: {
-  parcel: IParcel;
-  amount: number;
-}[] = [];
-good.ParcelAmount.forEach((amount, i) => {
-  const parcel = getParcel(good.ParcelType[i], good.ParcelId[i])!;
-  assertSome(parcel);
-  gain.push({ parcel, amount });
+const good = computed(() => {
+  // TODO: deal with multiple goods
+  const good = table.value?.unwrapOrElse(fail)?.get(props.goodsId[0]);
+  if (good == null) return undefined;
+  return good;
 });
 
-assertSole(good.ConsumeParcelAmount, 500, message);
-assertSole(good.ConsumeParcelId, 500, message);
-assertSole(good.ConsumeParcelType, 500, message);
+const gain = computed(() =>
+  good.value?.ParcelAmount.map((amount, i) => {
+    const parcel = getParcel(
+      good.value!.ParcelType[i],
+      good.value!.ParcelId[i],
+    ).value?.unwrapOrElse(fail)!;
+    return { parcel, amount };
+  }),
+);
 
-const nameStr = props.name ?? gain[0].parcel.name;
-const nameLen = nameStr?.length ?? 0;
-const nameSize = nameLen > 16 ? "small" : nameLen > 7 ? "median" : "big";
+const nameStr = computed(() =>
+  props.nameEtcId == null
+    ? gain.value?.[0].parcel?.name.value?.unwrapOrElse(fail)
+    : Local.useLocalizeEtc(props.nameEtcId).value?.unwrapOrElse(fail),
+);
+const nameLen = computed(() => nameStr.value?.length ?? 0);
+const nameSize = computed(() =>
+  nameLen.value > 16 ? "small" : nameLen.value > 7 ? "median" : "big",
+);
 </script>
 
 <style scoped lang="scss">

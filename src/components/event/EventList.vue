@@ -3,8 +3,9 @@
     <router-link
       :to="`/event/${v.EventContentId}`"
       class="no-decoration"
-      v-for="(v, i) of sortedEvents"
+      v-for="(v, i) of events"
       :key="i"
+      :style="`order: ${new Date(v.EventContentOpenTime).getTime() / 10000};`"
     >
       <v-card>
         <div class="flex flex-column items-center">
@@ -24,21 +25,15 @@
 </template>
 
 <script setup lang="ts">
+import { ReadonlyDeep } from "type-fest";
 import type { EventContentSeasonExcel } from "~game/types/flatDataExcel";
 
-const props = defineProps({
+defineProps({
   events: {
-    type: Object as PropType<EventContentSeasonExcel[]>,
+    type: Object as PropType<ReadonlyDeep<EventContentSeasonExcel>[]>,
     required: true,
   },
 });
-
-const sortedEvents = props.events.map((v) => v);
-sortedEvents.sort(
-  (a, b) =>
-    new Date(a.EventContentOpenTime).getTime() -
-    new Date(b.EventContentOpenTime).getTime(),
-);
 </script>
 
 <style scoped>

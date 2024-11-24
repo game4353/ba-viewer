@@ -21,14 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  ShopCategoryType,
-  EventContentShopExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentShopExcelTable.json";
+import type { ShopCategoryType } from "~game/types/flatDataExcel";
 
 import { ASSERT_SOME_FILTER } from "@/components/warn/error";
+import { useExcelEventContentShop } from "@/utils/data/excel/event";
+import { fail } from "@/utils/misc";
 
 const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
 
@@ -40,14 +37,18 @@ const props = defineProps({
 });
 
 const tab = ref(0);
-const shops = (DataList as EventContentShopExcel[]).filter(
-  (o) => o.EventContentId === props.eid,
+
+const table = useExcelEventContentShop();
+const shops = computed(
+  () => table.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
 );
 
-const shopTypes = [...new Set(shops.map((o) => o.CategoryType))];
-function getShop(t: keyof typeof ShopCategoryType) {
+const shopTypes = computed(() => [
+  ...new Set(shops.value.map((o) => o.CategoryType)),
+]);
+function getShop(t: ShopCategoryType) {
   const res = assertSomeFilter(
-    shops,
+    shops.value,
     [["CategoryType", t]],
     500,
     `Empty shop category: ${t}`,

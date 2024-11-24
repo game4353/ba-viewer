@@ -21,9 +21,12 @@
 </template>
 
 <script setup lang="ts">
-import type { GuideMissionSeasonExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/GuideMissionSeasonExcelTable.json";
+import { useExcel } from "@/utils/data/excel";
+import { fail } from "@/utils/misc";
+import type { GuideMissionSeasonExcelTable } from "~game/types/flatDataExcel";
 
-const guides = DataList as GuideMissionSeasonExcel[];
+const table = useExcel<GuideMissionSeasonExcelTable>(
+  "GuideMissionSeasonExcelTable",
+);
+const guides = computed(() => table.value?.unwrapOrElse(fail)?.DataList);
 </script>

@@ -6,15 +6,12 @@
           class="flex flex-row flex-wrap gap-y-2 mt-1 max-h-[600px] overflow-auto"
         >
           <div
-            v-for="item in Object.values(equipmentDict)"
-            :key="item!.id"
-            :class="
-              String(item!.id) === route.params.id ? 'selecting' : 'others'
-            "
+            v-for="id in ids"
+            :key="id"
+            :class="String(id) === route.params.id ? 'selecting' : 'others'"
           >
             <ParcelCommon
-              :hover="item!.name"
-              :parcel="item!"
+              :parcel="useEquipment(id).value?.unwrapOrElse(fail)"
               :scale="0.35"
               route
             />
@@ -25,29 +22,24 @@
 
     <div class="w-1/2">
       <div v-if="Boolean(picked)">
-        <v-card class="mx-auto">
-          <template v-slot:title>
-            <span class="font-weight-black">
-              {{ equipmentDict[picked!]?.name }}
-            </span>
-          </template>
-          <template v-slot:prepend>
-            <Parcel type="Equipment" :pid="picked!" :scale="0.4" />
-          </template>
-          <v-card-text class="bg-surface-light pt-4">
-            {{ equipmentDict[picked!]?.desc }}
-          </v-card-text>
-        </v-card>
+        <EquipmentDetail :pid="Number(picked)" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { equipmentDict } from "~/components/parcel/equipment";
+import { useEquipment } from "@/components/parcel/equipment/equipment";
+import { useExcelEquipment } from "@/utils/data/excel/parcel";
+import { fail } from "@/utils/misc";
 
 const route = useRoute<"/parcel/equipment/[[id]]">();
 const picked = computed(() => route.params.id);
+
+const table = useExcelEquipment();
+const ids = computed(
+  () => table.value?.map((map) => Array.from(map.keys())) ?? [],
+);
 </script>
 
 <style lang="scss" scoped>

@@ -5,7 +5,7 @@
         <span class="font-weight-black">{{ picked.name }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel type="Character" :pid :scaledW="80" />
+        <Parcel :type="ParcelType.Character" :pid :scaledW="80" />
       </template>
       <div class="flex flex-col gap-2">
         <div class="flex flex-row gap-4 mx-2">
@@ -82,12 +82,14 @@
 </template>
 
 <script setup lang="ts">
-import { getSkillListFull } from "@/components/skill/skillList";
-import { characterDict } from "../character";
+import { useSkillListFull } from "@/components/skill/skillList";
+import { fail } from "@/utils/misc";
+import { ParcelType } from "~game/types/flatDataExcel";
+import { useCharacter } from "./character";
 
 const props = defineProps({
   pid: {
-    type: [String, Number],
+    type: Number,
     required: true,
   },
 });
@@ -102,12 +104,12 @@ const form = ref(0);
 const forms = ref(0);
 
 const picked = computed(() => {
-  return characterDict[props.pid];
+  return useCharacter(props.pid).value?.unwrapOrElse(fail);
 });
 const skills = computed(() => {
   const sid = picked.value?.id;
   if (sid == null) return null;
-  return getSkillListFull(sid);
+  return useSkillListFull(sid).value;
 });
 const skill = computed(() => {
   const obj1 = skills.value;

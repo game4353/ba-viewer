@@ -9,6 +9,7 @@ import Star from "~assets/Atlas/Common/Common_Icon_Formation_Star.png";
 import Star2 from "~assets/Atlas/Common/Common_Icon_Formation_Star_2.png";
 import Interaction from "~assets/Atlas/Common/Cafe_Icon_Interaction.png";
 import Heart from "~assets/Atlas/Common/Common_Icon_Heart.png";
+import { Rarity, StageTopography } from "@/assets/game/types/flatDataExcel";
 
 export const Icon = {
   Outdoor,
@@ -23,3 +24,27 @@ export const Icon = {
   Interaction,
   Heart,
 };
+
+export function stageTopographyIcon(stageTopography: StageTopography) {
+  switch (stageTopography) {
+    case StageTopography.Street:
+      return Street;
+    case StageTopography.Outdoor:
+      return Outdoor;
+    case StageTopography.Indoor:
+      return Indoor;
+  }
+}
+
+export function rarityBgIcon(rarity: Rarity) {
+  switch (rarity) {
+    case Rarity.N:
+      return BgN;
+    case Rarity.R:
+      return BgR;
+    case Rarity.SR:
+      return BgSR;
+    case Rarity.SSR:
+      return BgSSR;
+  }
+}
