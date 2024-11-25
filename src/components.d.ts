@@ -32,6 +32,7 @@ declare module 'vue' {
     EventStage: typeof import('./components/event/EventStage.vue')['default']
     EventStageReward: typeof import('./components/event/EventStageReward.vue')['default']
     EventStages: typeof import('./components/event/EventStages.vue')['default']
+    FilterPanel: typeof import('./components/filter/FilterPanel.vue')['default']
     FiveOO: typeof import('./components/warn/FiveOO.vue')['default']
     FiveOOne: typeof import('./components/warn/FiveOOne.vue')['default']
     FourOFour: typeof import('./components/warn/FourOFour.vue')['default']
