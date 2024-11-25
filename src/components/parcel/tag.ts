@@ -10,16 +10,32 @@ export interface IFilterable {
 }
 
 export class CTag<T> {
-  value: T;
-  display: string;
-  icon?: string;
+  public get bg(): string | undefined {
+    return this._bg;
+  }
+  public set bg(value: string) {
+    this._bg = value;
+  }
+  public get icon(): string | undefined {
+    return this._icon;
+  }
+  public set icon(value: string) {
+    this._icon = value;
+  }
   instances: IFilterable[] = [];
   state = TagState.All;
-  constructor(value: T, display: string, icon?: string) {
-    this.value = value;
-    this.display = display;
-    this.icon = icon;
+
+  constructor(
+    public value: T,
+    public display: string,
+    private _icon?: string,
+    private _bg?: string,
+  ) {}
+
+  get isHide() {
+    return this.state === TagState.Hide;
   }
+
   add(i: IFilterable) {
     this.instances.push(i);
   }
@@ -35,6 +51,7 @@ export class CTag<T> {
 }
 
 export class CTagGroup {
+  static title = "";
   static picked: number[];
   static tags: CTag<Object>[];
   static setPicked(arr: number[]) {
@@ -54,4 +71,15 @@ export class CTagGroup {
     }
     this.picked = arr;
   }
+  static getTag<T>(type: T) {
+    return this.tags.find((v) => v.value === type);
+  }
+}
+
+export function compare(a?: number | string, b?: number | string) {
+  if (a === b) return 0;
+  if (b == null) return -1;
+  if (a == null) return 1;
+  if (typeof a === "string") return a.localeCompare(String(b));
+  return a - Number(b);
 }
