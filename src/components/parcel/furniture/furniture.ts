@@ -1,16 +1,10 @@
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
 import { Local } from "@/utils/localize";
-import { fail, toEnum } from "@/utils/misc";
+import { fail } from "@/utils/misc";
 import type { Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
-import {
-  FurnitureCategory,
-  FurnitureSubCategory,
-  ParcelType,
-  Rarity,
-  type FurnitureExcel,
-} from "~game/types/flatDataExcel";
+import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";
 import type { IParcel } from "../parcel";
 import type { CTag, IFilterable } from "../tag";
 import { useFurnitureInteract } from "./interact";
@@ -38,12 +32,10 @@ export class CFurniture implements IFilterable, IParcel {
     });
     this.tags = [
       FurnitureTagInteractionGroup.getTag(this.isInteractive),
-      FurnitureTagRarityGroup.getTag(toEnum(Rarity, obj.Rarity)),
-      FurnitureTagCategoryGroup.getTag(toEnum(FurnitureCategory, obj.Category)),
-      FurnitureTagSubCategoryGroup.getTag(
-        toEnum(FurnitureSubCategory, obj.SubCategory),
-      ),
-    ];
+      FurnitureTagRarityGroup.getTag(obj.Rarity),
+      FurnitureTagCategoryGroup.getTag(obj.Category),
+      FurnitureTagSubCategoryGroup.getTag(obj.SubCategory),
+    ].filter((v): v is CTag<Object> => v != null);
     this.tags.forEach((v) => v.add(this));
   }
   get desc() {

@@ -13,10 +13,6 @@ export class FurnitureTagInteractionGroup extends CTagGroup {
     new FurnitureTagInteraction(true, "モーション有り"),
     new FurnitureTagInteraction(false, "モーション無し"),
   ];
-  static dict = Object.fromEntries(this.tags.map((v) => [v.value, v]));
-  static getTag(type: boolean) {
-    return this.dict[String(type)];
-  }
 }
 
 class FurnitureTagRarity extends CTag<Rarity> {}
@@ -29,10 +25,6 @@ export class FurnitureTagRarityGroup extends CTagGroup {
     new FurnitureTagRarity(Rarity.SR, "SR"),
     new FurnitureTagRarity(Rarity.SSR, "SSR"),
   ];
-  static dict = Object.fromEntries(this.tags.map((v) => [v.value, v]));
-  static getTag(type: Rarity) {
-    return this.dict[String(type)];
-  }
 }
 
 class FurnitureTagCategory extends CTag<FurnitureCategory> {}
@@ -44,10 +36,6 @@ export class FurnitureTagCategoryGroup extends CTagGroup {
     new FurnitureTagCategory(FurnitureCategory.Decorations, "装飾"),
     new FurnitureTagCategory(FurnitureCategory.Interiors, "内装"),
   ];
-  static dict = Object.fromEntries(this.tags.map((v) => [v.value, v]));
-  static getTag(type: FurnitureCategory) {
-    return this.dict[String(type)];
-  }
 }
 
 class FurnitureTagSubCategory extends CTag<FurnitureSubCategory> {}
@@ -88,10 +76,6 @@ export class FurnitureTagSubCategoryGroup extends CTagGroup {
     // ),
     // new FurnitureTagSubCategory(FurnitureSubCategory.All, ""),
   ];
-  static dict = Object.fromEntries(this.tags.map((v) => [v.value, v]));
-  static getTag(type: FurnitureSubCategory) {
-    return this.dict[String(type)];
-  }
 }
 export const furnitureTags = [
   FurnitureTagRarityGroup,
