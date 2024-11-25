@@ -5,6 +5,8 @@ import {
   ProductionStep,
   type CharacterExcel,
 } from "@/assets/game/types/flatDataExcel";
+import { useCharaStore } from "@/stores/character";
+import { cache } from "@/util";
 import {
   useExcelCharacter,
   useExcelCharacterGear,
@@ -12,7 +14,7 @@ import {
   useExcelCostume,
 } from "@/utils/data/excel/character";
 import { Local } from "@/utils/localize";
-import { fail, toEnum } from "@/utils/misc";
+import { fail } from "@/utils/misc";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import {
@@ -25,7 +27,20 @@ import {
 } from "../../character/star";
 import type { IParcel } from "../parcel";
 import type { CTag, IFilterable } from "../tag";
-import { CharacterTagProductionGroup } from "./tag";
+import {
+  CharacterTagArmorTypeGroup,
+  CharacterTagBulletTypeGroup,
+  CharacterTagEquipmentCategoryGroup,
+  CharacterTagProductionGroup,
+  CharacterTagRarityGroup,
+  CharacterTagSchoolGroup,
+  CharacterTagSquadTypeGroup,
+  CharacterTagStatLevelUpTypeGroup,
+  CharacterTagTacticRangeGroup,
+  CharacterTagTacticRoleGroup,
+  CharacterTagWeaponTypeGroup,
+  StudentTagRarityGroup,
+} from "./tag";
 
 export class CCharacter implements IFilterable, IParcel {
   type = ParcelType.Character as const;
@@ -40,11 +55,35 @@ export class CCharacter implements IFilterable, IParcel {
       return [toHiragana(name), toKatakana(name)];
     });
     this.tags = [
-      CharacterTagProductionGroup.getTag(
-        toEnum(ProductionStep, this.obj.ProductionStep),
-      ),
-    ];
+      CharacterTagSquadTypeGroup.getTag(obj.SquadType),
+      CharacterTagArmorTypeGroup.getTag(obj.ArmorType),
+      CharacterTagBulletTypeGroup.getTag(obj.BulletType),
+      CharacterTagTacticRoleGroup.getTag(obj.TacticRole),
+      CharacterTagTacticRangeGroup.getTag(obj.TacticRange),
+      CharacterTagRarityGroup.getTag(obj.Rarity),
+      CharacterTagWeaponTypeGroup.getTag(obj.WeaponType),
+      CharacterTagSchoolGroup.getTag(obj.School),
+      CharacterTagStatLevelUpTypeGroup.getTag(obj.StatLevelUpType),
+      CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[0]),
+      CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[1]),
+      CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[2]),
+      CharacterTagProductionGroup.getTag(obj.ProductionStep),
+    ].filter((v): v is CTag<Object> => v != null);
     this.tags.forEach((v) => v.add(this));
+  }
+
+  useTags() {
+    return computed(() => {
+      const stat = useCharaStore(this.id).now();
+      const tags = this.tags.map((v) => v);
+      const star = StudentTagRarityGroup.getTag(stat.star);
+      if (star != null) tags.push(star);
+      return tags;
+    });
+  }
+
+  useHidden() {
+    return computed(() => this.useTags().value.some((tsg) => tsg.isHide));
   }
 
   get costume() {
@@ -93,13 +132,24 @@ export class CCharacter implements IFilterable, IParcel {
     return ArmorType[this.obj.ArmorType];
   }
 
+  sortValue(key: globalThis.Ref<string>) {
+    return computed(() => {
+      switch (key.value) {
+        case "name":
+          return this.name.value?.unwrapOrElse(fail);
+        case "id":
+          return this.id;
+      }
+    });
+  }
+
   starBonus = useTranscendenceBonusRate;
   starRecipe = useTranscendenceRecipeIngredient;
   potentialBonus = usePotentialStatBonusRate;
   potentialRecipe = usePotentialStatRecipeIngredient;
 }
 
-export function useCharacter(id: number) {
+export const useCharacter = cache((id: number) => {
   const table = useExcelCharacter();
   return computed(() => {
     if (table.value == null) return undefined;
@@ -107,7 +157,7 @@ export function useCharacter(id: number) {
       .andThen((map) => map.getResult(id))
       .map((c) => new CCharacter(c));
   });
-}
+});
 
 function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
   return (

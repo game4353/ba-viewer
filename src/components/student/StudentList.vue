@@ -1,6 +1,11 @@
 <template>
   <div class="flex flex-row flex-wrap gap-5">
-    <div v-for="cid in characterIds" :key="cid">
+    <div
+      :class="visibleIds?.has(cid) === false ? 'hidden' : ''"
+      :style="{ order: getOrder(cid) }"
+      v-for="cid in characterIds"
+      :key="cid"
+    >
       <MyCharacterBig :cid :scaled-w="120" />
     </div>
   </div>
@@ -9,10 +14,20 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 
-defineProps({
+const props = defineProps({
   characterIds: {
-    type: Object as PropType<Array<number>>,
+    type: Array as PropType<Array<number>>,
     required: true,
   },
+  visibleIds: {
+    type: Set as PropType<Set<number>>,
+  },
+  orderMap: {
+    type: Map as PropType<Map<number, number>>,
+  },
 });
+
+function getOrder(cid: number) {
+  return props.orderMap?.get(cid) ?? 2147483647;
+}
 </script>

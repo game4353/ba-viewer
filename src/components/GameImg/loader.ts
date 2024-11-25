@@ -9,6 +9,7 @@ const glob = import.meta.glob(
     "~game/UIs/01_Common/14_CharacterCollect/**/*.png",
     "~game/UIs/01_Common/16_CafeItem/**/*.png",
     "~game/UIs/01_Common/21_EnemyInfo/**/*.png",
+    "~game/UIs/01_Common/25_Campaign/*.png",
     "~game/UIs/01_Common/27_EventContent/CardShop/**/*.png",
     "~game/UIs/01_Common/27_EventContent/Enter_Parcel/**/*.png",
     "~game/UIs/01_Common/27_EventContent/Main_BgImage/**/*.png",
