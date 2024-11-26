@@ -8,7 +8,7 @@ export function useExcel<T>(name: string) {
   const state = computed(() => {
     if (data.value == null && error.value == null) return null;
     if (data.value != null) return Ok(data.value as T);
-    return Err(error.value as Error);
+    return Err(FetchDataError.from(name, error.value));
   });
   return readonly(state);
 }
@@ -19,7 +19,7 @@ export function useExcelDb<T>(name: string) {
   const state = computed(() => {
     if (data.value == null && error.value == null) return null;
     if (data.value != null) return Ok(data.value as { Bytes: T }[]);
-    return Err(error.value as Error);
+    return Err(FetchDataError.from(name, error.value));
   });
   return readonly(state);
 }
@@ -128,6 +128,19 @@ export class MapResult<T, U> extends Map<T, U> {
   setKeyName(keyName: string) {
     this.keyName = keyName;
     return this;
+  }
+}
+
+export class FetchDataError extends Error {
+  constructor(...args: any) {
+    super(...args);
+    this.name = "FetchDataError";
+  }
+  static from(title: string, error: unknown) {
+    let cause: Error;
+    if (error instanceof Error) cause = error;
+    else cause = new Error(`${error}`);
+    return new FetchDataError(`Failed to fetch '${title}'.`, { cause });
   }
 }
 
