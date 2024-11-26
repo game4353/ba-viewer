@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionButton: typeof import('./components/ActionButton.vue')['default']
-    AppFooter: typeof import('./components/AppFooter.vue')['default']
     BG: typeof import('./components/GameImg/BG.vue')['default']
     Bond: typeof import('./components/character/Bond.vue')['default']
     Character: typeof import('./components/parcel/character/Character.vue')['default']
@@ -42,7 +41,6 @@ declare module 'vue' {
     GameImg: typeof import('./components/GameImg/GameImg.vue')['default']
     Gear: typeof import('./components/character/Gear.vue')['default']
     GuideMission: typeof import('./components/guide/GuideMission.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     ItemDetail: typeof import('./components/parcel/item/ItemDetail.vue')['default']
     LevelSkillData: typeof import('./components/skill/levelSkillData/LevelSkillData.vue')['default']
     MusicPlayer: typeof import('./components/audio/MusicPlayer.vue')['default']
