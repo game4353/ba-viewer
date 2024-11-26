@@ -30,7 +30,7 @@ export class CSkill {
   }
   set level(level: number) {
     this._level = level;
-    this._obj = useSkill(`${this.group}$${level}`);
+    this._obj = useSkill(this.group, level);
   }
   get name() {
     return Local.useLocalizeSkill(this.obj?.LocalizeSkillId);
@@ -39,9 +39,7 @@ export class CSkill {
     return this._obj.value?.unwrapOrElse(fail);
   }
 }
-
-export const useSkill = cache((group$level: string) => {
-  const [group, level] = group$level.split("$");
+export const useSkill = cache((group: string, level: number) => {
   const table = useExcelSkill();
   return computed(() =>
     table.value
