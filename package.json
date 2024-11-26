@@ -32,6 +32,7 @@
     "ts-results-es": "^4.2.0",
     "type-fest": "^4.23.0",
     "vue": "^3.4.26",
+    "vuedraggable": "^4.1.0",
     "vuetify": "^3.6.12",
     "wanakana": "^5.3.1",
     "yauzl": "^3.1.3",
