@@ -44,8 +44,8 @@
 
 <script setup lang="ts">
 import { CItem, useItem, useItemIds } from "@/components/parcel/item/item";
-import { ObjectEntries, ObjectKeys } from "@/types";
 import { fail } from "@/utils/misc";
+import { ObjectEntries, ObjectKeys } from "@/utils/types";
 import { ItemCategory, ParcelType } from "~game/types/flatDataExcel";
 
 const tabs: Record<keyof typeof ItemCategory, string> = {

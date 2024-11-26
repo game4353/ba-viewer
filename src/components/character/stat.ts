@@ -1,8 +1,8 @@
 import {
-  type CharacterStatExcel,
   StatType,
+  type CharacterStatExcel,
 } from "@/assets/game/types/flatDataExcel";
-import type { NumberKeys } from "@/types";
+import type { NumberKeys } from "@/utils/types";
 
 enum StatBuffType {
   Base,

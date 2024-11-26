@@ -1,4 +1,4 @@
-import type { KeyValuePairs, NotNullable } from "@/types";
+import type { KeyValuePairs, NotNullable } from "@/utils/types";
 
 export const err = reactive({
   error: false,

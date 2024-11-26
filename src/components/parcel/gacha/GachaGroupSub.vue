@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { isLastArray, type Recursive } from "@/types";
+import { isLastArray, type Recursive } from "@/utils/types";
 import { PropType } from "vue";
 import type { GachaElementExcel } from "~game/types/flatDataExcel";
 import { ASSERT_SOME } from "../../warn/error";

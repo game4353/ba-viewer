@@ -27,13 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { isLastArray, type Recursive } from "@/types";
 import {
   useExcelGachaElement,
   useExcelGachaElementRecursive,
   useExcelGachaGroup,
 } from "@/utils/data/excel/gacha";
 import { fail } from "@/utils/misc";
+import { isLastArray, type Recursive } from "@/utils/types";
 import {
   GachaGroupType,
   ParcelType,

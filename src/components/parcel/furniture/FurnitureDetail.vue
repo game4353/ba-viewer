@@ -53,8 +53,8 @@
 </template>
 
 <script setup lang="ts">
-import { ObjectKeys } from "@/types";
 import { fail } from "@/utils/misc";
+import { ObjectKeys } from "@/utils/types";
 import { ParcelType } from "~game/types/flatDataExcel";
 import { useFurniture } from "./furniture";
 

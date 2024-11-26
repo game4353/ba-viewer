@@ -42,12 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import { ObjectKeys } from "@/types";
 import {
   useExcelEventContentCard,
   useExcelEventContentCardShop,
 } from "@/utils/data/excel/event";
 import { fail } from "@/utils/misc";
+import { ObjectKeys } from "@/utils/types";
 
 const props = defineProps({
   eid: {
