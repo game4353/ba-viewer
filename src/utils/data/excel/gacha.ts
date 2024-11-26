@@ -1,10 +1,10 @@
+import { cache } from "@/utils/misc";
 import type {
-  GachaGroupExcelTable,
-  GachaElementRecursiveExcelTable,
   GachaElementExcelTable,
+  GachaElementRecursiveExcelTable,
+  GachaGroupExcelTable,
 } from "~game/types/flatDataExcel";
 import { useExcelMapMany, useExcelMapSingle } from ".";
-import { cache } from "@/util";
 
 export const useExcelGachaGroup = cache(() =>
   useExcelMapSingle<GachaGroupExcelTable, "ID">("GachaGroupExcelTable", "ID"),

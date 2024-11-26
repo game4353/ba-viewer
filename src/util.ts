@@ -1,24 +1,6 @@
 // @ts-ignore
 import solver from "javascript-lp-solver";
 
-/** Input will go through `JSON.stringify` to generate the key for `Map`. */
-export function cache<F extends (...args: any[]) => any>(
-  fn: F,
-): (...args: Parameters<F>) => ReturnType<F> {
-  const cached = new Map<string, ReturnType<F>>();
-
-  return function (...args: Parameters<F>) {
-    const key = JSON.stringify(args);
-    if (cached.has(key)) {
-      return cached.get(key)!;
-    }
-
-    const result = fn(...args);
-    cached.set(key, result);
-    return result;
-  };
-}
-
 export class StageDrop {
   stamina: number;
   item1: number;

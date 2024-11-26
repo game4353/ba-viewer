@@ -1,4 +1,4 @@
-import { cache } from "@/util";
+import { cache } from "@/utils/misc";
 import type { SkillExcelTable } from "~game/types/flatDataExcel";
 import { useExcelMapMany } from ".";
 

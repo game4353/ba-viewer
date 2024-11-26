@@ -6,7 +6,6 @@ import {
   type CharacterExcel,
 } from "@/assets/game/types/flatDataExcel";
 import { useCharaStore } from "@/stores/character";
-import { cache } from "@/util";
 import {
   useExcelCharacter,
   useExcelCharacterGear,
@@ -14,7 +13,7 @@ import {
   useExcelCostume,
 } from "@/utils/data/excel/character";
 import { Local } from "@/utils/localize";
-import { fail } from "@/utils/misc";
+import { cache, fail } from "@/utils/misc";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import {

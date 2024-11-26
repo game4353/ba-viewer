@@ -1,7 +1,6 @@
 import { useCharacter } from "@/components/parcel/character/character";
-import { cache } from "@/util";
 import { useExcelCharacterStat } from "@/utils/data/excel/character";
-import { fail, interpolation, unreachable } from "@/utils/misc";
+import { cache, fail, interpolation, unreachable } from "@/utils/misc";
 import { clamp, useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 

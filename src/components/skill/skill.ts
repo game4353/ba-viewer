@@ -1,8 +1,10 @@
-import type { SkillExcel } from "@/assets/game/types/flatDataExcel";
-import { cache } from "@/util";
+import type {
+  RecipeIngredientExcel,
+  SkillExcel,
+} from "@/assets/game/types/flatDataExcel";
 import { useExcelSkill } from "@/utils/data/excel/skill";
 import { Local } from "@/utils/localize";
-import { fail } from "@/utils/misc";
+import { cache, fail } from "@/utils/misc";
 import { undefinedIsError, type Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 

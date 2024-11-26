@@ -1,6 +1,5 @@
-import { cache } from "@/util";
 import { useExcel } from "@/utils/data/excel";
-import { fail } from "@/utils/misc";
+import { cache, fail } from "@/utils/misc";
 import type { ReadonlyDeep } from "type-fest";
 import type {
   CafeInteractionExcelTable,
