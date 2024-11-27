@@ -1,7 +1,4 @@
-import type {
-  RecipeIngredientExcel,
-  SkillExcel,
-} from "@/assets/game/types/flatDataExcel";
+import type { SkillExcel } from "@/assets/game/types/flatDataExcel";
 import { useExcelSkill } from "@/utils/data/excel/skill";
 import { Local } from "@/utils/localize";
 import { cache, fail } from "@/utils/misc";

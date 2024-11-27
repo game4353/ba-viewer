@@ -10,8 +10,8 @@
     <ParcelCommon
       v-for="(v, i) in gain"
       :key="i"
-      :parcel="v.parcel"
-      :amount="v.amount"
+      :parcel="v?.parcel"
+      :amount="v?.amount"
       :scale="0.33"
       route
     />
@@ -67,14 +67,15 @@ const gain = computed(() =>
     const parcel = getParcel(
       good.value!.ParcelType[i],
       good.value!.ParcelId[i],
-    ).value?.unwrapOrElse(fail)!;
+    ).value?.unwrapOrElse(fail);
+    if (parcel == null) return undefined;
     return { parcel, amount };
   }),
 );
 
 const nameStr = computed(() =>
   props.nameEtcId == null
-    ? gain.value?.[0].parcel?.name.value?.unwrapOrElse(fail)
+    ? gain.value?.[0]?.parcel?.name.value?.unwrapOrElse(fail)
     : Local.useLocalizeEtc(props.nameEtcId).value?.unwrapOrElse(fail),
 );
 const nameLen = computed(() => nameStr.value?.length ?? 0);

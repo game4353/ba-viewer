@@ -126,7 +126,7 @@ watchEffect(() => {
 });
 
 const bg = computed(() => {
-  if (parcel.value?.unwrapOrElse(fail)?.costume.value == null) return null;
+  if (parcel.value?.unwrapOrElse(fail)?.costume.value == null) return undefined;
   return uiPath(parcel.value.unwrap().costume.value!.CollectionTexturePath);
 });
 const folder = "/src/assets/game/UIs/01_Common/14_CharacterCollect/";

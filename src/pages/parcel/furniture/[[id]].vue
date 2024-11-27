@@ -46,7 +46,7 @@
                 >
                   <v-chip
                     v-for="tag in tagGroup.tags"
-                    :key="tag.value"
+                    :key="String(tag.value)"
                     :text="tag.display"
                     selected-class="filtering"
                   ></v-chip>
