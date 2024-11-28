@@ -1,4 +1,4 @@
-import { Err, Ok, ErrImpl, OkImpl, Result } from "ts-results-es";
+import { Err, ErrImpl, Ok, OkImpl, Result } from "ts-results-es";
 
 ErrImpl.prototype.unwrapOrElse = function (fn: any) {
   return fn(this.error);
@@ -6,9 +6,16 @@ ErrImpl.prototype.unwrapOrElse = function (fn: any) {
 OkImpl.prototype.unwrapOrElse = function () {
   return this.value;
 };
+ErrImpl.prototype.orElse2 = function (fn: any) {
+  return fn(this.error);
+};
+OkImpl.prototype.orElse2 = function () {
+  return this;
+};
 
 declare module "ts-results-es" {
   interface ErrImpl<E> {
+    orElse2<T2, E2>(fn: (err: E) => Result<T2, E2>): Result<T2, E2>;
     /**
      * Returns the contained `Ok` value or a provided default.
      *
@@ -17,6 +24,7 @@ declare module "ts-results-es" {
     unwrapOrElse<T2>(fn: (err: E) => T2): T2;
   }
   interface OkImpl<T> {
+    orElse2(fn: unknown): OkImpl<T>;
     /**
      * Returns the contained `Ok` value or a provided default.
      *
