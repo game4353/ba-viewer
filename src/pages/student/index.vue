@@ -13,11 +13,11 @@
 
 <script setup lang="ts">
 import {
-  CCharacter,
   useCharacter,
   usePlayableIds,
 } from "@/components/parcel/character/character";
 import { ERR_HANDLE } from "@/components/warn/error";
+import { isDefined } from "@/utils/misc";
 
 const errHandle = inject(ERR_HANDLE)!;
 
@@ -30,7 +30,7 @@ const studentIds = computed(() => {
 const students = computed(() =>
   studentIds.value
     .map((id) => useCharacter(id).value?.unwrapOrElse(errHandle))
-    .filter((v): v is CCharacter => v != null),
+    .filter(isDefined),
 );
 const orderMap = ref<Map<number, number>>();
 const visibleIds = ref<Set<number>>();

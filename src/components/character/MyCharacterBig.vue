@@ -1,5 +1,5 @@
 <template>
-  <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
+  <router-link v-if="parcel" :to="`/student/${parcel.id}`">
     <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
       <v-img
         class="absolute"
@@ -18,8 +18,8 @@
         </template>
         <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>
         <div class="atk-def">
-          <div :class="parcel.unwrap().bulletType"></div>
-          <div :class="parcel.unwrap().armorType"></div>
+          <div :class="parcel.bulletType"></div>
+          <div :class="parcel.armorType"></div>
         </div>
         <div class="name">
           <p :class="textSize(name)">
@@ -84,13 +84,12 @@ const props = defineProps({
 });
 const errHandle = inject(ERR_HANDLE)!;
 
-const parcel = useCharacter(props.cid);
+const parcel = computed(() =>
+  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+);
 
 const name = computed(
-  () =>
-    parcel.value
-      ?.unwrapOrElse(errHandle)
-      ?.name.value?.unwrapOrElse(errHandle) ?? "",
+  () => parcel.value?.name.value?.unwrapOrElse(errHandle) ?? "",
 );
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
@@ -102,8 +101,7 @@ const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
   if (parcel.value == null) return;
-  const starMin = parcel.value.unwrapOrElse(errHandle)?.starMin ?? 0;
-  starNum.value = levelNum.value === 0 ? starMin : chara.star;
+  starNum.value = levelNum.value === 0 ? parcel.value.starMin : chara.star;
 });
 const bondNum = ref(props.bond);
 watchEffect(() => {
@@ -127,14 +125,14 @@ watchEffect(() => {
   gearTexts.value[1] = chara.gear2.toString();
   gearTexts.value[2] = chara.gear3.toString();
   gearTexts.value[3] = chara.gear0.toString();
-  if (parcel.value?.unwrapOrElse(errHandle)?.gear == null)
+  if (parcel.value?.gear.value.unwrapOrElse(errHandle) == null)
     gearTexts.value[3] = "";
 });
 
 const bg = computed(() => {
-  if (parcel.value?.unwrapOrElse(errHandle)?.costume.value == null)
-    return undefined;
-  return uiPath(parcel.value.unwrap().costume.value!.CollectionTexturePath);
+  const costume = parcel.value?.costume.value.unwrapOrElse(errHandle);
+  if (costume == null) return undefined;
+  return uiPath(costume.CollectionTexturePath);
 });
 const folder = "/src/assets/game/UIs/01_Common/14_CharacterCollect/";
 const arona = folder + "NPC_Portrait_Arona_Collection.png";

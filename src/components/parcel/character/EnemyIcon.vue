@@ -39,9 +39,11 @@ const errHandle = inject(ERR_HANDLE)!;
 const imgW = 500;
 const imgH = 500;
 const chara = computed(() =>
-  useCharacter(props.cid).value?.unwrapOrElse(errHandle),
+  useCharacter(props.cid).value.unwrapOrElse(errHandle),
 );
-const costume = computed(() => chara.value?.costume.value);
+const costume = computed(() =>
+  chara.value?.costume.value.unwrapOrElse(errHandle),
+);
 const src = computed(() => {
   const path = costume.value?.InformationPacel || costume.value?.TextureBoss;
   return path == null ? undefined : uiPath(path);

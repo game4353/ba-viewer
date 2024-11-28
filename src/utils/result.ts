@@ -46,7 +46,9 @@ declare module "ts-results-es" {
     unwrapOrElse(fn: unknown): T;
   }
 }
-export { Err, Ok, Result };
+
+type ComputedResult<T, E> = globalThis.ComputedRef<Result<T, E>>;
+export { Err, Ok, Result, type ComputedResult };
 
 export function undefinedIsError<T>(anything: T) {
   if (anything === undefined) return Err(new Error("Something is undefined."));

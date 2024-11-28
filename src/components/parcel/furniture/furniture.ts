@@ -1,6 +1,7 @@
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
 import { Local } from "@/utils/localize";
-import type { Result } from "@/utils/result";
+import { isDefined } from "@/utils/misc";
+import type { ComputedResult, Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";
@@ -19,7 +20,7 @@ export class CFurniture implements IFilterable, IParcel {
   type = ParcelType.Furniture as const;
 
   group: globalThis.ComputedRef<Result<CFurnitureGroup, Error> | undefined>;
-  search: globalThis.ComputedRef<Result<string[], Error>>;
+  search: ComputedResult<string[], Error>;
   tags: CTag<Object>[];
   hideCount: number = 0;
   constructor(public obj: ReadonlyDeep<FurnitureExcel>) {
@@ -32,7 +33,7 @@ export class CFurniture implements IFilterable, IParcel {
       FurnitureTagRarityGroup.getTag(obj.Rarity),
       FurnitureTagCategoryGroup.getTag(obj.Category),
       FurnitureTagSubCategoryGroup.getTag(obj.SubCategory),
-    ].filter((v): v is CTag<Object> => v != null);
+    ].filter(isDefined);
     this.tags.forEach((v) => v.add(this));
   }
   get desc() {
