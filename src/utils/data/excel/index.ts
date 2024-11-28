@@ -1,3 +1,4 @@
+import { FetchDataErr, KeyNotFoundErr } from "@/utils/error";
 import type { ReadonlyDeep } from "type-fest";
 import { Err, Ok } from "~/utils/result";
 import { useFetch } from "../index";
@@ -8,7 +9,7 @@ export function useExcel<T>(name: string) {
   const state = computed(() => {
     if (data.value == null && error.value == null) return null;
     if (data.value != null) return Ok(data.value as T);
-    return Err(FetchDataError.from(name, error.value));
+    return Err(FetchDataErr.from(name, error.value));
   });
   return readonly(state);
 }
@@ -19,7 +20,7 @@ export function useExcelDb<T>(name: string) {
   const state = computed(() => {
     if (data.value == null && error.value == null) return null;
     if (data.value != null) return Ok(data.value as { Bytes: T }[]);
-    return Err(FetchDataError.from(name, error.value));
+    return Err(FetchDataErr.from(name, error.value));
   });
   return readonly(state);
 }
@@ -104,7 +105,7 @@ export class MapResult<T, U> extends Map<T, U> {
 
   getResult(key: T) {
     if (this.has(key)) return Ok(this.get(key) as U);
-    return Err(KeyNotFoundError.from(key, this.keyName, this.title));
+    return Err(KeyNotFoundErr.from(key, this.keyName, this.title));
   }
 
   static groupBy<K, T>(
@@ -128,30 +129,5 @@ export class MapResult<T, U> extends Map<T, U> {
   setKeyName(keyName: string) {
     this.keyName = keyName;
     return this;
-  }
-}
-
-export class FetchDataError extends Error {
-  constructor(...args: any) {
-    super(...args);
-    this.name = "FetchDataError";
-  }
-  static from(title: string, error: unknown) {
-    let cause: Error;
-    if (error instanceof Error) cause = error;
-    else cause = new Error(`${error}`);
-    return new FetchDataError(`Failed to fetch '${title}'.`, { cause });
-  }
-}
-
-export class KeyNotFoundError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "KeyNotFoundError";
-  }
-  static from(key: any, keyName = "key", mapName = "map") {
-    return new KeyNotFoundError(
-      `Unable to find ${keyName} '${key}' in ${mapName}.`,
-    );
   }
 }
