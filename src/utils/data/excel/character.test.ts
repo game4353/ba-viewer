@@ -1,17 +1,20 @@
+import { default as LocalizeEtc } from "@/../public/data/DB/ExcelDB/LocalizeEtc.json";
+import * as CharacterExcelTable from "@/../public/data/Excel/CharacterExcelTable.json";
+import { TimeoutErr } from "@/utils/error";
 import {
-  expect,
-  describe,
-  it,
-  beforeEach,
   afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
   vi,
   type Mock,
 } from "vitest";
 import { useExcelCharacter } from "./character";
-import * as CharacterExcelTable from "@/../public/data/Excel/CharacterExcelTable.json";
 
 const data: any = {
   "/data/Excel/CharacterExcelTable.json": CharacterExcelTable,
+  "/data/DB/ExcelDB/LocalizeEtc.json": LocalizeEtc,
 };
 
 describe("useExcelCharacter", () => {
@@ -36,7 +39,8 @@ describe("useExcelCharacter", () => {
     });
 
     const state = useExcelCharacter();
-    while (state.value == null) await nextTick();
+    while (state.value.isErr() && state.value.error instanceof TimeoutErr)
+      await nextTick();
     expect(fetch).toHaveBeenCalledOnce();
     const res = state.value.andThen((map) => map.getResult(10000));
     expect(res.isErr()).toBeFalsy();

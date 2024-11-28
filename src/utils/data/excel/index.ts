@@ -1,4 +1,4 @@
-import { FetchDataErr, KeyNotFoundErr } from "@/utils/error";
+import { FetchDataErr, KeyNotFoundErr, TimeoutErr } from "@/utils/error";
 import type { ReadonlyDeep } from "type-fest";
 import { Err, Ok } from "~/utils/result";
 import { useFetch } from "../index";
@@ -7,7 +7,8 @@ export function useExcel<T>(name: string) {
   const url = computed(() => `/data/Excel/${name}.json`);
   const { data, error } = useFetch<T>(url);
   const state = computed(() => {
-    if (data.value == null && error.value == null) return null;
+    if (data.value == null && error.value == null)
+      return Err(TimeoutErr.from(name, 0));
     if (data.value != null) return Ok(data.value as T);
     return Err(FetchDataErr.from(name, error.value));
   });
@@ -18,7 +19,8 @@ export function useExcelDb<T>(name: string) {
   const url = computed(() => `/data/DB/ExcelDB/${name}.json`);
   const { data, error } = useFetch<{ Bytes: T }[]>(url);
   const state = computed(() => {
-    if (data.value == null && error.value == null) return null;
+    if (data.value == null && error.value == null)
+      return Err(TimeoutErr.from(name, 0));
     if (data.value != null) return Ok(data.value as { Bytes: T }[]);
     return Err(FetchDataErr.from(name, error.value));
   });
