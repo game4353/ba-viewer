@@ -1,22 +1,11 @@
-import { useExcel } from "@/utils/data/excel";
-import { cache, fail } from "@/utils/misc";
+import { useFurnitureInteractMap } from "@/utils/data/excel/cafe";
 import type { ReadonlyDeep } from "type-fest";
-import type {
-  CafeInteractionExcelTable,
-  FurnitureExcel,
-} from "~game/types/flatDataExcel";
+import type { FurnitureExcel } from "~game/types/flatDataExcel";
 
-const table = useExcel<CafeInteractionExcelTable>("CafeInteractionExcelTable");
-const useFurnitureInteractCid = cache((key: string) =>
-  computed(() => {
-    const cids = table.value
-      ?.unwrapOrElse(fail)
-      ?.DataList.filter((v) => v.CafeCharacterState.includes(key))
-      .map((v) => v.CharacterId);
-    if (cids && cids.length !== 1) console.error(cids);
-    return cids?.[0];
-  }),
-);
+export const useFurnitureInteractCid = (key: string) =>
+  computed(() =>
+    useFurnitureInteractMap().value.andThen((map) => map.getResult(key)),
+  );
 
 export function useFurnitureInteract(
   type: "Req" | "Add" | "Make" | "Only" | "All",

@@ -88,12 +88,12 @@
 
 <script setup lang="ts">
 import {
-  CFurniture,
   useFurniture,
   useFurnitureIds,
 } from "@/components/parcel/furniture/furniture";
 import { furnitureTags } from "@/components/parcel/furniture/tag";
 import { ERR_HANDLE } from "@/components/warn/error";
+import { isDefined } from "@/utils/misc";
 import { toHiragana } from "wanakana";
 import { ParcelType } from "~game/types/flatDataExcel";
 const errHandle = inject(ERR_HANDLE)!;
@@ -106,8 +106,8 @@ const furnitures = computed(
   () =>
     furnitureIds.value
       ?.unwrapOrElse(errHandle)
-      ?.map((id) => useFurniture(id).value?.unwrapOrElse(errHandle))
-      .filter((v): v is CFurniture => v != null) ?? [],
+      ?.map((id) => useFurniture(id).value.unwrapOrElse(errHandle))
+      .filter(isDefined) ?? [],
 );
 
 const sortedItems = computed(() => furnitures.value);
@@ -121,7 +121,8 @@ const searchedItems = computed(() => {
   else {
     const q = toHiragana(newSearch);
     return filteredItems.value.filter((f) => {
-      if (f.search.value[0]?.indexOf(q) > -1) return true;
+      if ((f.search.unwrapOrElse(errHandle)?.[0]?.indexOf(q) ?? -1) > -1)
+        return true;
       return false;
     });
   }

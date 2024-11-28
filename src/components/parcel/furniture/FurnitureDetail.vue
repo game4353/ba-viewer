@@ -3,27 +3,23 @@
     <v-card class="mx-auto">
       <template v-slot:title>
         <span class="font-weight-black">{{
-          picked.name.value?.unwrapOrElse(errHandle) ?? ""
+          picked.name.unwrapOrElse(errHandle) ?? ""
         }}</span>
       </template>
       <template v-slot:prepend>
         <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.desc.value?.unwrapOrElse(errHandle) ?? "" }}
+        {{ picked.desc.unwrapOrElse(errHandle) ?? "" }}
       </v-card-text>
     </v-card>
     <v-card
       class="border rounded-xl m-4"
-      v-if="picked.group.value?.isOk()"
-      :title="
-        picked.group.value.unwrap().groupName.value?.unwrapOrElse(errHandle)
-      "
+      v-if="picked.group?.isOk()"
+      :title="picked.group.unwrap().groupName.value?.unwrapOrElse(errHandle)"
     >
       <v-card-text class="bg-surface-light pt-4">
-        {{
-          picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(errHandle)
-        }}
+        {{ picked.group.unwrap().groupDesc.value?.unwrapOrElse(errHandle) }}
       </v-card-text>
     </v-card>
     <v-card
@@ -38,8 +34,15 @@
             class="flex flex-col w-min gap-2 items-center py-4"
           >
             <div class="flex flex-row">
-              <div v-for="(c, key) in picked.getInteract(tag)" :key>
-                <MyCharacter v-if="c.value" :cid="c.value" :scale="0.35" />
+              <div
+                v-for="c in picked.getInteract(tag)"
+                :key="c.value.unwrapOr(undefined)"
+              >
+                <MyCharacter
+                  v-if="c.value.isOk()"
+                  :cid="c.value.unwrap()"
+                  :scale="0.35"
+                />
               </div>
             </div>
             <v-tooltip :text="interactionTypes[tag]">
@@ -78,6 +81,6 @@ const interactionTypes = {
 };
 
 const picked = computed(() =>
-  useFurniture(props.pid).value?.unwrapOrElse(errHandle),
+  useFurniture(props.pid).value.unwrapOrElse(errHandle),
 );
 </script>

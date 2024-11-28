@@ -1,32 +1,27 @@
 import { cache } from "@/utils/misc";
-import type {
-  CurrencyExcelTable,
-  EquipmentExcelTable,
-  FurnitureExcelTable,
-  FurnitureGroupExcelTable,
-  ItemExcelTable,
-} from "~game/types/flatDataExcel";
-import { useExcelMapSingle } from ".";
+import { Err, Ok } from "@/utils/result";
+import type { CafeInteractionExcelTable } from "~game/types/flatDataExcel";
+import { MapResult, useExcel } from ".";
 
-export const useExcelCurrency = cache(() =>
-  useExcelMapSingle<CurrencyExcelTable, "ID">("CurrencyExcelTable", "ID"),
-);
-
-export const useExcelEquipment = cache(() =>
-  useExcelMapSingle<EquipmentExcelTable, "Id">("EquipmentExcelTable", "Id"),
-);
-
-export const useExcelItem = cache(() =>
-  useExcelMapSingle<ItemExcelTable, "Id">("ItemExcelTable", "Id"),
-);
-
-export const useExcelFurniture = cache(() =>
-  useExcelMapSingle<FurnitureExcelTable, "Id">("FurnitureExcelTable", "Id"),
-);
-
-export const useExcelFurnitureGroup = cache(() =>
-  useExcelMapSingle<FurnitureGroupExcelTable, "Id">(
-    "FurnitureGroupExcelTable",
-    "Id",
-  ),
-);
+export const useFurnitureInteractMap = cache(() => {
+  const table = useExcel<CafeInteractionExcelTable>(
+    "CafeInteractionExcelTable",
+  );
+  return computed(() =>
+    table.value.andThen((t) => {
+      const map = new MapResult<string, number>()
+        .setKeyName("CafeCharacterState")
+        .setTitle("CafeInteractionExcelTable");
+      for (const o of t.DataList) {
+        for (const k of o.CafeCharacterState) {
+          if (map.has(k))
+            return Err(
+              new Error(`CafeInteraction '${k}' maps to multiple ids.`),
+            );
+          map.set(k, o.CharacterId);
+        }
+      }
+      return Ok(map);
+    }),
+  );
+});

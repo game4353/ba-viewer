@@ -16,6 +16,10 @@ export function cache<F extends (...args: any[]) => any>(
   };
 }
 
+export function isDefined<T>(obj: T): obj is NonNullable<T> {
+  return obj != null;
+}
+
 export function assert<T>(
   obj: T,
   message: string = "Assertion failed.",
