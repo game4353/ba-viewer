@@ -3,23 +3,27 @@
     <v-card class="mx-auto">
       <template v-slot:title>
         <span class="font-weight-black">{{
-          picked.name.value?.unwrapOrElse(fail) ?? ""
+          picked.name.value?.unwrapOrElse(errHandle) ?? ""
         }}</span>
       </template>
       <template v-slot:prepend>
         <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.desc.value?.unwrapOrElse(fail) ?? "" }}
+        {{ picked.desc.value?.unwrapOrElse(errHandle) ?? "" }}
       </v-card-text>
     </v-card>
     <v-card
       class="border rounded-xl m-4"
       v-if="picked.group.value?.isOk()"
-      :title="picked.group.value.unwrap().groupName.value?.unwrapOrElse(fail)"
+      :title="
+        picked.group.value.unwrap().groupName.value?.unwrapOrElse(errHandle)
+      "
     >
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(fail) }}
+        {{
+          picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(errHandle)
+        }}
       </v-card-text>
     </v-card>
     <v-card
@@ -53,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { ObjectKeys } from "@/utils/types";
 import { ParcelType } from "~game/types/flatDataExcel";
 import { useFurniture } from "./furniture";
@@ -64,6 +68,7 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const interactionTypes = {
   Req: "Requires all REQ characters to interact.",
@@ -73,6 +78,6 @@ const interactionTypes = {
 };
 
 const picked = computed(() =>
-  useFurniture(props.pid).value?.unwrapOrElse(fail),
+  useFurniture(props.pid).value?.unwrapOrElse(errHandle),
 );
 </script>

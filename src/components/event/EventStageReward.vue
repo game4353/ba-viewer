@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { useExcelEventContentStageReward } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   rid: {
@@ -26,9 +26,10 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcelEventContentStageReward();
 const rewards = computed(
-  () => table.value?.unwrapOrElse(fail)?.get(props.rid) ?? [],
+  () => table.value?.unwrapOrElse(errHandle)?.get(props.rid) ?? [],
 );
 </script>

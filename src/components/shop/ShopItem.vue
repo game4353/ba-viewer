@@ -36,9 +36,9 @@
 <script setup lang="ts">
 import { useExcelGoods } from "@/utils/data/excel/shop";
 import { Local } from "@/utils/localize";
-import { fail } from "@/utils/misc";
 import { PropType } from "vue";
 import { getParcel } from "../parcel/parcel";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   nameEtcId: {
@@ -52,12 +52,13 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcelGoods();
 
 const good = computed(() => {
   // TODO: deal with multiple goods
-  const good = table.value?.unwrapOrElse(fail)?.get(props.goodsId[0]);
+  const good = table.value?.unwrapOrElse(errHandle)?.get(props.goodsId[0]);
   if (good == null) return undefined;
   return good;
 });
@@ -67,7 +68,7 @@ const gain = computed(() =>
     const parcel = getParcel(
       good.value!.ParcelType[i],
       good.value!.ParcelId[i],
-    ).value?.unwrapOrElse(fail);
+    ).value?.unwrapOrElse(errHandle);
     if (parcel == null) return undefined;
     return { parcel, amount };
   }),
@@ -75,8 +76,8 @@ const gain = computed(() =>
 
 const nameStr = computed(() =>
   props.nameEtcId == null
-    ? gain.value?.[0]?.parcel?.name.value?.unwrapOrElse(fail)
-    : Local.useLocalizeEtc(props.nameEtcId).value?.unwrapOrElse(fail),
+    ? gain.value?.[0]?.parcel?.name.value?.unwrapOrElse(errHandle)
+    : Local.useLocalizeEtc(props.nameEtcId).value?.unwrapOrElse(errHandle),
 );
 const nameLen = computed(() => nameStr.value?.length ?? 0);
 const nameSize = computed(() =>

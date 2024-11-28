@@ -35,10 +35,10 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { fail } from "@/utils/misc";
 import { Icon, rarityBgIcon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
 import { useCharacter } from "../parcel/character/character";
+import { ERR_HANDLE } from "../warn/error";
 
 const imgW = 256;
 const imgH = 210;
@@ -55,6 +55,8 @@ const props = defineProps({
 });
 const parcel = useCharacter(props.cid);
 
+const errHandle = inject(ERR_HANDLE)!;
+
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
 watchEffect(() => {
@@ -65,7 +67,7 @@ const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
   if (parcel.value == null) return;
-  const starMin = parcel.value.unwrapOrElse(fail)?.starMin ?? 0;
+  const starMin = parcel.value.unwrapOrElse(errHandle)?.starMin ?? 0;
   starNum.value = levelNum.value === 0 ? starMin : chara.star;
 });
 const bondNum = ref(props.bond);
@@ -75,7 +77,7 @@ watchEffect(() => {
 });
 
 const bg = computed(() => {
-  if (parcel.value?.unwrapOrElse(fail) == null) return;
+  if (parcel.value?.unwrapOrElse(errHandle) == null) return;
   return rarityBgIcon(parcel.value.unwrap().rarity);
 });
 </script>

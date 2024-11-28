@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { useExcelEventContentFortuneGacha } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -14,7 +14,10 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcelEventContentFortuneGacha();
-const card = computed(() => table.value?.unwrapOrElse(fail)?.get(props.eid));
+const card = computed(() =>
+  table.value?.unwrapOrElse(errHandle)?.get(props.eid),
+);
 </script>

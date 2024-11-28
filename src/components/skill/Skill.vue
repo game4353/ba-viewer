@@ -14,7 +14,7 @@
 
       <template v-slot:title>
         <div class="font-weight-black">
-          {{ skill.name?.value?.unwrapOrElse(fail) }}
+          {{ skill.name?.value?.unwrapOrElse(errHandle) }}
         </div>
         <v-card-subtitle>
           <div class="flex flex-row gap-2">
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { BulletType } from "@/assets/game/types/flatDataExcel";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "../warn/error";
 import { CSkill } from "./skill";
 
 const props = defineProps({
@@ -56,11 +56,12 @@ const props = defineProps({
   layout: String as PropType<"icon" | "default" | "full">,
   normalAttack: Boolean,
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const skill = computed(() => new CSkill(props.sid));
 const desc = ref("");
 watchEffect(() => {
   if (props.lv != null) skill.value.level = props.lv;
-  desc.value = skill.value.desc?.value?.unwrapOrElse(fail) ?? "";
+  desc.value = skill.value.desc?.value?.unwrapOrElse(errHandle) ?? "";
 });
 </script>

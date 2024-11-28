@@ -35,10 +35,12 @@
 
 <script setup lang="ts">
 import SpineCharacter from "@/components/character/SpineCharacter.vue";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelCostume } from "@/utils/data/excel/character";
 import { useSpineCharacterPath } from "@/utils/data/l2d";
-import { fail } from "@/utils/misc";
+
 import { undefinedIsError } from "@/utils/result";
+const errHandle = inject(ERR_HANDLE)!;
 
 const route = useRoute<"/student/[id]/">();
 const id = route.params.id;
@@ -52,7 +54,7 @@ const spr = computed(() =>
     .value?.andThen((dict) =>
       undefinedIsError(dict[cid]?.find((p) => p.endsWith("_spr.skel"))),
     )
-    .unwrapOrElse(fail),
+    .unwrapOrElse(errHandle),
 );
 const paths = computed(() =>
   spr.value ? ["/assets/" + spr.value] : undefined,
@@ -61,7 +63,7 @@ const paths = computed(() =>
 const data = computed(() =>
   useExcelCostume()
     .value?.andThen((map) => map.getResult(cid))
-    .unwrapOrElse(fail),
+    .unwrapOrElse(errHandle),
 );
 const bgPath = computed(() => data.value?.CollectionBGTexturePath ?? "");
 </script>

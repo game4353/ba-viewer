@@ -93,9 +93,10 @@ import {
   useFurnitureIds,
 } from "@/components/parcel/furniture/furniture";
 import { furnitureTags } from "@/components/parcel/furniture/tag";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { toHiragana } from "wanakana";
 import { ParcelType } from "~game/types/flatDataExcel";
+const errHandle = inject(ERR_HANDLE)!;
 
 const currPage = ref(1);
 const search = ref("");
@@ -104,8 +105,8 @@ const furnitureIds = useFurnitureIds();
 const furnitures = computed(
   () =>
     furnitureIds.value
-      ?.unwrapOrElse(fail)
-      ?.map((id) => useFurniture(id).value?.unwrapOrElse(fail))
+      ?.unwrapOrElse(errHandle)
+      ?.map((id) => useFurniture(id).value?.unwrapOrElse(errHandle))
       .filter((v): v is CFurniture => v != null) ?? [],
 );
 

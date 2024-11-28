@@ -36,13 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import type { EventContentFortuneGachaShopExcel } from "~game/types/flatDataExcel";
-import { ReadonlyDeep } from "type-fest";
 import {
   useExcelEventContentFortuneGachaModify,
   useExcelEventContentFortuneGachaShop,
 } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { ReadonlyDeep } from "type-fest";
+import type { EventContentFortuneGachaShopExcel } from "~game/types/flatDataExcel";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -50,19 +50,22 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const slider = ref(1);
 
 const modifyTable = useExcelEventContentFortuneGachaModify();
 const modify = computed(
   () =>
-    modifyTable.value?.unwrapOrElse(fail)?.get(props.eid)
+    modifyTable.value?.unwrapOrElse(errHandle)?.get(props.eid)
       ?.ProbModifyStartCount ?? 0,
 );
 
 const shopTable = useExcelEventContentFortuneGachaShop();
 const rolls = computed(() => {
-  return shopTable.value?.unwrapOrElse(fail)?.get(props.eid)?.reverse() || [];
+  return (
+    shopTable.value?.unwrapOrElse(errHandle)?.get(props.eid)?.reverse() || []
+  );
 });
 
 function calcProb(r: ReadonlyDeep<EventContentFortuneGachaShopExcel>) {

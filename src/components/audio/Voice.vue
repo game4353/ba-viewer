@@ -16,14 +16,16 @@
 import { CharacterVoiceExcel } from "@/assets/game/types/flatDataExcelDb";
 import { useExcelDbCharacterVoiceSubtitle } from "@/utils/data/excel/voice";
 import { Local } from "@/utils/localize";
-import { fail } from "@/utils/misc";
 import { ReadonlyDeep } from "type-fest";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   voiceObj: {
     type: Object as PropType<ReadonlyDeep<CharacterVoiceExcel>>,
   },
 });
+
+const errHandle = inject(ERR_HANDLE)!;
 
 const voiceObj = computed(() => {
   if (props.voiceObj != null) return props.voiceObj;
@@ -32,9 +34,9 @@ const voiceObj = computed(() => {
 const subtitleObj = computed(() => {
   if (voiceObj.value == null) return undefined;
   return useExcelDbCharacterVoiceSubtitle()
-    .value?.unwrapOrElse(fail)
+    .value?.unwrapOrElse(errHandle)
     ?.getResult(voiceObj.value.CharacterVoiceGroupId)
-    .unwrapOrElse(fail)
+    .unwrapOrElse(errHandle)
     ?.find((o) => o.LocalizeCVGroup === voiceObj.value!.LocalizeCVGroup);
 });
 </script>

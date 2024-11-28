@@ -56,8 +56,8 @@ import {
   useExcelDbCharacterVoice,
   useExcelDbVoiceCommon,
 } from "@/utils/data/excel/voice";
-import { fail } from "@/utils/misc";
 import { CVCollectionType } from "~game/types/flatDataExcelDb";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   cid: {
@@ -65,19 +65,22 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const eventIds = computed(() =>
-  Array.from(useExcelDbVoiceCommon().value?.unwrapOrElse(fail)?.keys() ?? []),
+  Array.from(
+    useExcelDbVoiceCommon().value?.unwrapOrElse(errHandle)?.keys() ?? [],
+  ),
 );
 const voices = computed(() =>
   useExcelDbCharacterVoice()
     .value?.andThen((map) => map.getResult(props.cid))
-    .unwrapOrElse(fail),
+    .unwrapOrElse(errHandle),
 );
 const dialogs = computed(() =>
   useExcelDbCharacterDialog()
     .value?.andThen((map) => map.getResult(props.cid))
-    .unwrapOrElse(fail),
+    .unwrapOrElse(errHandle),
 );
 
 const tabs = {

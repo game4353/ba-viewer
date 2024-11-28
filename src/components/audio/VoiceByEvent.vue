@@ -16,7 +16,7 @@ import {
   useExcelDbCharacterVoice,
   useExcelDbVoiceCommon,
 } from "@/utils/data/excel/voice";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   event: {
@@ -29,19 +29,21 @@ const props = defineProps({
   },
 });
 
+const errHandle = inject(ERR_HANDLE)!;
+
 const common = computed(() =>
   useExcelDbVoiceCommon()
-    .value?.unwrapOrElse(fail)
+    .value?.unwrapOrElse(errHandle)
     ?.getResult(props.event)
-    .unwrapOrElse(fail),
+    .unwrapOrElse(errHandle),
 );
 const voices = computed(() => {
   if (common.value == null) return undefined;
 
   const arr = useExcelDbCharacterVoice()
-    .value?.unwrapOrElse(fail)
+    .value?.unwrapOrElse(errHandle)
     ?.getResult(props.cid)
-    .unwrapOrElse(fail);
+    .unwrapOrElse(errHandle);
   if (arr == null) return undefined;
 
   return common.value.VoiceHash.map((hash) =>

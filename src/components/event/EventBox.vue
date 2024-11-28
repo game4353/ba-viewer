@@ -35,7 +35,7 @@ import {
   useExcelEventContentBoxGachaManage,
   useExcelEventContentBoxGachaShop,
 } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -43,17 +43,18 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(null);
 
 const manageTable = useExcelEventContentBoxGachaManage();
 const manages = computed(
-  () => manageTable.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
+  () => manageTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
 
 const shopTable = useExcelEventContentBoxGachaShop();
 const shops = computed(
-  () => shopTable.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
+  () => shopTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
 
 const shopsByRound = computed(() => {

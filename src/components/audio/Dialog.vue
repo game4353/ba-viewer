@@ -30,15 +30,18 @@ import {
   useExcelDbCharacterDialogSubtitle,
   useExcelDbVoice,
 } from "@/utils/data/excel/voice";
-import { fail } from "@/utils/misc";
 import { ReadonlyDeep } from "type-fest";
 import { PropType } from "vue";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   dialogObj: {
     type: Object as PropType<ReadonlyDeep<CharacterDialogExcel>>,
+    required: true,
   },
 });
+
+const errHandle = inject(ERR_HANDLE)!;
 
 const dialogObj = computed(() => {
   if (props.dialogObj != null) return props.dialogObj;
@@ -47,16 +50,17 @@ const dialogObj = computed(() => {
 const subtitleObj = computed(() => {
   if (dialogObj.value == null) return undefined;
   return useExcelDbCharacterDialogSubtitle()
-    .value?.unwrapOrElse(fail)
-    ?.getResult(dialogObj.value.CharacterId)
-    .unwrapOrElse(fail)
-    ?.find((o) => o.LocalizeCVGroup === dialogObj.value!.LocalizeCVGroup);
+    .value?.andThen((map) => map.getResult(dialogObj.value!.CharacterId))
+    .map((arr) =>
+      arr.find((o) => o.LocalizeCVGroup === dialogObj.value!.LocalizeCVGroup),
+    )
+    .unwrapOrElse(errHandle);
 });
 const voiceObjs = computed(() => {
   const voiceIds = dialogObj.value?.VoiceId ?? [];
-  const map = useExcelDbVoice().value?.unwrapOrElse(fail);
+  const map = useExcelDbVoice().value?.unwrapOrElse(errHandle);
   if (map == null) return [];
-  return voiceIds.map((id) => map.getResult(id).unwrapOrElse(fail));
+  return voiceIds.map((id) => map.getResult(id).unwrapOrElse(errHandle));
 });
 </script>
 

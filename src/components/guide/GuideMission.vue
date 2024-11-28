@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column w-min">
     <div class="w-full h-16">
-      <p :class="descSize">{{ desc?.unwrapOrElse(fail) }}</p>
+      <p :class="descSize">{{ desc?.unwrapOrElse(errHandle) }}</p>
     </div>
     <div class="flex flex-row w-36">
       <Parcel
@@ -19,12 +19,12 @@
 
 <script setup lang="ts">
 import { Local } from "@/utils/localize";
-import { fail } from "@/utils/misc";
 import { ReadonlyDeep } from "type-fest";
 import {
   MissionCompleteConditionType,
   type GuideMissionExcel,
 } from "~game/types/flatDataExcel";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   mission: {
@@ -32,6 +32,8 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
+
 const m = props.mission;
 const p = m.CompleteConditionParameter[0];
 const c = m.CompleteConditionCount;
@@ -133,7 +135,7 @@ const desc = computed(() => {
 });
 
 const descSize = computed(() => {
-  const str = desc.value?.unwrapOrElse(fail);
+  const str = desc.value?.unwrapOrElse(errHandle);
   if (str == null) return undefined;
   return str.length > 36
     ? "small"

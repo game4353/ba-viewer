@@ -16,8 +16,7 @@
 <script setup lang="ts">
 import { RecipeType, RewardTag } from "@/assets/game/types/flatDataExcel";
 import { useExcelRecipe } from "@/utils/data/excel/recipe";
-import { fail } from "@/utils/misc";
-import { ASSERT_SOME } from "../../warn/error";
+import { ASSERT_SOME, ERR_HANDLE } from "../../warn/error";
 
 const props = defineProps({
   pid: {
@@ -32,12 +31,13 @@ const props = defineProps({
     type: Number as PropType<RewardTag>,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const recipeMap = useExcelRecipe();
 
 const assertSome = inject(ASSERT_SOME)!;
 const item = computed(() => {
-  const map = recipeMap.value?.unwrapOrElse(fail);
+  const map = recipeMap.value?.unwrapOrElse(errHandle);
   if (map == null) return undefined;
   const item = assertSome(
     map.get(Number(props.pid)),

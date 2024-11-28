@@ -60,11 +60,11 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { fail } from "@/utils/misc";
 import { Icon } from "../GameImg/icon";
 import { uiPath } from "../GameImg/loader";
 import Scaled from "../misc/Scaled.vue";
 import { useCharacter } from "../parcel/character/character";
+import { ERR_HANDLE } from "../warn/error";
 
 const imgW = 404;
 const imgH = 456;
@@ -82,10 +82,15 @@ const props = defineProps({
   star: Number,
   bond: Number,
 });
+const errHandle = inject(ERR_HANDLE)!;
+
 const parcel = useCharacter(props.cid);
 
 const name = computed(
-  () => parcel.value?.unwrapOrElse(fail)?.name.value?.unwrapOrElse(fail) ?? "",
+  () =>
+    parcel.value
+      ?.unwrapOrElse(errHandle)
+      ?.name.value?.unwrapOrElse(errHandle) ?? "",
 );
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
@@ -97,7 +102,7 @@ const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
   if (parcel.value == null) return;
-  const starMin = parcel.value.unwrapOrElse(fail)?.starMin ?? 0;
+  const starMin = parcel.value.unwrapOrElse(errHandle)?.starMin ?? 0;
   starNum.value = levelNum.value === 0 ? starMin : chara.star;
 });
 const bondNum = ref(props.bond);
@@ -122,11 +127,13 @@ watchEffect(() => {
   gearTexts.value[1] = chara.gear2.toString();
   gearTexts.value[2] = chara.gear3.toString();
   gearTexts.value[3] = chara.gear0.toString();
-  if (parcel.value?.unwrapOrElse(fail)?.gear == null) gearTexts.value[3] = "";
+  if (parcel.value?.unwrapOrElse(errHandle)?.gear == null)
+    gearTexts.value[3] = "";
 });
 
 const bg = computed(() => {
-  if (parcel.value?.unwrapOrElse(fail)?.costume.value == null) return undefined;
+  if (parcel.value?.unwrapOrElse(errHandle)?.costume.value == null)
+    return undefined;
   return uiPath(parcel.value.unwrap().costume.value!.CollectionTexturePath);
 });
 const folder = "/src/assets/game/UIs/01_Common/14_CharacterCollect/";

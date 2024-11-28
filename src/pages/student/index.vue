@@ -17,7 +17,9 @@ import {
   useCharacter,
   usePlayableIds,
 } from "@/components/parcel/character/character";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
+
+const errHandle = inject(ERR_HANDLE)!;
 
 const playableIds = usePlayableIds();
 const studentIds = computed(() => {
@@ -27,7 +29,7 @@ const studentIds = computed(() => {
 });
 const students = computed(() =>
   studentIds.value
-    .map((id) => useCharacter(id).value?.unwrapOrElse(fail))
+    .map((id) => useCharacter(id).value?.unwrapOrElse(errHandle))
     .filter((v): v is CCharacter => v != null),
 );
 const orderMap = ref<Map<number, number>>();

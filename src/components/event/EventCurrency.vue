@@ -8,12 +8,12 @@
 </template>
 
 <script setup lang="ts">
+import { useExcelEventContentCurrencyItem } from "@/utils/data/excel/event";
 import {
   ParcelType,
   type EventContentItemType,
 } from "~game/types/flatDataExcel";
-import { useExcelEventContentCurrencyItem } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -25,11 +25,12 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcelEventContentCurrencyItem();
 const item = computed(() =>
   table.value
-    ?.unwrapOrElse(fail)
+    ?.unwrapOrElse(errHandle)
     ?.get(props.eid)
     ?.find((v) => v.EventContentItemType === props.eit),
 );

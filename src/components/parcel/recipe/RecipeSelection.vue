@@ -24,9 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelRecipeSelectionGroup } from "@/utils/data/excel/recipe";
-import { fail } from "@/utils/misc";
-// import { ASSERT_SOME } from "../../warn/error";
 
 const props = defineProps({
   gid: {
@@ -36,17 +35,11 @@ const props = defineProps({
   amount: Number,
   scale: Number,
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const items = computed(() =>
   useExcelRecipeSelectionGroup()
     .value?.andThen((map) => map.getResult(props.gid))
-    .unwrapOrElse(fail),
+    .unwrapOrElse(errHandle),
 );
-
-// const assertSome = inject(ASSERT_SOME)!;
-// assertSome(
-//   items.value,
-//   500,
-//   `Unable to find recipe selection group id (${props.gid}).`,
-// );
 </script>

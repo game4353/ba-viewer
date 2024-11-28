@@ -21,11 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import type { ShopCategoryType } from "~game/types/flatDataExcel";
-
-import { ASSERT_SOME_FILTER } from "@/components/warn/error";
+import { ASSERT_SOME_FILTER, ERR_HANDLE } from "@/components/warn/error";
 import { useExcelEventContentShop } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import type { ShopCategoryType } from "~game/types/flatDataExcel";
 
 const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
 
@@ -35,12 +33,13 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(0);
 
 const table = useExcelEventContentShop();
 const shops = computed(
-  () => table.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
+  () => table.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
 
 const shopTypes = computed(() => [

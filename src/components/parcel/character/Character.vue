@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { RewardTag, TacticEntityType } from "@/assets/game/types/flatDataExcel";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharacter } from "./character";
 
 const props = defineProps({
@@ -51,8 +51,9 @@ const props = defineProps({
     type: Number as PropType<RewardTag>,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const chara = computed(() =>
-  useCharacter(Number(props.cid)).value?.unwrapOrElse(fail),
+  useCharacter(Number(props.cid)).value?.unwrapOrElse(errHandle),
 );
 </script>

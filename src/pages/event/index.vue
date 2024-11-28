@@ -22,13 +22,14 @@
 </template>
 
 <script setup lang="ts">
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useExcelEventContentSeason } from "@/utils/data/excel/event";
+import { ReadonlyDeep } from "type-fest";
 import {
   EventContentType,
   type EventContentSeasonExcel,
 } from "~game/types/flatDataExcel";
-import { ReadonlyDeep } from "type-fest";
-import { useExcelEventContentSeason } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(0);
 
@@ -49,7 +50,7 @@ const tabs = {
 };
 
 watchEffect(() => {
-  const data = table.value?.unwrapOrElse(fail);
+  const data = table.value?.unwrapOrElse(errHandle);
   if (data == null) return;
 
   for (const arr of data.values()) {

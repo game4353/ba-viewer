@@ -48,9 +48,8 @@
 
 <script setup lang="ts">
 import { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
-import { fail } from "@/utils/misc";
 import { PropType } from "vue";
-import { ASSERT_SOLE } from "../warn/error";
+import { ASSERT_SOLE, ERR_HANDLE } from "../warn/error";
 import Character from "./character/Character.vue";
 import { getParcel } from "./parcel";
 
@@ -79,6 +78,7 @@ const props = defineProps({
   // TODO: hover to show name
   hover: String,
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const done: ParcelType[] = [
   ParcelType.Currency,
@@ -106,6 +106,6 @@ watch(
 );
 
 const parcel = computed(() =>
-  getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(fail),
+  getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(errHandle),
 );
 </script>

@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
-import { fail } from "@/utils/misc";
 import { useExcelGoods } from "@/utils/data/excel/shop";
+import { PropType } from "vue";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   goodsId: {
@@ -18,11 +18,12 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcelGoods();
 const good = computed(() => {
   // TODO: deal with multiple goods
-  const good = table.value?.unwrapOrElse(fail)?.get(props.goodsId[0]);
+  const good = table.value?.unwrapOrElse(errHandle)?.get(props.goodsId[0]);
   if (good == null) return undefined;
   return good;
 });

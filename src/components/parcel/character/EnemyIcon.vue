@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { uiPath } from "@/components/GameImg/loader";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharacter } from "./character";
 
 const props = defineProps({
@@ -34,10 +34,13 @@ const props = defineProps({
   scaledH: Number,
   scaleType: String as PropType<"min" | "max">,
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const imgW = 500;
 const imgH = 500;
-const chara = computed(() => useCharacter(props.cid).value?.unwrapOrElse(fail));
+const chara = computed(() =>
+  useCharacter(props.cid).value?.unwrapOrElse(errHandle),
+);
 const costume = computed(() => chara.value?.costume.value);
 const src = computed(() => {
   const path = costume.value?.InformationPacel || costume.value?.TextureBoss;

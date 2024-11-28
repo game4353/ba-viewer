@@ -12,7 +12,9 @@
 
 <script setup lang="ts">
 import { useExcelEventContentStageTotalReward } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { KeyNotFoundErr } from "@/utils/error";
+import { Err, Ok } from "@/utils/result";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -21,9 +23,15 @@ const props = defineProps({
   },
 });
 
+const errHandle = inject(ERR_HANDLE)!;
+
 const rewards = computed(() =>
   useExcelEventContentStageTotalReward()
     .value?.andThen((map) => map.getResult(props.eid))
-    .unwrapOrElse(fail),
+    .orElse2((e) => {
+      if (e instanceof KeyNotFoundErr) return Ok(null);
+      else return Err(e);
+    })
+    .unwrapOrElse(errHandle),
 );
 </script>

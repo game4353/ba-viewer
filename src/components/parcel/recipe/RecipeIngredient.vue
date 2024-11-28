@@ -16,8 +16,7 @@
 
 <script setup lang="ts">
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { fail } from "@/utils/misc";
-import { ASSERT_SOME } from "../../warn/error";
+import { ASSERT_SOME, ERR_HANDLE } from "../../warn/error";
 
 const props = defineProps({
   gid: {
@@ -27,11 +26,13 @@ const props = defineProps({
   amount: Number,
   scale: Number,
 });
+const errHandle = inject(ERR_HANDLE)!;
+
 const assertSome = inject(ASSERT_SOME)!;
 
 const ingredientMap = useExcelRecipeIngredient();
 const item = computed(() => {
-  const map = ingredientMap.value?.unwrapOrElse(fail);
+  const map = ingredientMap.value?.unwrapOrElse(errHandle);
   if (map == null) return undefined;
   const item = assertSome(
     map.get(Number(props.gid)),

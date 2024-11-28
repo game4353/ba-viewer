@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 import { useSkillListFull } from "@/components/skill/skillList";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { ParcelType } from "~game/types/flatDataExcel";
 import { useCharacter } from "./character";
 
@@ -93,6 +93,7 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const weapon2 = ref(false);
 const weapon2valid = ref(false);
@@ -104,7 +105,7 @@ const form = ref(0);
 const forms = ref(0);
 
 const picked = computed(() => {
-  return useCharacter(props.pid).value?.unwrapOrElse(fail);
+  return useCharacter(props.pid).value?.unwrapOrElse(errHandle);
 });
 const skills = computed(() => {
   const sid = picked.value?.id;
