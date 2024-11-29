@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { ASSERT_SOME_FILTER, ERR_HANDLE } from "@/components/warn/error";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelEventContentShop } from "@/utils/data/excel/event";
+import { KeyNotFoundErr } from "@/utils/error";
 import type { ShopCategoryType } from "~game/types/flatDataExcel";
-
-const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   eid: {
@@ -33,7 +33,6 @@ const props = defineProps({
     required: true,
   },
 });
-const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(0);
 
@@ -46,13 +45,16 @@ const shopTypes = computed(() => [
   ...new Set(shops.value.map((o) => o.CategoryType)),
 ]);
 function getShop(t: ShopCategoryType) {
-  const res = assertSomeFilter(
-    shops.value,
-    [["CategoryType", t]],
-    500,
-    `Empty shop category: ${t}`,
-  );
-  return res;
+  const shop = shops.value.filter((o) => o.CategoryType === t);
+  if (shop.length < 1)
+    errHandle(
+      KeyNotFoundErr.from(
+        t,
+        "CategoryType",
+        `EventContentShop (id = ${props.eid})`,
+      ),
+    );
+  return shop;
 }
 </script>
 

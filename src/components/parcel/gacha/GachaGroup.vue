@@ -29,7 +29,7 @@ import {
   useExcelGachaGroup,
 } from "@/utils/data/excel/gacha";
 import { GachaGroupType, RewardTag } from "~game/types/flatDataExcel";
-import { ERR_HANDLE } from "../../warn/error";
+import { ERR_501, ERR_HANDLE } from "../../warn/error";
 
 const props = defineProps({
   pid: {
@@ -45,6 +45,7 @@ const props = defineProps({
   },
 });
 const errHandle = inject(ERR_HANDLE)!;
+const error501 = inject(ERR_501)!;
 
 const obj = computed(() =>
   useExcelGachaGroup().value.unwrapOrElse(errHandle)?.get(props.pid),
@@ -58,9 +59,7 @@ const layout = computed(() => {
     case GachaGroupType.Reward_Pack:
       return "pack";
     default:
-      errHandle(
-        new Error(`Unimplemented GachaGroupType ${obj.value.GroupType}.`),
-      );
+      error501(`GachaGroupType '${obj.value.GroupType}'`);
   }
 });
 

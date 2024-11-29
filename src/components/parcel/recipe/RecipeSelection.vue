@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelRecipeSelectionGroup } from "@/utils/data/excel/recipe";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   gid: {
@@ -35,11 +36,10 @@ const props = defineProps({
   amount: Number,
   scale: Number,
 });
-const errHandle = inject(ERR_HANDLE)!;
 
 const items = computed(() =>
   useExcelRecipeSelectionGroup()
-    .value?.andThen((map) => map.getResult(props.gid))
+    .value.andThen((map) => map.getResult(props.gid))
     .unwrapOrElse(errHandle),
 );
 </script>
