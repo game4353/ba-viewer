@@ -1,10 +1,10 @@
 <template>
   <v-sheet border rounded :elevation="8">
     <div
-      v-if="isLastArray(group)"
-      class="flex flex-row flex-wrap border border-red"
+      class="flex flex-row flex-wrap p-1 border-[1px] border-red-600"
+      v-if="elements"
     >
-      <div v-for="(item, key) in group" :key>
+      <div v-for="(item, key) in elements" :key>
         <Parcel
           :amountMin="item.ParcelAmountMin"
           :amountMax="item.ParcelAmountMax"
@@ -17,13 +17,13 @@
       </div>
     </div>
     <div
-      v-else
-      class="flex flex-row flex-wrap border border-green-500 p-4 gap-2"
+      v-if="groups"
+      class="flex flex-row flex-wrap border-[1px] border-green-500 p-2 gap-2"
     >
       <GachaGroupSub
-        v-for="(subGroup, key) in group"
+        v-for="(group, key) in groups"
         :key
-        :group="subGroup"
+        :pid="group.ParcelID"
         :scale
       />
     </div>
@@ -31,19 +31,35 @@
 </template>
 
 <script setup lang="ts">
-import { isLastArray, type Recursive } from "@/utils/types";
-import { PropType } from "vue";
-import type { GachaElementExcel } from "~game/types/flatDataExcel";
-import { ASSERT_SOME } from "../../warn/error";
+import {
+  useExcelGachaElement,
+  useExcelGachaElementRecursive,
+  useExcelGachaGroup,
+} from "@/utils/data/excel/gacha";
+import { ERR_HANDLE } from "../../warn/error";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
-  group: {
-    type: Object as PropType<Recursive<GachaElementExcel[]>>,
+  pid: {
+    type: Number,
     required: true,
   },
   scale: Number,
 });
-const assertSome = inject(ASSERT_SOME)!;
-const first = computed(() => props.group.at(0));
-assertSome(first.value, 500, "GachaGroupSub is empty.");
+
+const obj = computed(() =>
+  useExcelGachaGroup().value.unwrapOrElse(errHandle)?.get(props.pid),
+);
+const groups = computed(() => {
+  if (obj.value?.IsRecursive !== true) return undefined;
+  return useExcelGachaElementRecursive()
+    .value.andThen((map) => map.getResult(props.pid))
+    .unwrapOrElse(errHandle);
+});
+const elements = computed(() => {
+  if (obj.value?.IsRecursive !== false) return undefined;
+  return useExcelGachaElement()
+    .value.andThen((map) => map.getResult(props.pid))
+    .unwrapOrElse(errHandle);
+});
 </script>
