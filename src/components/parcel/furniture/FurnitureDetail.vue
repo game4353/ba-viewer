@@ -3,23 +3,27 @@
     <v-card class="mx-auto">
       <template v-slot:title>
         <span class="font-weight-black">{{
-          picked.name.unwrapOrElse(errHandle) ?? ""
+          picked.name.value.unwrapOrElse(errHandle) ?? ""
         }}</span>
       </template>
       <template v-slot:prepend>
         <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.desc.unwrapOrElse(errHandle) ?? "" }}
+        {{ picked.desc.value.unwrapOrElse(errHandle) ?? "" }}
       </v-card-text>
     </v-card>
     <v-card
       class="border rounded-xl m-4"
-      v-if="picked.group?.isOk()"
-      :title="picked.group.unwrap().groupName.value?.unwrapOrElse(errHandle)"
+      v-if="picked.group.value?.isOk()"
+      :title="
+        picked.group.value.unwrap().groupName.value?.unwrapOrElse(errHandle)
+      "
     >
       <v-card-text class="bg-surface-light pt-4">
-        {{ picked.group.unwrap().groupDesc.value?.unwrapOrElse(errHandle) }}
+        {{
+          picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(errHandle)
+        }}
       </v-card-text>
     </v-card>
     <v-card

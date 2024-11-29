@@ -79,7 +79,7 @@ export function useFurniture(id: number) {
   return computed(() =>
     table.value
       .andThen((map) => map.getResult(id))
-      .map((c) => reactive(new CFurniture(c))),
+      .map((c) => new CFurniture(c)),
   );
 }
 
