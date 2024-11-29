@@ -63,21 +63,18 @@ function useLocalizeEtc(id: number, desc = false) {
 const useLocalizeSkillMap = cache(() =>
   useExcelDbMapSingle<LocalizeSkillExcel, "Key">("LocalizeSkill", "Key"),
 );
-function useLocalizeSkill(id?: number, desc = false) {
-  if (id == null) return undefined;
-  const table = useLocalizeSkillMap();
+function useLocalizeSkill(id: number, desc = false) {
   return computed(() =>
-    table.value?.andThen((map) => {
-      const o = map.get(id);
-      if (o == null)
-        return Err(new Error(`Unable to find '${id}' in LocalizeSkill.`));
-      switch (settings.lang) {
-        case Lang.JP:
-          return desc ? Ok(o.DescriptionJp) : Ok(o.NameJp);
-        case Lang.KR:
-          return desc ? Ok(o.DescriptionKr) : Ok(o.NameKr);
-      }
-    }),
+    useLocalizeSkillMap()
+      .value.andThen((map) => map.getResult(id))
+      .map((o) => {
+        switch (settings.lang) {
+          case Lang.JP:
+            return desc ? o.DescriptionJp : o.NameJp;
+          case Lang.KR:
+            return desc ? o.DescriptionKr : o.NameKr;
+        }
+      }),
   );
 }
 

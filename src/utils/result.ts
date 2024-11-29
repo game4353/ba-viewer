@@ -1,4 +1,5 @@
 import { Err, ErrImpl, Ok, OkImpl, Result } from "ts-results-es";
+import { ManyResultErr, NoResultErr } from "./error";
 
 type OkContent<T> = T extends OkImpl<infer U> ? U : never;
 type ErrContent<T> = T extends ErrImpl<infer U> ? U : never;
@@ -47,10 +48,27 @@ declare module "ts-results-es" {
   }
 }
 
-type ComputedResult<T, E> = globalThis.ComputedRef<Result<T, E>>;
-export { Err, Ok, Result, type ComputedResult };
+export { Err, Ok, Result };
+export type ComputedResult<T, E> = globalThis.ComputedRef<Result<T, E>>;
+export type PropMaybeResult<T> = globalThis.PropType<T | Result<T, Error>>;
 
 export function undefinedIsError<T>(anything: T) {
   if (anything === undefined) return Err(new Error("Something is undefined."));
   return Ok(anything);
+}
+
+export function filterSingle<T>(
+  arr: T[],
+  predicate: (value: T, index: number, array: T[]) => boolean,
+): Result<T, NoResultErr | ManyResultErr> {
+  const res = arr.filter(predicate);
+  if (res.length === 0)
+    return Err(new NoResultErr(`Found 0 result of the predicate ${predicate}`));
+  if (res.length > 1)
+    return Err(
+      new ManyResultErr(
+        `Found ${res.length} results of the predicate ${predicate}`,
+      ),
+    );
+  return Ok(res[0]);
 }

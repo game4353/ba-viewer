@@ -1,27 +1,21 @@
 <template>
-  <SkillIcon
-    v-if="layout === 'icon' && skill.iconPath"
-    :path="skill.iconPath"
-    :type
-  />
+  <SkillIcon v-if="layout === 'icon'" :path="skill.iconPath" :type />
   <div v-else>
     <v-card>
       <template v-slot:prepend>
         <div class="w-12">
-          <SkillIcon v-if="skill.iconPath" :path="skill.iconPath" :type />
+          <SkillIcon :path="skill.iconPath" :type />
         </div>
       </template>
 
       <template v-slot:title>
         <div class="font-weight-black">
-          {{ skill.name?.value?.unwrapOrElse(errHandle) }}
+          {{ skill.name.unwrapOrElse(errHandle) }}
         </div>
         <v-card-subtitle>
           <div class="flex flex-row gap-2">
             <span class="text-sm" v-if="lv != null">LV {{ lv }}</span>
-            <span class="text-sm" v-if="(skill.obj?.SkillCost ?? 0) > 0">
-              cost {{ skill.obj!.SkillCost }}
-            </span>
+            <span class="text-sm" v-if="cost"> cost {{ cost }} </span>
           </div>
         </v-card-subtitle>
       </template>
@@ -62,6 +56,7 @@ const skill = computed(() => new CSkill(props.sid));
 const desc = ref("");
 watchEffect(() => {
   if (props.lv != null) skill.value.level = props.lv;
-  desc.value = skill.value.desc?.value?.unwrapOrElse(errHandle) ?? "";
+  desc.value = skill.value.desc.unwrapOrElse(errHandle) ?? "";
 });
+const cost = computed(() => skill.value.obj.unwrapOrElse(errHandle)?.SkillCost);
 </script>

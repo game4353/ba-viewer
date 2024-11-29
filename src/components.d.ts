@@ -68,6 +68,7 @@ declare module 'vue' {
     SpineCharacter: typeof import('./components/character/SpineCharacter.vue')['default']
     StudentList: typeof import('./components/student/StudentList.vue')['default']
     TabBasic: typeof import('./components/character/TabBasic.vue')['default']
+    TabBasicSkill: typeof import('./components/character/TabBasicSkill.vue')['default']
     TabSkill: typeof import('./components/character/TabSkill.vue')['default']
     TabVoice: typeof import('./components/character/TabVoice.vue')['default']
     Voice: typeof import('./components/audio/Voice.vue')['default']

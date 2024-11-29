@@ -48,27 +48,7 @@
             <Slider name="治癒力" keys="break3" :cid />
           </v-expansion-panel-text>
         </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-title>
-            SKILL
-            <div class="flex flex-row w-full justify-evenly">
-              <div class="w-1/4 max-w-16" v-for="([n, v], key) in skills" :key>
-                <Skill
-                  :sid="n"
-                  :type="chara.unwrap().obj.BulletType"
-                  :lv="v"
-                  layout="icon"
-                />
-              </div>
-            </div>
-          </v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <Slider name="EX" keys="skill0" :cid />
-            <Slider name="skill1" keys="skill1" :cid />
-            <Slider name="skill2" keys="skill2" :cid />
-            <Slider name="skill3" keys="skill3" :cid />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
+        <TabBasicSkill :cid />
         <v-expansion-panel>
           <v-expansion-panel-title>
             <v-container>
@@ -112,9 +92,7 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { storeToRefs } from "pinia";
 import { useCharacter } from "../parcel/character/character";
-import { useSkillList } from "../skill/skillList";
 
 const props = defineProps({
   cid: {
@@ -124,26 +102,5 @@ const props = defineProps({
 });
 
 const chara = useCharacter(props.cid);
-const store = useCharaStore(props.cid);
-const charaNow = storeToRefs(store.now());
 const charaParam = useCharaStore(props.cid).now();
-
-const skillList = useSkillList(
-  props.cid,
-  charaParam.star > 6 ? 2 : 0,
-  charaParam.gear0 > 1 ? 2 : 0,
-  0,
-);
-const skillEX = computed(() => skillList.value?.ExSkillGroupId?.at(0));
-const skillNS = computed(() => skillList.value?.PublicSkillGroupId?.at(0));
-const skillPS = computed(() => skillList.value?.PassiveSkillGroupId?.at(0));
-const skillSS = computed(() =>
-  skillList.value?.ExtraPassiveSkillGroupId?.at(0),
-);
-const skills = computed<[string, number][]>(() => [
-  [skillEX.value ?? "", charaNow.skill0.value],
-  [skillNS.value ?? "", charaNow.skill1.value],
-  [skillPS.value ?? "", charaNow.skill2.value],
-  [skillSS.value ?? "", charaNow.skill3.value],
-]);
 </script>

@@ -44,6 +44,20 @@ export class KeyNotFoundErr extends Error {
   }
 }
 
+export class ManyResultErr extends Error {
+  constructor(...args: any) {
+    super(...args);
+    this.name = "ManyResultErr";
+  }
+}
+
+export class NoResultErr extends Error {
+  constructor(...args: any) {
+    super(...args);
+    this.name = "NoResultErr";
+  }
+}
+
 export class TimeoutErr extends Error {
   info: {
     timeSec: number;

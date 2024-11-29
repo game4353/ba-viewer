@@ -1,5 +1,6 @@
 import { useExcel } from "@/utils/data/excel";
-import { fail } from "@/utils/misc";
+import { useExcelCharacterSkillList } from "@/utils/data/excel/skill";
+import { filterSingle } from "@/utils/result";
 import type {
   CharacterSkillListExcel,
   CharacterSkillListExcelTable,
@@ -29,7 +30,9 @@ function cmp(a: Data, b: Data) {
 const table = useExcel<CharacterSkillListExcelTable>(
   "CharacterSkillListExcelTable",
 );
-const arr = computed(() => table.value?.unwrapOrElse(fail)?.DataList.sort(cmp));
+const arr = computed(() =>
+  table.value?.unwrapOr(undefined)?.DataList.slice().sort(cmp),
+);
 
 function search(target: Data) {
   if (arr.value == null) return undefined;
@@ -54,16 +57,20 @@ export function useSkillList(
   tsa: number = 0,
   form: number = 0,
 ) {
-  return computed(() => {
-    const i = search({
-      CharacterSkillListGroupId: sid,
-      MinimumGradeCharacterWeapon: weapon,
-      MinimumTierCharacterGear: gear,
-      TSAInteractionId: tsa,
-      FormIndex: form,
-    });
-    return i?.value == null ? null : arr.value![i.value];
-  });
+  return computed(() =>
+    useExcelCharacterSkillList()
+      .value.andThen((map) => map.getResult(sid))
+      .andThen((arr) =>
+        filterSingle(
+          arr,
+          (o) =>
+            o.MinimumGradeCharacterWeapon === weapon &&
+            o.MinimumTierCharacterGear === gear &&
+            o.TSAInteractionId === tsa &&
+            o.FormIndex === form,
+        ),
+      ),
+  );
 }
 
 /** `output[tsa][weapon][gear][form]` */
