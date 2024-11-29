@@ -83,6 +83,8 @@ import { toHiragana } from "wanakana";
 import { CCharacter } from "../parcel/character/character";
 import { characterTags } from "../parcel/character/tag";
 import { compare } from "../parcel/tag";
+import { ERR_HANDLE } from "../warn/error";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   items: {
@@ -131,7 +133,9 @@ watch(search, () => {
   else {
     searchVisibles.value = new Set(
       props.items
-        .filter((o) => o.search.value[0].includes(query))
+        .filter((o) =>
+          o.search.value.unwrapOrElse(errHandle)?.[0].includes(query),
+        )
         .map((o) => o.id),
     );
   }

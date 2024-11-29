@@ -121,7 +121,7 @@ const searchedItems = computed(() => {
   else {
     const q = toHiragana(newSearch);
     return filteredItems.value.filter((f) => {
-      if (f.search.value[0]?.indexOf(q) > -1) return true;
+      if (f.search.value.unwrapOrElse(errHandle)?.[0]?.includes(q)) return true;
       return false;
     });
   }

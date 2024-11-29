@@ -13,7 +13,7 @@ import {
   useExcelCostume,
 } from "@/utils/data/excel/character";
 import { Local } from "@/utils/localize";
-import { cache, fail, isDefined } from "@/utils/misc";
+import { cache, isDefined } from "@/utils/misc";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import {
