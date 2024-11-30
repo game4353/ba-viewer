@@ -1,6 +1,4 @@
-import { useCharacter } from "@/components/parcel/character/character";
-import { useExcelCharacterStat } from "@/utils/data/excel/character";
-import { cache, fail, interpolation, unreachable } from "@/utils/misc";
+import { cache } from "@/utils/misc";
 import { clamp, useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 
@@ -110,86 +108,6 @@ export class CharaData {
 }
 
 export const useCharaStore = cache((cid: number) => {
-  const chara = useCharacter(cid);
-  const stat = useExcelCharacterStat();
-
-  function baseHP(state: Record<CharaProp, number>) {
-    const raw = interpolation(
-      1,
-      100,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.MaxHP1 ?? 0,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.MaxHP100 ?? 0,
-      state.lv,
-    );
-    const bonus =
-      chara.value
-        ?.unwrapOrElse(fail)
-        ?.starBonus("HP", state.star)
-        .value?.unwrapOrElse(fail) ?? 0;
-    return Math.ceil(raw * bonus);
-  }
-  function baseATK(state: Record<CharaProp, number>) {
-    const raw = interpolation(
-      1,
-      100,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.AttackPower1 ?? 0,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.AttackPower100 ?? 0,
-      state.lv,
-    );
-    const bonus =
-      chara.value
-        ?.unwrapOrElse(fail)
-        ?.starBonus("Attack", state.star)
-        .value?.unwrapOrElse(fail) ?? 0;
-    return Math.ceil(raw * bonus);
-  }
-  function baseDEF(state: Record<CharaProp, number>) {
-    const raw = interpolation(
-      1,
-      100,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePower1 ?? 0,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePower100 ?? 0,
-      state.lv,
-    );
-    return Math.ceil(raw);
-  }
-  function baseHEA(state: Record<CharaProp, number>) {
-    const raw = interpolation(
-      1,
-      100,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.HealPower1 ?? 0,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.HealPower100 ?? 0,
-      state.lv,
-    );
-    const bonus =
-      chara.value
-        ?.unwrapOrElse(fail)
-        ?.starBonus("Heal", state.star)
-        .value?.unwrapOrElse(fail) ?? 0;
-    return Math.ceil(raw * bonus);
-  }
-  function baseDFX(state: Record<CharaProp, number>) {
-    const raw = interpolation(
-      1,
-      100,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetration1 ?? 0,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetration100 ?? 0,
-      state.lv,
-    );
-    return Math.ceil(raw);
-  }
-  function baseDFXX(state: Record<CharaProp, number>) {
-    const raw = interpolation(
-      1,
-      100,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetrationResist1 ?? 0,
-      stat.value?.unwrapOrElse(fail)?.get(cid)?.DefensePenetrationResist100 ??
-        0,
-      state.lv,
-    );
-    return Math.ceil(raw);
-  }
-
   const now = defineStore(`charaNow${cid}`, {
     state: () =>
       useStorage(`charaNow${cid}`, CharaData.defaultMin().toObj(), undefined, {
@@ -199,14 +117,6 @@ export const useCharaStore = cache((cid: number) => {
       update(data: CharaData) {
         this.$state = data.toObj();
       },
-    },
-    getters: {
-      baseHP,
-      baseATK,
-      baseDEF,
-      baseHEA,
-      baseDFX,
-      baseDFXX,
     },
   });
   const goal = defineStore(`charaGoal${cid}`, {
@@ -218,14 +128,6 @@ export const useCharaStore = cache((cid: number) => {
       update(data: CharaData) {
         this.$state = data.toObj();
       },
-    },
-    getters: {
-      baseHP,
-      baseATK,
-      baseDEF,
-      baseHEA,
-      baseDFX,
-      baseDFXX,
     },
   });
 
@@ -241,12 +143,7 @@ export type CharaDataV0 = Record<
 >;
 
 export function getCharaDataV0(id: number, type: "now" | "goal") {
-  const key =
-    type === "now"
-      ? `charaNow${id}`
-      : type === "goal"
-        ? `charaGoal${id}`
-        : unreachable();
+  const key = type === "now" ? `charaNow${id}` : `charaGoal${id}`;
   const data = localStorage.getItem(key);
   return CharaData.fromString(data ?? "");
 }
