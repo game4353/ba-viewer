@@ -72,3 +72,10 @@ export function filterSingle<T>(
     );
   return Ok(res[0]);
 }
+
+/** @param message The error message shown if the Ok value is null or undefined. */
+export const assertSome = (message: string) =>
+  function <T>(value: T): Result<NonNullable<T>, NoResultErr> {
+    if (value == null) return Err(new NoResultErr(message));
+    return Ok(value);
+  };

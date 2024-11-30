@@ -5,6 +5,7 @@ import {
   ProductionStep,
   type CharacterExcel,
 } from "@/assets/game/types/flatDataExcel";
+import { useBaseStats } from "@/components/character/stat/stat";
 import { useCharaStore } from "@/stores/character";
 import {
   useExcelCharacter,
@@ -135,6 +136,13 @@ export class CCharacter implements IFilterable, IParcel {
     return ArmorType[this.obj.ArmorType];
   }
 
+  get level() {
+    return computed(() => useCharaStore(this.id).now().lv);
+  }
+  get star() {
+    return computed(() => useCharaStore(this.id).now().star);
+  }
+
   sortValue(key: globalThis.Ref<string>) {
     return computed(() => {
       switch (key.value) {
@@ -150,6 +158,8 @@ export class CCharacter implements IFilterable, IParcel {
   starRecipe = useTranscendenceRecipeIngredient;
   potentialBonus = usePotentialStatBonusRate;
   potentialRecipe = usePotentialStatRecipeIngredient;
+
+  baseStats = useBaseStats;
 }
 
 export const useCharacter = cache((id: number) => {
