@@ -18,7 +18,7 @@
             <TabBasic :cid />
           </v-tabs-window-item>
           <v-tabs-window-item value="stats">
-            <!-- <TabStat :cid /> -->
+            <TabStat :cid />
           </v-tabs-window-item>
           <v-tabs-window-item value="skill">
             <TabSkill :cid />
