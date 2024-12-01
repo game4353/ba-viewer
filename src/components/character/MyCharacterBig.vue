@@ -34,15 +34,11 @@
         >
           {{ starNum! > 5 ? starNum! - 5 : starNum }}
         </v-img>
-        <v-img
-          class="heart"
+        <Bond
+          class="!absolute left-0 top-24"
           v-if="levelNum! > 0"
-          width="90"
-          height="83"
-          :src="Icon.Heart"
-        >
-          {{ bondNum }}
-        </v-img>
+          :level="bondNum"
+        />
         <div class="skills">
           <span v-for="(skill, key) in skillTexts" :key>
             {{ skill }}
@@ -169,21 +165,6 @@ function textSize(text: string) {
   position: absolute !important;
   font-size: 56px;
   line-height: 100px;
-}
-.heart {
-  @apply left-0 top-24 text-black text-center;
-  position: absolute !important;
-  text-shadow:
-    -3px 0 white,
-    3px 0 white,
-    0 -3px white,
-    0 3px white,
-    1px -1px white,
-    -1px -1px white,
-    1px 1px white,
-    -1px 1px white;
-  font-size: 30px;
-  line-height: 80px;
 }
 
 .skills {
