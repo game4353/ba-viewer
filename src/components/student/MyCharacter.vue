@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
-    <Scaled :scale :width="imgW" :height="imgH">
+    <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
       <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
         <GameImg
           :path="parcel.unwrap().iconPath"
@@ -19,15 +19,11 @@
         >
           {{ starNum! > 5 ? starNum! - 5 : starNum }}
         </v-img>
-        <v-img
-          class="heart"
+        <Bond
+          class="!absolute right-0 -top-1"
           v-if="levelNum! > 0"
-          width="90"
-          height="83"
-          :src="Icon.Heart"
-        >
-          {{ bondNum }}
-        </v-img>
+          :level="bondNum"
+        />
       </v-img>
     </Scaled>
   </router-link>
@@ -35,10 +31,10 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { fail } from "@/utils/misc";
 import { Icon, rarityBgIcon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
 import { useCharacter } from "../parcel/character/character";
+import { ERR_HANDLE } from "../warn/error";
 
 const imgW = 256;
 const imgH = 210;
@@ -49,11 +45,16 @@ const props = defineProps({
     required: true,
   },
   scale: Number,
+  scaledW: Number,
+  scaledH: Number,
+  scaleType: String as PropType<"min" | "max">,
   level: Number,
   star: Number,
   bond: Number,
 });
 const parcel = useCharacter(props.cid);
+
+const errHandle = inject(ERR_HANDLE)!;
 
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
@@ -65,7 +66,7 @@ const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
   if (parcel.value == null) return;
-  const starMin = parcel.value.unwrapOrElse(fail)?.starMin ?? 0;
+  const starMin = parcel.value.unwrapOrElse(errHandle)?.starMin ?? 0;
   starNum.value = levelNum.value === 0 ? starMin : chara.star;
 });
 const bondNum = ref(props.bond);
@@ -75,7 +76,7 @@ watchEffect(() => {
 });
 
 const bg = computed(() => {
-  if (parcel.value?.unwrapOrElse(fail) == null) return;
+  if (parcel.value?.unwrapOrElse(errHandle) == null) return;
   return rarityBgIcon(parcel.value.unwrap().rarity);
 });
 </script>
@@ -104,21 +105,6 @@ const bg = computed(() => {
   position: absolute !important;
   font-size: 40px;
   line-height: 65px;
-}
-.heart {
-  @apply right-0 -top-1 text-black text-center;
-  position: absolute !important;
-  text-shadow:
-    -3px 0 white,
-    3px 0 white,
-    0 -3px white,
-    0 3px white,
-    1px -1px white,
-    -1px -1px white,
-    1px 1px white,
-    -1px 1px white;
-  font-size: 30px;
-  line-height: 80px;
 }
 .atk-def {
   @apply absolute flex flex-row;

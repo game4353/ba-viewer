@@ -46,7 +46,7 @@
         :data-height="twitterH"
         data-theme="dark"
         href="https://twitter.com/Blue_ArchiveJP?ref_src=twsrc%5Etfw"
-        >Tweets by Blue_ArchiveJP</a
+        >Loading posts by Blue_ArchiveJP...</a
       >
     </div>
   </div>

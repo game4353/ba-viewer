@@ -43,11 +43,10 @@
 import { ParcelType, RewardTag } from "~game/types/flatDataExcel";
 import { Icon, rarityBgIcon } from "../GameImg/icon";
 import Scaled from "../misc/Scaled.vue";
-import { ASSERT_UNREACHABLE } from "../warn/error";
+import { ERR_501 } from "../warn/error";
 import { CFurniture } from "./furniture/furniture";
 import { IParcel } from "./parcel";
-
-const assertUnreachable = inject(ASSERT_UNREACHABLE)!;
+const error501 = inject(ERR_501)!;
 
 const imgW = 256;
 const imgH = 210;
@@ -79,6 +78,7 @@ const bg = computed(() =>
 
 // amount
 function convertNum(num: number) {
+  if (num >= 1000000 && num % 1000000 === 0) return `${num / 1000000}M`;
   if (num >= 10000 && num % 1000 === 0) return `${num / 1000}K`;
   return `${num}`;
 }
@@ -108,7 +108,7 @@ const tagStr = computed(() => {
     case RewardTag.Rare:
       return "レア";
     default:
-      assertUnreachable(`RewardTag ${props.tag} is not implemented yet.`);
+      error501(`RewardTag '${props.tag}'`);
   }
 });
 

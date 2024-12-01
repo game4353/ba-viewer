@@ -1,14 +1,16 @@
+import { FetchDataErr, KeyNotFoundErr, TimeoutErr } from "@/utils/error";
 import type { ReadonlyDeep } from "type-fest";
-import { useFetch } from "../index";
 import { Err, Ok } from "~/utils/result";
+import { useFetch } from "../index";
 
 export function useExcel<T>(name: string) {
   const url = computed(() => `/data/Excel/${name}.json`);
   const { data, error } = useFetch<T>(url);
   const state = computed(() => {
-    if (data.value == null && error.value == null) return null;
+    if (data.value == null && error.value == null)
+      return Err(TimeoutErr.from(name, 0));
     if (data.value != null) return Ok(data.value as T);
-    return Err(error.value as Error);
+    return Err(FetchDataErr.from(name, error.value));
   });
   return readonly(state);
 }
@@ -17,9 +19,10 @@ export function useExcelDb<T>(name: string) {
   const url = computed(() => `/data/DB/ExcelDB/${name}.json`);
   const { data, error } = useFetch<{ Bytes: T }[]>(url);
   const state = computed(() => {
-    if (data.value == null && error.value == null) return null;
+    if (data.value == null && error.value == null)
+      return Err(TimeoutErr.from(name, 0));
     if (data.value != null) return Ok(data.value as { Bytes: T }[]);
-    return Err(error.value as Error);
+    return Err(FetchDataErr.from(name, error.value));
   });
   return readonly(state);
 }
@@ -38,7 +41,10 @@ export function useExcelMapSingle<
       ): MapResult<
         T["DataList"][number][K],
         ReadonlyDeep<T["DataList"][number]>
-      > => new MapResult(table.DataList.map((o) => [o[key], o])),
+      > =>
+        new MapResult(table.DataList.map((o) => [o[key], o]))
+          .setTitle(name)
+          .setKeyName(key.toString()),
     ),
   );
 }
@@ -57,7 +63,10 @@ export function useExcelMapMany<
       ): MapResult<
         T["DataList"][number][K],
         ReadonlyDeep<T["DataList"][number]>[]
-      > => MapResult.groupBy(table.DataList, (o) => o[key]),
+      > =>
+        MapResult.groupBy(table.DataList, (o) => o[key])
+          .setTitle(name)
+          .setKeyName(key.toString()),
     ),
   );
 }
@@ -70,7 +79,9 @@ export function useExcelDbMapSingle<T, K extends keyof T>(
   return computed(() =>
     state.value?.map(
       (arr): MapResult<T[K], ReadonlyDeep<T>> =>
-        new MapResult(arr.map((o) => [o.Bytes[key], o.Bytes as any])),
+        new MapResult(arr.map((o) => [o.Bytes[key], o.Bytes as any]))
+          .setTitle(name)
+          .setKeyName(key.toString()),
     ),
   );
 }
@@ -83,15 +94,20 @@ export function useExcelDbMapMany<T, K extends keyof T>(name: string, key: K) {
         MapResult.groupBy(
           arr.map((o) => o.Bytes as any),
           (o) => o[key],
-        ),
+        )
+          .setTitle(name)
+          .setKeyName(key.toString()),
     ),
   );
 }
 
 export class MapResult<T, U> extends Map<T, U> {
+  private title?: string;
+  private keyName?: string;
+
   getResult(key: T) {
     if (this.has(key)) return Ok(this.get(key) as U);
-    return Err(new Error(`Invalid key '${key}'.`));
+    return Err(KeyNotFoundErr.from(key, this.keyName, this.title));
   }
 
   static groupBy<K, T>(
@@ -107,5 +123,13 @@ export class MapResult<T, U> extends Map<T, U> {
       result.get(key)!.push(v);
     });
     return result;
+  }
+  setTitle(title: string) {
+    this.title = title;
+    return this;
+  }
+  setKeyName(keyName: string) {
+    this.keyName = keyName;
+    return this;
   }
 }

@@ -28,10 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import { StageDifficulty } from "~game/types/flatDataExcel";
-
 import { useExcelEventContentStage } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { StageDifficulty } from "~game/types/flatDataExcel";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -39,13 +38,14 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const tabs = ["story", "quest", "challenge"] as const;
 const tab = ref(0);
 
 const table = useExcelEventContentStage();
 const stages = computed(
-  () => table.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
+  () => table.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
 
 const tabContents = computed(() => {

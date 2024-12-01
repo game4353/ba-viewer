@@ -2,14 +2,14 @@
   <v-card v-if="picked" class="mx-auto">
     <template v-slot:title>
       <span class="font-weight-black">{{
-        picked.name.value?.unwrapOrElse(fail) ?? ""
+        picked.name.value?.unwrapOrElse(errHandle) ?? ""
       }}</span>
     </template>
     <template v-slot:prepend>
       <Parcel :type="ParcelType.Item" :pid="picked.id" :scale="0.4" />
     </template>
     <v-card-text class="bg-surface-light pt-4">
-      {{ picked.desc.value?.unwrapOrElse(fail) ?? "" }}
+      {{ picked.desc.value?.unwrapOrElse(errHandle) ?? "" }}
     </v-card-text>
   </v-card>
 
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { ParcelType } from "~game/types/flatDataExcel";
 import { useItem } from "./item";
 
@@ -35,6 +35,9 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
-const picked = computed(() => useItem(props.pid).value?.unwrapOrElse(fail));
+const picked = computed(() =>
+  useItem(props.pid).value?.unwrapOrElse(errHandle),
+);
 </script>

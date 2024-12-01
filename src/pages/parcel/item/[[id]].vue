@@ -44,9 +44,10 @@
 
 <script setup lang="ts">
 import { CItem, useItem, useItemIds } from "@/components/parcel/item/item";
-import { ObjectEntries, ObjectKeys } from "@/types";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { ObjectEntries, ObjectKeys } from "@/utils/types";
 import { ItemCategory, ParcelType } from "~game/types/flatDataExcel";
+const errHandle = inject(ERR_HANDLE)!;
 
 const tabs: Record<keyof typeof ItemCategory, string> = {
   SecretStone: "神名文字",
@@ -64,8 +65,8 @@ const itemIds = useItemIds();
 const itemByCategory = computed(() => {
   const items =
     itemIds.value
-      ?.unwrapOrElse(fail)
-      ?.map((id) => useItem(id).value?.unwrapOrElse(fail))
+      ?.unwrapOrElse(errHandle)
+      ?.map((id) => useItem(id).value?.unwrapOrElse(errHandle))
       .filter((v): v is CItem => v != null) ?? [];
 
   return Map.groupBy(items, (item) => item.obj.ItemCategory);
@@ -81,7 +82,7 @@ const picked = computed(() =>
 );
 const tab = ref("Material");
 watchEffect(() => {
-  const cat = picked.value?.unwrapOrElse(fail)?.obj.ItemCategory;
+  const cat = picked.value?.unwrapOrElse(errHandle)?.obj.ItemCategory;
   if (cat == null) tab.value = "Material";
   else tab.value = ItemCategory[cat];
 });

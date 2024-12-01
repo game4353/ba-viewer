@@ -32,24 +32,20 @@ export function useTranscendenceRecipeIngredient(
 ) {
   const transcendenceMap = useExcelCharacterTranscendence();
   const ingredientMap = useExcelRecipeIngredient();
-  return computed(
-    () =>
-      transcendenceMap.value &&
-      ingredientMap.value &&
-      transcendenceMap.value
-        .andThen((map) => map.getResult(this.id))
-        .andThen((rids) => {
-          const rid = rids.RecipeId?.[star];
-          return rid == null
-            ? Err(
-                new Error(
-                  `Unable to index '${star}'-th RecipeId of CharacterTranscendenceExcel '${this.id}'.`,
-                ),
-              )
-            : Ok(rid);
-        })
-        .andThen((rid) =>
-          ingredientMap.value!.andThen((map) => map.getResult(rid)),
-        ),
+  return computed(() =>
+    transcendenceMap.value
+      .andThen((map) => map.getResult(this.id))
+      .andThen((rids) => {
+        const rid = rids.RecipeId[star];
+        if (rid != null) return Ok(rid);
+        return Err(
+          new Error(
+            `Unable to index '${star}'-th RecipeId of CharacterTranscendenceExcel '${this.id}'.`,
+          ),
+        );
+      })
+      .andThen2((rid) =>
+        ingredientMap.value.andThen((map) => map.getResult(rid)),
+      ),
   );
 }

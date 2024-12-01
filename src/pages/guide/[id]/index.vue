@@ -17,11 +17,12 @@
 
 <script setup lang="ts">
 import GuideMission from "@/components/guide/GuideMission.vue";
+import { ERR_HANDLE } from "@/components/warn/error";
 import {
   useExcelGuideMission,
   useExcelGuideMissionSeason,
 } from "@/utils/data/excel/guide";
-import { fail } from "@/utils/misc";
+const errHandle = inject(ERR_HANDLE)!;
 
 const route = useRoute<"/guide/[id]/">();
 const gid = Number(route.params.id);
@@ -29,13 +30,13 @@ const gid = Number(route.params.id);
 const guide = computed(() =>
   useExcelGuideMissionSeason()
     .value?.andThen((map) => map.getResult(gid))
-    .unwrapOrElse(fail),
+    .unwrapOrElse(errHandle),
 );
 
 const tabs = computed(() => {
   const missions = useExcelGuideMission()
     .value?.andThen((map) => map.getResult(gid))
-    .unwrapOrElse(fail);
+    .unwrapOrElse(errHandle);
   if (missions == null) return undefined;
   const map = Map.groupBy(missions, (m) => m.TabNumber);
   return Array.from({ length: map.size }, (_, i) => map.get(i));

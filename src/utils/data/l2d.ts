@@ -1,4 +1,4 @@
-import { cache } from "@/util";
+import { cache } from "@/utils/misc";
 import { Err, Ok } from "~/utils/result";
 import { useFetch } from "./index";
 

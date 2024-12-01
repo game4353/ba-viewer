@@ -11,7 +11,7 @@
             :class="String(id) === route.params.id ? 'selecting' : 'others'"
           >
             <ParcelCommon
-              :parcel="useEquipment(id).value?.unwrapOrElse(fail)"
+              :parcel="useEquipment(id).value?.unwrapOrElse(errHandle)"
               :scale="0.35"
               route
             />
@@ -30,8 +30,9 @@
 
 <script setup lang="ts">
 import { useEquipment } from "@/components/parcel/equipment/equipment";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelEquipment } from "@/utils/data/excel/parcel";
-import { fail } from "@/utils/misc";
+const errHandle = inject(ERR_HANDLE)!;
 
 const route = useRoute<"/parcel/equipment/[[id]]">();
 const picked = computed(() => route.params.id);

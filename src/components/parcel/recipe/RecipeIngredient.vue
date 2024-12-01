@@ -10,14 +10,23 @@
         :scale="0.3"
         route
       />
+      <Parcel
+        v-for="(cid, i) in item.CostId"
+        :key="i"
+        :amount="item.CostAmount[i]"
+        :type="item.CostParcelType[i]"
+        :pid="cid"
+        :scale="0.3"
+        route
+      />
     </div>
   </v-sheet>
 </template>
 
 <script setup lang="ts">
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { fail } from "@/utils/misc";
-import { ASSERT_SOME } from "../../warn/error";
+import { ERR_HANDLE } from "../../warn/error";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   gid: {
@@ -27,18 +36,10 @@ const props = defineProps({
   amount: Number,
   scale: Number,
 });
-const assertSome = inject(ASSERT_SOME)!;
 
-const ingredientMap = useExcelRecipeIngredient();
-const item = computed(() => {
-  const map = ingredientMap.value?.unwrapOrElse(fail);
-  if (map == null) return undefined;
-  const item = assertSome(
-    map.get(Number(props.gid)),
-    500,
-    `Unable to find recipe ingredient id (${props.gid}).`,
-  );
-
-  return item;
-});
+const item = computed(() =>
+  useExcelRecipeIngredient()
+    .value.andThen((map) => map.getResult(props.gid))
+    .unwrapOrElse(errHandle),
+);
 </script>

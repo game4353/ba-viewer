@@ -5,11 +5,12 @@
 </template>
 
 <script setup lang="ts">
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelRecipe } from "@/utils/data/excel/recipe";
-import { fail } from "@/utils/misc";
+const errHandle = inject(ERR_HANDLE)!;
 
 const recipes = useExcelRecipe();
 const recipeIds = computed(() => [
-  ...(recipes.value?.unwrapOrElse(fail)?.keys() ?? []),
+  ...(recipes.value?.unwrapOrElse(errHandle)?.keys() ?? []),
 ]);
 </script>

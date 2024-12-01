@@ -93,9 +93,10 @@ import {
   useCharacterIds,
 } from "@/components/parcel/character/character";
 import { characterTags } from "@/components/parcel/character/tag";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { toHiragana } from "wanakana";
 import { ParcelType } from "~game/types/flatDataExcel";
+const errHandle = inject(ERR_HANDLE)!;
 
 const currPage = ref(1);
 const search = ref("");
@@ -104,8 +105,8 @@ const characterIds = useCharacterIds();
 const characters = computed(
   () =>
     characterIds.value
-      ?.unwrapOrElse(fail)
-      ?.map((id) => useCharacter(id).value?.unwrapOrElse(fail))
+      ?.unwrapOrElse(errHandle)
+      ?.map((id) => useCharacter(id).value?.unwrapOrElse(errHandle))
       .filter((v): v is CCharacter => v != null) ?? [],
 );
 
@@ -120,7 +121,7 @@ const searchedItems = computed(() => {
   else {
     const q = toHiragana(newSearch);
     return filteredItems.value.filter((f) => {
-      if (f.search.value[0]?.indexOf(q) > -1) return true;
+      if (f.search.value.unwrapOrElse(errHandle)?.[0]?.includes(q)) return true;
       return false;
     });
   }

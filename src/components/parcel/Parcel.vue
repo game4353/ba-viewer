@@ -48,13 +48,12 @@
 
 <script setup lang="ts">
 import { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
-import { fail } from "@/utils/misc";
 import { PropType } from "vue";
-import { ASSERT_SOLE } from "../warn/error";
+import { ERR_501, ERR_HANDLE } from "../warn/error";
 import Character from "./character/Character.vue";
 import { getParcel } from "./parcel";
-
-const assertSole = inject(ASSERT_SOLE)!;
+const errHandle = inject(ERR_HANDLE)!;
+const error501 = inject(ERR_501)!;
 
 const props = defineProps({
   type: {
@@ -89,23 +88,15 @@ const done: ParcelType[] = [
   ParcelType.Recipe,
   ParcelType.Character,
 ];
-assertSole(
-  done.filter((v) => v === props.type),
-  501,
-  `Type "${props.type}" is not yet implemented.`,
-);
 watch(
   () => props.type,
   (newVal) => {
-    assertSole(
-      done.filter((v) => v === newVal),
-      501,
-      `Type "${props.type}" is not yet implemented.`,
-    );
+    if (!done.includes(newVal)) error501(`ParcelType '${newVal}'`);
   },
+  { immediate: true },
 );
 
 const parcel = computed(() =>
-  getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(fail),
+  getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(errHandle),
 );
 </script>

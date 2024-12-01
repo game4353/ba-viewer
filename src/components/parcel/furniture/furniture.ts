@@ -1,7 +1,7 @@
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
 import { Local } from "@/utils/localize";
-import { fail } from "@/utils/misc";
-import type { Result } from "@/utils/result";
+import { isDefined } from "@/utils/misc";
+import type { ComputedResult, Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";
@@ -20,22 +20,20 @@ export class CFurniture implements IFilterable, IParcel {
   type = ParcelType.Furniture as const;
 
   group: globalThis.ComputedRef<Result<CFurnitureGroup, Error> | undefined>;
-  search: globalThis.ComputedRef<string[]>;
+  search: ComputedResult<string[], Error>;
   tags: CTag<Object>[];
   hideCount: number = 0;
   constructor(public obj: ReadonlyDeep<FurnitureExcel>) {
     this.group = useFurnitureGroup(this.obj.SetGroudpId);
-    this.search = computed(() => {
-      const name = this.name.value?.unwrapOrElse(fail);
-      if (name == null) return [];
-      return [toHiragana(name), toKatakana(name)];
-    });
+    this.search = computed(() =>
+      this.name.value.map((name) => [toHiragana(name), toKatakana(name)]),
+    );
     this.tags = [
       FurnitureTagInteractionGroup.getTag(this.isInteractive),
       FurnitureTagRarityGroup.getTag(obj.Rarity),
       FurnitureTagCategoryGroup.getTag(obj.Category),
       FurnitureTagSubCategoryGroup.getTag(obj.SubCategory),
-    ].filter((v): v is CTag<Object> => v != null);
+    ].filter(isDefined);
     this.tags.forEach((v) => v.add(this));
   }
   get desc() {
@@ -80,12 +78,12 @@ export function useFurniture(id: number) {
   const table = useExcelFurniture();
   return computed(() =>
     table.value
-      ?.andThen((map) => map.getResult(id))
+      .andThen((map) => map.getResult(id))
       .map((c) => new CFurniture(c)),
   );
 }
 
 export function useFurnitureIds() {
   const table = useExcelFurniture();
-  return computed(() => table.value?.map((map) => Array.from(map.keys())));
+  return computed(() => table.value.map((map) => Array.from(map.keys())));
 }

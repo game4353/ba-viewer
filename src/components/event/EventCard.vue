@@ -42,12 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import { ObjectKeys } from "@/types";
 import {
   useExcelEventContentCard,
   useExcelEventContentCardShop,
 } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { ObjectKeys } from "@/utils/types";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -55,23 +55,23 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(0);
 
 const cardTable = useExcelEventContentCard();
 const cards = computed(() => {
   return Object.fromEntries(
-    (cardTable.value?.unwrapOrElse(fail)?.get(props.eid) ?? []).map((v) => [
-      v.CardGroupId,
-      v,
-    ]),
+    (cardTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? []).map(
+      (v) => [v.CardGroupId, v],
+    ),
   );
 });
 
 const shopTable = useExcelEventContentCardShop();
 const rolls = computed(() => {
   return Object.groupBy(
-    shopTable.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
+    shopTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
     (v) => v.RefreshGroup,
   );
 });

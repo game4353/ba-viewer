@@ -35,9 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import EventCurrency from "./EventCurrency.vue";
 import { useExcelEventContentCharacterBonus } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
+import { ERR_HANDLE } from "../warn/error";
+import EventCurrency from "./EventCurrency.vue";
 
 const props = defineProps({
   eid: {
@@ -45,10 +45,13 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcelEventContentCharacterBonus();
 
-const bonus = computed(() => table.value?.unwrapOrElse(fail)?.get(props.eid));
+const bonus = computed(() =>
+  table.value?.unwrapOrElse(errHandle)?.get(props.eid),
+);
 
 const tokenSet = computed(() => {
   if (bonus.value == null) return null;

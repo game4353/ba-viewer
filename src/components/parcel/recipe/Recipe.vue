@@ -1,27 +1,27 @@
 <template>
   <template v-if="item">
     <RecipeSelection
-      v-if="
-        [RecipeType.SelectionItem, RecipeType.SelectRecruit].includes(
-          item.RecipeType,
-        )
-      "
+      v-if="item.RecipeSelectionGroupId !== 0"
       :scale
       :gid="item.RecipeSelectionGroupId"
     />
-    <RecipeSelection v-else :scale :gid="item.RecipeIngredientId" />
+    <RecipeIngredient
+      v-else-if="item.RecipeIngredientId !== 0"
+      :scale
+      :gid="item.RecipeIngredientId"
+    />
   </template>
 </template>
 
 <script setup lang="ts">
-import { RecipeType, RewardTag } from "@/assets/game/types/flatDataExcel";
+import { RewardTag } from "@/assets/game/types/flatDataExcel";
 import { useExcelRecipe } from "@/utils/data/excel/recipe";
-import { fail } from "@/utils/misc";
-import { ASSERT_SOME } from "../../warn/error";
+import { ERR_HANDLE } from "../../warn/error";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   pid: {
-    type: [Number, String],
+    type: Number,
     required: true,
   },
   amount: Number,
@@ -33,25 +33,9 @@ const props = defineProps({
   },
 });
 
-const recipeMap = useExcelRecipe();
-
-const assertSome = inject(ASSERT_SOME)!;
-const item = computed(() => {
-  const map = recipeMap.value?.unwrapOrElse(fail);
-  if (map == null) return undefined;
-  const item = assertSome(
-    map.get(Number(props.pid)),
-    500,
-    `Unable to find recipe id (${props.pid}).`,
-  );
-
-  assertSome(
-    [RecipeType.SelectionItem, RecipeType.SelectRecruit].find(
-      (v) => v === item.RecipeType,
-    ),
-    501,
-    `RecipeType ${item.RecipeType} is not implemented`,
-  );
-  return item;
-});
+const item = computed(() =>
+  useExcelRecipe()
+    .value.andThen((map) => map.getResult(props.pid))
+    .unwrapOrElse(errHandle),
+);
 </script>

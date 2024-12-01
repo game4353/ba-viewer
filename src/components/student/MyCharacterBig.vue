@@ -1,5 +1,5 @@
 <template>
-  <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
+  <router-link v-if="parcel" :to="`/student/${parcel.id}`">
     <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
       <v-img
         class="absolute"
@@ -18,8 +18,8 @@
         </template>
         <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>
         <div class="atk-def">
-          <div :class="parcel.unwrap().bulletType"></div>
-          <div :class="parcel.unwrap().armorType"></div>
+          <div :class="parcel.bulletType"></div>
+          <div :class="parcel.armorType"></div>
         </div>
         <div class="name">
           <p :class="textSize(name)">
@@ -34,15 +34,11 @@
         >
           {{ starNum! > 5 ? starNum! - 5 : starNum }}
         </v-img>
-        <v-img
-          class="heart"
+        <Bond
+          class="!absolute left-0 top-24"
           v-if="levelNum! > 0"
-          width="90"
-          height="83"
-          :src="Icon.Heart"
-        >
-          {{ bondNum }}
-        </v-img>
+          :level="bondNum"
+        />
         <div class="skills">
           <span v-for="(skill, key) in skillTexts" :key>
             {{ skill }}
@@ -60,11 +56,11 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { fail } from "@/utils/misc";
 import { Icon } from "../GameImg/icon";
 import { uiPath } from "../GameImg/loader";
 import Scaled from "../misc/Scaled.vue";
 import { useCharacter } from "../parcel/character/character";
+import { ERR_HANDLE } from "../warn/error";
 
 const imgW = 404;
 const imgH = 456;
@@ -82,10 +78,14 @@ const props = defineProps({
   star: Number,
   bond: Number,
 });
-const parcel = useCharacter(props.cid);
+const errHandle = inject(ERR_HANDLE)!;
+
+const parcel = computed(() =>
+  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+);
 
 const name = computed(
-  () => parcel.value?.unwrapOrElse(fail)?.name.value?.unwrapOrElse(fail) ?? "",
+  () => parcel.value?.name.value?.unwrapOrElse(errHandle) ?? "",
 );
 const chara = useCharaStore(Number(props.cid)).now();
 const levelNum = ref(props.level);
@@ -97,8 +97,7 @@ const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
   if (parcel.value == null) return;
-  const starMin = parcel.value.unwrapOrElse(fail)?.starMin ?? 0;
-  starNum.value = levelNum.value === 0 ? starMin : chara.star;
+  starNum.value = levelNum.value === 0 ? parcel.value.starMin : chara.star;
 });
 const bondNum = ref(props.bond);
 watchEffect(() => {
@@ -122,12 +121,14 @@ watchEffect(() => {
   gearTexts.value[1] = chara.gear2.toString();
   gearTexts.value[2] = chara.gear3.toString();
   gearTexts.value[3] = chara.gear0.toString();
-  if (parcel.value?.unwrapOrElse(fail)?.gear == null) gearTexts.value[3] = "";
+  if (parcel.value?.gear.value.unwrapOrElse(errHandle) == null)
+    gearTexts.value[3] = "";
 });
 
 const bg = computed(() => {
-  if (parcel.value?.unwrapOrElse(fail)?.costume.value == null) return null;
-  return uiPath(parcel.value.unwrap().costume.value!.CollectionTexturePath);
+  const costume = parcel.value?.costume.value.unwrapOrElse(errHandle);
+  if (costume == null) return undefined;
+  return uiPath(costume.CollectionTexturePath);
 });
 const folder = "/src/assets/game/UIs/01_Common/14_CharacterCollect/";
 const arona = folder + "NPC_Portrait_Arona_Collection.png";
@@ -164,21 +165,6 @@ function textSize(text: string) {
   position: absolute !important;
   font-size: 56px;
   line-height: 100px;
-}
-.heart {
-  @apply left-0 top-24 text-black text-center;
-  position: absolute !important;
-  text-shadow:
-    -3px 0 white,
-    3px 0 white,
-    0 -3px white,
-    0 3px white,
-    1px -1px white,
-    -1px -1px white,
-    1px 1px white,
-    -1px 1px white;
-  font-size: 30px;
-  line-height: 80px;
 }
 
 .skills {

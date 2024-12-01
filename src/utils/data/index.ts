@@ -1,4 +1,4 @@
-import { ref, watchEffect, toValue, type MaybeRefOrGetter } from "vue";
+import { ref, toValue, watchEffect, type MaybeRefOrGetter } from "vue";
 
 export function useFetch<T>(
   url: MaybeRefOrGetter<string> | globalThis.ComputedRef<string>,
@@ -13,7 +13,10 @@ export function useFetch<T>(
     fetch(toValue(url))
       .then((res) => res.json())
       .then((json) => (data.value = json))
-      .catch((err) => (error.value = err));
+      .catch(
+        (err) =>
+          (error.value = err instanceof Error ? err : new Error(`${err}`)),
+      );
   };
 
   watchEffect(() => {

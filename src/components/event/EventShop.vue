@@ -21,13 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ShopCategoryType } from "~game/types/flatDataExcel";
-
-import { ASSERT_SOME_FILTER } from "@/components/warn/error";
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelEventContentShop } from "@/utils/data/excel/event";
-import { fail } from "@/utils/misc";
-
-const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
+import { KeyNotFoundErr } from "@/utils/error";
+import type { ShopCategoryType } from "~game/types/flatDataExcel";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   eid: {
@@ -40,20 +38,23 @@ const tab = ref(0);
 
 const table = useExcelEventContentShop();
 const shops = computed(
-  () => table.value?.unwrapOrElse(fail)?.get(props.eid) ?? [],
+  () => table.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
 
 const shopTypes = computed(() => [
   ...new Set(shops.value.map((o) => o.CategoryType)),
 ]);
 function getShop(t: ShopCategoryType) {
-  const res = assertSomeFilter(
-    shops.value,
-    [["CategoryType", t]],
-    500,
-    `Empty shop category: ${t}`,
-  );
-  return res;
+  const shop = shops.value.filter((o) => o.CategoryType === t);
+  if (shop.length < 1)
+    errHandle(
+      KeyNotFoundErr.from(
+        t,
+        "CategoryType",
+        `EventContentShop (id = ${props.eid})`,
+      ),
+    );
+  return shop;
 }
 </script>
 

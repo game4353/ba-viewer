@@ -11,7 +11,7 @@
             :class="String(id) === route.params.id ? 'selecting' : 'others'"
           >
             <ParcelCommon
-              :parcel="useCurrency(id).value?.unwrapOrElse(fail)"
+              :parcel="useCurrency(id).value?.unwrapOrElse(errHandle)"
               :scale="0.35"
               route
             />
@@ -29,9 +29,10 @@
 </template>
 
 <script setup lang="ts">
+import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelCurrency } from "@/utils/data/excel/parcel";
-import { fail } from "@/utils/misc";
 import { useCurrency } from "~/components/parcel/currency/currency";
+const errHandle = inject(ERR_HANDLE)!;
 
 const route = useRoute<"/parcel/currency/[[id]]">();
 const picked = computed(() => route.params.id);
