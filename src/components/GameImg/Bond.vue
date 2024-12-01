@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "../GameImg/icon";
+import { Icon } from "./icon";
 
 const props = defineProps({
   level: {

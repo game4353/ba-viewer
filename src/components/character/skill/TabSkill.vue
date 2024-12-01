@@ -36,9 +36,9 @@
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
 import { storeToRefs } from "pinia";
-import { useCharacter } from "../parcel/character/character";
-import { useSkillList } from "../skill/skillList";
-import { ERR_HANDLE } from "../warn/error";
+import { useCharacter } from "~/components/parcel/character/character";
+import { useSkillList } from "~/components/skill/skillList";
+import { ERR_HANDLE } from "~/components/warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
