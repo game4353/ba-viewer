@@ -5,6 +5,9 @@
     :layout
     :route
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <ParcelCommon
@@ -23,6 +26,9 @@
     :layout
     :route
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <GachaGroup
@@ -32,6 +38,9 @@
     :amountMin
     :amountMax
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <Recipe
@@ -41,6 +50,9 @@
     :amountMin
     :amountMax
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <div v-else></div>
@@ -64,10 +76,13 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  amount: Number,
+  amount: [Number, String],
   amountMin: Number,
   amountMax: Number,
   scale: Number,
+  scaledW: Number,
+  scaledH: Number,
+  scaleType: String as PropType<"min" | "max">,
   route: Boolean,
   tag: {
     type: Number as PropType<RewardTag>,
@@ -99,4 +114,5 @@ watch(
 const parcel = computed(() =>
   getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(errHandle),
 );
+const amount = computed(() => Number(props.amount));
 </script>
