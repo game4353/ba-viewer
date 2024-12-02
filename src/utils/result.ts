@@ -57,9 +57,19 @@ export function undefinedIsError<T>(anything: T) {
   return Ok(anything);
 }
 
+export function findFirst<T>(
+  arr: T[] | readonly T[],
+  predicate: (value: T, index: number, array: readonly T[]) => boolean,
+): Result<T, NoResultErr | ManyResultErr> {
+  const res = arr.filter(predicate);
+  if (res.length === 0)
+    return Err(new NoResultErr(`Found 0 result of the predicate ${predicate}`));
+  return Ok(res[0]);
+}
+
 export function filterSingle<T>(
-  arr: T[],
-  predicate: (value: T, index: number, array: T[]) => boolean,
+  arr: T[] | readonly T[],
+  predicate: (value: T, index: number, array: readonly T[]) => boolean,
 ): Result<T, NoResultErr | ManyResultErr> {
   const res = arr.filter(predicate);
   if (res.length === 0)
@@ -79,3 +89,10 @@ export const assertSome = (message: string) =>
     if (value == null) return Err(new NoResultErr(message));
     return Ok(value);
   };
+
+/** This does nothing in JS. This just helps TS to know a Result is a Result. */
+export function asResult<T extends Result<OkContent<T>, ErrContent<T>>>(
+  res: T,
+): Result<OkContent<T>, ErrContent<T>> {
+  return res;
+}
