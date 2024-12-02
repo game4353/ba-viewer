@@ -66,6 +66,7 @@ declare module 'vue' {
     SkillTarget: typeof import('./components/skill/target/SkillTarget.vue')['default']
     Slider: typeof import('./components/character/Slider.vue')['default']
     SpineCharacter: typeof import('./components/character/SpineCharacter.vue')['default']
+    Star: typeof import('./components/GameImg/Star.vue')['default']
     StatSingle: typeof import('./components/character/stat/StatSingle.vue')['default']
     StudentList: typeof import('./components/student/StudentList.vue')['default']
     TabBasic: typeof import('./components/character/TabBasic.vue')['default']
