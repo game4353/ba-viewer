@@ -3,7 +3,7 @@ import {
   useExcelDbCharacterPotentialStat,
 } from "@/utils/data/excel/character";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { Ok, filterSingle } from "@/utils/result";
+import { Ok, asResult, filterSingle } from "@/utils/result";
 import type { PotentialStatBonusRateType } from "~game/types/flatDataExcelDb";
 import type { CCharacter } from "../parcel/character/character";
 
@@ -15,19 +15,21 @@ function usePotentialStat(
   const map1 = useExcelDbCharacterPotential();
   const map2 = useExcelDbCharacterPotentialStat();
 
-  return computed(() => {
-    const res1 = map1.value
-      .andThen((map) => map.getResult(cid))
-      .andThen((arr) =>
-        filterSingle(arr, (o) => o.PotentialStatBonusRateType === type),
-      )
-      .andThen((o) => Ok(o.PotentialStatGroupId));
-    if (res1.isErr()) return res1;
-    const gid = res1.unwrap();
-    return map2.value
-      .andThen((map) => map.getResult(gid))
-      .andThen((arr) => filterSingle(arr, (o) => o.PotentialLevel === level));
-  });
+  return asResult(
+    computed(() => {
+      const res1 = map1.value
+        .andThen((map) => map.getResult(cid))
+        .andThen((arr) =>
+          filterSingle(arr, (o) => o.PotentialStatBonusRateType === type),
+        )
+        .andThen((o) => Ok(o.PotentialStatGroupId));
+      if (res1.isErr()) return res1;
+      const gid = res1.unwrap();
+      return map2.value
+        .andThen((map) => map.getResult(gid))
+        .andThen((arr) => filterSingle(arr, (o) => o.PotentialLevel === level));
+    }).value,
+  );
 }
 
 export function usePotentialStatBonusRate(
@@ -35,8 +37,13 @@ export function usePotentialStatBonusRate(
   type: PotentialStatBonusRateType,
   level: number,
 ) {
-  const stat = usePotentialStat(this.id, type, level);
-  return computed(() => stat?.value?.andThen((o) => Ok(o.StatBonusRate)));
+  return asResult(
+    computed(() =>
+      usePotentialStat(this.id, type, level).andThen((o) =>
+        Ok(o.StatBonusRate),
+      ),
+    ).value,
+  );
 }
 
 export function usePotentialStatRecipeIngredient(
@@ -44,12 +51,13 @@ export function usePotentialStatRecipeIngredient(
   type: PotentialStatBonusRateType,
   level: number,
 ) {
-  const stat = usePotentialStat(this.id, type, level);
-  const map = useExcelRecipeIngredient();
-  return computed(() => {
-    if (stat.value == null) return undefined;
-    return stat.value.andThen2((o) =>
-      map.value.andThen((m) => m.getResult(o.RecipeId)),
-    );
-  });
+  return asResult(
+    computed(() => {
+      const stat = usePotentialStat(this.id, type, level);
+      const map = useExcelRecipeIngredient();
+      return stat.andThen2((o) =>
+        map.value.andThen((m) => m.getResult(o.RecipeId)),
+      );
+    }).value,
+  );
 }

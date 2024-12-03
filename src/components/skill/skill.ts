@@ -9,7 +9,13 @@ import {
 import { useExcelSkill } from "@/utils/data/excel/skill";
 import { Local } from "@/utils/localize";
 import { cache } from "@/utils/misc";
-import { Ok, undefinedIsError, type Err, type Result } from "@/utils/result";
+import {
+  Ok,
+  asResult,
+  undefinedIsError,
+  type Err,
+  type Result,
+} from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 
 export class CSkill {
@@ -49,34 +55,36 @@ export class CSkill {
     return this._obj.value;
   }
   useLevelUpIngredient(targetLevel: number) {
-    return computed(() => {
-      const res = [];
-      for (let lv = this._level; lv < targetLevel; lv++) {
-        const rid = useSkill(this.group, lv).value?.map(
-          (skill) => skill.RequireLevelUpMaterial,
-        );
-        if (rid?.isOk() !== true) {
-          res.push(rid);
-          continue;
+    return asResult(
+      computed(() => {
+        const res = [];
+        for (let lv = this._level; lv < targetLevel; lv++) {
+          const rid = useSkill(this.group, lv).value?.map(
+            (skill) => skill.RequireLevelUpMaterial,
+          );
+          if (rid?.isOk() !== true) {
+            res.push(rid);
+            continue;
+          }
+          const iid = useExcelRecipe()
+            .value?.andThen((map) => map.getResult(rid.unwrap()))
+            .map((excel) => excel.RecipeIngredientId);
+          if (iid?.isOk() !== true) {
+            res.push(iid);
+            continue;
+          }
+          const excel = useExcelRecipeIngredient().value?.andThen((map) =>
+            map.getResult(iid.unwrap()),
+          );
+          res.push(excel);
         }
-        const iid = useExcelRecipe()
-          .value?.andThen((map) => map.getResult(rid.unwrap()))
-          .map((excel) => excel.RecipeIngredientId);
-        if (iid?.isOk() !== true) {
-          res.push(iid);
-          continue;
-        }
-        const excel = useExcelRecipeIngredient().value?.andThen((map) =>
-          map.getResult(iid.unwrap()),
+        const err = res.find((v): v is Err<Error> => v!.isErr());
+        if (err !== undefined) return err;
+        return Ok(
+          res.map((r) => r!.unwrap() as ReadonlyDeep<RecipeIngredientExcel>),
         );
-        res.push(excel);
-      }
-      const err = res.find((v): v is Err<Error> => v!.isErr());
-      if (err !== undefined) return err;
-      return Ok(
-        res.map((r) => r!.unwrap() as ReadonlyDeep<RecipeIngredientExcel>),
-      );
-    });
+      }).value,
+    );
   }
 }
 

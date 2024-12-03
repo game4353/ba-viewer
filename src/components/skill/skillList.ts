@@ -1,6 +1,6 @@
 import { useExcel } from "@/utils/data/excel";
 import { useExcelCharacterSkillList } from "@/utils/data/excel/skill";
-import { filterSingle } from "@/utils/result";
+import { asResult, filterSingle } from "@/utils/result";
 import type {
   CharacterSkillListExcel,
   CharacterSkillListExcelTable,
@@ -58,18 +58,20 @@ export function useSkillList(
   form: number = 0,
 ) {
   return computed(() =>
-    useExcelCharacterSkillList()
-      .value.andThen((map) => map.getResult(sid))
-      .andThen((arr) =>
-        filterSingle(
-          arr,
-          (o) =>
-            o.MinimumGradeCharacterWeapon === weapon &&
-            o.MinimumTierCharacterGear === gear &&
-            o.TSAInteractionId === tsa &&
-            o.FormIndex === form,
+    asResult(
+      useExcelCharacterSkillList()
+        .value.andThen((map) => map.getResult(sid))
+        .andThen((arr) =>
+          filterSingle(
+            arr,
+            (o) =>
+              o.MinimumGradeCharacterWeapon === weapon &&
+              o.MinimumTierCharacterGear === gear &&
+              o.TSAInteractionId === tsa &&
+              o.FormIndex === form,
+          ),
         ),
-      ),
+    ),
   );
 }
 

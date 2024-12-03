@@ -16,7 +16,13 @@
             ></v-progress-circular>
           </div>
         </template>
-        <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>
+        <span class="level" v-if="levelNum > 0"> Lv.{{ levelNum }} </span>
+        <span
+          class="level top-16 opacity-60"
+          v-if="detailed && goal.lv > levelNum"
+        >
+          Lv.{{ goal.lv }}
+        </span>
         <div class="atk-def">
           <div :class="parcel.bulletType"></div>
           <div :class="parcel.armorType"></div>
@@ -26,28 +32,51 @@
             {{ name }}
           </p>
         </div>
-        <v-img
-          class="star"
-          width="96"
-          height="96"
-          :src="starNum! > 5 ? Icon.Star2 : Icon.Star"
-        >
-          {{ starNum! > 5 ? starNum! - 5 : starNum }}
-        </v-img>
+        <Star class="!absolute left-2 top-0" :star="starNum!" />
+        <Star
+          class="!absolute left-28 top-0 opacity-60"
+          v-if="detailed && goal.star > starNum!"
+          :star="goal.star"
+        />
         <Bond
           class="!absolute left-0 top-24"
           v-if="levelNum! > 0"
           :level="bondNum"
         />
+        <Bond
+          class="!absolute left-0 top-44 opacity-60"
+          v-if="detailed && goal.bond > bondNum"
+          :level="goal.bond"
+        />
+        <div class="skills detail" v-if="detailed">
+          <span v-for="i in [0, 1, 2, 3] as const" :key="i">
+            {{ goalSkillStr(i) }}
+          </span>
+        </div>
         <div class="skills">
           <span v-for="(skill, key) in skillTexts" :key>
             {{ skill }}
+          </span>
+        </div>
+        <div class="gears detail" v-if="detailed">
+          <span v-for="i in [1, 2, 3, 0] as const" :key="i">
+            {{ goalGearStr(i) }}
           </span>
         </div>
         <div class="gears">
           <span v-for="(gear, key) in gearTexts" :key>
             {{ gear }}
           </span>
+        </div>
+        <div class="break detail" v-if="detailed">
+          <span> {{ goal.break1 }} </span>
+          <span> {{ goal.break2 }} </span>
+          <span> {{ goal.break3 }} </span>
+        </div>
+        <div class="break">
+          <span> {{ chara.break1 }} </span>
+          <span> {{ chara.break2 }} </span>
+          <span> {{ chara.break3 }} </span>
         </div>
       </v-img>
     </Scaled>
@@ -56,7 +85,6 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { Icon } from "../GameImg/icon";
 import { uiPath } from "../GameImg/loader";
 import Scaled from "../misc/Scaled.vue";
 import { useCharacter } from "../parcel/character/character";
@@ -70,6 +98,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  detailed: Boolean,
   scale: Number,
   scaledW: Number,
   scaledH: Number,
@@ -88,22 +117,16 @@ const name = computed(
   () => parcel.value?.name.value?.unwrapOrElse(errHandle) ?? "",
 );
 const chara = useCharaStore(Number(props.cid)).now();
-const levelNum = ref(props.level);
-watchEffect(() => {
-  if (props.level != null) return;
-  levelNum.value = chara.lv;
-});
+const goal = useCharaStore(Number(props.cid)).goal();
+const levelNum = computed(() => props.level ?? chara.lv);
 const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
   if (parcel.value == null) return;
   starNum.value = levelNum.value === 0 ? parcel.value.starMin : chara.star;
 });
-const bondNum = ref(props.bond);
-watchEffect(() => {
-  if (props.bond != null) return;
-  bondNum.value = chara.bond;
-});
+const bondNum = computed(() => props.bond ?? chara.bond);
+
 function skillStr(val: number, max: number) {
   if (val === max) return "M";
   return val.toString();
@@ -115,6 +138,13 @@ watchEffect(() => {
   skillTexts.value[2] = skillStr(chara.skill2, 10);
   skillTexts.value[3] = skillStr(chara.skill3, 10);
 });
+function goalSkillStr(idx: 0 | 1 | 2 | 3) {
+  const s = chara[`skill${idx}`];
+  const g = goal[`skill${idx}`];
+  if (s < g) return skillStr(g, idx < 1 ? 5 : 10);
+  return "";
+}
+
 const gearTexts = ref(["0", "0", "0", "0"]);
 watchEffect(() => {
   gearTexts.value[0] = chara.gear1.toString();
@@ -124,6 +154,13 @@ watchEffect(() => {
   if (parcel.value?.gear.value.unwrapOrElse(errHandle) == null)
     gearTexts.value[3] = "";
 });
+function goalGearStr(idx: 0 | 1 | 2 | 3) {
+  if (idx === 0 && gearTexts.value[3] === "") return "";
+  const s = chara[`gear${idx}`];
+  const g = goal[`gear${idx}`];
+  if (s < g) return g;
+  return "";
+}
 
 const bg = computed(() => {
   const costume = parcel.value?.costume.value.unwrapOrElse(errHandle);
@@ -160,12 +197,6 @@ function textSize(text: string) {
     -3px 3px black;
   font-size: 48px;
 }
-.star {
-  @apply left-2 top-0 text-black text-center;
-  position: absolute !important;
-  font-size: 56px;
-  line-height: 100px;
-}
 
 .skills {
   @apply absolute flex flex-row bottom-20 text-4xl w-36 bg-slate-800/85;
@@ -173,10 +204,20 @@ function textSize(text: string) {
   span {
     @apply flex-1 text-center;
   }
+  &.detail {
+    @apply bottom-32 opacity-70;
+  }
 }
 .gears {
   @extend .skills;
   @apply right-0;
+}
+.break {
+  @extend .gears;
+  @apply flex-col bottom-48 w-16;
+  &.detail {
+    @apply bottom-48 right-16;
+  }
 }
 
 .atk-def {

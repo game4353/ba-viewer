@@ -43,6 +43,7 @@ export function unreachable(
   throw new Error(message);
 }
 
+/** `from` inclusive, `to` exclusive. return length. */
 export function* range(from: number, to: number, step: number = 1) {
   let count = 0;
   if (step > 0) for (; from < to; from += step, count++) yield from;
