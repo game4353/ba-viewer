@@ -2,10 +2,13 @@ import {
   ArmorType,
   BulletType,
   ParcelType,
+  PotentialStatBonusRateType,
   ProductionStep,
   type CharacterExcel,
 } from "@/assets/game/types/flatDataExcel";
 import { useBaseStats } from "@/components/character/stat/stat";
+import { CSkill } from "@/components/skill/skill";
+import { useSkillList } from "@/components/skill/skillList";
 import { useCharaStore } from "@/stores/character";
 import {
   useExcelCharacter,
@@ -14,7 +17,8 @@ import {
   useExcelCostume,
 } from "@/utils/data/excel/character";
 import { Local } from "@/utils/localize";
-import { cache, isDefined } from "@/utils/misc";
+import { cache, isDefined, range } from "@/utils/misc";
+import { Result, asResult, findFirst } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import {
@@ -43,10 +47,10 @@ import {
 } from "./tag";
 
 export class CCharacter implements IFilterable, IParcel {
-  type = ParcelType.Character as const;
+  // IFilterable
+
   tags: CTag<Object>[];
   hideCount: number = 0;
-
   constructor(public obj: ReadonlyDeep<CharacterExcel>) {
     this.tags = [
       CharacterTagSquadTypeGroup.getTag(obj.SquadType),
@@ -86,23 +90,19 @@ export class CCharacter implements IFilterable, IParcel {
     );
   }
 
-  get costume() {
-    return computed(() =>
-      useExcelCostume().value.andThen((map) =>
-        map.getResult(this.obj.CostumeGroupId),
-      ),
-    );
+  sortValue(key: globalThis.Ref<string>) {
+    return computed(() => {
+      switch (key.value) {
+        case "name":
+          return this.name.value?.unwrapOr(undefined);
+        case "id":
+          return this.id;
+      }
+    });
   }
-  get stat() {
-    return computed(() =>
-      useExcelCharacterStat().value.andThen((map) => map.getResult(this.id)),
-    );
-  }
-  get gear() {
-    return computed(() =>
-      useExcelCharacterGear().value.map((map) => map.get(this.id)),
-    );
-  }
+
+  // IParcel
+
   get desc() {
     return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
   }
@@ -119,11 +119,34 @@ export class CCharacter implements IFilterable, IParcel {
   get rarity() {
     return this.obj.Rarity;
   }
-  get playable() {
-    return (
-      this.obj.IsPlayableCharacter &&
-      !this.obj.IsNPC &&
-      this.obj.ProductionStep === ProductionStep.Release
+  type = ParcelType.Character as const;
+
+  // store
+
+  get statNow() {
+    return useCharaStore(this.id).now();
+  }
+  get statGoal() {
+    return useCharaStore(this.id).goal();
+  }
+
+  // others
+
+  get costume() {
+    return computed(() =>
+      useExcelCostume().value.andThen((map) =>
+        map.getResult(this.obj.CostumeGroupId),
+      ),
+    );
+  }
+  get stat() {
+    return computed(() =>
+      useExcelCharacterStat().value.andThen((map) => map.getResult(this.id)),
+    );
+  }
+  get gear() {
+    return computed(() =>
+      useExcelCharacterGear().value.map((map) => map.get(this.id)),
     );
   }
   get starMin() {
@@ -143,21 +166,54 @@ export class CCharacter implements IFilterable, IParcel {
     return computed(() => useCharaStore(this.id).now().star);
   }
 
-  sortValue(key: globalThis.Ref<string>) {
-    return computed(() => {
-      switch (key.value) {
-        case "name":
-          return this.name.value?.unwrapOr(undefined);
-        case "id":
-          return this.id;
-      }
-    });
+  get skillGroups() {
+    return asResult(
+      computed(() => {
+        const gear = 0; // TODO
+        const wpn = this.star.value >= 7 ? 2 : 0;
+        return useSkillList(this.id, wpn, gear).value.andThen((o) =>
+          Result.all([
+            findFirst(o.ExSkillGroupId, (v) => v !== "EmptySkill"),
+            findFirst(o.PublicSkillGroupId, (v) => v !== "EmptySkill"),
+            findFirst(o.PassiveSkillGroupId, (v) => v !== "EmptySkill"),
+            findFirst(o.ExtraPassiveSkillGroupId, (v) => v !== "EmptySkill"),
+          ]),
+        );
+      }).value,
+    );
+  }
+
+  getSkill(i: 0 | 1 | 2 | 3) {
+    return asResult(
+      computed(() =>
+        this.skillGroups.map((arr) => {
+          const c = new CSkill(arr[i]);
+          c.level = this.statNow[`skill${i}`];
+          return c;
+        }),
+      ).value,
+    );
   }
 
   starBonus = useTranscendenceBonusRate;
   starRecipe = useTranscendenceRecipeIngredient;
   potentialBonus = usePotentialStatBonusRate;
-  potentialRecipe = usePotentialStatRecipeIngredient;
+
+  usePotentialRecipe = usePotentialStatRecipeIngredient;
+  usePotentialRecipes(
+    type: Exclude<PotentialStatBonusRateType, PotentialStatBonusRateType.None>,
+    currentLevel?: number,
+    targetLevel?: number,
+  ) {
+    const i = type as 1 | 2 | 3;
+    currentLevel ??= this.statNow[`break${i}`];
+    targetLevel ??= this.statGoal[`break${i}`];
+    return Result.all(
+      [...range(currentLevel, targetLevel)].map((lv) =>
+        this.usePotentialRecipe(type, lv),
+      ),
+    );
+  }
 
   baseStats = useBaseStats;
 }
