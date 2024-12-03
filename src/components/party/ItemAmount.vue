@@ -1,0 +1,96 @@
+<template>
+  <div class="flex flex-row min-w-fit" :class="bg">
+    <Parcel
+      :pid
+      :type
+      :amount="hasAmount"
+      :scale
+      :scaled-w
+      :scaled-h
+      :scale-type
+    />
+    <div class="flex flex-col grow pr-1">
+      <template v-if="mode == null || mode === 'display'">
+        <v-tooltip content-class="!p-0" location="top">
+          <template v-slot:activator="{ props }">
+            <p class="text-right" v-bind="props">{{ needAmount }}</p>
+          </template>
+          <v-card v-if="needAmount > 0">
+            <div
+              class="flex flex-row flex-wrap border-4 rounded m-1 p-1 gap-1"
+              :class="bc"
+            >
+              <div
+                class="flex flex-col items-center"
+                v-for="[cid, amount] in need"
+                :key="cid"
+              >
+                <MyCharacter :cid :scale :scale-type :scaled-w :scaled-h />
+                <p class="text-base">{{ amount }}</p>
+              </div>
+            </div>
+          </v-card>
+        </v-tooltip>
+        <p class="text-right min-w-14">
+          {{ diff < 0 ? diff : `+${diff}` }}
+        </p>
+      </template>
+      <template v-else-if="mode === 'edit'">
+        <v-text-field
+          v-model.number="hasAmount"
+          density="compact"
+          type="number"
+          hide-details
+          hide-spin-buttons
+          single-line
+        ></v-text-field>
+      </template>
+    </div>
+  </div>
+</template>
+<script setup lang="ts">
+import { ParcelType } from "@/assets/game/types/flatDataExcel";
+import { useParcelAmount } from "@/stores/parcel";
+
+const props = defineProps({
+  pid: {
+    type: Number,
+    required: true,
+  },
+  type: {
+    type: Number as PropType<ParcelType>,
+    required: true,
+  },
+  need: {
+    type: Array as PropType<number[][]>,
+  },
+  mode: {
+    type: String as PropType<"display" | "edit">,
+  },
+  scale: Number,
+  scaledW: Number,
+  scaledH: Number,
+  scaleType: String as PropType<"min" | "max">,
+});
+
+const needAmount = computed(
+  () => props.need?.reduce((x, a) => x + a[1], 0) ?? 0,
+);
+const hasAmount = useParcelAmount(props.type, props.pid);
+const diff = computed(() => hasAmount.value - needAmount.value);
+
+const bg = computed(() =>
+  diff.value < 0
+    ? "bg-red-400"
+    : needAmount.value > 0
+      ? "bg-green-500"
+      : "bg-slate-300",
+);
+const bc = computed(() =>
+  diff.value < 0
+    ? "border-red-400"
+    : needAmount.value > 0
+      ? "border-green-500"
+      : "border-slate-300",
+);
+</script>
