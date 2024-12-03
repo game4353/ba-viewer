@@ -48,7 +48,7 @@
           v-if="detailed && goal.bond > bondNum"
           :level="goal.bond"
         />
-        <div class="skills !bottom-32 opacity-70" v-if="detailed">
+        <div class="skills detail" v-if="detailed">
           <span v-for="i in [0, 1, 2, 3] as const" :key="i">
             {{ goalSkillStr(i) }}
           </span>
@@ -58,7 +58,7 @@
             {{ skill }}
           </span>
         </div>
-        <div class="gears !bottom-32 opacity-70" v-if="detailed">
+        <div class="gears detail" v-if="detailed">
           <span v-for="i in [1, 2, 3, 0] as const" :key="i">
             {{ goalGearStr(i) }}
           </span>
@@ -67,6 +67,16 @@
           <span v-for="(gear, key) in gearTexts" :key>
             {{ gear }}
           </span>
+        </div>
+        <div class="break detail" v-if="detailed">
+          <span> {{ goal.break1 }} </span>
+          <span> {{ goal.break2 }} </span>
+          <span> {{ goal.break3 }} </span>
+        </div>
+        <div class="break">
+          <span> {{ chara.break1 }} </span>
+          <span> {{ chara.break2 }} </span>
+          <span> {{ chara.break3 }} </span>
         </div>
       </v-img>
     </Scaled>
@@ -194,10 +204,20 @@ function textSize(text: string) {
   span {
     @apply flex-1 text-center;
   }
+  &.detail {
+    @apply bottom-32 opacity-70;
+  }
 }
 .gears {
   @extend .skills;
   @apply right-0;
+}
+.break {
+  @extend .gears;
+  @apply flex-col bottom-48 w-16;
+  &.detail {
+    @apply bottom-48 right-16;
+  }
 }
 
 .atk-def {
