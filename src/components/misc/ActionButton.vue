@@ -45,7 +45,7 @@ async function wrapped() {
     await props.action();
     actionSuccess.value = true;
   } catch (error: unknown) {
-    if (error instanceof Error) console.error(error.message);
+    if (error instanceof Error) console.error(error);
     actionFailed.value = true;
   }
 }
