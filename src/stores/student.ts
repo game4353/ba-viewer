@@ -23,7 +23,9 @@ const schema = z.object({
   break3: z.number().int(),
 });
 
-const defaultMin = {
+export type CharaProp = keyof z.infer<typeof schema>;
+
+export const defaultMin: Record<CharaProp, number> = {
   lv: 0,
   star: 1,
   weapon: 0,
@@ -44,7 +46,7 @@ const defaultMin = {
   break3: 0,
 };
 
-const defaultMax = {
+export const defaultMax: Record<CharaProp, number> = {
   lv: 90,
   star: 8,
   weapon: 50,
