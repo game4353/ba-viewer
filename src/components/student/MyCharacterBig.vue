@@ -68,10 +68,18 @@
             {{ gear }}
           </span>
         </div>
-        <div class="break detail" v-if="detailed">
-          <span> {{ goal.break1 }} </span>
-          <span> {{ goal.break2 }} </span>
-          <span> {{ goal.break3 }} </span>
+        <div
+          class="break detail"
+          v-if="
+            detailed &&
+            (goal.break1 > chara.break1 ||
+              goal.break2 > chara.break2 ||
+              goal.break3 > chara.break3)
+          "
+        >
+          <span> {{ goal.break1 > chara.break1 ? goal.break1 : "　" }} </span>
+          <span> {{ goal.break2 > chara.break2 ? goal.break2 : "　" }} </span>
+          <span> {{ goal.break3 > chara.break3 ? goal.break3 : "　" }} </span>
         </div>
         <div class="break">
           <span> {{ chara.break1 }} </span>

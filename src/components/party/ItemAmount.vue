@@ -3,7 +3,7 @@
     <Parcel
       :pid
       :type
-      :amount="hasAmount"
+      :amount="hasAmount.amount"
       :scale
       :scaled-w
       :scaled-h
@@ -37,7 +37,7 @@
       </template>
       <template v-else-if="mode === 'edit'">
         <v-text-field
-          v-model.number="hasAmount"
+          v-model="keyInAmount"
           density="compact"
           type="number"
           hide-details
@@ -50,7 +50,7 @@
 </template>
 <script setup lang="ts">
 import { ParcelType } from "@/assets/game/types/flatDataExcel";
-import { useParcelAmount } from "@/stores/parcel";
+import { dataParcel } from "@/stores/parcel";
 
 const props = defineProps({
   pid: {
@@ -76,8 +76,18 @@ const props = defineProps({
 const needAmount = computed(
   () => props.need?.reduce((x, a) => x + a[1], 0) ?? 0,
 );
-const hasAmount = useParcelAmount(props.type, props.pid);
-const diff = computed(() => hasAmount.value - needAmount.value);
+const hasAmount = dataParcel.use(props.type, props.pid);
+const keyInAmount = ref(`${hasAmount.amount}`);
+watch([keyInAmount, () => hasAmount.amount] as const, (newV, oldV) => {
+  let v = parseInt(newV[0]);
+  if (newV[0] !== oldV[0]) {
+    if (isNaN(v)) v = 0;
+    hasAmount.amount = v;
+  } else if (newV[1] !== oldV[1]) {
+    if (!isNaN(v)) keyInAmount.value = `${newV[1]}`;
+  }
+});
+const diff = computed(() => hasAmount.amount - needAmount.value);
 
 const bg = computed(() =>
   diff.value < 0

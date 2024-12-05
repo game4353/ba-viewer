@@ -1,11 +1,14 @@
-/** Input will go through `JSON.stringify` to generate the key for `Map`. */
+/** Input will go through `keyFn` to generate the key for `Map`.
+ * Without `keyFn`, key is `JSON.stringify([...args])`.
+ */
 export function cache<F extends (...args: any[]) => any>(
   fn: F,
+  keyFn?: (...args: Parameters<F>) => string,
 ): (...args: Parameters<F>) => ReturnType<F> {
   const cached = new Map<string, ReturnType<F>>();
 
   return function (...args: Parameters<F>) {
-    const key = JSON.stringify(args);
+    const key = keyFn ? keyFn(...args) : JSON.stringify(args);
     if (cached.has(key)) {
       return cached.get(key)!;
     }
