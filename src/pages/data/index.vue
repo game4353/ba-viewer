@@ -23,7 +23,7 @@
         <div>BA Viewer</div>
       </template>
     </v-radio>
-    <v-radio value="loginSync" :disabled="task === 'export'">
+    <!-- <v-radio value="loginSync" :disabled="task === 'export'">
       <template v-slot:label>
         <div>loginSync</div>
       </template>
@@ -37,7 +37,7 @@
       <template v-slot:label>
         <div>justin163</div>
       </template>
-    </v-radio>
+    </v-radio> -->
   </v-radio-group>
 
   <v-textarea
