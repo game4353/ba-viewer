@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { usePlayableIds } from "@/components/parcel/character/character";
 import { ERR_HANDLE } from "@/components/warn/error";
-import { usePartyStore } from "@/stores/party";
+import { dataParty } from "@/stores/party";
 import draggable from "vuedraggable";
 const errHandle = inject(ERR_HANDLE)!;
 
@@ -64,17 +64,17 @@ const props = defineProps({
 const allIds = computed(() => usePlayableIds().value.unwrapOrElse(errHandle));
 const charaWidth = ref(130);
 
-const party = usePartyStore();
+const party = computed(() => dataParty.use(props.pid));
 const charaEditing = ref(false);
 function toggleEditing() {
   charaEditing.value = !charaEditing.value;
 }
 const charaYes = computed({
   get() {
-    return party.party[props.pid].student;
+    return party.value.student;
   },
   set(val) {
-    party.updateParty(props.pid, { student: val });
+    party.value.student = val;
   },
 });
 const charaNo = ref<number[]>();

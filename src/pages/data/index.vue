@@ -72,12 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import {
-  exportV0,
-  importJustin,
-  importLoginSync,
-  importVx,
-} from "@/stores/personal";
+import { exportAll, importAll } from "@/stores/all";
+import { importJustin, importLoginSync } from "@/stores/personal";
 import { unreachable } from "@/utils/misc";
 
 const task = ref("export");
@@ -86,14 +82,15 @@ const content = ref("");
 
 function exportData() {
   if (format.value === "BA Viewer") {
-    content.value = exportV0();
+    content.value = exportAll().unwrap();
   } else {
     unreachable();
   }
 }
 function importData() {
   if (format.value === "BA Viewer") {
-    importVx(content.value);
+    const res = importAll(content.value);
+    res.unwrap();
   } else if (format.value === "justin163") {
     importJustin(content.value);
   } else if (format.value === "loginSync") {

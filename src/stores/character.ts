@@ -1,6 +1,7 @@
 import { cache } from "@/utils/misc";
 import { clamp, useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
+import { dataStudentGoal, dataStudentNow } from "./student";
 
 export type CharaProp = Exclude<
   {
@@ -107,7 +108,14 @@ export class CharaData {
   }
 }
 
-export const useCharaStore = cache((cid: number) => {
+export function useCharaStore(cid: number) {
+  return {
+    now: () => dataStudentNow.use(cid),
+    goal: () => dataStudentGoal.use(cid),
+  };
+}
+
+export const useCharaStore2 = cache((cid: number) => {
   const now = defineStore(`charaNow${cid}`, {
     state: () =>
       useStorage(`charaNow${cid}`, CharaData.defaultMin().toObj(), undefined, {

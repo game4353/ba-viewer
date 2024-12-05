@@ -10,7 +10,7 @@
       label=""
       :items="partyList"
       variant="solo"
-      v-model="selectedPartyId"
+      v-model="partyId"
       hide-details
     ></v-select>
   </div>
@@ -18,7 +18,7 @@
   <v-dialog v-model="renaming" max-width="320">
     <v-card
       prepend-icon="mdi-human-female-female"
-      :title="`Rename ${partyList[partyId].title}`"
+      :title="`Rename ${party.name}`"
     >
       <v-form v-model="renameForm" @submit.prevent="renameParty">
         <v-card-text>
@@ -54,19 +54,15 @@
 </template>
 
 <script setup lang="ts">
-import { usePartyStore } from "@/stores/party";
+import { dataParty } from "@/stores/party";
 
-const party = usePartyStore();
-if (party.amount === 0) party.newParty();
-
-const selectedPartyId = ref(0);
-const partyId = computed(() => {
-  if (selectedPartyId.value >= party.amount) party.newParty();
-  return selectedPartyId.value;
+const partyId = ref(0);
+const party = computed(() => {
+  return dataParty.use(partyId.value);
 });
 const partyList = computed(() => {
-  const arr = party.party.map((v, i) => ({
-    title: `${i + 1}. ${v.name}`,
+  const arr = dataParty.useNames().value.map((v, i) => ({
+    title: `${i + 1}. ${v}`,
     value: i,
   }));
   arr.push({
@@ -80,7 +76,7 @@ const renameForm = ref(false);
 const renaming = ref(false);
 function renameParty() {
   if (!renameForm.value) return;
-  party.updateParty(partyId.value, { name: newName.value });
+  party.value.name = newName.value;
   renaming.value = false;
 }
 function required(v: any) {

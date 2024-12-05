@@ -110,7 +110,7 @@ import {
 import { useCharacter } from "@/components/parcel/character/character";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharaStore } from "@/stores/character";
-import { usePartyStore } from "@/stores/party";
+import { dataParty } from "@/stores/party";
 import { range } from "@/utils/misc";
 import { ReadonlyDeep } from "type-fest";
 const errHandle = inject(ERR_HANDLE)!;
@@ -134,8 +134,6 @@ const bds = [...range(3000, 3090, 10)];
 const notes = [...range(4000, 4090, 10)];
 const others = [2000, 2001, 2002, 9999];
 
-const party = usePartyStore();
-
 const editing = ref(false);
 const parcelWidth = ref(70);
 
@@ -150,7 +148,7 @@ const ingredients = computed(() => {
   );
   const currencyMap = new Map([[1, [] as number[][]]]);
 
-  const ids = party.party[props.pid].student;
+  const ids = dataParty.use(props.pid).student;
   for (const id of ids) {
     const chara = useCharacter(id).value.unwrapOrElse(errHandle);
     if (chara == null) break;
