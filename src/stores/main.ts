@@ -64,7 +64,9 @@ export abstract class IOData<T extends z.AnyZodObject> {
     return map;
   }
 
-  /** remove all localStorage items with the key prefix*/
+  /** remove all localStorage items with the key prefix
+   * TODO: it requires detach of pinia I guess
+   */
   protected removeAll() {
     this.getAllFullKey().forEach((fullKey) => {
       const key = fullKey.slice(this.title.length + 2);
@@ -93,10 +95,12 @@ export abstract class IOData<T extends z.AnyZodObject> {
     data: string,
   ): Result<Record<string, Partial<z.infer<T>>>, Error>;
 
+  /** import will only overwrite data.
+   *  To delete entries not present, use deleteAll first. <- TODO
+   */
   import(version: number, data: string) {
     return this.check(version, data).map((obj) => ({
       perform: () => {
-        this.removeAll();
         return this.writeAll(obj);
       },
     }));

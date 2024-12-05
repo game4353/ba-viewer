@@ -96,3 +96,8 @@ export function asResult<T extends Result<OkContent<T>, ErrContent<T>>>(
 ): Result<OkContent<T>, ErrContent<T>> {
   return res;
 }
+
+export function err2(error: unknown) {
+  if (error instanceof Error) return Err(error);
+  return Err(new Error(`${error}`));
+}
