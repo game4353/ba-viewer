@@ -20,7 +20,7 @@
         </v-card-subtitle>
       </template>
 
-      <v-card-text class="bg-surface-light pt-4">
+      <v-card-text class="bg-surface-light !pt-4">
         <div class="flex flex-col gap-2">
           <RichText :text="desc" />
           <template v-if="layout === 'full'">
