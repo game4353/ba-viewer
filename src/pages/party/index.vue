@@ -1,6 +1,6 @@
 <template>
   <WIP />
-  <PartySelect ref="party" />
+  <PartySelect v-model="partyId" />
   <v-tabs
     class="mb-2"
     v-model="tab"
@@ -24,11 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import PartySelect from "@/components/party/PartySelect.vue";
-
-const party = ref<InstanceType<typeof PartySelect> | undefined>();
-const partyId = computed(() => party.value?.partyId ?? 0);
-
+const partyId = ref(0);
 const tab = ref();
 </script>
 

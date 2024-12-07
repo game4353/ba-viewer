@@ -21,17 +21,11 @@ class PartyData extends IOData<typeof schema> {
 
   count = ref(0);
 
-  useNames() {
+  useAmount() {
     if (this.count.value === 0) {
       this.count.value = this.getAllFullKey().length;
     }
-    return computed(() => {
-      const arr = [];
-      for (let i = 0; i < this.count.value; i++) {
-        arr.push(this.use(i).name);
-      }
-      return arr;
-    });
+    return this.count;
   }
 
   use(id: number) {
