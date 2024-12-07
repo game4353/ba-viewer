@@ -8,6 +8,6 @@
 // @use 'vuetify/settings' with (
 //   $color-pack: false
 // );
-@forward 'vuetify/settings' with (
-  $utilities: false,
+@forward "vuetify/settings" with (
+  $utilities: false
 );
