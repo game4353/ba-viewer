@@ -46,6 +46,10 @@ export function unreachable(
   throw new Error(message);
 }
 
+export function noDefault(restOfCases: never): never {
+  throw new Error(`Unhandled case ${restOfCases}`);
+}
+
 /** `from` inclusive, `to` exclusive. return length. */
 export function* range(from: number, to: number, step: number = 1) {
   let count = 0;
