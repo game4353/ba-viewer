@@ -27,7 +27,5 @@ const props = defineProps({
 });
 const errHandle = inject(ERR_HANDLE)!;
 
-const obj = computed(() =>
-  useEquipment(props.pid).value?.unwrapOrElse(errHandle),
-);
+const obj = computed(() => useEquipment(props.pid)?.unwrapOrElse(errHandle));
 </script>

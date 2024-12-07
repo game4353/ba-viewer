@@ -11,7 +11,7 @@
             :class="String(id) === route.params.id ? 'selecting' : 'others'"
           >
             <ParcelCommon
-              :parcel="useEquipment(id).value?.unwrapOrElse(errHandle)"
+              :parcel="useEquipment(id)?.unwrapOrElse(errHandle)"
               :scale="0.35"
               route
             />
