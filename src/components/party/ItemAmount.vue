@@ -10,7 +10,7 @@
       :scale-type
     />
     <div class="flex flex-col grow pr-1">
-      <v-tooltip content-class="!p-0" location="top">
+      <v-tooltip content-class="!p-0" location="top" :eager="false">
         <template v-slot:activator="{ props }">
           <div
             class="flex flex-col min-w-16 text-right text-base"
