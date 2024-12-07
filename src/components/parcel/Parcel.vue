@@ -114,5 +114,7 @@ watch(
 const parcel = computed(() =>
   getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(errHandle),
 );
-const amount = computed(() => Number(props.amount));
+const amount = computed(() =>
+  isNaN(Number(props.amount)) ? undefined : Number(props.amount),
+);
 </script>
