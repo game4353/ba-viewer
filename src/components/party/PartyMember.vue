@@ -7,8 +7,13 @@
       group="chara"
     >
       <template #item="{ element }">
-        <div v-on:click.right.prevent.stop="() => quickMove(element)">
-          <MyCharacterBig :cid="element" :scaledW="charaWidth" detailed />
+        <div v-on:click.left="() => charaEditing && quickMove(element)">
+          <MyCharacterBig
+            :cid="element"
+            :scaledW="charaWidth"
+            detailed
+            :no-route="charaEditing"
+          />
         </div>
       </template>
 
@@ -39,8 +44,13 @@
         </div>
       </template>
       <template #item="{ element }">
-        <div v-on:click.right.prevent.stop="() => quickMove(element)">
-          <MyCharacterBig :cid="element" :scaledW="charaWidth" detailed />
+        <div v-on:click.left="() => quickMove(element)">
+          <MyCharacterBig
+            :cid="element"
+            :scaledW="charaWidth"
+            detailed
+            :no-route="charaEditing"
+          />
         </div>
       </template>
     </draggable>
