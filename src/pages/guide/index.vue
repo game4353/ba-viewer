@@ -6,7 +6,7 @@
       :key="i"
     >
       <v-card>
-        <div class="flex flex-column items-center">
+        <div class="flex flex-col items-center">
           <GameImg :path="v.LobbyBannerImage" class="h-40" />
           <div>{{ v.StartDate }}</div>
           <div>

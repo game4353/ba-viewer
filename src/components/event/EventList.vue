@@ -8,7 +8,7 @@
       :style="`order: ${new Date(v.EventContentOpenTime).getTime() / 10000};`"
     >
       <v-card>
-        <div class="flex flex-column items-center">
+        <div class="flex flex-col items-center">
           <GameImg :path="v.MainBannerImagePath" class="w-56" />
           <div>{{ v.EventContentOpenTime }}</div>
           <div>

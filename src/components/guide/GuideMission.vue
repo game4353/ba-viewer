@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column w-min">
+  <div class="flex flex-col w-min">
     <div class="w-full h-16">
       <p :class="descSize">{{ desc?.unwrapOrElse(errHandle) }}</p>
     </div>
