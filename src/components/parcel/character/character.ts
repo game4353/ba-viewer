@@ -29,6 +29,7 @@ import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
 } from "../../character/star";
+import { useEquipmentFromEnum } from "../equipment/equipment";
 import type { IParcel } from "../parcel";
 import type { CTag, IFilterable } from "../tag";
 import {
@@ -216,6 +217,79 @@ export class CCharacter implements IFilterable, IParcel {
   }
 
   baseStats = useBaseStats;
+
+  // equipment
+
+  private data = {
+    equipment1: undefined,
+    equipment2: undefined,
+    equipment3: undefined,
+  } as {
+    equipment1?: ReturnType<typeof useEquipmentFromEnum>;
+    equipment2?: ReturnType<typeof useEquipmentFromEnum>;
+    equipment3?: ReturnType<typeof useEquipmentFromEnum>;
+  };
+
+  get equipment1() {
+    if (this.statNow.gear1 === 0) {
+      this.data.equipment1 = undefined;
+      return undefined;
+    }
+    if (
+      this.data.equipment1?.unwrapOr(undefined)?.tier !== this.statNow.gear1
+    ) {
+      this.data.equipment1 = useEquipmentFromEnum(
+        this.obj.EquipmentSlot[0],
+        this.statNow.gear1,
+      );
+    }
+    return asResult(
+      this.data.equipment1.map((equipment) => {
+        equipment.level = this.statNow.gear1lv;
+        return equipment;
+      }),
+    );
+  }
+  get equipment2() {
+    if (this.statNow.gear2 === 0) {
+      this.data.equipment2 = undefined;
+      return undefined;
+    }
+    if (
+      this.data.equipment2?.unwrapOr(undefined)?.tier !== this.statNow.gear2
+    ) {
+      this.data.equipment2 = useEquipmentFromEnum(
+        this.obj.EquipmentSlot[1],
+        this.statNow.gear2,
+      );
+    }
+    return asResult(
+      this.data.equipment2.map((equipment) => {
+        equipment.level = this.statNow.gear2lv;
+        return equipment;
+      }),
+    );
+  }
+  get equipment3() {
+    if (this.statNow.gear3 === 0) {
+      this.data.equipment3 = undefined;
+      return undefined;
+    }
+    if (
+      this.data.equipment3?.unwrapOr(undefined)?.tier !== this.statNow.gear3
+    ) {
+      this.data.equipment3 = useEquipmentFromEnum(
+        this.obj.EquipmentSlot[2],
+        this.statNow.gear3,
+      );
+    }
+    return asResult(
+      this.data.equipment3.map((equipment) => {
+        equipment.level = this.statNow.gear3lv;
+        return equipment;
+      }),
+    );
+  }
 }
 
 export const useCharacter = cache((id: number) => {
