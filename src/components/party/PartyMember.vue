@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { usePlayableIds } from "@/components/parcel/character/character";
+import { usePlayableIds } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { dataParty } from "@/stores/party";
 import draggable from "vuedraggable";

@@ -12,10 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import {
-  useCharacter,
-  usePlayableIds,
-} from "@/components/parcel/character/character";
+import { useCharacter } from "@/components/parcel/character/character";
+import { usePlayableIds } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { isDefined } from "@/utils/misc";
 

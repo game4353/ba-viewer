@@ -302,24 +302,7 @@ export const useCharacter = cache((id: number) =>
   }),
 );
 
-function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
-  return (
-    excel.IsPlayableCharacter &&
-    !excel.IsNPC &&
-    excel.ProductionStep === ProductionStep.Release
-  );
-}
-
 export function useCharacterIds() {
   const table = useExcelCharacter();
   return computed(() => table.value?.map((map) => Array.from(map.keys())));
-}
-
-export function usePlayableIds() {
-  const table = useExcelCharacter();
-  return computed(() =>
-    table.value?.map((map) =>
-      Array.from(map.keys()).filter((k) => isPlayable(map.get(k)!)),
-    ),
-  );
 }
