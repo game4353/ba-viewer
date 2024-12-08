@@ -2,13 +2,19 @@ import {
   ProductionStep,
   type CharacterExcel,
 } from "@/assets/game/types/flatDataExcel";
-import { useExcelCharacter } from "@/utils/data/excel/character";
+import {
+  useExcelCharacter,
+  useExcelCharacterLevel,
+} from "@/utils/data/excel/character";
 import { KeyNotFoundErr } from "@/utils/error";
-import { cache } from "@/utils/misc";
-import { asResult, Err, Ok } from "@/utils/result";
+import { cache, sum } from "@/utils/misc";
+import { asResult, Err, Ok, Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { CCharacter, useCharacter } from "../parcel/character/character";
-import { useEquipmentCache } from "../parcel/equipment/equipment";
+import {
+  equipmentExp,
+  useEquipmentFromEnum,
+} from "../parcel/equipment/equipment";
 import { useCharacterGear } from "../parcel/gear/gear";
 
 export class CStudent extends CCharacter {
@@ -16,17 +22,47 @@ export class CStudent extends CCharacter {
     super(...args);
   }
 
+  useExp(unit: number) {
+    if ((this.statNow.lv || 1) >= this.statGoal.lv) return Ok(0);
+    return useExcelCharacterLevel().value.andThen((map) =>
+      Result.all([
+        map.getResult(this.statNow.lv || 1),
+        map.getResult(this.statGoal.lv),
+      ]).map(([n, g]) =>
+        Math.ceil((g.TotalExp - n.TotalExp + n.Exp - g.Exp) / unit),
+      ),
+    );
+  }
+
   /** This will return tier 1 when unequipped */
   useEquipment(i: 1 | 2 | 3) {
     return asResult(
-      useEquipmentCache(
+      useEquipmentFromEnum(
         this.obj.EquipmentSlot[i - 1],
         this.statNow[`gear${i}`] || 1,
-      ).value.map((equipment) => {
-        equipment.level = this.statNow[`gear${i}lv`];
+      ).map((equipment) => {
+        equipment.level = this.statNow[`gear${i}lv`] || 1;
         return equipment;
       }),
     );
+  }
+
+  useEquipmentTotalExp(unit: number) {
+    return Result.all(
+      ([1, 2, 3] as const).map((i) =>
+        this.useEquipment(i).andThen2(
+          (eq) =>
+            equipmentExp(
+              eq.obj.EquipmentCategory,
+              this.statNow[`gear${i}`] || 1,
+              this.statNow[`gear${i}lv`] || 1,
+              this.statGoal[`gear${i}`],
+              this.statGoal[`gear${i}lv`],
+              unit,
+            ).value,
+        ),
+      ),
+    ).map(sum);
   }
 
   /** This will return null if gear does not exist

@@ -4,7 +4,7 @@ import {
 } from "@/utils/data/excel/parcel";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
 import { Local } from "@/utils/localize";
-import { cache, noDefault } from "@/utils/misc";
+import { cache, noDefault, sum } from "@/utils/misc";
 import { Ok, Result, asResult } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import {
@@ -121,10 +121,6 @@ export function useEquipmentFromEnum(cat: EquipmentCategory, tier: number) {
   }
 }
 
-export const useEquipmentCache = cache((cat: EquipmentCategory, tier: number) =>
-  computed(() => useEquipmentFromEnum(cat, tier)),
-);
-
 const equipmentRecipes = cache((base: number, tier: number) =>
   computed(() => {
     const arr = [];
@@ -142,4 +138,42 @@ const equipmentRecipes = cache((base: number, tier: number) =>
     }
     return Ok(arr);
   }),
+);
+
+export const equipmentExp = cache(
+  (
+    cat: EquipmentCategory,
+    tier: number,
+    lv: number,
+    targetTier: number,
+    targetLv: number,
+    unit: number,
+  ) =>
+    computed(() => {
+      if (tier > targetTier) return Ok(0);
+      if (tier === targetTier) {
+        if ((lv || 1) >= targetLv) return Ok(0);
+        return useExcelEquipmentLevel().value.andThen((map) =>
+          Result.all([map.getResult(lv), map.getResult(targetLv)]).map(
+            ([n, g]) =>
+              Math.ceil(
+                (g.TotalExp[tier - 1] -
+                  n.TotalExp[tier - 1] +
+                  n.TierLevelExp[tier - 1] -
+                  g.TierLevelExp[tier - 1]) /
+                  unit,
+              ),
+          ),
+        );
+      }
+      // TODO: fix hard-coded 65
+      const arr: Result<number, Error>[] = [
+        equipmentExp(cat, tier, lv, tier, 65, unit).value,
+      ];
+      while (++tier < targetTier) {
+        arr.push(equipmentExp(cat, tier, 1, tier, 65, unit).value);
+      }
+      arr.push(equipmentExp(cat, tier, 1, tier, targetLv, unit).value);
+      return Result.all(arr).map(sum);
+    }),
 );
