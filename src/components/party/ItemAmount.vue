@@ -3,7 +3,7 @@
     <Parcel
       :pid
       :type
-      :amount="hasAmount.amount"
+      :amount="own ?? hasAmount.amount"
       :scale
       :scaled-w
       :scaled-h
@@ -14,7 +14,7 @@
         <template v-slot:activator="{ props }">
           <div
             class="flex flex-col min-w-16 text-right text-base"
-            :class="mode === 'display' ? '' : '!hidden'"
+            :class="own != null || mode === 'display' ? '' : '!hidden'"
             v-bind="props"
           >
             <p>{{ needAmount }}</p>
@@ -22,7 +22,7 @@
           </div>
           <v-text-field
             class="min-w-16 h-4/5"
-            :class="mode === 'edit' ? '' : '!hidden'"
+            :class="own == null && mode === 'edit' ? '' : '!hidden'"
             v-model="keyInAmount"
             density="compact"
             type="number"
@@ -63,6 +63,7 @@ const props = defineProps({
     type: Number as PropType<ParcelType>,
     required: true,
   },
+  own: Number,
   need: {
     type: Map as PropType<Map<number, number>>,
   },
@@ -91,7 +92,7 @@ watch([keyInAmount, () => hasAmount.amount] as const, (newV, oldV) => {
   }
 });
 const diff = computed(() => {
-  return hasAmount.amount - needAmount.value;
+  return (props.own ?? hasAmount.amount) - needAmount.value;
 });
 
 const bg = computed(() =>
