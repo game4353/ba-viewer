@@ -121,6 +121,10 @@ export function useEquipmentFromEnum(cat: EquipmentCategory, tier: number) {
   }
 }
 
+export const useEquipmentCache = cache((cat: EquipmentCategory, tier: number) =>
+  computed(() => useEquipmentFromEnum(cat, tier)),
+);
+
 const equipmentRecipes = cache((base: number, tier: number) =>
   computed(() => {
     const arr = [];
