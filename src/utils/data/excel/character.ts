@@ -2,6 +2,7 @@ import { cache } from "@/utils/misc";
 import type {
   CharacterExcelTable,
   CharacterGearExcelTable,
+  CharacterLevelExcelTable,
   CharacterStatExcelTable,
   CharacterTranscendenceExcelTable,
   CostumeExcelTable,
@@ -20,6 +21,13 @@ export const useExcelCostume = cache(() =>
   useExcelMapSingle<CostumeExcelTable, "CostumeGroupId">(
     "CostumeExcelTable",
     "CostumeGroupId",
+  ),
+);
+
+export const useExcelCharacterLevel = cache(() =>
+  useExcelMapSingle<CharacterLevelExcelTable, "Level">(
+    "CharacterLevelExcelTable",
+    "Level",
   ),
 );
 
