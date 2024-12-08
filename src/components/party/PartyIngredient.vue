@@ -63,6 +63,8 @@
         :item-map="maps?.item"
         :equipment-map="maps?.equipment"
         :currency-map="maps?.currency"
+        :exp-map="ingredients?.expMap"
+        :exp-equip-map="ingredients?.expEquipMap"
       />
     </v-tabs-window-item>
   </v-tabs-window>
@@ -76,9 +78,9 @@ import {
 import { ERR_HANDLE } from "@/components/warn/error";
 import { dataParty } from "@/stores/party";
 import { isDefined } from "@/utils/misc";
-import { Result } from "@/utils/result";
+import { Ok, Result } from "@/utils/result";
 import { ReadonlyDeep } from "type-fest";
-import { useCharacter } from "../parcel/character/character";
+import { useStudent } from "../student/student";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
@@ -102,7 +104,7 @@ const students = computed(() => {
   const ids = dataParty.use(props.pid).student;
   const arr = [];
   for (const id of ids) {
-    const chara = useCharacter(id).value.unwrapOrElse(errHandle);
+    const chara = useStudent(id).value.unwrapOrElse(errHandle);
     if (chara == null) return undefined;
     arr.push(chara);
   }
@@ -112,24 +114,36 @@ const students = computed(() => {
 const ingredients = computed(() => {
   if (students.value == null) return undefined;
 
-  const map = new Map<number, ReadonlyDeep<RecipeIngredientExcel[]>>();
+  const ingredientMap = new Map<
+    number,
+    ReadonlyDeep<RecipeIngredientExcel[]>
+  >();
+  const expEquipMap = new Map<number, number>();
+  const expMap = new Map<number, number>();
 
   for (const chara of students.value) {
     const cid = chara.id;
 
+    const exp = chara.useExp(50).unwrapOrElse(errHandle);
+    if (exp == null) return exp;
+    if (exp > 0) expMap.set(cid, exp);
+
     const ingredientResults: (
-      | Result<ReadonlyDeep<RecipeIngredientExcel[]>, Error>
+      | Result<ReadonlyDeep<RecipeIngredientExcel[]> | null, Error>
       | undefined
     )[] = [];
 
     // equipment
     for (const i of [1, 2, 3] as const) {
       ingredientResults.push(
-        chara[`equipment${i}`]?.andThen((eq) =>
-          eq.getIngredients(chara.statGoal[`gear${i}`]),
-        ),
+        chara
+          .useEquipment(i)
+          .andThen((eq) => eq.getIngredients(chara.statGoal[`gear${i}`])),
       );
     }
+    const expEquip = chara.useEquipmentTotalExp(90).unwrapOrElse(errHandle);
+    if (expEquip == null) return expEquip;
+    if (expEquip > 0) expEquipMap.set(cid, expEquip);
 
     // skill
     for (const i of [0, 1, 2, 3] as const) {
@@ -147,13 +161,19 @@ const ingredients = computed(() => {
       ingredientResults.push(chara.usePotentialRecipes(i));
     }
 
+    // gear
+    ingredientResults.push(
+      chara.useGear().andThen((gear) => gear?.ingredients ?? Ok(null)),
+    );
+
     const arr = Result.all(ingredientResults.filter(isDefined))
       .unwrapOrElse(errHandle)
-      ?.flat();
+      ?.filter(isDefined)
+      .flat();
     if (arr == null) return undefined;
-    map.set(cid, arr);
+    ingredientMap.set(cid, arr);
   }
-  return map;
+  return { ingredientMap, expMap, expEquipMap };
 });
 
 const maps = computed(() => {
@@ -163,7 +183,7 @@ const maps = computed(() => {
   const itemMap = new Map<number, Map<number, number>>();
   const currencyMap = new Map<number, Map<number, number>>();
 
-  ingredients.value.forEach((arr, cid) => {
+  ingredients.value.ingredientMap.forEach((arr, cid) => {
     arr.forEach((excel) => {
       excel.IngredientParcelType.forEach((type, i) => {
         const id = excel.IngredientId[i];

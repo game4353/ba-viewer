@@ -42,7 +42,19 @@
           />
         </div>
       </v-col>
-      <v-col cols="6"></v-col>
+      <v-col cols="6">
+        <div>
+          <ItemAmount
+            class="m-1"
+            :pid="10"
+            :own="expOwn"
+            :type="ParcelType.Item"
+            :need="expMap"
+            :scaled-w="parcelWidth"
+            :mode="editing ? 'edit' : 'display'"
+          />
+        </div>
+      </v-col>
     </v-row>
 
     <v-row no-gutters>
@@ -58,7 +70,19 @@
           />
         </div>
       </v-col>
-      <v-col cols="6"></v-col>
+      <v-col cols="6">
+        <div>
+          <ItemAmount
+            class="m-1"
+            :pid="1"
+            :own="equipExpOwn"
+            :type="ParcelType.Equipment"
+            :need="expEquipMap"
+            :scaled-w="parcelWidth"
+            :mode="editing ? 'edit' : 'display'"
+          />
+        </div>
+      </v-col>
     </v-row>
 
     <v-row v-for="i in range(1, 5)" :key="i" no-gutters>
@@ -81,6 +105,7 @@
 
 <script setup lang="ts">
 import { ParcelType } from "@/assets/game/types/flatDataExcel";
+import { dataParcel } from "@/stores/parcel";
 import { range } from "@/utils/misc";
 
 defineProps({
@@ -105,5 +130,29 @@ defineProps({
   currencyMap: {
     type: Map as PropType<Map<number, Map<number, number>>>,
   },
+  expMap: {
+    type: Map as PropType<Map<number, number>>,
+  },
+  expEquipMap: {
+    type: Map as PropType<Map<number, number>>,
+  },
+});
+
+const equipExpOwn = computed(() => {
+  return (
+    dataParcel.use(ParcelType.Equipment, 1).amount +
+    dataParcel.use(ParcelType.Equipment, 2).amount * 4 +
+    dataParcel.use(ParcelType.Equipment, 3).amount * 16 +
+    dataParcel.use(ParcelType.Equipment, 4).amount * 64
+  );
+});
+
+const expOwn = computed(() => {
+  return (
+    dataParcel.use(ParcelType.Item, 10).amount +
+    dataParcel.use(ParcelType.Item, 11).amount * 10 +
+    dataParcel.use(ParcelType.Item, 12).amount * 40 +
+    dataParcel.use(ParcelType.Item, 13).amount * 200
+  );
 });
 </script>
