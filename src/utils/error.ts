@@ -1,4 +1,5 @@
 export class FetchDataErr extends Error {
+  name = "FetchDataErr" as const;
   info: {
     cause: Error;
     title: string;
@@ -9,7 +10,6 @@ export class FetchDataErr extends Error {
 
   private constructor(...args: any) {
     super(...args);
-    this.name = "FetchDataErr";
   }
 
   static from(title: string, error: unknown) {
@@ -23,6 +23,7 @@ export class FetchDataErr extends Error {
 }
 
 export class KeyNotFoundErr extends Error {
+  name = "KeyNotFoundErr" as const;
   info: {
     key?: any;
     keyName: string;
@@ -34,7 +35,6 @@ export class KeyNotFoundErr extends Error {
 
   constructor(...args: any) {
     super(...args);
-    this.name = "KeyNotFoundErr";
   }
 
   static from(key: any, keyName = "key", title = "map") {
@@ -45,20 +45,21 @@ export class KeyNotFoundErr extends Error {
 }
 
 export class ManyResultErr extends Error {
+  name = "ManyResultErr" as const;
   constructor(...args: any) {
     super(...args);
-    this.name = "ManyResultErr";
   }
 }
 
 export class NoResultErr extends Error {
+  name = "NoResultErr" as const;
   constructor(...args: any) {
     super(...args);
-    this.name = "NoResultErr";
   }
 }
 
 export class TimeoutErr extends Error {
+  name = "TimeoutErr" as const;
   info: {
     timeSec: number;
     title: string;
@@ -69,7 +70,6 @@ export class TimeoutErr extends Error {
 
   constructor(...args: any) {
     super(...args);
-    this.name = "TimeoutErr";
   }
 
   static from(title: string, timeSec: number) {
