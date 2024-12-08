@@ -172,7 +172,7 @@ function goalGearStr(idx: 0 | 1 | 2 | 3) {
 }
 
 const bg = computed(() => {
-  const costume = parcel.value?.costume.value.unwrapOrElse(errHandle);
+  const costume = parcel.value?.costume;
   if (costume == null) return undefined;
   return uiPath(costume.CollectionTexturePath);
 });

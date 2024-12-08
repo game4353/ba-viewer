@@ -41,9 +41,7 @@ const imgH = 500;
 const chara = computed(() =>
   useCharacter(props.cid).value.unwrapOrElse(errHandle),
 );
-const costume = computed(() =>
-  chara.value?.costume.value.unwrapOrElse(errHandle),
-);
+const costume = computed(() => chara.value?.costume);
 const src = computed(() => {
   const path = costume.value?.InformationPacel || costume.value?.TextureBoss;
   return path == null ? undefined : uiPath(path);

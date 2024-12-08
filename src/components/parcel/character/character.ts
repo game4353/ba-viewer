@@ -5,6 +5,7 @@ import {
   PotentialStatBonusRateType,
   ProductionStep,
   type CharacterExcel,
+  type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
 import { useBaseStats } from "@/components/character/stat/stat";
 import { CSkill } from "@/components/skill/skill";
@@ -52,7 +53,10 @@ export class CCharacter implements IFilterable, IParcel {
 
   tags: CTag<Object>[];
   hideCount: number = 0;
-  constructor(public obj: ReadonlyDeep<CharacterExcel>) {
+  constructor(
+    public obj: ReadonlyDeep<CharacterExcel>,
+    public costume: ReadonlyDeep<CostumeExcel>,
+  ) {
     this.tags = [
       CharacterTagSquadTypeGroup.getTag(obj.SquadType),
       CharacterTagArmorTypeGroup.getTag(obj.ArmorType),
@@ -108,8 +112,7 @@ export class CCharacter implements IFilterable, IParcel {
     return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
   }
   get iconPath() {
-    // TODO: not unwrap
-    return this.costume.value.unwrapOr(undefined)?.TextureDir ?? "";
+    return this.costume.TextureDir;
   }
   get id() {
     return this.obj.Id;
@@ -133,13 +136,6 @@ export class CCharacter implements IFilterable, IParcel {
 
   // others
 
-  get costume() {
-    return computed(() =>
-      useExcelCostume().value.andThen((map) =>
-        map.getResult(this.obj.CostumeGroupId),
-      ),
-    );
-  }
   get stat() {
     return computed(() =>
       useExcelCharacterStat().value.andThen((map) => map.getResult(this.id)),
@@ -292,14 +288,19 @@ export class CCharacter implements IFilterable, IParcel {
   }
 }
 
-export const useCharacter = cache((id: number) => {
-  const table = useExcelCharacter();
-  return computed(() =>
-    table.value
-      .andThen((map) => map.getResult(id))
-      .map((c) => new CCharacter(c)),
+export const useCharacter = cache((id: number) =>
+  computed(() => {
+    const chara = useExcelCharacter().value;
+    const costume = useExcelCostume().value;
+    const charaX = chara.andThen((chara) => chara.getResult(id));
+    const costumeX = Result.all([charaX, costume]).andThen(([excel, costume]) =>
+      costume.getResult(excel.CostumeGroupId),
+    );
+    return Result.all([charaX, costumeX]).map(
+      ([charaX, costumeX]) => new CCharacter(charaX, costumeX),
   );
-});
+  }),
+);
 
 function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
   return (
