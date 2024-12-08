@@ -81,3 +81,7 @@ export function interpolation(
   const dy = Math.round(fy * r);
   return dy + yMin;
 }
+
+export function sum(arr: number[]) {
+  return arr.reduce((a, b) => a + b, 0);
+}
