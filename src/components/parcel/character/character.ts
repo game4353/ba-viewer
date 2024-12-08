@@ -3,7 +3,6 @@ import {
   BulletType,
   ParcelType,
   PotentialStatBonusRateType,
-  ProductionStep,
   type CharacterExcel,
   type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
@@ -17,7 +16,6 @@ import {
   useExcelCharacterStat,
   useExcelCostume,
 } from "@/utils/data/excel/character";
-import { Local } from "@/utils/localize";
 import { cache, isDefined, range } from "@/utils/misc";
 import { Result, asResult, findFirst } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
@@ -30,8 +28,8 @@ import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
 } from "../../character/star";
+import { AParcel } from "../class";
 import { useEquipmentFromEnum } from "../equipment/equipment";
-import type { IParcel } from "../parcel";
 import type { CTag, IFilterable } from "../tag";
 import {
   CharacterTagArmorTypeGroup,
@@ -48,7 +46,17 @@ import {
   StudentTagRarityGroup,
 } from "./tag";
 
-export class CCharacter implements IFilterable, IParcel {
+export class CCharacter
+  extends AParcel<ReadonlyDeep<CharacterExcel>>
+  implements IFilterable
+{
+  // IParcel
+
+  type = ParcelType.Character as const;
+  get iconPath() {
+    return this.costume.TextureDir;
+  }
+
   // IFilterable
 
   tags: CTag<Object>[];
@@ -57,6 +65,7 @@ export class CCharacter implements IFilterable, IParcel {
     public obj: ReadonlyDeep<CharacterExcel>,
     public costume: ReadonlyDeep<CostumeExcel>,
   ) {
+    super(obj);
     this.tags = [
       CharacterTagSquadTypeGroup.getTag(obj.SquadType),
       CharacterTagArmorTypeGroup.getTag(obj.ArmorType),
@@ -105,25 +114,6 @@ export class CCharacter implements IFilterable, IParcel {
       }
     });
   }
-
-  // IParcel
-
-  get desc() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
-  }
-  get iconPath() {
-    return this.costume.TextureDir;
-  }
-  get id() {
-    return this.obj.Id;
-  }
-  get name() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
-  }
-  get rarity() {
-    return this.obj.Rarity;
-  }
-  type = ParcelType.Character as const;
 
   // store
 
@@ -298,7 +288,7 @@ export const useCharacter = cache((id: number) =>
     );
     return Result.all([charaX, costumeX]).map(
       ([charaX, costumeX]) => new CCharacter(charaX, costumeX),
-  );
+    );
   }),
 );
 
