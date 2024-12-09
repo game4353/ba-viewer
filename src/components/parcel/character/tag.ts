@@ -265,7 +265,7 @@ export const characterTags = [
   CharacterTagTacticRoleGroup,
   CharacterTagTacticRangeGroup,
   CharacterTagRarityGroup,
-  StudentTagRarityGroup,
+  // StudentTagRarityGroup,
   CharacterTagWeaponTypeGroup,
   CharacterTagSchoolGroup,
   // CharacterTagEquipmentCategoryGroup,
