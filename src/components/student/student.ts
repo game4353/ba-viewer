@@ -8,7 +8,7 @@ import {
 } from "@/utils/data/excel/character";
 import { KeyNotFoundErr } from "@/utils/error";
 import { cache, sum } from "@/utils/misc";
-import { asResult, Err, Ok, Result } from "@/utils/result";
+import { Err, Ok, Result, asResult } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { CCharacter, useCharacter } from "../parcel/character/character";
 import {
@@ -50,16 +50,15 @@ export class CStudent extends CCharacter {
   useEquipmentTotalExp(unit: number) {
     return Result.all(
       ([1, 2, 3] as const).map((i) =>
-        this.useEquipment(i).andThen2(
-          (eq) =>
-            equipmentExp(
-              eq.obj.EquipmentCategory,
-              this.statNow[`gear${i}`] || 1,
-              this.statNow[`gear${i}lv`] || 1,
-              this.statGoal[`gear${i}`],
-              this.statGoal[`gear${i}lv`],
-              unit,
-            ).value,
+        this.useEquipment(i).andThen2((eq) =>
+          equipmentExp(
+            eq.obj.EquipmentCategory,
+            this.statNow[`gear${i}`] || 1,
+            this.statNow[`gear${i}lv`] || 1,
+            this.statGoal[`gear${i}`],
+            this.statGoal[`gear${i}lv`],
+            unit,
+          ),
         ),
       ),
     ).map(sum);

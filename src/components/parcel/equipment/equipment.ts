@@ -1,3 +1,4 @@
+import type { MapResult } from "@/utils/data/excel";
 import {
   useExcelEquipment,
   useExcelEquipmentLevel,
@@ -11,6 +12,7 @@ import {
   EquipmentCategory,
   ParcelType,
   type EquipmentExcel,
+  type EquipmentLevelExcel,
 } from "~game/types/flatDataExcel";
 import type { IParcel } from "../parcel";
 import { recipeToIngredient } from "../recipe/recipe";
@@ -140,40 +142,51 @@ const equipmentRecipes = cache((base: number, tier: number) =>
   }),
 );
 
-export const equipmentExp = cache(
+export function equipmentExp(
+  cat: EquipmentCategory,
+  tier: number,
+  lv: number,
+  targetTier: number,
+  targetLv: number,
+  unit: number,
+) {
+  return useExcelEquipmentLevel().value.andThen((map) =>
+    equipmentExp2(map, cat, tier, lv, targetTier, targetLv, unit),
+  );
+}
+
+const equipmentExp2 = cache(
   (
+    map: MapResult<number, ReadonlyDeep<EquipmentLevelExcel>>,
     cat: EquipmentCategory,
     tier: number,
     lv: number,
     targetTier: number,
     targetLv: number,
     unit: number,
-  ) =>
-    computed(() => {
-      if (tier > targetTier) return Ok(0);
-      if (tier === targetTier) {
-        if ((lv || 1) >= targetLv) return Ok(0);
-        return useExcelEquipmentLevel().value.andThen((map) =>
-          Result.all([map.getResult(lv), map.getResult(targetLv)]).map(
-            ([n, g]) =>
-              Math.ceil(
-                (g.TotalExp[tier - 1] -
-                  n.TotalExp[tier - 1] +
-                  n.TierLevelExp[tier - 1] -
-                  g.TierLevelExp[tier - 1]) /
-                  unit,
-              ),
-          ),
-        );
-      }
+  ) => {
+    if (tier > targetTier) return Ok(0);
+    if (tier < targetTier) {
       // TODO: fix hard-coded 65
       const arr: Result<number, Error>[] = [
-        equipmentExp(cat, tier, lv, tier, 65, unit).value,
+        equipmentExp2(map, cat, tier, lv, tier, 65, unit),
       ];
       while (++tier < targetTier) {
-        arr.push(equipmentExp(cat, tier, 1, tier, 65, unit).value);
+        arr.push(equipmentExp2(map, cat, tier, 1, tier, 65, unit));
       }
-      arr.push(equipmentExp(cat, tier, 1, tier, targetLv, unit).value);
+      arr.push(equipmentExp2(map, cat, tier, 1, tier, targetLv, unit));
       return Result.all(arr).map(sum);
-    }),
+    }
+    if ((lv || 1) >= targetLv) return Ok(0);
+    return Result.all([map.getResult(lv), map.getResult(targetLv)]).map(
+      ([n, g]) =>
+        Math.ceil(
+          (g.TotalExp[tier - 1] -
+            n.TotalExp[tier - 1] +
+            n.TierLevelExp[tier - 1] -
+            g.TierLevelExp[tier - 1]) /
+            unit,
+        ),
+    );
+  },
 );
