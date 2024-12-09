@@ -9,7 +9,7 @@
       <template v-slot:prepend>
         <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
-      <v-card-text class="bg-surface-light pt-4">
+      <v-card-text class="bg-surface-light !pt-4">
         {{ picked.desc.value.unwrapOrElse(errHandle) ?? "" }}
       </v-card-text>
     </v-card>
@@ -20,7 +20,7 @@
         picked.group.value.unwrap().groupName.value?.unwrapOrElse(errHandle)
       "
     >
-      <v-card-text class="bg-surface-light pt-4">
+      <v-card-text class="bg-surface-light !pt-4">
         {{
           picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(errHandle)
         }}

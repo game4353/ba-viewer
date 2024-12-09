@@ -55,14 +55,22 @@
 
 <script setup lang="ts">
 import { dataParty } from "@/stores/party";
+import { range } from "@/utils/misc";
 
-const partyId = ref(0);
+const total = dataParty.useAmount();
+const parties = ref([...range(0, total.value)].map((i) => dataParty.use(i)));
+watch(total, () => {
+  while (parties.value.length < total.value)
+    parties.value.push(dataParty.use(parties.value.length));
+});
+
+const partyId = defineModel({ default: 0, required: true });
 const party = computed(() => {
   return dataParty.use(partyId.value);
 });
 const partyList = computed(() => {
-  const arr = dataParty.useNames().value.map((v, i) => ({
-    title: `${i + 1}. ${v}`,
+  const arr = parties.value.map((v, i) => ({
+    title: `${i + 1}. ${v.name}`,
     value: i,
   }));
   arr.push({
@@ -71,6 +79,7 @@ const partyList = computed(() => {
   });
   return arr;
 });
+
 const newName = ref("");
 const renameForm = ref(false);
 const renaming = ref(false);
@@ -82,6 +91,4 @@ function renameParty() {
 function required(v: any) {
   return !!v || "Name cannot be empty.";
 }
-
-defineExpose({ partyId });
 </script>

@@ -4,7 +4,7 @@
     :max="sliderMax"
     :min="sliderMin"
     :step="1"
-    class="ma-4"
+    class="my-4"
     :label="name"
     color="red"
     :show-ticks="sliderMax - sliderMin > 10 ? false : 'always'"

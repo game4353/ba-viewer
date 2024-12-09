@@ -51,7 +51,7 @@ export function getParcel(
     case ParcelType.Currency:
       return useCurrency(id);
     case ParcelType.Equipment:
-      return useEquipment(id);
+      return computed(() => useEquipment(id));
     case ParcelType.Furniture:
       return useFurniture(id);
     case ParcelType.Item:

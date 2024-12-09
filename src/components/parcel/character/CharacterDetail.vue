@@ -39,24 +39,24 @@
             :max="forms - 1"
           ></v-slider>
         </div>
-        <v-card-text class="bg-surface-light pt-4" v-if="normalAttack">
+        <v-card-text class="bg-surface-light !pt-4" v-if="normalAttack">
           <div class="big">通常攻撃</div>
           <template v-for="s in normalAttack" :key="s">
             <Skill :sid="s" normalAttack />
           </template>
         </v-card-text>
-        <v-card-text class="bg-surface-light pt-4" v-if="skillEx">
+        <v-card-text class="bg-surface-light !pt-4" v-if="skillEx">
           <div class="big">EXスキル</div>
           <div v-for="(s, i) in skillEx" :key="s + i">
             <div v-if="s === 'EmptySkill'">N/A</div>
             <Skill v-else :sid="s" layout="full" />
           </div>
         </v-card-text>
-        <v-card-text class="bg-surface-light pt-4" v-if="skillNs">
+        <v-card-text class="bg-surface-light !pt-4" v-if="skillNs">
           <div class="big">ノーマルスキル</div>
           <Skill v-for="s in skillNs" :key="s" :sid="s" layout="full" />
         </v-card-text>
-        <v-card-text class="bg-surface-light pt-4" v-if="skillPs">
+        <v-card-text class="bg-surface-light !pt-4" v-if="skillPs">
           <div class="big">パッシブスキル</div>
           <Skill
             v-for="(s, i) in skillPs"
@@ -65,15 +65,15 @@
             layout="full"
           />
         </v-card-text>
-        <v-card-text class="bg-surface-light pt-4" v-if="skillSs">
+        <v-card-text class="bg-surface-light !pt-4" v-if="skillSs">
           <div class="big">サブスキル</div>
           <Skill v-for="s in skillSs" :key="s" :sid="s" layout="full" />
         </v-card-text>
-        <v-card-text class="bg-surface-light pt-4" v-if="skillHs">
+        <v-card-text class="bg-surface-light !pt-4" v-if="skillHs">
           <div class="big">隠しスキル</div>
           <Skill v-for="s in skillHs" :key="s" :sid="s" layout="full" />
         </v-card-text>
-        <!-- <v-card-text class="bg-surface-light pt-4">
+        <!-- <v-card-text class="bg-surface-light !pt-4">
           {{ picked.obj }}{{ picked.costume }}
         </v-card-text> -->
       </div>

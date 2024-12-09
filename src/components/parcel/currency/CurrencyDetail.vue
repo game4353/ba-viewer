@@ -8,7 +8,7 @@
     <template v-slot:prepend>
       <Parcel :type="ParcelType.Currency" :pid="obj.id" :scale="0.4" />
     </template>
-    <v-card-text class="bg-surface-light pt-4">
+    <v-card-text class="bg-surface-light !pt-4">
       {{ obj.desc.value?.unwrapOrElse(errHandle) ?? "" }}
     </v-card-text>
   </v-card>

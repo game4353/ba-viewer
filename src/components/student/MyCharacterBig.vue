@@ -1,5 +1,5 @@
 <template>
-  <router-link v-if="parcel" :to="`/student/${parcel.id}`">
+  <router-link v-if="parcel" :to="noRoute ? '' : `/student/${parcel.id}`">
     <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
       <v-img
         class="absolute"
@@ -106,6 +106,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  noRoute: Boolean,
   detailed: Boolean,
   scale: Number,
   scaledW: Number,
@@ -171,7 +172,7 @@ function goalGearStr(idx: 0 | 1 | 2 | 3) {
 }
 
 const bg = computed(() => {
-  const costume = parcel.value?.costume.value.unwrapOrElse(errHandle);
+  const costume = parcel.value?.costume;
   if (costume == null) return undefined;
   return uiPath(costume.CollectionTexturePath);
 });

@@ -2,6 +2,8 @@ import { cache } from "@/utils/misc";
 import type {
   CurrencyExcelTable,
   EquipmentExcelTable,
+  EquipmentLevelExcelTable,
+  EquipmentStatExcelTable,
   FurnitureExcelTable,
   FurnitureGroupExcelTable,
   ItemExcelTable,
@@ -28,5 +30,18 @@ export const useExcelFurnitureGroup = cache(() =>
   useExcelMapSingle<FurnitureGroupExcelTable, "Id">(
     "FurnitureGroupExcelTable",
     "Id",
+  ),
+);
+
+export const useExcelEquipmentLevel = cache(() =>
+  useExcelMapSingle<EquipmentLevelExcelTable, "Level">(
+    "EquipmentLevelExcelTable",
+    "Level",
+  ),
+);
+export const useExcelEquipmentStat = cache(() =>
+  useExcelMapSingle<EquipmentStatExcelTable, "EquipmentId">(
+    "EquipmentStatExcelTable",
+    "EquipmentId",
   ),
 );

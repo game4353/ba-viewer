@@ -3,8 +3,8 @@ import {
   BulletType,
   ParcelType,
   PotentialStatBonusRateType,
-  ProductionStep,
   type CharacterExcel,
+  type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
 import { useBaseStats } from "@/components/character/stat/stat";
 import { CSkill } from "@/components/skill/skill";
@@ -16,7 +16,6 @@ import {
   useExcelCharacterStat,
   useExcelCostume,
 } from "@/utils/data/excel/character";
-import { Local } from "@/utils/localize";
 import { cache, isDefined, range } from "@/utils/misc";
 import { Result, asResult, findFirst } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
@@ -29,7 +28,7 @@ import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
 } from "../../character/star";
-import type { IParcel } from "../parcel";
+import { AParcel } from "../class";
 import type { CTag, IFilterable } from "../tag";
 import {
   CharacterTagArmorTypeGroup,
@@ -46,12 +45,26 @@ import {
   StudentTagRarityGroup,
 } from "./tag";
 
-export class CCharacter implements IFilterable, IParcel {
+export class CCharacter
+  extends AParcel<ReadonlyDeep<CharacterExcel>>
+  implements IFilterable
+{
+  // IParcel
+
+  type = ParcelType.Character as const;
+  get iconPath() {
+    return this.costume.TextureDir;
+  }
+
   // IFilterable
 
   tags: CTag<Object>[];
   hideCount: number = 0;
-  constructor(public obj: ReadonlyDeep<CharacterExcel>) {
+  constructor(
+    public obj: ReadonlyDeep<CharacterExcel>,
+    public costume: ReadonlyDeep<CostumeExcel>,
+  ) {
+    super(obj);
     this.tags = [
       CharacterTagSquadTypeGroup.getTag(obj.SquadType),
       CharacterTagArmorTypeGroup.getTag(obj.ArmorType),
@@ -101,26 +114,6 @@ export class CCharacter implements IFilterable, IParcel {
     });
   }
 
-  // IParcel
-
-  get desc() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
-  }
-  get iconPath() {
-    // TODO: not unwrap
-    return this.costume.value.unwrapOr(undefined)?.TextureDir ?? "";
-  }
-  get id() {
-    return this.obj.Id;
-  }
-  get name() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
-  }
-  get rarity() {
-    return this.obj.Rarity;
-  }
-  type = ParcelType.Character as const;
-
   // store
 
   get statNow() {
@@ -132,13 +125,6 @@ export class CCharacter implements IFilterable, IParcel {
 
   // others
 
-  get costume() {
-    return computed(() =>
-      useExcelCostume().value.andThen((map) =>
-        map.getResult(this.obj.CostumeGroupId),
-      ),
-    );
-  }
   get stat() {
     return computed(() =>
       useExcelCharacterStat().value.andThen((map) => map.getResult(this.id)),
@@ -218,33 +204,21 @@ export class CCharacter implements IFilterable, IParcel {
   baseStats = useBaseStats;
 }
 
-export const useCharacter = cache((id: number) => {
-  const table = useExcelCharacter();
-  return computed(() =>
-    table.value
-      .andThen((map) => map.getResult(id))
-      .map((c) => new CCharacter(c)),
-  );
-});
-
-function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
-  return (
-    excel.IsPlayableCharacter &&
-    !excel.IsNPC &&
-    excel.ProductionStep === ProductionStep.Release
-  );
-}
+export const useCharacter = cache((id: number) =>
+  computed(() => {
+    const chara = useExcelCharacter().value;
+    const costume = useExcelCostume().value;
+    const charaX = chara.andThen((chara) => chara.getResult(id));
+    const costumeX = Result.all([charaX, costume]).andThen(([excel, costume]) =>
+      costume.getResult(excel.CostumeGroupId),
+    );
+    return Result.all([charaX, costumeX]).map(
+      ([charaX, costumeX]) => new CCharacter(charaX, costumeX),
+    );
+  }),
+);
 
 export function useCharacterIds() {
   const table = useExcelCharacter();
   return computed(() => table.value?.map((map) => Array.from(map.keys())));
-}
-
-export function usePlayableIds() {
-  const table = useExcelCharacter();
-  return computed(() =>
-    table.value?.map((map) =>
-      Array.from(map.keys()).filter((k) => isPlayable(map.get(k)!)),
-    ),
-  );
 }

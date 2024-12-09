@@ -22,7 +22,13 @@
         <span
           v-if="amountStr != null"
           class="amount"
-          :class="amountStr.length > 5 ? 'smallText' : ''"
+          :class="
+            amountStr.length > 9
+              ? 'xSmallText'
+              : amountStr.length > 5
+                ? 'smallText'
+                : ''
+          "
         >
           {{ amountStr }}
         </span>
@@ -140,5 +146,9 @@ const interactive = computed(() => {
 .smallText {
   font-size: 36px !important;
   line-height: 48px !important;
+}
+.xSmallText {
+  font-size: 30px !important;
+  line-height: 40px !important;
 }
 </style>

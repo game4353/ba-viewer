@@ -1,14 +1,20 @@
 <template>
   <div v-if="allIds">
     <draggable
-      class="flex flex-row gap-1 flex-wrap border !border-red-900 w-fit min-w-36 min-h-40"
+      class="flex flex-row gap-1 flex-wrap w-fit min-w-36 min-h-40"
       v-model="charaYes"
       :item-key="(v: number) => v"
       group="chara"
     >
       <template #item="{ element }">
-        <div v-on:click.right.prevent.stop="() => quickMove(element)">
-          <MyCharacterBig :cid="element" :scaledW="charaWidth" detailed />
+        <div v-on:click.left="() => charaEditing && quickMove(element)">
+          <MyCharacterBig
+            class="cursor-grab active:cursor-grabbing"
+            :cid="element"
+            :scaledW="charaWidth"
+            detailed
+            :no-route="charaEditing"
+          />
         </div>
       </template>
 
@@ -25,7 +31,7 @@
     </draggable>
 
     <draggable
-      class="flex flex-row gap-1 flex-wrap border !border-red-900 w-fit min-w-36 min-h-40"
+      class="flex flex-row gap-1 flex-wrap w-fit min-w-36 min-h-40"
       :class="charaEditing ? '' : 'hidden'"
       v-model="charaNo"
       :item-key="(v: number) => v"
@@ -39,8 +45,14 @@
         </div>
       </template>
       <template #item="{ element }">
-        <div v-on:click.right.prevent.stop="() => quickMove(element)">
-          <MyCharacterBig :cid="element" :scaledW="charaWidth" detailed />
+        <div v-on:click.left="() => quickMove(element)">
+          <MyCharacterBig
+            class="cursor-grab active:cursor-grabbing"
+            :cid="element"
+            :scaledW="charaWidth"
+            detailed
+            :no-route="charaEditing"
+          />
         </div>
       </template>
     </draggable>
@@ -48,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { usePlayableIds } from "@/components/parcel/character/character";
+import { usePlayableIds } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { dataParty } from "@/stores/party";
 import draggable from "vuedraggable";
