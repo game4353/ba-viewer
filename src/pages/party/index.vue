@@ -1,5 +1,4 @@
 <template>
-  <WIP />
   <PartySelect v-model="partyId" />
   <v-tabs
     class="mb-2"
@@ -9,7 +8,8 @@
   >
     <v-tab :value="1">生徒</v-tab>
     <v-tab :value="2">素材</v-tab>
-    <v-tab :value="3">編成</v-tab>
+    <v-tab :value="3">WIP</v-tab>
+    <!-- <v-tab :value="3">編成</v-tab> -->
   </v-tabs>
 
   <v-tabs-window v-model="tab">

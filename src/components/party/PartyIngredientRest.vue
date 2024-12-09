@@ -1,19 +1,6 @@
 <template>
   <v-container class="bg-surface">
     <v-row no-gutters>
-      <v-col>
-        <ItemAmount
-          class="m-1"
-          :pid="1"
-          :type="ParcelType.Currency"
-          :need="currencyMap?.get(1)"
-          :scaled-w="parcelWidth"
-          :mode="editing ? 'edit' : 'display'"
-        />
-      </v-col>
-    </v-row>
-
-    <v-row no-gutters>
       <v-col v-for="j in [2000, 2001, 2002, 9999]" :key="j" no-gutters>
         <div>
           <ItemAmount
@@ -26,7 +13,20 @@
           />
         </div>
       </v-col>
-      <v-col cols="6"></v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="3">
+        <div>
+          <ItemAmount
+            class="m-1 w-full"
+            :pid="1"
+            :type="ParcelType.Currency"
+            :need="currencyMap?.get(1)"
+            :scaled-w="parcelWidth"
+            :mode="editing ? 'edit' : 'display'"
+          />
+        </div>
+      </v-col>
+      <v-spacer></v-spacer>
     </v-row>
 
     <v-row no-gutters>
@@ -42,10 +42,11 @@
           />
         </div>
       </v-col>
-      <v-col cols="6">
+      <v-spacer></v-spacer>
+      <v-col cols="3">
         <div>
           <ItemAmount
-            class="m-1"
+            class="m-1 w-full"
             :pid="10"
             :own="expOwn"
             :type="ParcelType.Item"
@@ -55,6 +56,7 @@
           />
         </div>
       </v-col>
+      <v-spacer></v-spacer>
     </v-row>
 
     <v-row no-gutters>
@@ -70,10 +72,11 @@
           />
         </div>
       </v-col>
-      <v-col cols="6">
+      <v-spacer></v-spacer>
+      <v-col cols="3">
         <div>
           <ItemAmount
-            class="m-1"
+            class="m-1 w-full"
             :pid="1"
             :own="equipExpOwn"
             :type="ParcelType.Equipment"
@@ -83,6 +86,7 @@
           />
         </div>
       </v-col>
+      <v-spacer></v-spacer>
     </v-row>
 
     <v-row v-for="i in range(1, 5)" :key="i" no-gutters>
@@ -98,7 +102,10 @@
           />
         </div>
       </v-col>
-      <v-col cols="6"></v-col>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
     </v-row>
   </v-container>
 </template>
