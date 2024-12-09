@@ -49,6 +49,8 @@ const cssVars = computed(() => ({
 }
 .scale-content {
   @apply relative top-0 left-0 origin-top-left;
+  width: calc(var(--width) * 1px);
+  height: calc(var(--height) * 1px);
   transform: scale(var(--scale));
 }
 .content {

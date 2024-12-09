@@ -6,7 +6,7 @@
       :key="i"
     >
       <v-card>
-        <div class="flex flex-column items-center">
+        <div class="flex flex-col items-center">
           <GameImg :path="v.LobbyBannerImage" class="h-40" />
           <div>{{ v.StartDate }}</div>
           <div>
@@ -21,9 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import type { GuideMissionSeasonExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/GuideMissionSeasonExcelTable.json";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useExcel } from "@/utils/data/excel";
+import type { GuideMissionSeasonExcelTable } from "~game/types/flatDataExcel";
+const errHandle = inject(ERR_HANDLE)!;
 
-const guides = DataList as GuideMissionSeasonExcel[];
+const table = useExcel<GuideMissionSeasonExcelTable>(
+  "GuideMissionSeasonExcelTable",
+);
+const guides = computed(() => table.value?.unwrapOrElse(errHandle)?.DataList);
 </script>

@@ -16,25 +16,31 @@
       :key="i"
       :value="i"
     >
-      <EventList :events="v" />
+      <EventList :events="v.value" />
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
 
 <script setup lang="ts">
-import type { EventContentSeasonExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentSeasonExcelTable.json";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useExcelEventContentSeason } from "@/utils/data/excel/event";
+import { ReadonlyDeep } from "type-fest";
+import {
+  EventContentType,
+  type EventContentSeasonExcel,
+} from "~game/types/flatDataExcel";
+const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(0);
-const events = DataList as EventContentSeasonExcel[];
 
-const normal: EventContentSeasonExcel[] = [];
-const rerun: EventContentSeasonExcel[] = [];
-const forever: EventContentSeasonExcel[] = [];
-const mini: EventContentSeasonExcel[] = [];
-const all: EventContentSeasonExcel[] = [];
+const table = useExcelEventContentSeason();
 
+type Data = ReadonlyDeep<EventContentSeasonExcel>;
+const normal = ref<Data[]>([]);
+const rerun = ref<Data[]>([]);
+const forever = ref<Data[]>([]);
+const mini = ref<Data[]>([]);
+const all = ref<Data[]>([]);
 const tabs = {
   初回: normal,
   復刻: rerun,
@@ -43,13 +49,22 @@ const tabs = {
   全部: all,
 };
 
-events.forEach((v) => {
-  const type = v.EventContentType;
-  if (!["Stage", "MiniEvent"].includes(type)) return;
-  if (type === "MiniEvent") mini.push(v);
-  else if (v.EventContentCloseTime.startsWith("2099")) forever.push(v);
-  else if (!v.IsReturn) normal.push(v);
-  else rerun.push(v);
-  all.push(v);
+watchEffect(() => {
+  const data = table.value?.unwrapOrElse(errHandle);
+  if (data == null) return;
+
+  for (const arr of data.values()) {
+    for (const v of arr) {
+      const type = v.EventContentType;
+      if (![EventContentType.Stage, EventContentType.MiniEvent].includes(type))
+        continue;
+      if (type === EventContentType.MiniEvent) mini.value.push(v);
+      else if (v.EventContentCloseTime.startsWith("2099"))
+        forever.value.push(v);
+      else if (!v.IsReturn) normal.value.push(v);
+      else rerun.value.push(v);
+      all.value.push(v);
+    }
+  }
 });
 </script>

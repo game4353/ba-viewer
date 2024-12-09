@@ -1,70 +1,91 @@
 <template>
   <Character
-    v-if="type === 'Character'"
+    v-if="type === ParcelType.Character"
     :cid="pid"
     :layout
     :route
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <ParcelCommon
-    v-else-if="['Currency', 'Equipment', 'Furniture', 'Item'].includes(type)"
-    :parcel="assert(getParcel(type, pid), `Unable to find ${type} ${pid}`)"
+    v-else-if="
+      [
+        ParcelType.Currency,
+        ParcelType.Equipment,
+        ParcelType.Furniture,
+        ParcelType.Item,
+      ].includes(type) && parcel
+    "
+    :parcel
     :amount
     :amountMin
     :amountMax
     :layout
     :route
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <GachaGroup
-    v-else-if="type === 'GachaGroup'"
+    v-else-if="type === ParcelType.GachaGroup"
     :pid
     :amount
     :amountMin
     :amountMax
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <Recipe
-    v-else-if="type === 'Recipe'"
+    v-else-if="type === ParcelType.Recipe"
     :pid
     :amount
     :amountMin
     :amountMax
     :scale
+    :scaled-w
+    :scaled-h
+    :scale-type
     :tag
   />
   <div v-else></div>
 </template>
 
 <script setup lang="ts">
-import type { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
-import { ASSERT_SOLE } from "../warn/error";
+import { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
 import { PropType } from "vue";
-import { getParcel } from "./parcel";
-import { assert } from "@/utils/misc";
+import { ERR_501, ERR_HANDLE } from "../warn/error";
 import Character from "./character/Character.vue";
-
-const assertSole = inject(ASSERT_SOLE)!;
+import { getParcel } from "./parcel";
+const errHandle = inject(ERR_HANDLE)!;
+const error501 = inject(ERR_501)!;
 
 const props = defineProps({
   type: {
-    type: String as PropType<keyof typeof ParcelType>,
+    type: Number as PropType<ParcelType>,
     required: true,
   },
   pid: {
-    type: [String, Number],
+    type: Number,
     required: true,
   },
-  amount: Number,
+  amount: [Number, String],
   amountMin: Number,
   amountMax: Number,
   scale: Number,
+  scaledW: Number,
+  scaledH: Number,
+  scaleType: String as PropType<"min" | "max">,
   route: Boolean,
   tag: {
-    type: String as PropType<keyof typeof RewardTag>,
+    type: Number as PropType<RewardTag>,
   },
   layout: {
     type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
@@ -73,28 +94,27 @@ const props = defineProps({
   hover: String,
 });
 
-const done: (keyof typeof ParcelType)[] = [
-  "Currency",
-  "Equipment",
-  "Furniture",
-  "Item",
-  "GachaGroup",
-  "Recipe",
-  "Character",
+const done: ParcelType[] = [
+  ParcelType.Currency,
+  ParcelType.Equipment,
+  ParcelType.Furniture,
+  ParcelType.Item,
+  ParcelType.GachaGroup,
+  ParcelType.Recipe,
+  ParcelType.Character,
 ];
-assertSole(
-  done.filter((v) => v === props.type),
-  501,
-  `Type "${props.type}" is not yet implemented.`,
-);
 watch(
   () => props.type,
   (newVal) => {
-    assertSole(
-      done.filter((v) => v === newVal),
-      501,
-      `Type "${props.type}" is not yet implemented.`,
-    );
+    if (!done.includes(newVal)) error501(`ParcelType '${newVal}'`);
   },
+  { immediate: true },
+);
+
+const parcel = computed(() =>
+  getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(errHandle),
+);
+const amount = computed(() =>
+  isNaN(Number(props.amount)) ? undefined : Number(props.amount),
 );
 </script>

@@ -17,9 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import type { EventContentStageRewardExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentStageRewardExcelTable.json";
+import { useExcelEventContentStageReward } from "@/utils/data/excel/event";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   rid: {
@@ -27,8 +26,10 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
-const rewards = (DataList as EventContentStageRewardExcel[]).filter(
-  (v) => v.GroupId === props.rid,
+const table = useExcelEventContentStageReward();
+const rewards = computed(
+  () => table.value?.unwrapOrElse(errHandle)?.get(props.rid) ?? [],
 );
 </script>

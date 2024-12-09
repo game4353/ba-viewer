@@ -21,16 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  ShopCategoryType,
-  EventContentShopExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentShopExcelTable.json";
-
-import { ASSERT_SOME_FILTER } from "@/components/warn/error";
-
-const assertSomeFilter = inject(ASSERT_SOME_FILTER)!;
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useExcelEventContentShop } from "@/utils/data/excel/event";
+import { KeyNotFoundErr } from "@/utils/error";
+import type { ShopCategoryType } from "~game/types/flatDataExcel";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   eid: {
@@ -40,19 +35,26 @@ const props = defineProps({
 });
 
 const tab = ref(0);
-const shops = (DataList as EventContentShopExcel[]).filter(
-  (o) => o.EventContentId === props.eid,
+
+const table = useExcelEventContentShop();
+const shops = computed(
+  () => table.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
 
-const shopTypes = [...new Set(shops.map((o) => o.CategoryType))];
-function getShop(t: keyof typeof ShopCategoryType) {
-  const res = assertSomeFilter(
-    shops,
-    [["CategoryType", t]],
-    500,
-    `Empty shop category: ${t}`,
-  );
-  return res;
+const shopTypes = computed(() => [
+  ...new Set(shops.value.map((o) => o.CategoryType)),
+]);
+function getShop(t: ShopCategoryType) {
+  const shop = shops.value.filter((o) => o.CategoryType === t);
+  if (shop.length < 1)
+    errHandle(
+      KeyNotFoundErr.from(
+        t,
+        "CategoryType",
+        `EventContentShop (id = ${props.eid})`,
+      ),
+    );
+  return shop;
 }
 </script>
 

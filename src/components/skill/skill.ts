@@ -1,47 +1,100 @@
-import type { SkillExcel } from "@/assets/game/types/flatDataExcel";
-import { assert } from "@/utils/misc";
-// @ts-ignore
-import { DataList } from "~game/excel/SkillExcelTable.json";
+import type {
+  RecipeIngredientExcel,
+  SkillExcel,
+} from "@/assets/game/types/flatDataExcel";
+import {
+  useExcelRecipe,
+  useExcelRecipeIngredient,
+} from "@/utils/data/excel/recipe";
+import { useExcelSkill } from "@/utils/data/excel/skill";
 import { Local } from "@/utils/localize";
-
-const skillArr = DataList as SkillExcel[];
-const skillDict = Object.groupBy(skillArr, (v) => v.GroupId);
-
-export function getSkill(group: string, level: number) {
-  const arr = skillDict[group];
-  const skill = arr?.at(level - 1);
-  if (skill?.Level === level) return skill;
-  return arr?.find((v) => v.Level === level);
-}
+import { cache } from "@/utils/misc";
+import {
+  Ok,
+  asResult,
+  undefinedIsError,
+  type Err,
+  type Result,
+} from "@/utils/result";
+import type { ReadonlyDeep } from "type-fest";
 
 export class CSkill {
   private _level!: number;
-  public rawExcel!: SkillExcel;
+  private _obj!: globalThis.ComputedRef<
+    Result<ReadonlyDeep<SkillExcel>, Error>
+  >;
 
   constructor(public group: string) {
     this.level = 1;
   }
 
   get desc() {
-    return Local.skill(this.rawExcel.LocalizeSkillId, true);
+    return this.obj
+      .map((v) => v.LocalizeSkillId)
+      .andThen2((id) => Local.useLocalizeSkill(id, true).value);
   }
   get iconPath() {
-    return this.rawExcel.IconName;
+    return this.obj.map((v) => v.IconName);
   }
   get id() {
-    return this.rawExcel.Id;
+    return this.obj.map((v) => v.Id);
   }
   get level() {
     return this._level;
   }
   set level(level: number) {
     this._level = level;
-    this.rawExcel = assert(
-      getSkill(this.group, this.level),
-      `Unable to find skill group "${this.group}" at level ${this.level}`,
-    );
+    this._obj = useSkill(this.group, level);
   }
   get name() {
-    return Local.skill(this.rawExcel.LocalizeSkillId);
+    return this.obj
+      .map((v) => v.LocalizeSkillId)
+      .andThen2((id) => Local.useLocalizeSkill(id).value);
+  }
+  get obj() {
+    return this._obj.value;
+  }
+  useLevelUpIngredient(targetLevel: number) {
+    return asResult(
+      computed(() => {
+        const res = [];
+        for (let lv = this._level; lv < targetLevel; lv++) {
+          const rid = useSkill(this.group, lv).value?.map(
+            (skill) => skill.RequireLevelUpMaterial,
+          );
+          if (rid?.isOk() !== true) {
+            res.push(rid);
+            continue;
+          }
+          const iid = useExcelRecipe()
+            .value?.andThen((map) => map.getResult(rid.unwrap()))
+            .map((excel) => excel.RecipeIngredientId);
+          if (iid?.isOk() !== true) {
+            res.push(iid);
+            continue;
+          }
+          const excel = useExcelRecipeIngredient().value?.andThen((map) =>
+            map.getResult(iid.unwrap()),
+          );
+          res.push(excel);
+        }
+        const err = res.find((v): v is Err<Error> => v!.isErr());
+        if (err !== undefined) return err;
+        return Ok(
+          res.map((r) => r!.unwrap() as ReadonlyDeep<RecipeIngredientExcel>),
+        );
+      }).value,
+    );
   }
 }
+
+export const useSkill = cache((group: string, level: number) => {
+  const table = useExcelSkill();
+  return computed(() =>
+    table.value
+      ?.andThen((map) => map.getResult(group))
+      .andThen((arr) =>
+        undefinedIsError(arr.find((v) => v.Level === Number(level))),
+      ),
+  );
+});

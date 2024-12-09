@@ -13,7 +13,7 @@ const props = defineProps({
     required: true,
   },
 });
-const bgImg = `background-image: url('${uiPath(props.path)}');`;
+const bgImg = computed(() => `background-image: url('${uiPath(props.path)}');`);
 </script>
 
 <style lang="scss" scoped>

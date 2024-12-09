@@ -12,10 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { CharacterGearExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as excel } from "~game/excel/CharacterGearExcelTable.json";
 import { uiPath } from "../GameImg/loader";
+import { useExcelCharacterGear } from "@/utils/data/excel/character";
 
 const props = defineProps({
   cid: {
@@ -23,11 +21,15 @@ const props = defineProps({
     required: true,
   },
 });
-const data = (excel as CharacterGearExcel[]).filter(
-  (o) => o.CharacterId === props.cid,
-);
+const gearMap = useExcelCharacterGear();
 
-const src = uiPath(
-  data.at(0)?.Icon ?? "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",
-);
+const src = computed(() => {
+  const gear = gearMap.value?.map((map) => map.get(props.cid)?.at(0));
+  if (gear?.isOk())
+    return uiPath(
+      gear.unwrap()?.Icon ??
+        "UIs/01_Common/03_NonEquipment/Item_Icon_Secret_Reward",
+    );
+  else return undefined;
+});
 </script>

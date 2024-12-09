@@ -1,19 +1,33 @@
 <template>
   <div class="flex flex-row flex-wrap gap-5">
-    <div v-for="student in students" :key="student.id">
-      <MyCharacterBig :cid="student.id" :scaled-w="120" />
+    <div
+      :class="visibleIds?.has(cid) === false ? 'hidden' : ''"
+      :style="{ order: getOrder(cid) }"
+      v-for="cid in characterIds"
+      :key="cid"
+    >
+      <MyCharacterBig :cid :scaled-w="120" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import type { CCharacter } from "../parcel/character";
 
-defineProps({
-  students: {
-    type: Object as PropType<Array<CCharacter>>,
+const props = defineProps({
+  characterIds: {
+    type: Array as PropType<Array<number>>,
     required: true,
   },
+  visibleIds: {
+    type: Set as PropType<Set<number>>,
+  },
+  orderMap: {
+    type: Map as PropType<Map<number, number>>,
+  },
 });
+
+function getOrder(cid: number) {
+  return props.orderMap?.get(cid) ?? 2147483647;
+}
 </script>

@@ -3,7 +3,7 @@
     <template v-slot:label>
       <div>Task:</div>
     </template>
-    <v-radio value="export">
+    <v-radio value="export" @change="format = 'BA Viewer'">
       <template v-slot:label>
         <div>Export</div>
       </template>
@@ -18,21 +18,26 @@
     <template v-slot:label>
       <div>Format:</div>
     </template>
-    <v-radio value="json">
+    <v-radio value="BA Viewer">
       <template v-slot:label>
-        <div>JSON</div>
+        <div>BA Viewer</div>
       </template>
     </v-radio>
-    <v-radio value="wip">
+    <!-- <v-radio value="loginSync" :disabled="task === 'export'">
       <template v-slot:label>
-        <div>WIP</div>
+        <div>loginSync</div>
+      </template>
+    </v-radio>
+    <v-radio value="itemList" :disabled="task === 'export'">
+      <template v-slot:label>
+        <div>itemList</div>
       </template>
     </v-radio>
     <v-radio value="justin163" :disabled="task === 'export'">
       <template v-slot:label>
         <div>justin163</div>
       </template>
-    </v-radio>
+    </v-radio> -->
   </v-radio-group>
 
   <v-textarea
@@ -72,26 +77,36 @@
 </template>
 
 <script setup lang="ts">
-import ActionButton from "@/components/ActionButton.vue";
-import { exportV0, importJustin, importVx } from "@/stores/personal";
+import { exportAll, importAll } from "@/stores/all";
+import { importItemList } from "@/stores/extra/itemList";
+import { importJustin } from "@/stores/extra/justin";
+import { importLoginSync } from "@/stores/extra/loginSync";
 import { unreachable } from "@/utils/misc";
 
 const task = ref("export");
-const format = ref("json");
+const format = ref("BA Viewer");
 const content = ref("");
 
 function exportData() {
-  if (format.value === "json") {
-    content.value = exportV0();
+  if (format.value === "BA Viewer") {
+    content.value = exportAll().unwrap();
   } else {
     unreachable();
   }
 }
 function importData() {
-  if (format.value === "json") {
-    importVx(content.value);
+  if (format.value === "BA Viewer") {
+    const res = importAll(content.value);
+    res.unwrap();
   } else if (format.value === "justin163") {
-    importJustin(content.value);
+    const res = importJustin(content.value);
+    res.unwrap();
+  } else if (format.value === "loginSync") {
+    const res = importLoginSync(content.value);
+    res.unwrap();
+  } else if (format.value === "itemList") {
+    const res = importItemList(content.value);
+    res.unwrap();
   } else {
     unreachable();
   }

@@ -15,7 +15,11 @@
       >
         <Scroll>
           <div class="flex flex-col m-2 gap-1">
-            <EventStage v-for="(stage, j) in tabContents[t]" :key="j" :stage />
+            <EventStage
+              v-for="(stage, j) in tabContents.get(t)"
+              :key="j"
+              :stage
+            />
           </div>
         </Scroll>
       </v-tabs-window-item>
@@ -24,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import type { EventContentStageExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentStageExcelTable.json";
+import { useExcelEventContentStage } from "@/utils/data/excel/event";
+import { StageDifficulty } from "~game/types/flatDataExcel";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -34,29 +38,31 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const tabs = ["story", "quest", "challenge"] as const;
 const tab = ref(0);
 
-const stages = (DataList as EventContentStageExcel[]).filter(
-  (v) => v.EventContentId === props.eid,
+const table = useExcelEventContentStage();
+const stages = computed(
+  () => table.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
 
-const tabContents: Partial<
-  Record<(typeof tabs)[number], EventContentStageExcel[]>
-> = {};
-stages.forEach((v) => {
-  const key = (
-    {
-      None: null,
-      Normal: "story",
-      Hard: "quest",
-      VeryHard: "challenge",
-      VeryHard_Ex: "challenge",
-    } as const
-  )[v.StageDifficulty];
-  if (key == null) return;
-  tabContents[key] ??= [];
-  tabContents[key]!.push(v);
+const tabContents = computed(() => {
+  const mapping = (diff: StageDifficulty) =>
+    diff === StageDifficulty.Normal
+      ? "story"
+      : diff === StageDifficulty.Hard
+        ? "quest"
+        : diff === StageDifficulty.VeryHard
+          ? "challenge"
+          : diff === StageDifficulty.VeryHard_Ex
+            ? "challenge"
+            : "none";
+  const m = Map.groupBy(stages.value, (stage) =>
+    mapping(stage.StageDifficulty),
+  );
+  m.delete("none");
+  return m;
 });
 </script>

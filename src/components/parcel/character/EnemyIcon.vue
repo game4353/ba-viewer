@@ -17,13 +17,12 @@
 
 <script setup lang="ts">
 import { uiPath } from "@/components/GameImg/loader";
-import { characterDict } from "../character";
-import { ASSERT_SOME } from "@/components/warn/error";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useCharacter } from "./character";
 
-const assertSome = inject(ASSERT_SOME)!;
 const props = defineProps({
   cid: {
-    type: [Number, String],
+    type: Number,
     required: true,
   },
   layout: {
@@ -35,13 +34,16 @@ const props = defineProps({
   scaledH: Number,
   scaleType: String as PropType<"min" | "max">,
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const imgW = 500;
 const imgH = 500;
-const chara = computed(() => assertSome(characterDict[props.cid]));
-const costume = computed(() => chara.value.costume);
+const chara = computed(() =>
+  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+);
+const costume = computed(() => chara.value?.costume);
 const src = computed(() => {
-  const path = costume.value.InformationPacel || costume.value.TextureBoss;
-  return uiPath(path);
+  const path = costume.value?.InformationPacel || costume.value?.TextureBoss;
+  return path == null ? undefined : uiPath(path);
 });
 </script>

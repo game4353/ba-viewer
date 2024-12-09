@@ -1,38 +1,27 @@
 <template>
-  <div class="flex flex-row flex-wrap gap-4">
-    <div
-      v-for="(reward, key) in rewards"
-      :key
-      class="flex flex-row gap-1 align-center"
-    >
-      <p class="h-fit">
-        {{ reward.RequiredEventItemAmount }}
-      </p>
-      <Parcel
-        v-for="(_, i) in reward.RewardParcelId"
-        :key="i"
-        :pid="reward.RewardParcelId[i]"
-        :type="reward.RewardParcelType[i]"
-        :amount="reward.RewardParcelAmount[i]"
-        :scale="0.3"
-        route
-      />
-    </div>
-  </div>
+  <p class="h-fit">
+    {{ reward.RequiredEventItemAmount }}
+  </p>
+  <Parcel
+    v-for="(_, i) in reward.RewardParcelId"
+    :key="i"
+    :pid="reward.RewardParcelId[i]"
+    :type="reward.RewardParcelType[i]"
+    :amount="reward.RewardParcelAmount[i]"
+    :scale="0.3"
+    route
+  />
 </template>
 
 <script setup lang="ts">
+import { ReadonlyDeep } from "type-fest";
+import { PropType } from "vue";
 import type { EventContentStageTotalRewardExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/EventContentStageTotalRewardExcelTable.json";
 
-const props = defineProps({
-  eid: {
-    type: Number,
+defineProps({
+  reward: {
+    type: Object as PropType<ReadonlyDeep<EventContentStageTotalRewardExcel>>,
     required: true,
   },
 });
-const rewards = (DataList as EventContentStageTotalRewardExcel[]).filter(
-  (v) => v.EventContentId === props.eid,
-);
 </script>

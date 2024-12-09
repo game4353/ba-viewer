@@ -4,7 +4,7 @@
       <v-row class="row1">
         <v-col cols="4">
           <v-sheet rounded="xl" :color="darkColors[0]">
-            BA Viewer ver 0.0.0.<br />
+            BA Viewer ver 0.2.0.<br />
             This website is still working in progress.
             <!-- intro -->
           </v-sheet>
@@ -46,7 +46,7 @@
         :data-height="twitterH"
         data-theme="dark"
         href="https://twitter.com/Blue_ArchiveJP?ref_src=twsrc%5Etfw"
-        >Tweets by Blue_ArchiveJP</a
+        >Loading posts by Blue_ArchiveJP...</a
       >
     </div>
   </div>

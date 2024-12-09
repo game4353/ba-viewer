@@ -4,7 +4,7 @@
     :max="sliderMax"
     :min="sliderMin"
     :step="1"
-    class="ma-4"
+    class="my-4"
     :label="name"
     color="red"
     :show-ticks="sliderMax - sliderMin > 10 ? false : 'always'"
@@ -41,7 +41,8 @@
 </template>
 
 <script setup lang="ts">
-import { CharaData, CharaProp, useCharaStore } from "@/stores/character";
+import { useCharaStore } from "@/stores/character";
+import { CharaProp, defaultMax, defaultMin } from "@/stores/student";
 import { storeToRefs } from "pinia";
 
 const props = defineProps({
@@ -77,8 +78,8 @@ const range = computed({
   },
 });
 
-const sliderMin = CharaData.defaultMin()[props.keys]!;
-const sliderMax = CharaData.defaultMax()[props.keys]!;
+const sliderMin = defaultMin[props.keys];
+const sliderMax = defaultMax[props.keys];
 
 const leftMin = props.init ?? sliderMin;
 if (val1.value < leftMin) val1.value = leftMin;

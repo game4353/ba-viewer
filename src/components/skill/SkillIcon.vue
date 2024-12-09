@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full" ref="icon">
-    <div class="hexagon" :class="color" :style="cssVars">
+  <div class="w-full" v-if="path">
+    <div class="hexagon" :class="color">
       <GameImg :path />
     </div>
   </div>
@@ -8,64 +8,30 @@
 
 <script setup lang="ts">
 import { BulletType } from "@/assets/game/types/flatDataExcel";
+import { PropMaybeResult } from "@/utils/result";
+import { ERR_HANDLE } from "../warn/error";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   path: {
-    type: String,
+    type: [String, Object] as PropMaybeResult<string>,
     required: true,
   },
-  type: String as PropType<keyof typeof BulletType>,
+  type: Number as PropType<BulletType>,
 });
 
-const color = props.type ?? "None";
-const icon = ref<HTMLDivElement>();
-const clientWidth = ref<number>();
-let resizeObserver: ResizeObserver | null = null;
-
-const updateWidth = (entries: ResizeObserverEntry[]) => {
-  if (entries[0].contentRect) {
-    clientWidth.value = entries[0].contentRect.width;
-  }
-};
-onMounted(() => {
-  if (icon.value) {
-    resizeObserver = new ResizeObserver(updateWidth);
-    resizeObserver.observe(icon.value);
-  }
+const path = computed(() => {
+  if (typeof props.path === "string") return props.path;
+  return props.path.unwrapOrElse(errHandle);
 });
-onBeforeUnmount(() => {
-  if (resizeObserver && icon.value) {
-    resizeObserver.unobserve(icon.value);
-  }
-});
-const cssVars = computed(() => ({
-  "--width": Number(clientWidth.value),
-  "--height": (Number(clientWidth.value) * 2) / Math.sqrt(3),
-}));
+const color = computed(() => BulletType[props.type ?? 0]);
 </script>
 
 <style scoped lang="scss">
-@use "@/styles/variables" as var;
-.Explosion,
-.LightArmor {
-  background-color: var.$color-explosion;
-}
-.Pierce,
-.HeavyArmor {
-  background-color: var.$color-pierce;
-}
-.Mystic,
-.Unarmed {
-  background-color: var.$color-mystic;
-}
-.Sonic,
-.ElasticArmor {
-  background-color: var.$color-sonic;
-}
 .hexagon {
   position: relative;
-  width: calc(var(--width) * 1px);
-  height: calc(var(--height) * 1px);
+  width: 100%;
+  aspect-ratio: cos(30deg);
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   display: flex;
   justify-content: center;

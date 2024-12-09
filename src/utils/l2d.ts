@@ -1,8 +1,7 @@
-import "pixi-spine";
-
-import * as PIXI from "pixi.js";
-import { Spine } from "pixi-spine";
+import { Spine } from "@esotericsoftware/spine-pixi";
+import { clamp } from "@vueuse/core";
 import { Howl } from "howler";
+import * as PIXI from "pixi.js";
 
 /** Scale a spine.
  * Input 0 to use the original scale.
@@ -17,16 +16,50 @@ function scaleSpine(spine: Spine, scaleX: number, scaleY?: number) {
 export class Live2DViewer {
   app: PIXI.Application;
   char?: Spine;
-
-  playVoice: boolean = false;
-  voiceVolume: number = 1;
-  howl?: Howl;
-  baseURL: string =
-    "https://prod-clientpatch.bluearchiveyostar.com/r67_utfwo6vcvx7rhl017phc";
+  spines: Spine[] = [];
   private _loopAnimation: boolean = false;
+
+  private howl?: Howl;
+  private _volumeBG = 0.5;
+  // private _muteBG = true;
+  private _volumeTalk = 0.5;
+  private _muteTalk = true;
 
   constructor(width = 800, height = 600) {
     this.app = new PIXI.Application({ width, height, backgroundAlpha: 0 });
+  }
+
+  get animations() {
+    return this.char?.state.data.skeletonData.animations?.map((a) => a.name);
+  }
+
+  mute() {
+    // this._muteBG = true;
+    this._muteTalk = true;
+    this.howl?.mute(true);
+  }
+
+  unmute() {
+    // this._muteBG = false;
+    this._muteTalk = false;
+    this.howl?.mute(false);
+  }
+
+  get volumeBG() {
+    return this._volumeBG;
+  }
+
+  setVolumeBG(volume: number) {
+    this._volumeBG = clamp(volume, 0, 1);
+  }
+
+  get volumeTalk() {
+    return this._volumeTalk;
+  }
+
+  setVolumeTalk(volume: number) {
+    this._volumeTalk = clamp(volume, 0, 1);
+    this.howl?.volume(this.volumeTalk);
   }
 
   appendTo(div: HTMLDivElement) {
@@ -49,12 +82,15 @@ export class Live2DViewer {
    * const l2d = new Live2DViewer(canvas);
    * l2d.loadModel("data/Android/airi_home/Airi_home.skel");
    */
-  async loadModel(src: string) {
+  async loadModel(...srcs: string[]) {
     // Clear stage
     this.clearStage();
 
-    const char = await this.addSpine(src, "char");
+    const char = await this.addSpine(srcs[0], "char");
     this.char = char;
+    for (let i = 1; i < srcs.length; i++) {
+      await this.addSpine(srcs[i], String(i), 0);
+    }
 
     char.eventMode = "static";
     char.on("pointerdown", onDragStart, char);
@@ -65,9 +101,11 @@ export class Live2DViewer {
     stage.on("pointerup", onDragEnd);
     stage.on("pointerupoutside", onDragEnd);
 
-    function onDragMove(event: PIXI.FederatedPointerEvent) {
-      char.parent.toLocal(event.global, undefined, char.position);
-    }
+    const onDragMove = (event: PIXI.FederatedPointerEvent) => {
+      this.spines.forEach((spine) =>
+        spine.parent.toLocal(event.global, undefined, spine.position),
+      );
+    };
 
     function onDragStart(event: PIXI.FederatedPointerEvent) {
       const p = char.toLocal(event.global);
@@ -88,33 +126,22 @@ export class Live2DViewer {
       const animation = char.state.data.skeletonData.animations[0];
       this.playAnimation(animation.name);
     }
+    */
 
     char.state.addListener({
       event: async (entry, event) => {
-        if (!this.playVoice) return;
         if (event.data.name !== "Talk") return;
 
-        if (this.howl !== undefined) this.howl.stop();
+        this.howl?.stop();
 
-        const data = event as any as EventData;
-
-        let fileName = data.stringValue + ".ogg";
-        let characterId = fileName.split("_")[0];
-
-        let src = `${this.baseURL}/MediaResources/Audio/VOC_JP/JP_${characterId}/${fileName}`;
-
-        // Try to fetch first, if not found, try title case characterId (error case: hinata_home, should be Hinata in fileName)
-        // Also disable cors
-        const res = await fetch(src, { mode: "no-cors" });
-        if (!res.ok) {
-          characterId = characterId[0].toUpperCase() + characterId.slice(1);
-          fileName = fileName[0].toUpperCase() + fileName.slice(1);
-          src = `${this.baseURL}/MediaResources/Audio/VOC_JP/JP_${characterId}/${fileName}`;
-        }
+        const fileName = event.stringValue + ".ogg";
+        const characterId = fileName.split("_")[0];
+        const src = `/assets/Audio/VOC_JP/JP_${characterId}/${fileName}`;
 
         this.howl = new Howl({
-          volume: this.voiceVolume,
-          src: `${this.baseURL}/MediaResources/Audio/VOC_JP/JP_${characterId}/${fileName}`,
+          src,
+          mute: this._muteTalk,
+          volume: this._volumeTalk,
         });
 
         if (this.howl.state() === "loaded") {
@@ -132,7 +159,6 @@ export class Live2DViewer {
         }
       },
     });
-    */
   }
 
   /**
@@ -154,15 +180,20 @@ export class Live2DViewer {
    * live2d.addSpine("data/akari_home/akari_bg.skel", "bg", 0);
    */
   async addSpine(src: string, name: string, index?: number): Promise<Spine> {
-    const data = await PIXI.Assets.load(src);
-    const spine = new Spine(data.spineData);
+    src = src.replace(".skel", "");
+    PIXI.Assets.add({ alias: `${src}-skel`, src: src + ".skel" });
+    PIXI.Assets.add({ alias: `${src}-atlas`, src: src + ".atlas" });
+    await PIXI.Assets.load([`${src}-skel`, `${src}-atlas`]);
+    const spine = Spine.from(`${src}-skel`, `${src}-atlas`);
+    this.spines.push(spine);
+
+    console.log(spine);
+    // const data = await PIXI.Assets.load(src);
+    // const spine = new Spine(data.spineData);
     spine.name = name;
 
-    if (index !== undefined) {
-      this.app.stage.addChildAt(spine, index);
-    } else {
-      this.app.stage.addChild(spine);
-    }
+    if (index == null) this.app.stage.addChild(spine);
+    else this.app.stage.addChildAt(spine, index);
     return spine;
   }
 
@@ -186,8 +217,8 @@ export class Live2DViewer {
   resizeAssets(width?: number, height?: number) {
     this.app.stage.children.forEach((child) => {
       if (!(child instanceof Spine)) return;
-      const scaleX = (width ?? NaN) / child.spineData.width;
-      const scaleY = (height ?? NaN) / child.spineData.height;
+      const scaleX = (width ?? NaN) / child.width;
+      const scaleY = (height ?? NaN) / child.height;
       scaleSpine(child, scaleX || scaleY, scaleY || scaleX);
     });
     return this;
@@ -197,8 +228,8 @@ export class Live2DViewer {
   fillScale() {
     this.app.stage.children.forEach((child) => {
       if (!(child instanceof Spine)) return;
-      const scaleX = this.app.renderer.width / child.spineData.width;
-      const scaleY = this.app.renderer.height / child.spineData.height;
+      const scaleX = this.app.renderer.width / child.width;
+      const scaleY = this.app.renderer.height / child.height;
       scaleSpine(child, Math.max(scaleX, scaleY));
     });
     return this;
@@ -208,8 +239,8 @@ export class Live2DViewer {
   fitScale() {
     this.app.stage.children.forEach((child) => {
       if (!(child instanceof Spine)) return;
-      const scaleX = this.app.renderer.width / child.spineData.width;
-      const scaleY = this.app.renderer.height / child.spineData.height;
+      const scaleX = this.app.renderer.width / child.width;
+      const scaleY = this.app.renderer.height / child.height;
       scaleSpine(child, Math.min(scaleX, scaleY));
     });
     return this;
@@ -236,10 +267,9 @@ export class Live2DViewer {
     children.forEach((child) => {
       if (!(child instanceof Spine)) return;
       child.x = this.app.renderer.width / 2;
-      if (child.spineData.height * child.scale.y < this.app.renderer.height) {
+      if (child.height * child.scale.y < this.app.renderer.height) {
         child.y =
-          this.app.renderer.height -
-          child.spineData.height * child.scale.y * 1.25;
+          this.app.renderer.height - child.height * child.scale.y * 1.25;
       } else {
         child.y = this.app.renderer.height;
       }
@@ -248,59 +278,39 @@ export class Live2DViewer {
     return [x, y];
   }
 
-  /**
-   * Play a char animation.
-   * @param name
-   */
   playAnimation(name: string, options: { onComplete?: () => void } = {}) {
     if (!this.char) return;
     this.howl?.stop();
 
-    // If last animation name is M, play M (mouth/music?) + A (action?)
-    if (name.endsWith("_M")) {
-      const action = name.slice(0, -2) + "_A";
-      if (this.char.state.hasAnimation(action)) {
-        this.char.state.setAnimation(2, action, this.loopAnimation);
-      }
-    } else {
-      this.char.state.clearTrack(2);
-    }
+    this.spines.forEach((spine) => this.playAnimationSingle(spine, name));
 
-    // If other than idle, play idle
-    if (!name.includes("Idle")) {
-      if (this.char.state.hasAnimation("Idle_01")) {
-        this.char.state.setAnimation(1, "Idle_01", true);
-      }
-    } else {
-      this.char.state.clearTrack(1);
-    }
-
-    this.char.state.setAnimation(0, name, this.loopAnimation);
     this.char.state.addListener({ complete: options.onComplete });
   }
 
-  /**
-   * Get an animation.
-   * @param name - Animation name
-   */
-  getAnimation(name: string) {
-    if (!this.char) return;
-
-    const animations = this.char.state.data.skeletonData.animations;
-    const animation = animations.find((a) => a.name === name);
-    return animation;
+  private playAnimationSingle(spine: Spine, name: string) {
+    spine.state.setEmptyAnimations(0);
+    if (this.hasAnimation(spine, name + "_A")) {
+      spine.state.setAnimation(2, name + "_A", this.loopAnimation);
+    }
+    if (this.hasAnimation(spine, name + "_M")) {
+      spine.state.setAnimation(1, name + "_M", this.loopAnimation);
+    }
+    if (this.hasAnimation(spine, name)) {
+      spine.state.setAnimation(0, name, this.loopAnimation);
+    }
   }
 
-  /**
-   * Get a list of animations.
-   * @returns {string[]}
-   */
-  getAnimations(): string[] {
-    if (!this.char) return [];
+  hasAnimation(spine: Spine, name: string) {
+    return (
+      spine.state.data.skeletonData.animations
+        ?.map((a) => a.name)
+        .includes(name) ?? false
+    );
+  }
 
-    const animations = this.char.state.data.skeletonData.animations;
-    const names = animations.map((a) => a.name);
-    return names;
+  /** "xx_M" and "xx_A" are merged to "xx" */
+  getAnimations(): string[] {
+    return [...new Set(this.animations?.map((s) => s.replace(/_[MA]$/, "")))];
   }
 
   get loopAnimation(): boolean {
@@ -313,6 +323,12 @@ export class Live2DViewer {
     if (this.howl !== undefined) this.howl.stop();
 
     this._loopAnimation = v;
-    this.char.state.tracks[0].loop = v;
+    this.char.state.tracks[0]!.loop = v;
   }
 }
+
+/* TODO
+It's pretty hard to fulfill everything (pat, bubbles, flash, etc.)
+, so this is not going to be a feature of the website.
+
+*/

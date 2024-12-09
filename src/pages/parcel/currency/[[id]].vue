@@ -6,15 +6,12 @@
           class="flex flex-row flex-wrap gap-y-2 mt-1 max-h-[600px] overflow-auto"
         >
           <div
-            v-for="item in Object.values(currencyDict)"
-            :key="item!.id"
-            :class="
-              String(item!.id) === route.params.id ? 'selecting' : 'others'
-            "
+            v-for="id in ids"
+            :key="id"
+            :class="String(id) === route.params.id ? 'selecting' : 'others'"
           >
             <ParcelCommon
-              :hover="item!.name"
-              :parcel="item!"
+              :parcel="useCurrency(id).value?.unwrapOrElse(errHandle)"
               :scale="0.35"
               route
             />
@@ -25,30 +22,25 @@
 
     <div class="w-1/2">
       <div v-if="Boolean(picked)">
-        <v-card class="mx-auto">
-          <template v-slot:title>
-            <span class="font-weight-black">
-              {{ currencyDict[picked!]?.name }}
-            </span>
-          </template>
-          <template v-slot:prepend>
-            <Parcel :type="parcelType" :pid="picked!" :scale="0.4" />
-          </template>
-          <v-card-text class="bg-surface-light pt-4">
-            {{ currencyDict[picked!]?.desc }}
-          </v-card-text>
-        </v-card>
+        <CurrencyDetail :pid="Number(picked)" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { currencyDict } from "~/components/parcel/currency";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useExcelCurrency } from "@/utils/data/excel/parcel";
+import { useCurrency } from "~/components/parcel/currency/currency";
+const errHandle = inject(ERR_HANDLE)!;
 
-const parcelType = "Currency";
 const route = useRoute<"/parcel/currency/[[id]]">();
 const picked = computed(() => route.params.id);
+
+const table = useExcelCurrency();
+const ids = computed(
+  () => table.value?.map((map) => Array.from(map.keys())) ?? [],
+);
 </script>
 
 <style lang="scss" scoped>

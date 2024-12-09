@@ -1,42 +1,31 @@
-import type {
-  CafeInteractionExcel,
-  FurnitureExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as d3 } from "~game/excel/CafeInteractionExcelTable.json";
-import { unreachable } from "@/utils/misc";
+import { useFurnitureInteractMap } from "@/utils/data/excel/cafe";
+import type { ReadonlyDeep } from "type-fest";
+import type { FurnitureExcel } from "~game/types/flatDataExcel";
 
-const cafeInteractionArr = d3 as CafeInteractionExcel[];
-const cafeInteractionDict: Partial<Record<string, number>> = Object.fromEntries(
-  cafeInteractionArr
-    .map((v) => v.CafeCharacterState.map((i) => [i, v.CharacterId]))
-    .flat(),
-);
-function getFurnitureInteractCid(key: string) {
-  const cid = cafeInteractionDict[key];
-  if (cid == null) unreachable(`Unknown cafe interaction key: ${key}`);
-  return cid;
-}
+export const useFurnitureInteractCid = (key: string) =>
+  computed(() =>
+    useFurnitureInteractMap().value.andThen((map) => map.getResult(key)),
+  );
 
-export function furnitureInteract(
+export function useFurnitureInteract(
   type: "Req" | "Add" | "Make" | "Only" | "All",
-  excel: FurnitureExcel,
+  excel: ReadonlyDeep<FurnitureExcel>,
 ) {
   switch (type) {
     case "Req":
-      return excel.CafeCharacterStateReq.map(getFurnitureInteractCid);
+      return excel.CafeCharacterStateReq.map(useFurnitureInteractCid);
     case "Add":
-      return excel.CafeCharacterStateAdd.map(getFurnitureInteractCid);
+      return excel.CafeCharacterStateAdd.map(useFurnitureInteractCid);
     case "Make":
-      return excel.CafeCharacterStateMake.map(getFurnitureInteractCid);
+      return excel.CafeCharacterStateMake.map(useFurnitureInteractCid);
     case "Only":
-      return excel.CafeCharacterStateOnly.map(getFurnitureInteractCid);
+      return excel.CafeCharacterStateOnly.map(useFurnitureInteractCid);
     default:
       return [
         ...excel.CafeCharacterStateReq,
         ...excel.CafeCharacterStateAdd,
         ...excel.CafeCharacterStateMake,
         ...excel.CafeCharacterStateOnly,
-      ].map(getFurnitureInteractCid);
+      ].map(useFurnitureInteractCid);
   }
 }

@@ -31,17 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import type {
-  EventContentBoxGachaManageExcel,
-  EventContentBoxGachaShopExcel,
-} from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList as d2 } from "~game/excel/EventContentBoxGachaManageExcelTable.json";
-// @ts-ignore
-import { DataList as d3 } from "~game/excel/EventContentBoxGachaShopExcelTable.json";
-
-import ShopItem from "@/components/shop/ShopItem.vue";
+import {
+  useExcelEventContentBoxGachaManage,
+  useExcelEventContentBoxGachaShop,
+} from "@/utils/data/excel/event";
+import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   eid: {
@@ -49,15 +43,23 @@ const props = defineProps({
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(null);
-const manages = (d2 as EventContentBoxGachaManageExcel[]).filter(
-  (o) => o.EventContentId === props.eid,
+
+const manageTable = useExcelEventContentBoxGachaManage();
+const manages = computed(
+  () => manageTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
-const shops = (d3 as EventContentBoxGachaShopExcel[]).filter(
-  (o) => o.EventContentId === props.eid,
+
+const shopTable = useExcelEventContentBoxGachaShop();
+const shops = computed(
+  () => shopTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
 );
-const shopsByRound = Object.groupBy(shops, ({ Round }) => Round.toString());
+
+const shopsByRound = computed(() => {
+  return Object.groupBy(shops.value, ({ Round }) => Round.toString());
+});
 </script>
 
 <style scoped lang="scss">

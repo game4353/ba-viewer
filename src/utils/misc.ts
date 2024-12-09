@@ -1,3 +1,28 @@
+/** Input will go through `keyFn` to generate the key for `Map`.
+ * Without `keyFn`, key is `JSON.stringify([...args])`.
+ */
+export function cache<F extends (...args: any[]) => any>(
+  fn: F,
+  keyFn?: (...args: Parameters<F>) => string,
+): (...args: Parameters<F>) => ReturnType<F> {
+  const cached = new Map<string, ReturnType<F>>();
+
+  return function (...args: Parameters<F>) {
+    const key = keyFn ? keyFn(...args) : JSON.stringify(args);
+    if (cached.has(key)) {
+      return cached.get(key)!;
+    }
+
+    const result = fn(...args);
+    cached.set(key, result);
+    return result;
+  };
+}
+
+export function isDefined<T>(obj: T): obj is NonNullable<T> {
+  return obj != null;
+}
+
 export function assert<T>(
   obj: T,
   message: string = "Assertion failed.",
@@ -9,6 +34,11 @@ export function assert<T>(
   return obj;
 }
 
+export function fail(error: any) {
+  console.error(error);
+  return undefined;
+}
+
 export function unreachable(
   message: string = "This code path should be unreachable",
 ): never {
@@ -16,6 +46,11 @@ export function unreachable(
   throw new Error(message);
 }
 
+export function noDefault(restOfCases: never): never {
+  throw new Error(`Unhandled case ${restOfCases}`);
+}
+
+/** `from` inclusive, `to` exclusive. return length. */
 export function* range(from: number, to: number, step: number = 1) {
   let count = 0;
   if (step > 0) for (; from < to; from += step, count++) yield from;
@@ -45,4 +80,8 @@ export function interpolation(
   const fy = yMax - yMin;
   const dy = Math.round(fy * r);
   return dy + yMin;
+}
+
+export function sum(arr: number[]) {
+  return arr.reduce((a, b) => a + b, 0);
 }

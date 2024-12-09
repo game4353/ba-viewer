@@ -1,4 +1,3 @@
-// @ts-ignore
 import type {
   BulletType,
   EndCondition,
@@ -10,7 +9,8 @@ import type {
   TacticEntityType,
 } from "@/assets/game/types/flatDataExcel";
 import type { PartialDeep } from "type-fest";
-import { default as logic } from "~game/db/LogicEffectDataDBSchema/LogicEffectDataDBSchema.json";
+//import { default as logic } from "~game/db/LogicEffectDataDBSchema/LogicEffectDataDBSchema.json";
+const logic: any[] = [];
 
 type IntString = `${number}`;
 type BoolString = "TRUE" | "FALSE";

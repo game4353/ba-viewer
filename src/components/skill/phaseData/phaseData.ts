@@ -1,4 +1,4 @@
-import { ObjectKeys } from "@/types";
+import { ObjectKeys } from "@/utils/types";
 
 enum NormalAttackCondition {
   None,

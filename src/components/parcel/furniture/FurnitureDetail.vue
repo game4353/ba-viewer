@@ -2,22 +2,28 @@
   <div v-if="picked != null">
     <v-card class="mx-auto">
       <template v-slot:title>
-        <span class="font-weight-black">{{ picked.name }}</span>
+        <span class="font-weight-black">{{
+          picked.name.value.unwrapOrElse(errHandle) ?? ""
+        }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel type="Furniture" :pid="picked.id" :scale="0.4" />
+        <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
       </template>
-      <v-card-text class="bg-surface-light pt-4">
-        {{ picked.desc }}
+      <v-card-text class="bg-surface-light !pt-4">
+        {{ picked.desc.value.unwrapOrElse(errHandle) ?? "" }}
       </v-card-text>
     </v-card>
     <v-card
       class="border rounded-xl m-4"
-      v-if="picked.group != null"
-      :title="picked.group.groupName"
+      v-if="picked.group.value?.isOk()"
+      :title="
+        picked.group.value.unwrap().groupName.value?.unwrapOrElse(errHandle)
+      "
     >
-      <v-card-text class="bg-surface-light pt-4">
-        {{ picked.group.groupDesc }}
+      <v-card-text class="bg-surface-light !pt-4">
+        {{
+          picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(errHandle)
+        }}
       </v-card-text>
     </v-card>
     <v-card
@@ -32,8 +38,15 @@
             class="flex flex-col w-min gap-2 items-center py-4"
           >
             <div class="flex flex-row">
-              <div v-for="c in picked.getInteract(tag)" :key="c">
-                <MyCharacter :cid="c" :scale="0.35" />
+              <div
+                v-for="c in picked.getInteract(tag)"
+                :key="c.value.unwrapOr(undefined)"
+              >
+                <MyCharacter
+                  v-if="c.value.isOk()"
+                  :cid="c.value.unwrap()"
+                  :scale="0.35"
+                />
               </div>
             </div>
             <v-tooltip :text="interactionTypes[tag]">
@@ -51,15 +64,18 @@
 </template>
 
 <script setup lang="ts">
-import { ObjectKeys } from "@/types";
-import { furnitureDict } from "./furniture";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { ObjectKeys } from "@/utils/types";
+import { ParcelType } from "~game/types/flatDataExcel";
+import { useFurniture } from "./furniture";
 
 const props = defineProps({
   pid: {
-    type: [String, Number],
+    type: Number,
     required: true,
   },
 });
+const errHandle = inject(ERR_HANDLE)!;
 
 const interactionTypes = {
   Req: "Requires all REQ characters to interact.",
@@ -68,7 +84,7 @@ const interactionTypes = {
   Only: "Only one character in ONLY will interact.",
 };
 
-const picked = computed(() => {
-  return furnitureDict[props.pid];
-});
+const picked = computed(() =>
+  useFurniture(props.pid).value.unwrapOrElse(errHandle),
+);
 </script>
