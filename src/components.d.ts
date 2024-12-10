@@ -26,6 +26,7 @@ declare module 'vue' {
     EventFortune: typeof import('./components/event/EventFortune.vue')['default']
     EventFortuneCard: typeof import('./components/event/EventFortuneCard.vue')['default']
     EventList: typeof import('./components/event/EventList.vue')['default']
+    EventMission: typeof import('./components/mission/EventMission.vue')['default']
     EventReward: typeof import('./components/event/EventReward.vue')['default']
     EventRewards: typeof import('./components/event/EventRewards.vue')['default']
     EventShop: typeof import('./components/event/EventShop.vue')['default']
