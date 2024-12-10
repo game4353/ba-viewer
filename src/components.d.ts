@@ -49,6 +49,7 @@ declare module 'vue' {
     Parcel: typeof import('./components/parcel/Parcel.vue')['default']
     ParcelBox: typeof import('./components/parcel/ParcelBox.vue')['default']
     ParcelCommon: typeof import('./components/parcel/ParcelCommon.vue')['default']
+    Parcels: typeof import('./components/parcel/Parcels.vue')['default']
     PartyBdNote: typeof import('./components/party/PartyBdNote.vue')['default']
     PartyEquipment: typeof import('./components/party/PartyEquipment.vue')['default']
     PartyGift: typeof import('./components/party/PartyGift.vue')['default']
