@@ -34,6 +34,9 @@
           <EventStages :eid />
         </div>
       </v-tabs-window-item>
+      <v-tabs-window-item value="mission">
+        <EventMissions :eid />
+      </v-tabs-window-item>
     </v-tabs-window>
   </div>
 </template>
@@ -48,6 +51,7 @@ const tabs = {
   reward: "reward",
   shop: "shop",
   stage: "stage",
+  mission: "mission",
 };
 const route = useRoute<"/event/[id]/">();
 const eid = Number(route.params.id);

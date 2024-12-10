@@ -9,6 +9,7 @@ import type {
   EventContentFortuneGachaExcelTable,
   EventContentFortuneGachaModifyExcelTable,
   EventContentFortuneGachaShopExcelTable,
+  EventContentMissionExcelTable,
   EventContentSeasonExcelTable,
   EventContentShopExcelTable,
   EventContentStageExcelTable,
@@ -110,6 +111,13 @@ export const useExcelEventContentBoxGachaShop = cache(() =>
 export const useExcelEventContentCharacterBonus = cache(() =>
   useExcelMapMany<EventContentCharacterBonusExcelTable, "EventContentId">(
     "EventContentCharacterBonusExcelTable",
+    "EventContentId",
+  ),
+);
+
+export const useExcelEventContentMission = cache(() =>
+  useExcelMapMany<EventContentMissionExcelTable, "EventContentId">(
+    "EventContentMissionExcelTable",
     "EventContentId",
   ),
 );
