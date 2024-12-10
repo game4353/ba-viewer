@@ -25,7 +25,7 @@
           :class="
             amountStr.length > 9
               ? 'xSmallText'
-              : amountStr.length > 5
+              : amountStr.length > 6
                 ? 'smallText'
                 : ''
           "
@@ -84,7 +84,7 @@ const bg = computed(() =>
 
 // amount
 function convertNum(num: number) {
-  if (num >= 1000000 && num % 1000000 === 0) return `${num / 1000000}M`;
+  if (num >= 10000000 && num % 1000000 === 0) return `${num / 1000000}M`;
   if (num >= 10000 && num % 1000 === 0) return `${num / 1000}K`;
   return `${num}`;
 }
