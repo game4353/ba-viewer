@@ -1,7 +1,13 @@
 <template>
   <div class="flex flex-col gap-2">
     <v-tabs v-model="tab" bg-color="primary">
-      <v-tab v-for="v in tabs" :key="v" :value="v" :disabled="!tabShows[v]">
+      <v-tab
+        v-for="v in tabs"
+        :key="v"
+        :value="v"
+        :disabled="!tabShows[v]"
+        :to="`/event/${eid}/${v}`"
+      >
         {{ tabNames[v] }}
       </v-tab>
     </v-tabs>
@@ -46,8 +52,11 @@ import { CEvent } from "@/components/event/event";
 import { ERR_HANDLE } from "~/components/warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 
-const route = useRoute<"/event/[id]/">();
+const route = useRoute<"/event/[id]/[[tab]]">();
 const eid = Number(route.params.id);
+const tab = computed(() => {
+  return route.params.tab ?? "bonus";
+});
 
 const event = new CEvent(eid);
 const bonus = computed(() => event.bonus.unwrapOrElse(errHandle));
@@ -65,7 +74,6 @@ const shops = computed(() => event.shops.unwrapOrElse(errHandle));
 const stages = computed(() => event.stages.unwrapOrElse(errHandle));
 const totalReward = computed(() => event.totalReward.unwrapOrElse(errHandle));
 
-const tab = ref("bonus");
 const tabs = [
   "bonus",
   "box",
