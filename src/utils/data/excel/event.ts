@@ -18,44 +18,45 @@ import type {
 } from "~game/types/flatDataExcel";
 import { useExcelMapMany, useExcelMapSingle } from ".";
 
-export const useExcelEventContentSeason = cache(() =>
-  useExcelMapMany<EventContentSeasonExcelTable, "EventContentId">(
-    "EventContentSeasonExcelTable",
+export const useExcelEventContentBoxGachaManage = cache(() =>
+  useExcelMapMany<EventContentBoxGachaManageExcelTable, "EventContentId">(
+    "EventContentBoxGachaManageExcelTable",
     "EventContentId",
   ),
 );
 
-export const useExcelEventContentStage = cache(() =>
-  useExcelMapMany<EventContentStageExcelTable, "EventContentId">(
-    "EventContentStageExcelTable",
+export const useExcelEventContentBoxGachaShop = cache(() =>
+  useExcelMapMany<EventContentBoxGachaShopExcelTable, "EventContentId">(
+    "EventContentBoxGachaShopExcelTable",
     "EventContentId",
   ),
 );
 
-export const useExcelEventContentStageReward = cache(() =>
-  useExcelMapMany<EventContentStageRewardExcelTable, "GroupId">(
-    "EventContentStageRewardExcelTable",
-    "GroupId",
-  ),
-);
-export const useExcelEventContentStageTotalReward = cache(() =>
-  useExcelMapMany<EventContentStageTotalRewardExcelTable, "EventContentId">(
-    "EventContentStageTotalRewardExcelTable",
+export const useExcelEventContentCard = cache(() =>
+  useExcelMapMany<EventContentCardExcelTable, "EventContentId">(
+    "EventContentCardExcelTable",
     "EventContentId",
   ),
 );
 
-export const useExcelEventContentShop = cache(() =>
-  useExcelMapMany<EventContentShopExcelTable, "EventContentId">(
-    "EventContentShopExcelTable",
+export const useExcelEventContentCardShop = cache(() =>
+  useExcelMapMany<EventContentCardShopExcelTable, "EventContentId">(
+    "EventContentCardShopExcelTable",
     "EventContentId",
   ),
 );
 
-export const useExcelEventContentFortuneGacha = cache(() =>
-  useExcelMapSingle<EventContentFortuneGachaExcelTable, "FortuneGachaGroupId">(
-    "EventContentFortuneGachaExcelTable",
-    "FortuneGachaGroupId",
+export const useExcelEventContentCharacterBonus = cache(() =>
+  useExcelMapMany<EventContentCharacterBonusExcelTable, "EventContentId">(
+    "EventContentCharacterBonusExcelTable",
+    "EventContentId",
+  ),
+);
+
+export const useExcelEventContentCurrencyItem = cache(() =>
+  useExcelMapMany<EventContentCurrencyItemExcelTable, "EventContentId">(
+    "EventContentCurrencyItemExcelTable",
+    "EventContentId",
   ),
 );
 
@@ -73,51 +74,51 @@ export const useExcelEventContentFortuneGachaShop = cache(() =>
   ),
 );
 
-export const useExcelEventContentCurrencyItem = cache(() =>
-  useExcelMapMany<EventContentCurrencyItemExcelTable, "EventContentId">(
-    "EventContentCurrencyItemExcelTable",
-    "EventContentId",
-  ),
-);
-
-export const useExcelEventContentCardShop = cache(() =>
-  useExcelMapMany<EventContentCardShopExcelTable, "EventContentId">(
-    "EventContentCardShopExcelTable",
-    "EventContentId",
-  ),
-);
-
-export const useExcelEventContentCard = cache(() =>
-  useExcelMapMany<EventContentCardExcelTable, "EventContentId">(
-    "EventContentCardExcelTable",
-    "EventContentId",
-  ),
-);
-
-export const useExcelEventContentBoxGachaManage = cache(() =>
-  useExcelMapMany<EventContentBoxGachaManageExcelTable, "EventContentId">(
-    "EventContentBoxGachaManageExcelTable",
-    "EventContentId",
-  ),
-);
-
-export const useExcelEventContentBoxGachaShop = cache(() =>
-  useExcelMapMany<EventContentBoxGachaShopExcelTable, "EventContentId">(
-    "EventContentBoxGachaShopExcelTable",
-    "EventContentId",
-  ),
-);
-
-export const useExcelEventContentCharacterBonus = cache(() =>
-  useExcelMapMany<EventContentCharacterBonusExcelTable, "EventContentId">(
-    "EventContentCharacterBonusExcelTable",
-    "EventContentId",
-  ),
-);
-
 export const useExcelEventContentMission = cache(() =>
   useExcelMapMany<EventContentMissionExcelTable, "EventContentId">(
     "EventContentMissionExcelTable",
     "EventContentId",
+  ),
+);
+
+export const useExcelEventContentSeason = cache(() =>
+  useExcelMapMany<EventContentSeasonExcelTable, "EventContentId">(
+    "EventContentSeasonExcelTable",
+    "EventContentId",
+  ),
+);
+
+export const useExcelEventContentShop = cache(() =>
+  useExcelMapMany<EventContentShopExcelTable, "EventContentId">(
+    "EventContentShopExcelTable",
+    "EventContentId",
+  ),
+);
+
+export const useExcelEventContentStage = cache(() =>
+  useExcelMapMany<EventContentStageExcelTable, "EventContentId">(
+    "EventContentStageExcelTable",
+    "EventContentId",
+  ),
+);
+
+export const useExcelEventContentStageTotalReward = cache(() =>
+  useExcelMapMany<EventContentStageTotalRewardExcelTable, "EventContentId">(
+    "EventContentStageTotalRewardExcelTable",
+    "EventContentId",
+  ),
+);
+
+export const useExcelEventContentStageReward = cache(() =>
+  useExcelMapMany<EventContentStageRewardExcelTable, "GroupId">(
+    "EventContentStageRewardExcelTable",
+    "GroupId",
+  ),
+);
+
+export const useExcelEventContentFortuneGacha = cache(() =>
+  useExcelMapSingle<EventContentFortuneGachaExcelTable, "FortuneGachaGroupId">(
+    "EventContentFortuneGachaExcelTable",
+    "FortuneGachaGroupId",
   ),
 );

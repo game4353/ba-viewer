@@ -1,49 +1,82 @@
 <template>
   <div class="flex flex-col gap-2">
     <v-tabs v-model="tab" bg-color="primary">
-      <v-tab v-for="(v, k) in tabs" :key="k" :value="k">
-        {{ v }}
+      <v-tab v-for="v in tabs" :key="v" :value="v" :disabled="!tabShows[v]">
+        {{ tabNames[v] }}
       </v-tab>
     </v-tabs>
 
     <v-tabs-window v-model="tab">
-      <v-tabs-window-item value="bonus">
+      <v-tabs-window-item v-if="bonus && currency" value="bonus">
         <div class="relative w-[640px] h-[800px]">
-          <EventBonus :eid />
+          <EventBonus :bonus :currency />
         </div>
       </v-tabs-window-item>
-      <v-tabs-window-item value="box">
-        <EventBox :eid />
+      <v-tabs-window-item v-if="boxManage && boxShop" value="box">
+        <EventBox :eid :manage="boxManage" :shop="boxShop" />
       </v-tabs-window-item>
-      <v-tabs-window-item value="card">
-        <EventCard :eid />
+      <v-tabs-window-item v-if="card && cardShop" value="card">
+        <EventCard :card :shop="cardShop" />
       </v-tabs-window-item>
-      <v-tabs-window-item value="fortune">
+      <v-tabs-window-item v-if="fortuneModify && fortuneShop" value="fortune">
         <div class="relative h-[800px]">
-          <EventFortune :eid />
+          <EventFortune :modify="fortuneModify" :shop="fortuneShop" />
         </div>
       </v-tabs-window-item>
-      <v-tabs-window-item value="reward">
-        <EventRewards :eid />
+      <v-tabs-window-item v-if="totalReward" value="reward">
+        <EventRewards :rewards="totalReward" />
       </v-tabs-window-item>
-      <v-tabs-window-item value="shop">
-        <EventShop :eid />
+      <v-tabs-window-item v-if="shops" value="shop">
+        <EventShop :shops />
       </v-tabs-window-item>
-      <v-tabs-window-item value="stage">
+      <v-tabs-window-item v-if="stages" value="stage">
         <div class="relative h-[800px]">
-          <EventStages :eid />
+          <EventStages :stages />
         </div>
       </v-tabs-window-item>
-      <v-tabs-window-item value="mission">
-        <EventMissions :eid />
+      <v-tabs-window-item v-if="missions" value="mission">
+        <EventMissions :missions />
       </v-tabs-window-item>
     </v-tabs-window>
   </div>
 </template>
 
 <script setup lang="ts">
+import { CEvent } from "@/components/event/event";
+import { ERR_HANDLE } from "~/components/warn/error";
+const errHandle = inject(ERR_HANDLE)!;
+
+const route = useRoute<"/event/[id]/">();
+const eid = Number(route.params.id);
+
+const event = new CEvent(eid);
+const bonus = computed(() => event.bonus.unwrapOrElse(errHandle));
+const boxManage = computed(() => event.boxManage.unwrapOrElse(errHandle));
+const boxShop = computed(() => event.boxShop.unwrapOrElse(errHandle));
+const card = computed(() => event.card.unwrapOrElse(errHandle));
+const cardShop = computed(() => event.cardShop.unwrapOrElse(errHandle));
+const currency = computed(() => event.currency.unwrapOrElse(errHandle));
+const fortuneModify = computed(() =>
+  event.fortuneModify.unwrapOrElse(errHandle),
+);
+const fortuneShop = computed(() => event.fortuneShop.unwrapOrElse(errHandle));
+const missions = computed(() => event.missions.unwrapOrElse(errHandle));
+const shops = computed(() => event.shops.unwrapOrElse(errHandle));
+const stages = computed(() => event.stages.unwrapOrElse(errHandle));
+const totalReward = computed(() => event.totalReward.unwrapOrElse(errHandle));
+
 const tab = ref("bonus");
-const tabs = {
+const tabs = [
+  "bonus",
+  "box",
+  "card",
+  "fortune",
+  "reward",
+  "shop",
+  "stage",
+  "mission",
+] as const;
+const tabNames = {
   bonus: "ボーナス生徒",
   box: "報酬交換",
   card: "カード",
@@ -53,6 +86,14 @@ const tabs = {
   stage: "stage",
   mission: "mission",
 };
-const route = useRoute<"/event/[id]/">();
-const eid = Number(route.params.id);
+const tabShows = computed(() => ({
+  bonus: bonus.value && currency.value,
+  box: boxManage.value && boxShop.value,
+  card: card.value && cardShop.value,
+  fortune: fortuneModify.value && fortuneShop.value,
+  reward: totalReward.value,
+  shop: shops.value,
+  stage: stages.value,
+  mission: missions.value,
+}));
 </script>

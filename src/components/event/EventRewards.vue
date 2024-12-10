@@ -11,27 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { useExcelEventContentStageTotalReward } from "@/utils/data/excel/event";
-import { KeyNotFoundErr } from "@/utils/error";
-import { Err, Ok } from "@/utils/result";
-import { ERR_HANDLE } from "../warn/error";
+import { EventContentStageTotalRewardExcel } from "@/assets/game/types/flatDataExcel";
+import { ReadonlyDeep } from "type-fest";
 
-const props = defineProps({
-  eid: {
-    type: Number,
+defineProps({
+  rewards: {
+    type: Array as PropType<ReadonlyDeep<EventContentStageTotalRewardExcel>[]>,
     required: true,
   },
 });
-
-const errHandle = inject(ERR_HANDLE)!;
-
-const rewards = computed(() =>
-  useExcelEventContentStageTotalReward()
-    .value?.andThen((map) => map.getResult(props.eid))
-    .orElse2((e) => {
-      if (e instanceof KeyNotFoundErr) return Ok(null);
-      else return Err(e);
-    })
-    .unwrapOrElse(errHandle),
-);
 </script>

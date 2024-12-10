@@ -22,38 +22,30 @@
 
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
-import { useExcelEventContentShop } from "@/utils/data/excel/event";
 import { KeyNotFoundErr } from "@/utils/error";
-import type { ShopCategoryType } from "~game/types/flatDataExcel";
+import { ReadonlyDeep } from "type-fest";
+import type {
+  EventContentShopExcel,
+  ShopCategoryType,
+} from "~game/types/flatDataExcel";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
-  eid: {
-    type: Number,
+  shops: {
+    type: Array as PropType<ReadonlyDeep<EventContentShopExcel>[]>,
     required: true,
   },
 });
 
 const tab = ref(0);
 
-const table = useExcelEventContentShop();
-const shops = computed(
-  () => table.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
-);
-
 const shopTypes = computed(() => [
-  ...new Set(shops.value.map((o) => o.CategoryType)),
+  ...new Set(props.shops.map((o) => o.CategoryType)),
 ]);
 function getShop(t: ShopCategoryType) {
-  const shop = shops.value.filter((o) => o.CategoryType === t);
+  const shop = props.shops.filter((o) => o.CategoryType === t);
   if (shop.length < 1)
-    errHandle(
-      KeyNotFoundErr.from(
-        t,
-        "CategoryType",
-        `EventContentShop (id = ${props.eid})`,
-      ),
-    );
+    errHandle(KeyNotFoundErr.from(t, "CategoryType", `EventContentShop ()`));
   return shop;
 }
 </script>

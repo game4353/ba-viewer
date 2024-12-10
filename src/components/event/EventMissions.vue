@@ -11,20 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { useExcelEventContentMission } from "@/utils/data/excel/event";
-import { ERR_HANDLE } from "../warn/error";
-const errHandle = inject(ERR_HANDLE)!;
+import type { EventContentMissionExcel } from "@/assets/game/types/flatDataExcel";
+import type { ReadonlyDeep } from "type-fest";
 
-const props = defineProps({
-  eid: {
-    type: Number,
+defineProps({
+  missions: {
+    type: Array as PropType<ReadonlyDeep<EventContentMissionExcel>[]>,
     required: true,
   },
 });
-
-const missions = computed(() =>
-  useExcelEventContentMission()
-    .value.map((map) => map.get(props.eid))
-    .unwrapOrElse(errHandle),
-);
 </script>

@@ -43,37 +43,31 @@
 
 <script setup lang="ts">
 import {
-  useExcelEventContentCard,
-  useExcelEventContentCardShop,
-} from "@/utils/data/excel/event";
+  EventContentCardExcel,
+  EventContentCardShopExcel,
+} from "@/assets/game/types/flatDataExcel";
 import { ObjectKeys } from "@/utils/types";
-import { ERR_HANDLE } from "../warn/error";
+import { ReadonlyDeep } from "type-fest";
 
 const props = defineProps({
-  eid: {
-    type: Number,
+  card: {
+    type: Array as PropType<ReadonlyDeep<EventContentCardExcel>[]>,
+    required: true,
+  },
+  shop: {
+    type: Array as PropType<ReadonlyDeep<EventContentCardShopExcel>[]>,
     required: true,
   },
 });
-const errHandle = inject(ERR_HANDLE)!;
 
 const tab = ref(0);
 
-const cardTable = useExcelEventContentCard();
 const cards = computed(() => {
-  return Object.fromEntries(
-    (cardTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? []).map(
-      (v) => [v.CardGroupId, v],
-    ),
-  );
+  return Object.fromEntries(props.card.map((v) => [v.CardGroupId, v]));
 });
 
-const shopTable = useExcelEventContentCardShop();
 const rolls = computed(() => {
-  return Object.groupBy(
-    shopTable.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
-    (v) => v.RefreshGroup,
-  );
+  return Object.groupBy(props.shop, (v) => v.RefreshGroup);
 });
 </script>
 
