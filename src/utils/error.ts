@@ -58,6 +58,23 @@ export class NoResultErr extends Error {
   }
 }
 
+export class NotImplementErr extends Error {
+  name = "NotImplementErr" as const;
+  info: {
+    title: string;
+  } = {
+    title: "",
+  };
+  private constructor(...args: any) {
+    super(...args);
+  }
+  static from(title: string) {
+    const e = new NotImplementErr();
+    e.info = { title };
+    return e;
+  }
+}
+
 export class TimeoutErr extends Error {
   name = "TimeoutErr" as const;
   info: {

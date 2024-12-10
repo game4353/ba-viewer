@@ -1,4 +1,9 @@
-import { FetchDataErr, KeyNotFoundErr, TimeoutErr } from "@/utils/error";
+import {
+  FetchDataErr,
+  KeyNotFoundErr,
+  NotImplementErr,
+  TimeoutErr,
+} from "@/utils/error";
 
 export const err = reactive({
   error: false,
@@ -48,6 +53,9 @@ function injectErrHandle(err: Error) {
   } else if (err instanceof KeyNotFoundErr) {
     const { keyName, key, title } = err.info;
     setError(406, `${keyName} '${key}' does not exist in ${title}.`);
+  } else if (err instanceof NotImplementErr) {
+    const { title } = err.info;
+    setError(501, `'${title}' is not implemented yet.`);
   } else if (err instanceof FetchDataErr) {
     const { cause, title } = err.info;
     setError(500, `Failed to fetch '${title}': ${cause.message}`);
