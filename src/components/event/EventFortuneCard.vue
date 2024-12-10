@@ -9,7 +9,7 @@ import { useExcelEventContentFortuneGacha } from "@/utils/data/excel/event";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
-  eid: {
+  gid: {
     type: Number,
     required: true,
   },
@@ -18,6 +18,6 @@ const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcelEventContentFortuneGacha();
 const card = computed(() =>
-  table.value?.unwrapOrElse(errHandle)?.get(props.eid),
+  table.value?.unwrapOrElse(errHandle)?.get(props.gid),
 );
 </script>

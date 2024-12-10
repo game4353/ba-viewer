@@ -12,9 +12,13 @@
     </v-slider>
     <div class="flex-grow overflow-y-hidden">
       <Scroll>
-        <div class="flex flex-row mx-2" v-for="r in rolls" :key="r.Id">
+        <div
+          class="flex flex-row mx-2"
+          v-for="r in props.shop.toReversed()"
+          :key="r.Id"
+        >
           <div class="w-16">
-            <EventFortuneCard :eid="r.FortuneGachaGroupId" />
+            <EventFortuneCard :gid="r.FortuneGachaGroupId" />
           </div>
           <div class="flex flex-col">
             <div class="px-3 text-lg">{{ calcProb(r) / 100 }}%</div>
@@ -36,40 +40,27 @@
 </template>
 
 <script setup lang="ts">
-import {
-  useExcelEventContentFortuneGachaModify,
-  useExcelEventContentFortuneGachaShop,
-} from "@/utils/data/excel/event";
 import { ReadonlyDeep } from "type-fest";
-import type { EventContentFortuneGachaShopExcel } from "~game/types/flatDataExcel";
-import { ERR_HANDLE } from "../warn/error";
+import type {
+  EventContentFortuneGachaModifyExcel,
+  EventContentFortuneGachaShopExcel,
+} from "~game/types/flatDataExcel";
 
 const props = defineProps({
-  eid: {
-    type: Number,
+  modify: {
+    type: Object as PropType<ReadonlyDeep<EventContentFortuneGachaModifyExcel>>,
+    required: true,
+  },
+  shop: {
+    type: Array as PropType<ReadonlyDeep<EventContentFortuneGachaShopExcel>[]>,
     required: true,
   },
 });
-const errHandle = inject(ERR_HANDLE)!;
 
 const slider = ref(1);
 
-const modifyTable = useExcelEventContentFortuneGachaModify();
-const modify = computed(
-  () =>
-    modifyTable.value?.unwrapOrElse(errHandle)?.get(props.eid)
-      ?.ProbModifyStartCount ?? 0,
-);
-
-const shopTable = useExcelEventContentFortuneGachaShop();
-const rolls = computed(() => {
-  return (
-    shopTable.value?.unwrapOrElse(errHandle)?.get(props.eid)?.reverse() || []
-  );
-});
-
 function calcProb(r: ReadonlyDeep<EventContentFortuneGachaShopExcel>) {
-  const step = Math.max(0, slider.value - modify.value);
+  const step = Math.max(0, slider.value - props.modify.ProbModifyStartCount);
   const prob = r.Prob + step * r.ProbModifyValue;
   if (r.ProbModifyValue > 0) return Math.min(prob, r.ProbModifyLimit);
   else return Math.max(prob, r.ProbModifyLimit);
