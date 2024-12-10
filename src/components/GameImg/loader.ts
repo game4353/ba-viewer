@@ -18,6 +18,7 @@ const glob = import.meta.glob(
     "~game/UIs/01_Common/31_ClanEmoji/*.png",
     "~game/UIs/01_Common/35_TimeAttack/**/*.png",
     "~game/UIs/01_Common/40_Gear/**/*.png",
+    "~game/UIs/01_Common/43_Emblem/**/*.png",
     "~game/UIs/01_Common/46_MultiFloorRaid/**/*.png",
     "~game/UIs/02_Tactics/02_SkillIcon/**/*.png",
     "~game/UIs/02_Tactics/04_BuffIcon/**/*.png",
