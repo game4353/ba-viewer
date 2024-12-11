@@ -75,6 +75,7 @@ declare module 'vue' {
     ShopItem: typeof import('./components/shop/ShopItem.vue')['default']
     ShopItemCostIcon: typeof import('./components/shop/ShopItemCostIcon.vue')['default']
     ShopPage: typeof import('./components/shop/ShopPage.vue')['default']
+    ShopRecruit: typeof import('./components/shop/ShopRecruit.vue')['default']
     Skill: typeof import('./components/skill/Skill.vue')['default']
     SkillEntity: typeof import('./components/skill/entity/SkillEntity.vue')['default']
     SkillIcon: typeof import('./components/skill/SkillIcon.vue')['default']
