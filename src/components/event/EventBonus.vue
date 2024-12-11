@@ -14,7 +14,7 @@
           <MyCharacter :cid="r[0]" :scale="0.3" />
         </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
-          {{ n == null ? "" : `${n / 100}%` }}
+          {{ (n ?? 0) === 0 ? "-" : `${n / 100}%` }}
         </td>
       </tr>
       <tr v-for="(r, i) in support" :key="i">
@@ -22,7 +22,7 @@
           <MyCharacter :cid="r[0]" :scale="0.3" />
         </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
-          {{ n == null ? "" : `${n / 100}%` }}
+          {{ (n ?? 0) === 0 ? "-" : `${n / 100}%` }}
         </td>
       </tr>
       <tr class="h-[70px]"></tr>
