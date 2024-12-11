@@ -36,9 +36,3 @@ defineProps({
 
 const tab = ref(0);
 </script>
-
-<style scoped lang="scss">
-.h {
-  height: 800px;
-}
-</style>

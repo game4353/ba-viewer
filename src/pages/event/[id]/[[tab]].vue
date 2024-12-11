@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col gap-2">
-    <v-tabs v-model="tab" bg-color="primary">
+  <div class="flex flex-col gap-2 h-full">
+    <v-tabs class="shrink-0" v-model="tab" bg-color="primary">
       <v-tab
         v-for="v in tabs"
         :key="v"
@@ -12,11 +12,9 @@
       </v-tab>
     </v-tabs>
 
-    <v-tabs-window v-model="tab">
+    <v-tabs-window class="flex flex-grow" v-model="tab">
       <v-tabs-window-item v-if="bonus && currency" value="bonus">
-        <div class="relative w-[640px] h-[800px]">
-          <EventBonus :bonus :currency />
-        </div>
+        <EventBonus :bonus :currency />
       </v-tabs-window-item>
       <v-tabs-window-item v-if="boxManage && boxShop" value="box">
         <EventBox :eid :manage="boxManage" :shop="boxShop" />
@@ -25,23 +23,19 @@
         <EventCard :card :shop="cardShop" />
       </v-tabs-window-item>
       <v-tabs-window-item v-if="fortuneModify && fortuneShop" value="fortune">
-        <div class="relative h-[800px]">
-          <EventFortune :modify="fortuneModify" :shop="fortuneShop" />
-        </div>
+        <EventFortune :modify="fortuneModify" :shop="fortuneShop" />
       </v-tabs-window-item>
       <v-tabs-window-item v-if="totalReward" value="reward">
-        <EventRewards :rewards="totalReward" />
+        <Scroll class="p-1"><EventRewards :rewards="totalReward" /></Scroll>
       </v-tabs-window-item>
       <v-tabs-window-item v-if="shops" value="shop">
         <EventShop :shops />
       </v-tabs-window-item>
       <v-tabs-window-item v-if="stages" value="stage">
-        <div class="relative h-[800px]">
-          <EventStages :stages />
-        </div>
+        <EventStages :stages />
       </v-tabs-window-item>
       <v-tabs-window-item v-if="missions" value="mission">
-        <EventMissions :missions />
+        <Scroll class="p-1"><EventMissions :missions /></Scroll>
       </v-tabs-window-item>
       <v-tabs-window-item v-if="treasure" value="treasure">
         <EventTreasure :rounds="treasure" :scaled-w="72" />
@@ -112,3 +106,9 @@ const tabShows = computed(() => ({
   treasure: treasure.value,
 }));
 </script>
+
+<style lang="scss" scoped>
+.v-window-item {
+  @apply relative h-full;
+}
+</style>

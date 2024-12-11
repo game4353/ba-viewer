@@ -1,13 +1,11 @@
 <template>
-  <div v-if="rewards" class="flex flex-row flex-wrap gap-4">
-    <div
-      v-for="(reward, key) in rewards"
-      :key
-      class="flex flex-row gap-1 align-center"
-    >
-      <EventReward :reward />
-    </div>
-  </div>
+  <v-container v-if="rewards">
+    <v-row>
+      <v-col v-for="(reward, key) in rewards" :key>
+        <EventReward :reward />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">

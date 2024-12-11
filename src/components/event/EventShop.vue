@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-2 h">
+  <div class="flex flex-row gap-2 h-full">
     <v-tabs v-model="tab" bg-color="secondary" direction="vertical">
       <v-tab v-for="(t, i) in shopTypes" :key="i" :value="t">
         <ShopItemCostIcon :goodsId="getShop(t)[0].GoodsId" class="w-8" />
@@ -7,9 +7,9 @@
       </v-tab>
     </v-tabs>
 
-    <v-tabs-window v-model="tab">
+    <v-tabs-window class="h-full" v-model="tab">
       <v-tabs-window-item
-        class="h m-2"
+        class="h-full"
         v-for="(t, i) in shopTypes"
         :key="i"
         :value="t"
@@ -49,9 +49,3 @@ function getShop(t: ShopCategoryType) {
   return shop;
 }
 </script>
-
-<style scoped lang="scss">
-.h {
-  height: 800px;
-}
-</style>
