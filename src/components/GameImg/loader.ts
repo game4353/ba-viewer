@@ -14,6 +14,7 @@ const glob = import.meta.glob(
     "~game/UIs/01_Common/27_EventContent/Enter_Parcel/**/*.png",
     "~game/UIs/01_Common/27_EventContent/Main_BgImage/**/*.png",
     "~game/UIs/01_Common/27_EventContent/OmikujiImg/**/*.png",
+    "~game/UIs/01_Common/27_EventContent/Treasure/**/*.png",
     "~game/UIs/01_Common/29_GuideMission/**/*.png",
     "~game/UIs/01_Common/31_ClanEmoji/*.png",
     "~game/UIs/01_Common/35_TimeAttack/**/*.png",

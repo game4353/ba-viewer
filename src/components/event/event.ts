@@ -1,4 +1,5 @@
 import {
+  useExcelDbEventContentTreasureRound,
   useExcelEventContentBoxGachaManage,
   useExcelEventContentBoxGachaShop,
   useExcelEventContentCard,
@@ -87,6 +88,14 @@ export class CEvent {
   get totalReward() {
     return asResult(
       useExcelEventContentStageTotalReward().value.map((map) =>
+        map.get(this.id),
+      ),
+    );
+  }
+
+  get treasureRound() {
+    return asResult(
+      useExcelDbEventContentTreasureRound().value.map((map) =>
         map.get(this.id),
       ),
     );

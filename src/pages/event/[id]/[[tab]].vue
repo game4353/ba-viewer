@@ -6,7 +6,7 @@
         :key="v"
         :value="v"
         :disabled="!tabShows[v]"
-        :to="`/event/${eid}/${v}`"
+        @click="$router.replace(`/event/${eid}/${v}`)"
       >
         {{ tabNames[v] }}
       </v-tab>
@@ -43,6 +43,9 @@
       <v-tabs-window-item v-if="missions" value="mission">
         <EventMissions :missions />
       </v-tabs-window-item>
+      <v-tabs-window-item v-if="treasure" value="treasure">
+        <EventTreasure :rounds="treasure" :scaled-w="72" />
+      </v-tabs-window-item>
     </v-tabs-window>
   </div>
 </template>
@@ -73,6 +76,7 @@ const missions = computed(() => event.missions.unwrapOrElse(errHandle));
 const shops = computed(() => event.shops.unwrapOrElse(errHandle));
 const stages = computed(() => event.stages.unwrapOrElse(errHandle));
 const totalReward = computed(() => event.totalReward.unwrapOrElse(errHandle));
+const treasure = computed(() => event.treasureRound.unwrapOrElse(errHandle));
 
 const tabs = [
   "bonus",
@@ -83,6 +87,7 @@ const tabs = [
   "shop",
   "stage",
   "mission",
+  "treasure",
 ] as const;
 const tabNames = {
   bonus: "ボーナス生徒",
@@ -93,6 +98,7 @@ const tabNames = {
   shop: "shop",
   stage: "stage",
   mission: "mission",
+  treasure: "treasure",
 };
 const tabShows = computed(() => ({
   bonus: bonus.value && currency.value,
@@ -103,5 +109,6 @@ const tabShows = computed(() => ({
   shop: shops.value,
   stage: stages.value,
   mission: missions.value,
+  treasure: treasure.value,
 }));
 </script>
