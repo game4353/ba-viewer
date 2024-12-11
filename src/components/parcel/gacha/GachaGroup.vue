@@ -1,6 +1,6 @@
 <template>
   <template v-if="layout">
-    <div v-if="single" class="flex flex-row flex-wrap border border-red">
+    <div v-if="single" class="flex flex-row flex-wrap">
       <Parcel
         :layout
         :amountMin="single.ParcelAmountMin"

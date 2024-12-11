@@ -1,7 +1,7 @@
 <template>
   <v-sheet border rounded :elevation="8">
     <div
-      class="flex flex-row flex-wrap p-1 border-[1px] border-red-600"
+      class="flex flex-row flex-wrap gap-2 p-1 border border-red-600"
       v-if="elements"
     >
       <div v-for="(item, key) in elements" :key>
@@ -18,7 +18,7 @@
     </div>
     <div
       v-if="groups"
-      class="flex flex-row flex-wrap border-[1px] border-green-500 p-2 gap-2"
+      class="flex flex-row flex-wrap border border-green-500 p-2 gap-2"
     >
       <GachaGroupSub
         v-for="(group, key) in groups"
