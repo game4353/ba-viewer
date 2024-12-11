@@ -6,7 +6,7 @@
       v-for="cid in characterIds"
       :key="cid"
     >
-      <MyCharacterBig :cid :scaled-w="120" />
+      <MyCharacterBig :cid :scaling="{ w: 120 }" />
     </div>
   </div>
 </template>

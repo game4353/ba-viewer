@@ -2,7 +2,7 @@
   <div v-if="lobbyPaths?.isOk()">
     <div v-for="(arr, key) in lobbyPaths.unwrap()" :key>
       <div class="flex flex-row">
-        <MyCharacter :cid="Number(key)" :scale="0.4" />
+        <MyCharacter :cid="Number(key)" :scaling="{ r: 0.4 }" />
         <v-btn
           v-for="(str, key) in arr"
           :to="`/l2d/query?paths=${str.slice(0, -5)}`"

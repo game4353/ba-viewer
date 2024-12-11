@@ -8,7 +8,7 @@
             :pid="100000 + i * 1000 + j"
             :type="ParcelType.Equipment"
             :need="equipmentMap?.get(100000 + i * 1000 + j)"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>

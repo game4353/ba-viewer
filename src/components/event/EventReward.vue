@@ -8,7 +8,7 @@
     :pid="reward.RewardParcelId[i]"
     :type="reward.RewardParcelType[i]"
     :amount="reward.RewardParcelAmount[i]"
-    :scale="0.3"
+    :scaling="{ r: 0.3 }"
     route
   />
 </template>

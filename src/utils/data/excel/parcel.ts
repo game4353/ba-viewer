@@ -1,6 +1,7 @@
 import { cache } from "@/utils/misc";
 import type {
   CurrencyExcelTable,
+  EmblemExcelTable,
   EquipmentExcelTable,
   EquipmentLevelExcelTable,
   EquipmentStatExcelTable,
@@ -12,6 +13,10 @@ import { useExcelMapSingle } from ".";
 
 export const useExcelCurrency = cache(() =>
   useExcelMapSingle<CurrencyExcelTable, "ID">("CurrencyExcelTable", "ID"),
+);
+
+export const useExcelEmblem = cache(() =>
+  useExcelMapSingle<EmblemExcelTable, "Id">("EmblemExcelTable", "Id"),
 );
 
 export const useExcelEquipment = cache(() =>

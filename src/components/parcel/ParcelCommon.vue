@@ -5,15 +5,7 @@
     :to="`/parcel/${ParcelType[parcel.type].toLowerCase()}/${parcel.id}`"
   >
     <GameImg v-if="layout == 'icon'" :path="parcel.iconPath" />
-    <Scaled
-      v-else
-      :scale
-      :scaledW
-      :scaledH
-      :scaleType
-      :width="imgW"
-      :height="imgH"
-    >
+    <Scaled v-else :scaling :width="imgW" :height="imgH">
       <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
         <GameImg
           :path="parcel.iconPath"
@@ -25,7 +17,7 @@
           :class="
             amountStr.length > 9
               ? 'xSmallText'
-              : amountStr.length > 5
+              : amountStr.length > 6
                 ? 'smallText'
                 : ''
           "
@@ -48,7 +40,7 @@
 <script setup lang="ts">
 import { ParcelType, RewardTag } from "~game/types/flatDataExcel";
 import { Icon, rarityBgIcon } from "../GameImg/icon";
-import Scaled from "../misc/Scaled.vue";
+import { ScaleOption } from "../misc/scale";
 import { ERR_501 } from "../warn/error";
 import { CFurniture } from "./furniture/furniture";
 import { IParcel } from "./parcel";
@@ -68,10 +60,7 @@ const props = defineProps({
     type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
   },
   route: Boolean,
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
   tag: {
     type: Number as PropType<RewardTag>,
   },
@@ -84,7 +73,7 @@ const bg = computed(() =>
 
 // amount
 function convertNum(num: number) {
-  if (num >= 1000000 && num % 1000000 === 0) return `${num / 1000000}M`;
+  if (num >= 10000000 && num % 1000000 === 0) return `${num / 1000000}M`;
   if (num >= 10000 && num % 1000 === 0) return `${num / 1000}K`;
   return `${num}`;
 }

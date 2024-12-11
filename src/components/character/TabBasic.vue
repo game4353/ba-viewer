@@ -5,7 +5,7 @@
         <v-expansion-panel>
           <v-expansion-panel-title>
             <div class="flex flex-row gap-2">
-              <MyCharacter :cid :scale="0.4" />
+              <MyCharacter :cid :scaling="{ r: 0.4 }" />
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>

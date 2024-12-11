@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="parcel" :to="noRoute ? '' : `/student/${parcel.id}`">
-    <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
+    <Scaled :scaling :width="imgW" :height="imgH">
       <v-img
         class="absolute"
         :width="imgW"
@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
 import { uiPath } from "../GameImg/loader";
-import Scaled from "../misc/Scaled.vue";
+import { ScaleOption } from "../misc/scale";
 import { useCharacter } from "../parcel/character/character";
 import { ERR_HANDLE } from "../warn/error";
 
@@ -108,10 +108,7 @@ const props = defineProps({
   },
   noRoute: Boolean,
   detailed: Boolean,
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
   level: Number,
   star: Number,
   bond: Number,

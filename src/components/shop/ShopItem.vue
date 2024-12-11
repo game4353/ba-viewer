@@ -12,7 +12,7 @@
       :key="i"
       :parcel="v?.parcel"
       :amount="v?.amount"
-      :scale="0.33"
+      :scaling="{ r: 0.33 }"
       route
     />
     <div v-if="(amount ?? 0) === 0" class="h-4 w-full"></div>
@@ -21,10 +21,10 @@
     </div>
     <div class="flex flex-row justify-center items-center m-1">
       <Parcel
+        class="w-8"
         :type="good.ConsumeParcelType[0]"
         :pid="good.ConsumeParcelId[0]"
         layout="icon"
-        class="w-8"
       />
       <span class="bg-blue-900 h-4 w-16 text-center text-xs">{{
         good.ConsumeParcelAmount[0]

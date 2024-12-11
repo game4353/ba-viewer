@@ -4,16 +4,14 @@
     :cid="pid"
     :layout
     :route
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <ParcelCommon
     v-else-if="
       [
         ParcelType.Currency,
+        ParcelType.Emblem,
         ParcelType.Equipment,
         ParcelType.Furniture,
         ParcelType.Item,
@@ -25,10 +23,7 @@
     :amountMax
     :layout
     :route
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <GachaGroup
@@ -37,10 +32,7 @@
     :amount
     :amountMin
     :amountMax
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <Recipe
@@ -49,10 +41,7 @@
     :amount
     :amountMin
     :amountMax
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <div v-else></div>
@@ -61,11 +50,11 @@
 <script setup lang="ts">
 import { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
 import { PropType } from "vue";
-import { ERR_501, ERR_HANDLE } from "../warn/error";
+import { ScaleOption } from "../misc/scale";
+import { ERR_HANDLE } from "../warn/error";
 import Character from "./character/Character.vue";
 import { getParcel } from "./parcel";
 const errHandle = inject(ERR_HANDLE)!;
-const error501 = inject(ERR_501)!;
 
 const props = defineProps({
   type: {
@@ -79,10 +68,7 @@ const props = defineProps({
   amount: [Number, String],
   amountMin: Number,
   amountMax: Number,
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
   route: Boolean,
   tag: {
     type: Number as PropType<RewardTag>,
@@ -93,23 +79,6 @@ const props = defineProps({
   // TODO: hover to show name
   hover: String,
 });
-
-const done: ParcelType[] = [
-  ParcelType.Currency,
-  ParcelType.Equipment,
-  ParcelType.Furniture,
-  ParcelType.Item,
-  ParcelType.GachaGroup,
-  ParcelType.Recipe,
-  ParcelType.Character,
-];
-watch(
-  () => props.type,
-  (newVal) => {
-    if (!done.includes(newVal)) error501(`ParcelType '${newVal}'`);
-  },
-  { immediate: true },
-);
 
 const parcel = computed(() =>
   getParcel(props.type, Number(props.pid)).value?.unwrapOrElse(errHandle),

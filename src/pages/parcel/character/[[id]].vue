@@ -66,7 +66,7 @@
               <Parcel
                 :pid="item.raw.id"
                 :type="ParcelType.Character"
-                :scaledW="80"
+                :scaling="{ w: 80 }"
                 route
               />
             </div>

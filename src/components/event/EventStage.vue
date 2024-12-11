@@ -11,10 +11,10 @@
       </div>
       <div class="flex flex-row flex-wrap">
         <Parcel
+          class="w-9"
           :type="stage.StageEnterCostType"
           :pid="stage.StageEnterCostId"
           layout="icon"
-          class="w-9"
         />
         {{ stage.StageEnterCostAmount }}
       </div>
@@ -25,9 +25,9 @@
 </template>
 
 <script setup lang="ts">
+import { ReadonlyDeep } from "type-fest";
 import type { EventContentStageExcel } from "~game/types/flatDataExcel";
 import { stageTopographyIcon } from "../GameImg/icon";
-import { ReadonlyDeep } from "type-fest";
 
 defineProps({
   stage: {

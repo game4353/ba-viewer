@@ -28,25 +28,21 @@
 </template>
 
 <script setup lang="ts">
-import { useExcelEventContentStage } from "@/utils/data/excel/event";
-import { StageDifficulty } from "~game/types/flatDataExcel";
-import { ERR_HANDLE } from "../warn/error";
+import { ReadonlyDeep } from "type-fest";
+import {
+  EventContentStageExcel,
+  StageDifficulty,
+} from "~game/types/flatDataExcel";
 
 const props = defineProps({
-  eid: {
-    type: Number,
+  stages: {
+    type: Array as PropType<ReadonlyDeep<EventContentStageExcel>[]>,
     required: true,
   },
 });
-const errHandle = inject(ERR_HANDLE)!;
 
 const tabs = ["story", "quest", "challenge"] as const;
 const tab = ref(0);
-
-const table = useExcelEventContentStage();
-const stages = computed(
-  () => table.value?.unwrapOrElse(errHandle)?.get(props.eid) ?? [],
-);
 
 const tabContents = computed(() => {
   const mapping = (diff: StageDifficulty) =>
@@ -59,7 +55,7 @@ const tabContents = computed(() => {
           : diff === StageDifficulty.VeryHard_Ex
             ? "challenge"
             : "none";
-  const m = Map.groupBy(stages.value, (stage) =>
+  const m = Map.groupBy(props.stages, (stage) =>
     mapping(stage.StageDifficulty),
   );
   m.delete("none");
