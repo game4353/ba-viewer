@@ -10,7 +10,7 @@
           :amountMax="item.ParcelAmountMax"
           :type="item.ParcelType"
           :pid="item.ParcelID"
-          :scale
+          :scaling
           route
         />
         <p class="text-center">weight: {{ item.Prob }}</p>
@@ -24,13 +24,14 @@
         v-for="(group, key) in groups"
         :key
         :pid="group.ParcelID"
-        :scale
+        :scaling
       />
     </div>
   </v-sheet>
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "@/components/misc/scale";
 import {
   useExcelGachaElement,
   useExcelGachaElementRecursive,
@@ -44,7 +45,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  scale: Number,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const obj = computed(() =>

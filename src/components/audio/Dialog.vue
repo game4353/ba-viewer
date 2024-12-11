@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="dialogObj">
     <div class="flex flex-row items-center">
-      <Bond :level="dialogObj.UnlockFavorRank" scaled :scaledW="60" />
+      <Bond :level="dialogObj.UnlockFavorRank" :scaling="{ w: 60 }" />
       {{ DialogCategory[dialogObj.DialogCategory] }}
       {{ DialogCondition[dialogObj.DialogCondition] }}
       {{ Anniversary[dialogObj.Anniversary] }}

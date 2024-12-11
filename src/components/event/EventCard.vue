@@ -31,7 +31,7 @@
                     :type="p"
                     :pid="r.RewardParcelId[i]"
                     :amount="r.RewardParcelAmount[i]"
-                    :scale="0.3"
+                    :scaling="{ r: 0.3 }"
                   />
                 </div>
               </div>

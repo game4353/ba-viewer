@@ -6,7 +6,7 @@
         :pid="reward.RewardId"
         :amount="reward.RewardAmount"
         :tag="reward.RewardTag"
-        :scale="0.3"
+        :scaling="{ r: 0.3 }"
         route
       />
       <p class="text-center" v-if="reward.RewardProb !== 10000">

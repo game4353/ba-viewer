@@ -66,7 +66,7 @@
               <Parcel
                 :pid="item.raw.id"
                 :type="ParcelType.Furniture"
-                :scale="0.35"
+                :scaling="{ r: 0.35 }"
                 route
               />
             </div>

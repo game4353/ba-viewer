@@ -8,22 +8,23 @@
         :type="single.ParcelType"
         :pid="single.ParcelID"
         :rarity="single.Rarity"
-        :scale
+        :scaling
       />
     </div>
     <v-dialog v-else max-width="500">
       <template v-slot:activator="{ props: activatorProps }">
-        <ParcelBox v-bind="activatorProps" :layout :scale :amount />
+        <ParcelBox v-bind="activatorProps" :layout :scaling :amount />
       </template>
 
       <template v-slot:default="{}">
-        <GachaGroupSub class="p-2" :pid :scale="0.3" />
+        <GachaGroupSub class="p-2" :pid :scaling="{ r: 0.3 }" />
       </template>
     </v-dialog>
   </template>
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "@/components/misc/scale";
 import {
   useExcelGachaElement,
   useExcelGachaGroup,
@@ -39,7 +40,7 @@ const props = defineProps({
   amount: Number,
   amountMin: Number,
   amountMax: Number,
-  scale: Number,
+  scaling: Object as PropType<ScaleOption>,
   tag: {
     type: Number as PropType<RewardTag>,
   },

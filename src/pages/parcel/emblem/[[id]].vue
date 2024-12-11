@@ -13,7 +13,7 @@
           >
             <ParcelCommon
               :parcel="useEmblem(id).unwrapOrElse(errHandle)"
-              :scale="0.35"
+              :scaling="{ r: 0.35 }"
               route
             />
           </div>

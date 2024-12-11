@@ -7,7 +7,11 @@
         }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
+        <Parcel
+          :type="ParcelType.Furniture"
+          :pid="picked.id"
+          :scaling="{ r: 0.4 }"
+        />
       </template>
       <v-card-text class="bg-surface-light !pt-4">
         {{ picked.desc.value.unwrapOrElse(errHandle) ?? "" }}
@@ -45,7 +49,7 @@
                 <MyCharacter
                   v-if="c.value.isOk()"
                   :cid="c.value.unwrap()"
-                  :scale="0.35"
+                  :scaling="{ r: 0.35 }"
                 />
               </div>
             </div>

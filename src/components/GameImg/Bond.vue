@@ -1,13 +1,5 @@
 <template>
-  <Scaled
-    v-if="scaled"
-    :width="90"
-    :height="83"
-    :scale
-    :scale-type
-    :scaled-h
-    :scaled-w
-  >
+  <Scaled v-if="scaling" :width="90" :height="83" :scaling>
     <v-img class="heart !absolute" width="90" height="83" :src="Icon.Heart">
       {{ level }}
     </v-img>
@@ -18,22 +10,15 @@
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "../misc/scale";
 import { Icon } from "./icon";
 
-const props = defineProps({
+defineProps({
   level: {
     type: Number,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
 });
-
-const scaled = computed(
-  () =>
-    (props.scale ?? props.scaledW ?? props.scaledH ?? props.scaleType) != null,
-);
 </script>
 
 <style scoped lang="scss">

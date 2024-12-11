@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
-    <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
+    <Scaled :scaling :width="imgW" :height="imgH">
       <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
         <GameImg
           :path="parcel.unwrap().iconPath"
@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
 import { Icon, rarityBgIcon } from "../GameImg/icon";
-import Scaled from "../misc/Scaled.vue";
+import { ScaleOption } from "../misc/scale";
 import { useCharacter } from "../parcel/character/character";
 import { ERR_HANDLE } from "../warn/error";
 
@@ -44,10 +44,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
   level: Number,
   star: Number,
   bond: Number,

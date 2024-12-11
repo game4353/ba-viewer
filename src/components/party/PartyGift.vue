@@ -16,7 +16,7 @@
             :pid="j"
             :type="ParcelType.Item"
             :need="itemMap?.get(j)"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>

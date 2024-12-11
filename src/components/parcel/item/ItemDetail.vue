@@ -6,7 +6,7 @@
       }}</span>
     </template>
     <template v-slot:prepend>
-      <Parcel :type="ParcelType.Item" :pid="picked.id" :scale="0.4" />
+      <Parcel :type="ParcelType.Item" :pid="picked.id" :scaling="{ r: 0.4 }" />
     </template>
     <v-card-text class="bg-surface-light !pt-4">
       {{ picked.desc.value?.unwrapOrElse(errHandle) ?? "" }}
@@ -19,7 +19,7 @@
       :pid="picked.obj.UsingResultId"
       :type="picked.obj.UsingResultParcelType"
       :amount="picked.obj.UsingResultAmount"
-      :scale="0.3"
+      :scaling="{ r: 0.3 }"
     />
   </v-card>
 </template>
