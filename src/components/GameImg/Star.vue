@@ -1,13 +1,5 @@
 <template>
-  <Scaled
-    v-if="scaled"
-    :width="96"
-    :height="96"
-    :scale
-    :scale-type
-    :scaled-h
-    :scaled-w
-  >
+  <Scaled v-if="scaling" :width="96" :height="96" :scaling>
     <v-img
       class="star"
       width="96"
@@ -29,23 +21,16 @@
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "../misc/scale";
 import { Icon } from "./icon";
 
-const props = defineProps({
+defineProps({
   star: {
     type: Number,
     required: true,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
 });
-
-const scaled = computed(
-  () =>
-    (props.scale ?? props.scaledW ?? props.scaledH ?? props.scaleType) != null,
-);
 </script>
 
 <style scoped lang="scss">

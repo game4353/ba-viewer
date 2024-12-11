@@ -12,7 +12,7 @@
       :ids="mission.MissionRewardParcelId"
       :types="mission.MissionRewardParcelType"
       :amounts="mission.MissionRewardAmount"
-      :scaled-w="60"
+      :scaling="{ w: 60 }"
     />
   </v-card>
 </template>

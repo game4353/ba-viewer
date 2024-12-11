@@ -6,7 +6,7 @@
       </span>
     </template>
     <template v-slot:prepend>
-      <Parcel :type="ParcelType.Emblem" :pid="obj.id" :scale="0.4" />
+      <Parcel :type="ParcelType.Emblem" :pid="obj.id" :scaling="{ r: 0.4 }" />
     </template>
     <v-card-text class="bg-surface-light !pt-4">
       {{ obj.desc.value?.unwrapOrElse(errHandle) ?? "" }}

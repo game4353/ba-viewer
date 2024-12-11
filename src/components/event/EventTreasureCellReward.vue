@@ -4,10 +4,7 @@
       :ids="reward.RewardParcelId"
       :types="reward.RewardParcelType"
       :amounts="reward.RewardParcelAmount"
-      :scale
-      :scaled-w
-      :scaled-h
-      :scale-type
+      :scaling
       route
     />
   </div>
@@ -15,6 +12,7 @@
 
 <script setup lang="ts">
 import { useExcelDbEventContentTreasureCellReward } from "@/utils/data/excel/event";
+import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 
@@ -27,10 +25,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const reward = computed(() =>

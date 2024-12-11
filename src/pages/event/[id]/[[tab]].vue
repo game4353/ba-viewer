@@ -38,7 +38,7 @@
         <Scroll class="p-1"><EventMissions :missions /></Scroll>
       </v-tabs-window-item>
       <v-tabs-window-item v-if="treasure" value="treasure">
-        <EventTreasure :rounds="treasure" :scaled-w="72" />
+        <EventTreasure :rounds="treasure" :scaling="{ w: 72 }" />
       </v-tabs-window-item>
     </v-tabs-window>
   </div>

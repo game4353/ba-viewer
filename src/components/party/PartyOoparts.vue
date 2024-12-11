@@ -10,7 +10,7 @@
               :pid="i + j"
               :type="ParcelType.Item"
               :need="itemMap?.get(i + j)"
-              :scaled-w="parcelWidth"
+              :scaling="{ w: parcelWidth }"
               :mode="editing ? 'edit' : 'display'"
             />
           </v-col>
@@ -25,7 +25,7 @@
               :pid="i + j"
               :type="ParcelType.Item"
               :need="itemMap?.get(i + j)"
-              :scaled-w="parcelWidth"
+              :scaling="{ w: parcelWidth }"
               :mode="editing ? 'edit' : 'display'"
             />
           </v-col>

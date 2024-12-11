@@ -13,7 +13,7 @@
         :key
         :value="key"
       >
-        <EventTreasureRound :round :scale :scaled-w :scaled-h :scale-type />
+        <EventTreasureRound :round :scaling />
       </v-tabs-window-item>
     </v-tabs-window>
   </div>
@@ -22,16 +22,14 @@
 <script setup lang="ts">
 import { EventContentTreasureRoundExcel } from "@/assets/game/types/flatDataExcelDb";
 import { ReadonlyDeep } from "type-fest";
+import { ScaleOption } from "../misc/scale";
 
 defineProps({
   rounds: {
     type: Array as PropType<ReadonlyDeep<EventContentTreasureRoundExcel>[]>,
     required: true,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const tab = ref(0);

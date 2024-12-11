@@ -1,10 +1,11 @@
 <template>
-  <ParcelCommon class="cursor-pointer" :parcel :amount :scale :layout />
+  <ParcelCommon class="cursor-pointer" :parcel :amount :scaling :layout />
 </template>
 
 <script setup lang="ts">
 import { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
 import { Ok } from "@/utils/result";
+import { ScaleOption } from "../misc/scale";
 import type { IParcel } from "./parcel";
 
 defineProps({
@@ -12,7 +13,7 @@ defineProps({
     type: String as PropType<"random" | "pack" | "select">,
   },
   amount: Number,
-  scale: Number,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const empty = computed(() => Ok(""));

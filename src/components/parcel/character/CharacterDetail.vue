@@ -5,7 +5,7 @@
         <span class="font-weight-black">{{ picked.name }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel :type="ParcelType.Character" :pid :scaledW="80" />
+        <Parcel :type="ParcelType.Character" :pid :scaling="{ w: 80 }" />
       </template>
       <div class="flex flex-col gap-2">
         <div class="flex flex-row gap-4 mx-2">

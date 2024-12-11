@@ -4,10 +4,7 @@
     :cid="pid"
     :layout
     :route
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <ParcelCommon
@@ -26,10 +23,7 @@
     :amountMax
     :layout
     :route
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <GachaGroup
@@ -38,10 +32,7 @@
     :amount
     :amountMin
     :amountMax
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <Recipe
@@ -50,10 +41,7 @@
     :amount
     :amountMin
     :amountMax
-    :scale
-    :scaled-w
-    :scaled-h
-    :scale-type
+    :scaling
     :tag
   />
   <div v-else></div>
@@ -62,6 +50,7 @@
 <script setup lang="ts">
 import { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
 import { PropType } from "vue";
+import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
 import Character from "./character/Character.vue";
 import { getParcel } from "./parcel";
@@ -79,10 +68,7 @@ const props = defineProps({
   amount: [Number, String],
   amountMin: Number,
   amountMax: Number,
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
   route: Boolean,
   tag: {
     type: Number as PropType<RewardTag>,

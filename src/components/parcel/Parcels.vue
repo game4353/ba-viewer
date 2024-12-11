@@ -6,16 +6,14 @@
       :type="reward.type"
       :pid="reward.id"
       :amount="reward.amount"
-      :scale
-      :scaled-w
-      :scaled-h
-      :scale-type
+      :scaling
       route
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
@@ -31,10 +29,7 @@ const props = defineProps({
     type: Array as PropType<number[] | readonly number[]>,
     required: true,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
 });
 const errHandle = inject(ERR_HANDLE)!;
 

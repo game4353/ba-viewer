@@ -3,7 +3,7 @@
     :is="route ? 'router-link' : 'div'"
     :to="`/parcel/character/${cid}`"
   >
-    <Scaled :scale :scaledW :scaledH :scaleType :width="imgW" :height="imgH">
+    <Scaled :scaling :width="imgW" :height="imgH">
       <div class="absolute bg-slate-400 h-full" :style="`width:${imgW}px`">
         <v-img
           class="!absolute right-4 top-4"
@@ -11,12 +11,14 @@
           :height="452"
           :src
         />
-      </div> </Scaled
-  ></component>
+      </div>
+    </Scaled>
+  </component>
 </template>
 
 <script setup lang="ts">
 import { uiPath } from "@/components/GameImg/loader";
+import { ScaleOption } from "@/components/misc/scale";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharacter } from "./character";
 
@@ -29,10 +31,7 @@ const props = defineProps({
     type: String as PropType<"icon" | "random" | "pack" | "select" | "default">,
   },
   route: Boolean,
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
 });
 const errHandle = inject(ERR_HANDLE)!;
 
