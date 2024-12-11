@@ -1,5 +1,11 @@
+import type {
+  EventContentTreasureCellRewardExcel,
+  EventContentTreasureRewardExcel,
+  EventContentTreasureRoundExcel,
+} from "@/assets/game/types/flatDataExcelDb";
 import { cache } from "@/utils/misc";
 import type {
+  EventContentBoxGachaElementExcelTable,
   EventContentBoxGachaManageExcelTable,
   EventContentBoxGachaShopExcelTable,
   EventContentCardExcelTable,
@@ -9,14 +15,47 @@ import type {
   EventContentFortuneGachaExcelTable,
   EventContentFortuneGachaModifyExcelTable,
   EventContentFortuneGachaShopExcelTable,
+  EventContentMiniEventTokenExcelTable,
   EventContentMissionExcelTable,
   EventContentSeasonExcelTable,
   EventContentShopExcelTable,
+  EventContentShopInfoExcelTable,
   EventContentStageExcelTable,
   EventContentStageRewardExcelTable,
   EventContentStageTotalRewardExcelTable,
 } from "~game/types/flatDataExcel";
-import { useExcelMapMany, useExcelMapSingle } from ".";
+import {
+  useExcelDbMapMany,
+  useExcelDbMapSingle,
+  useExcelMapMany,
+  useExcelMapSingle,
+} from ".";
+
+export const useExcelDbEventContentTreasureCellReward = cache(() =>
+  useExcelDbMapSingle<EventContentTreasureCellRewardExcel, "Id">(
+    "EventContentTreasureCellReward",
+    "Id",
+  ),
+);
+export const useExcelDbEventContentTreasureReward = cache(() =>
+  useExcelDbMapSingle<EventContentTreasureRewardExcel, "Id">(
+    "EventContentTreasureReward",
+    "Id",
+  ),
+);
+export const useExcelDbEventContentTreasureRound = cache(() =>
+  useExcelDbMapMany<EventContentTreasureRoundExcel, "EventContentId">(
+    "EventContentTreasureRound",
+    "EventContentId",
+  ),
+);
+
+export const useExcelEventContentBoxGachaElement = cache(() =>
+  useExcelMapMany<EventContentBoxGachaElementExcelTable, "EventContentId">(
+    "EventContentBoxGachaElementExcelTable",
+    "EventContentId",
+  ),
+);
 
 export const useExcelEventContentBoxGachaManage = cache(() =>
   useExcelMapMany<EventContentBoxGachaManageExcelTable, "EventContentId">(
@@ -74,6 +113,13 @@ export const useExcelEventContentFortuneGachaShop = cache(() =>
   ),
 );
 
+export const useExcelEventContentMiniEventToken = cache(() =>
+  useExcelMapMany<EventContentMiniEventTokenExcelTable, "EventContentId">(
+    "EventContentMiniEventTokenExcelTable",
+    "EventContentId",
+  ),
+);
+
 export const useExcelEventContentMission = cache(() =>
   useExcelMapMany<EventContentMissionExcelTable, "EventContentId">(
     "EventContentMissionExcelTable",
@@ -91,6 +137,12 @@ export const useExcelEventContentSeason = cache(() =>
 export const useExcelEventContentShop = cache(() =>
   useExcelMapMany<EventContentShopExcelTable, "EventContentId">(
     "EventContentShopExcelTable",
+    "EventContentId",
+  ),
+);
+export const useExcelEventContentShopInfo = cache(() =>
+  useExcelMapMany<EventContentShopInfoExcelTable, "EventContentId">(
+    "EventContentShopInfoExcelTable",
     "EventContentId",
   ),
 );
