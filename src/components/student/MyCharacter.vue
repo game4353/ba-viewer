@@ -5,6 +5,7 @@
         <GameImg
           :path="parcel.unwrap().iconPath"
           class="absolute top-0 left-0 p-1 w-auto"
+          v
         />
         <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>
         <div class="atk-def">

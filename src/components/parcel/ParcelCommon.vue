@@ -10,6 +10,7 @@
         <GameImg
           :path="parcel.iconPath"
           class="absolute top-0 left-0 p-1 w-auto"
+          v
         />
         <span
           v-if="amountStr != null"
@@ -96,6 +97,7 @@ const tagStr = computed(() => {
     case RewardTag.Default:
     case RewardTag.Event:
       return null;
+    case RewardTag.EventPermanentReward:
     case RewardTag.FirstClear:
       return "初回";
     case RewardTag.ThreeStar:

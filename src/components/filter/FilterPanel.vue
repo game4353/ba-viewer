@@ -78,7 +78,6 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
 import { toHiragana } from "wanakana";
 import { CCharacter } from "../parcel/character/character";
 import { characterTags } from "../parcel/character/tag";

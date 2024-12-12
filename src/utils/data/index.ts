@@ -1,4 +1,4 @@
-import { ref, toValue, watchEffect, type MaybeRefOrGetter } from "vue";
+import { type MaybeRefOrGetter } from "vue";
 
 export function useFetch<T>(
   url: MaybeRefOrGetter<string> | globalThis.ComputedRef<string>,
