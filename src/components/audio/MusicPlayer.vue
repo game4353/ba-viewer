@@ -6,8 +6,6 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from "vue";
-
 const props = defineProps({
   filename: {
     type: String,

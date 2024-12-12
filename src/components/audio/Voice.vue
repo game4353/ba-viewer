@@ -1,8 +1,8 @@
 <template>
   <v-card v-if="voiceObj">
-    <div class="flex flex-row items-center">
-      <Bond :level="voiceObj.UnlockFavorRank" :scaling="{ w: 60 }" />
-      {{ Local.custom(voiceObj?.LocalizeCVGroup) }}
+    <div class="flex flex-row items-center h-16">
+      <Bond :level="voiceObj.UnlockFavorRank" :scaling="{ w: 40 }" />
+      <p class="mx-2">{{ Local.custom(voiceObj?.LocalizeCVGroup) }}</p>
       <div class="grow"></div>
       <MusicPlayer :path="voiceObj.Path[0]" />
     </div>

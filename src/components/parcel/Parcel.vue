@@ -49,7 +49,6 @@
 
 <script setup lang="ts">
 import { ParcelType, RewardTag } from "@/assets/game/types/flatDataExcel";
-import { PropType } from "vue";
 import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
 import Character from "./character/Character.vue";

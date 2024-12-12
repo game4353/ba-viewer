@@ -36,7 +36,6 @@
 <script setup lang="ts">
 import { useExcelGoods } from "@/utils/data/excel/shop";
 import { Local } from "@/utils/localize";
-import { PropType } from "vue";
 import { getParcel } from "../parcel/parcel";
 import { ERR_HANDLE } from "../warn/error";
 
