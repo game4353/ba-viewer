@@ -77,7 +77,7 @@ const drawer = ref(false);
 const group = ref(null);
 const open = ref([]);
 const items: Array<[string, Tab[]]> = [
-  ["生徒", [TABS.student, TABS.party /*, TABS.gacha*/]],
+  ["生徒", [TABS.student, TABS.party, TABS.gacha]],
   [
     "アイテム",
     [
