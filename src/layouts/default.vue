@@ -15,26 +15,11 @@
       <v-spacer></v-spacer>
 
       <template v-slot:append>
-        <!-- <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn> -->
-
-        <v-btn icon @click.stop="$router.go(-1)">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <v-btn icon @click.stop="$router.go(1)">
-          <v-icon>mdi-arrow-right</v-icon>
-        </v-btn>
-        <v-btn icon @click.stop="$router.go(0)">
-          <v-icon>mdi-refresh</v-icon>
-        </v-btn>
-        <v-btn icon @click.stop="$router.push('/data')">
-          <v-icon>mdi-database</v-icon>
-        </v-btn>
-
-        <!-- <v-btn icon>
-          <v-icon>mdi-cog</v-icon>
-        </v-btn> -->
+        <v-btn icon="mdi-arrow-left" @click.stop="$router.go(-1)" />
+        <v-btn icon="mdi-arrow-right" @click.stop="$router.go(1)" />
+        <v-btn icon="mdi-refresh" @click.stop="$router.go(0)" />
+        <v-btn icon="mdi-database" @click.stop="$router.push('/data')" />
+        <!-- <v-btn icon="mdi-cog" @click.stop="$router.push('/settings')" /> -->
       </template>
     </v-app-bar>
 
