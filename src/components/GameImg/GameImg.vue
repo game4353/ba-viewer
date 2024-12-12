@@ -1,5 +1,6 @@
 <template>
-  <img :src="uiPath(path)" />
+  <v-img v-if="v" :src="uiPath(path)"></v-img>
+  <img v-else :src="uiPath(path)" />
 </template>
 
 <script setup lang="ts">
@@ -10,5 +11,6 @@ defineProps({
     type: String,
     required: true,
   },
+  v: Boolean,
 });
 </script>
