@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import { PropType } from "vue";
 import type { EventContentStageTotalRewardExcel } from "~game/types/flatDataExcel";
 
 defineProps({

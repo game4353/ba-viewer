@@ -70,7 +70,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
 import { TABS, type Tab } from "./tabs";
 
 const drawer = ref(false);

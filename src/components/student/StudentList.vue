@@ -12,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
-
 const props = defineProps({
   characterIds: {
     type: Array as PropType<Array<number>>,
