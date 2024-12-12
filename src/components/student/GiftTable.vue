@@ -16,11 +16,10 @@
           "
         ></th>
         <td
-          class="cursor-pointer"
           :class="gClass(gid, true)"
           v-for="gid in gids"
           :key="gid"
-          @click="() => toggle(gid)"
+          @click="() => gid < 5900 && toggle(gid)"
         >
           <Parcel
             :type="ParcelType.Item"
@@ -91,6 +90,7 @@ function sClass(sid: number, head = false) {
 }
 function gClass(gid: number, head = false) {
   const arr: string[] = [];
+  if (head && gid < 5900) arr.push("cursor-pointer");
   if (head && pickedGid.value.has(gid)) arr.push("picked");
   if (filteredGid.value.size > 0 && !filteredGid.value.has(gid))
     arr.push("hidden");
