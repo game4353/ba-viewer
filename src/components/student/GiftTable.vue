@@ -22,7 +22,12 @@
           :key="gid"
           @click="() => toggle(gid)"
         >
-          <Parcel :type="ParcelType.Item" :pid="gid" :scaling="{ w: colW }" />
+          <Parcel
+            :type="ParcelType.Item"
+            :pid="gid"
+            :scaling="{ w: colW }"
+            :amount="dataParcel.use(ParcelType.Item, gid).amount"
+          />
         </td>
       </tr>
     </thead>
@@ -52,6 +57,7 @@
 <script setup lang="ts">
 import { ParcelType } from "@/assets/game/types/flatDataExcel";
 import { ERR_HANDLE } from "@/components/warn/error";
+import { dataParcel } from "@/stores/parcel";
 import {
   getGiftIds,
   useGiftFavor,
