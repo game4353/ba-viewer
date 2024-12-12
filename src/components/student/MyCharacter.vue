@@ -1,5 +1,9 @@
 <template>
-  <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
+  <component
+    :is="noRoute ? 'span' : 'router-link'"
+    v-if="parcel?.isOk()"
+    :to="`/student/${parcel.unwrap().id}`"
+  >
     <Scaled :scaling :width="imgW" :height="imgH">
       <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
         <GameImg
@@ -27,7 +31,7 @@
         />
       </v-img>
     </Scaled>
-  </router-link>
+  </component>
 </template>
 
 <script setup lang="ts">
@@ -49,6 +53,7 @@ const props = defineProps({
   level: Number,
   star: Number,
   bond: Number,
+  noRoute: Boolean,
 });
 const parcel = useCharacter(props.cid);
 
