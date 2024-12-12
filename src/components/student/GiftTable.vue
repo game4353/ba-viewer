@@ -37,7 +37,12 @@
           />
         </th>
         <td :class="gClass(gid)" v-for="gid in gids" :key="gid">
-          <FavorFace :sid :gid />
+          <FavorFace
+            v-if="useStudentGiftFavor(sid, gid).value.unwrapOrElse(errHandle)"
+            :favor="
+              useStudentGiftFavor(sid, gid).value.unwrapOrElse(errHandle)!
+            "
+          />
         </td>
       </tr>
     </tbody>
@@ -47,7 +52,12 @@
 <script setup lang="ts">
 import { ParcelType } from "@/assets/game/types/flatDataExcel";
 import { ERR_HANDLE } from "@/components/warn/error";
-import { getGiftIds, useGiftFavor, useStudentFavor } from "../student/gift";
+import {
+  getGiftIds,
+  useGiftFavor,
+  useStudentFavor,
+  useStudentGiftFavor,
+} from "../student/gift";
 import { usePlayableIds } from "../student/student";
 const errHandle = inject(ERR_HANDLE)!;
 

@@ -1,34 +1,23 @@
 <template>
   <div class="w-full flex flex-col items-center" :class="fade">
-    <v-img class="w-2/3" :src="face"></v-img>
+    <img class="w-2/3" :src="face" />
     <p>{{ favor }}</p>
   </div>
 </template>
 <script setup lang="ts">
 import { Icon } from "../GameImg/icon";
-import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
-import { useStudentGiftFavor } from "./gift";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
-  sid: {
+  favor: {
     type: Number,
     required: true,
   },
-  gid: {
-    type: Number,
-    required: true,
-  },
-  scaling: Object as PropType<ScaleOption>,
 });
 
-const favor = computed(() =>
-  useStudentGiftFavor(props.sid, props.gid).value.unwrapOrElse(errHandle),
-);
-
 const face = computed(() => {
-  switch (favor.value) {
+  switch (props.favor) {
     case 20:
       return Icon.Gift1;
     case 40:
@@ -42,12 +31,12 @@ const face = computed(() => {
     case undefined:
       return "";
     default:
-      errHandle(new Error(`Invalid favor exp '${favor}'.`));
+      errHandle(new Error(`Invalid favor exp '${props.favor}'.`));
       return "";
   }
 });
 const fade = computed(() => {
-  switch (favor.value) {
+  switch (props.favor) {
     case 20:
     case 120:
       return "opacity-10";
