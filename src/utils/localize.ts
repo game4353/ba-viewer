@@ -5,7 +5,7 @@ import type {
   LocalizeSkillExcel,
 } from "~game/types/flatDataExcelDb";
 import { useExcelDbMapSingle } from "./data/excel";
-import { Err, Ok } from "./result";
+import { Err, Ok, asResult } from "./result";
 
 enum Lang {
   JP,
@@ -64,7 +64,7 @@ const useLocalizeSkillMap = cache(() =>
   useExcelDbMapSingle<LocalizeSkillExcel, "Key">("LocalizeSkill", "Key"),
 );
 function useLocalizeSkill(id: number, desc = false) {
-  return computed(() =>
+  return asResult(
     useLocalizeSkillMap()
       .value.andThen((map) => map.getResult(id))
       .map((o) => {
