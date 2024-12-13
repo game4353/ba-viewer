@@ -2,38 +2,12 @@
   <v-expansion-panel>
     <v-expansion-panel-title>
       SKILL
-      <div class="flex flex-row w-full justify-evenly" v-if="chara">
-        <Skill
-          class="w-1/4 max-w-16"
-          v-if="skillEX"
-          :sid="skillEX"
-          :type="chara.obj.BulletType"
-          :lv="charaNow.skill0.value"
-          layout="icon"
-        />
-        <Skill
-          class="w-1/4 max-w-16"
-          v-if="skillNS"
-          :sid="skillNS"
-          :type="chara.obj.BulletType"
-          :lv="charaNow.skill1.value"
-          layout="icon"
-        />
-        <Skill
-          class="w-1/4 max-w-16"
-          v-if="skillPS"
-          :sid="skillPS"
-          :type="chara.obj.BulletType"
-          :lv="charaNow.skill2.value"
-          layout="icon"
-        />
-        <Skill
-          class="w-1/4 max-w-16"
-          v-if="skillSS"
-          :sid="skillSS"
-          :type="chara.obj.BulletType"
-          :lv="charaNow.skill3.value"
-          layout="icon"
+      <div class="flex flex-row w-full justify-evenly" v-if="skills">
+        <SkillIcon
+          v-for="skill in skills"
+          :key="skill.id"
+          :skill
+          :scaling="{ w: 64 }"
         />
       </div>
     </v-expansion-panel-title>
@@ -47,10 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import { useCharaStore } from "@/stores/character";
-import { storeToRefs } from "pinia";
+import { Result } from "ts-results-es";
 import { useCharacter } from "~/components/parcel/character/character";
-import { useSkillList } from "~/components/skill/skillList";
 import { ERR_HANDLE } from "~/components/warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 
@@ -64,24 +36,10 @@ const props = defineProps({
 const chara = computed(() =>
   useCharacter(props.cid).value.unwrapOrElse(errHandle),
 );
-const store = useCharaStore(props.cid);
-const charaNow = storeToRefs(store.now());
-
-const skillList = useSkillList(
-  props.cid,
-  charaNow.star.value > 6 ? 2 : 0,
-  charaNow.gear0.value > 1 ? 2 : 0,
-);
-const skillEX = computed(
-  () => skillList.value.unwrapOrElse(errHandle)?.ExSkillGroupId[0],
-);
-const skillNS = computed(
-  () => skillList.value.unwrapOrElse(errHandle)?.PublicSkillGroupId[0],
-);
-const skillPS = computed(
-  () => skillList.value.unwrapOrElse(errHandle)?.PassiveSkillGroupId[0],
-);
-const skillSS = computed(
-  () => skillList.value.unwrapOrElse(errHandle)?.ExtraPassiveSkillGroupId[0],
-);
+const skills = computed(() => {
+  if (chara.value == null) return chara.value;
+  return Result.all(
+    ([0, 1, 2, 3] as const).map((v) => chara.value!.getSkill(v)),
+  ).unwrapOrElse(errHandle);
+});
 </script>

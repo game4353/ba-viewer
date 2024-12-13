@@ -1,12 +1,9 @@
 <template>
   <Loading v-if="skill == null" />
-  <SkillIcon v-else-if="layout === 'icon'" :path="skill.iconPath" :type />
   <div v-else>
     <v-card>
       <template v-slot:prepend>
-        <div class="w-12">
-          <SkillIcon :path="skill.iconPath" :type />
-        </div>
+        <SkillIcon :skill :scaling="{ h: 60 }" />
       </template>
 
       <template v-slot:title>
@@ -48,7 +45,7 @@ const props = defineProps({
   },
   lv: Number,
   type: Number as PropType<BulletType>,
-  layout: String as PropType<"icon" | "default" | "full">,
+  layout: String as PropType<"default" | "full">,
   normalAttack: Boolean,
 });
 const errHandle = inject(ERR_HANDLE)!;
