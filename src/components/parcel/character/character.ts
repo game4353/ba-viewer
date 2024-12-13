@@ -169,10 +169,10 @@ export class CCharacter
     );
   }
 
-  getSkill(i: 0 | 1 | 2 | 3) {
+  getSkill(i: 0 | 1 | 2 | 3, lv?: number) {
     return asResult(
       this.skillGroups.andThen(
-        (arr) => useSkill(arr[i], this.statNow[`skill${i}`]).value,
+        (arr) => useSkill(arr[i], lv ?? this.statNow[`skill${i}`]).value,
       ),
     );
   }
