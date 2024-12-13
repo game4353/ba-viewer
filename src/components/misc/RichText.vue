@@ -3,15 +3,24 @@
 </template>
 
 <script setup lang="ts">
+import { PropMaybeResult } from "@/utils/result";
+import { ERR_HANDLE } from "../warn/error";
+const errHandle = inject(ERR_HANDLE)!;
+
 const props = defineProps({
   text: {
-    type: String,
+    type: [String, Object] as PropMaybeResult<string>,
     required: true,
   },
 });
 
+const text = computed(() => {
+  if (typeof props.text === "string") return props.text;
+  return props.text.unwrapOrElse(errHandle) ?? "";
+});
+
 const formattedText = computed(() => {
-  return props.text
+  return text.value
     .replace(
       /\[c\]\[([0-9a-fA-F]{6})\](.*?)\[-\]\[\/c\]/g,
       (match, color, content) => {
