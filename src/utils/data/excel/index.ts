@@ -110,6 +110,17 @@ export class MapResult<T, U> extends Map<T, U> {
     return Err(KeyNotFoundErr.from(key, this.keyName, this.title));
   }
 
+  /** Adds a new element with a specified key and value
+   * to the Map and returns `true`.
+   * If an element with the same key already exists,
+   * this will do nothing and return `false`.
+   * */
+  trySet(key: T, value: U) {
+    if (this.has(key)) return false;
+    this.set(key, value);
+    return true;
+  }
+
   static groupBy<K, T>(
     items: T[],
     keySelector: (item: T, index: number) => K,

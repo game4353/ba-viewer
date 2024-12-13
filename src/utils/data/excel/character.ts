@@ -1,5 +1,6 @@
 import { cache } from "@/utils/misc";
 import type {
+  CharacterAcademyTagsExcelTable,
   CharacterExcelTable,
   CharacterGearExcelTable,
   CharacterLevelExcelTable,
@@ -60,5 +61,12 @@ export const useExcelDbCharacterPotentialStat = cache(() =>
   useExcelDbMapMany<CharacterPotentialStatExcel, "PotentialStatGroupId">(
     "CharacterPotentialStat",
     "PotentialStatGroupId",
+  ),
+);
+
+export const useExcelCharacterAcademyTags = cache(() =>
+  useExcelMapSingle<CharacterAcademyTagsExcelTable, "Id">(
+    "CharacterAcademyTagsExcelTable",
+    "Id",
   ),
 );
