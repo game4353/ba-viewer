@@ -48,9 +48,9 @@
       <v-card-text class="bg-surface-light !pt-4">
         <div class="flex flex-col gap-2">
           <RichText :text="skill.desc" />
-          <template v-if="layout === 'full' && sid">
+          <template v-if="layout === 'full' && group">
             <v-divider></v-divider>
-            <LevelSkillData :group="sid" />
+            <LevelSkillData :group />
           </template>
         </div>
       </v-card-text>
@@ -69,9 +69,7 @@ const errHandle = inject(ERR_HANDLE)!;
 const props = defineProps({
   cid: Number,
   skillNo: Number as PropType<0 | 1 | 2 | 3>,
-  sid: {
-    type: String,
-  },
+  group: String,
   layout: String as PropType<"default" | "full">,
   normalAttack: Boolean,
 });
@@ -100,8 +98,8 @@ const lvNG = computed({
 const lvVal = ref(lvNG.value?.[0] ?? 1);
 
 const skill = computed(() => {
-  if (props.sid != null)
-    return useSkill(props.sid, lvVal.value).value.unwrapOrElse(errHandle);
+  if (props.group != null)
+    return useSkill(props.group, lvVal.value).value.unwrapOrElse(errHandle);
   if (props.skillNo != null && student.value != null)
     return student.value
       .getSkill(props.skillNo, lvVal.value)

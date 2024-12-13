@@ -42,36 +42,36 @@
         <v-card-text class="bg-surface-light !pt-4" v-if="normalAttack">
           <div class="big">通常攻撃</div>
           <template v-for="s in normalAttack" :key="s">
-            <Skill :sid="s" normalAttack />
+            <Skill :group="s" normalAttack />
           </template>
         </v-card-text>
         <v-card-text class="bg-surface-light !pt-4" v-if="skillEx">
           <div class="big">EXスキル</div>
           <div v-for="(s, i) in skillEx" :key="s + i">
             <div v-if="s === 'EmptySkill'">N/A</div>
-            <Skill v-else :sid="s" layout="full" />
+            <Skill v-else :group="s" layout="full" />
           </div>
         </v-card-text>
         <v-card-text class="bg-surface-light !pt-4" v-if="skillNs">
           <div class="big">ノーマルスキル</div>
-          <Skill v-for="s in skillNs" :key="s" :sid="s" layout="full" />
+          <Skill v-for="s in skillNs" :key="s" :group="s" layout="full" />
         </v-card-text>
         <v-card-text class="bg-surface-light !pt-4" v-if="skillPs">
           <div class="big">パッシブスキル</div>
           <Skill
             v-for="(s, i) in skillPs"
             :key="s + i"
-            :sid="s"
+            :group="s"
             layout="full"
           />
         </v-card-text>
         <v-card-text class="bg-surface-light !pt-4" v-if="skillSs">
           <div class="big">サブスキル</div>
-          <Skill v-for="s in skillSs" :key="s" :sid="s" layout="full" />
+          <Skill v-for="s in skillSs" :key="s" :group="s" layout="full" />
         </v-card-text>
         <v-card-text class="bg-surface-light !pt-4" v-if="skillHs">
           <div class="big">隠しスキル</div>
-          <Skill v-for="s in skillHs" :key="s" :sid="s" layout="full" />
+          <Skill v-for="s in skillHs" :key="s" :group="s" layout="full" />
         </v-card-text>
         <!-- <v-card-text class="bg-surface-light !pt-4">
           {{ picked.obj }}{{ picked.costume }}
