@@ -50,6 +50,7 @@ declare module 'vue' {
     ItemAmount: typeof import('./components/party/ItemAmount.vue')['default']
     ItemDetail: typeof import('./components/parcel/item/ItemDetail.vue')['default']
     LevelSkillData: typeof import('./components/skill/levelSkillData/LevelSkillData.vue')['default']
+    Loading: typeof import('./components/misc/Loading.vue')['default']
     MusicPlayer: typeof import('./components/audio/MusicPlayer.vue')['default']
     MyCharacter: typeof import('./components/student/MyCharacter.vue')['default']
     MyCharacterBig: typeof import('./components/student/MyCharacterBig.vue')['default']
