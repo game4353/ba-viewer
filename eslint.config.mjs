@@ -23,6 +23,6 @@ export default [
     },
   },
   {
-    ignores: ["*.config.*", "**/type.ts", "**/*.d.ts", "**/*.js"],
+    ignores: ["*.config.*", "**/type.ts", "**/*.d.ts"],
   },
 ];
