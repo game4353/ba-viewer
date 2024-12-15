@@ -6,9 +6,9 @@ import {
   type CharacterExcel,
   type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
-import { useBaseStats } from "@/components/character/stat/stat";
 import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
+import { useBaseStats } from "@/components/student/stat";
 import { useCharaStore } from "@/stores/character";
 import {
   useExcelCharacter,
@@ -23,11 +23,11 @@ import { toHiragana, toKatakana } from "wanakana";
 import {
   usePotentialStatBonusRate,
   usePotentialStatRecipeIngredient,
-} from "../../character/potential";
+} from "../../student/potential";
 import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
-} from "../../character/star";
+} from "../../student/star";
 import { AParcel } from "../class";
 import type { CTag, IFilterable } from "../tag";
 import {

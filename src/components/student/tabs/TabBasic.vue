@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharaStore } from "@/stores/character";
-import { useCharacter } from "../parcel/character/character";
+import { useCharacter } from "~/components/parcel/character/character";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({

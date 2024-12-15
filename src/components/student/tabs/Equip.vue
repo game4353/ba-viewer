@@ -17,7 +17,7 @@ import {
   EquipmentCategory,
   EquipmentExcelTable,
 } from "~game/types/flatDataExcel";
-import { uiPath } from "../GameImg/loader";
+import { uiPath } from "../../GameImg/loader";
 
 const props = defineProps({
   category: {

@@ -36,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import SpineCharacter from "@/components/character/SpineCharacter.vue";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelCostume } from "@/utils/data/excel/character";
 import { useSpineCharacterPath } from "@/utils/data/l2d";

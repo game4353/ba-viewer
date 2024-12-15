@@ -25,8 +25,8 @@
 
 <script setup lang="ts">
 import { StatType } from "@/assets/game/types/flatDataExcel";
-import { statRows } from "@/components/character/stat/stat";
 import { useCharacter } from "@/components/parcel/character/character";
+import { statRows } from "@/components/student/stat";
 import { ERR_HANDLE } from "@/components/warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 

@@ -56,8 +56,8 @@ import {
   useExcelDbCharacterVoice,
   useExcelDbVoiceCommon,
 } from "@/utils/data/excel/voice";
+import { ERR_HANDLE } from "~/components/warn/error";
 import { CVCollectionType } from "~game/types/flatDataExcelDb";
-import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
   cid: {
