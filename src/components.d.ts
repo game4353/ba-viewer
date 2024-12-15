@@ -93,6 +93,7 @@ declare module 'vue' {
     TabBasic: typeof import('./components/character/TabBasic.vue')['default']
     TabBasicSkill: typeof import('./components/character/skill/TabBasicSkill.vue')['default']
     TabBasicStat: typeof import('./components/character/stat/TabBasicStat.vue')['default']
+    TabInfo: typeof import('./components/student/tabs/TabInfo.vue')['default']
     TabSkill: typeof import('./components/character/skill/TabSkill.vue')['default']
     TabStat: typeof import('./components/character/stat/TabStat.vue')['default']
     TabVoice: typeof import('./components/character/TabVoice.vue')['default']

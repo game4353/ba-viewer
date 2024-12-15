@@ -23,7 +23,9 @@
           <v-tabs-window-item value="skill">
             <TabSkill :cid />
           </v-tabs-window-item>
-          <v-tabs-window-item value="info"> </v-tabs-window-item>
+          <v-tabs-window-item value="info">
+            <TabInfo :cid />
+          </v-tabs-window-item>
           <v-tabs-window-item value="voice">
             <TabVoice :cid />
           </v-tabs-window-item>
