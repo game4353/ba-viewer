@@ -1,10 +1,14 @@
+import type {
+  LocalizeCharProfileExcel,
+  LocalizeCharProfileExcelTable,
+} from "@/assets/game/types/flatDataExcel";
 import { cache } from "@/utils/misc";
 import type {
   LocalizeEtcExcel,
   LocalizeExcel,
   LocalizeSkillExcel,
 } from "~game/types/flatDataExcelDb";
-import { useExcelDbMapSingle } from "./data/excel";
+import { useExcelDbMapSingle, useExcelMapSingle } from "./data/excel";
 import { Err, Ok, asResult } from "./result";
 
 enum Lang {
@@ -78,6 +82,37 @@ function useLocalizeSkill(id: number, desc = false) {
   );
 }
 
+const useLocalizeCharProfileMap = cache(() =>
+  useExcelMapSingle<LocalizeCharProfileExcelTable, "CharacterId">(
+    "LocalizeCharProfileExcelTable",
+    "CharacterId",
+  ),
+);
+type A = {
+  [K in keyof LocalizeCharProfileExcel as K extends `${infer Key}Jp`
+    ? Key
+    : K extends `${infer Key2}Kr`
+      ? Key2
+      : never]: LocalizeCharProfileExcel[K];
+};
+function useLocalizeCharProfile(id: number, key: keyof A) {
+  const lang =
+    settings.lang === Lang.JP
+      ? "Jp"
+      : settings.lang === Lang.KR
+        ? "Kr"
+        : undefined;
+  if (lang == null) return Err(new Error());
+
+  return useLocalizeCharProfileMap()
+    .value.andThen((map) => map.getResult(id))
+    .andThen((o) => {
+      const k = `${key}${lang}`;
+      if (k in o) return Ok(o[`${key}${lang}`]);
+      return Err(new Error(`Invalid key '${k}' in LocalizeCharProfile.`));
+    });
+}
+
 function custom(key?: string): string {
   if (key?.slice(-2, -1) === "_")
     return custom(key.slice(0, -2)) + key.slice(-1);
@@ -137,4 +172,5 @@ export const Local = {
   useLocalizeSkill,
   useLocalize,
   custom,
+  useLocalizeCharProfile,
 };

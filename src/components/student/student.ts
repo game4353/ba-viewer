@@ -7,6 +7,7 @@ import {
   useExcelCharacterLevel,
 } from "@/utils/data/excel/character";
 import { KeyNotFoundErr } from "@/utils/error";
+import { Local } from "@/utils/localize";
 import { cache, sum } from "@/utils/misc";
 import { Err, Ok, Result, asResult } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
@@ -16,10 +17,23 @@ import {
   useEquipmentFromEnum,
 } from "../parcel/equipment/equipment";
 import { useCharacterGear } from "../parcel/gear/gear";
+import { clubLocalizeKey } from "./club";
+import { schoolFullLocalizeKey } from "./school";
 
 export class CStudent extends CCharacter {
   constructor(...args: ConstructorParameters<typeof CCharacter>) {
     super(...args);
+  }
+
+  useClub() {
+    return Local.useLocalize(clubLocalizeKey(this.obj.Club)).value;
+  }
+  useSchool() {
+    return Local.useLocalize(schoolFullLocalizeKey(this.obj.School)).value;
+  }
+
+  useProfile(key: Parameters<typeof Local.useLocalizeCharProfile>["1"]) {
+    return Local.useLocalizeCharProfile(this.id, key);
   }
 
   useExp(unit: number) {
