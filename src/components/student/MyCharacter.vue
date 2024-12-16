@@ -8,7 +8,8 @@
       <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
         <GameImg
           :path="parcel.unwrap().iconPath"
-          class="absolute top-0 left-0 p-1 w-auto"
+          class="absolute top-2 left-2"
+          :width="240"
           v
         />
         <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>

@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { useCharaStore } from "@/stores/character";
-import { statRows } from "./stat";
+import { statRows } from "../stat";
 
 const props = defineProps({
   cid: {
