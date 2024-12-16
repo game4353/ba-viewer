@@ -1,4 +1,5 @@
 <template>
+  <WIP />
   <input type="file" @change="handleFileUpload" accept=".json" />
   <v-data-iterator :items="filtered" :items-per-page="3">
     <template v-slot:default="{ items }">
@@ -15,9 +16,10 @@
             <MyCharacter
               v-if="c != null"
               :cid="c.cid"
-              :scale="0.3"
+              :scaling="{ w: 96 }"
               :level="c.lv"
               :star="c.star"
+              dark
             />
           </div>
         </div>
@@ -37,7 +39,7 @@
             single-line
           ></v-text-field>
         </div>
-        <div class="d-flex align-center justify-center pa-4">
+        <div class="flex align-center justify-center pa-4">
           <v-btn
             :disabled="page === 1"
             density="comfortable"
