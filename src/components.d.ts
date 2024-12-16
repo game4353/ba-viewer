@@ -68,6 +68,7 @@ declare module 'vue' {
     PartyMember: typeof import('./components/party/PartyMember.vue')['default']
     PartyOoparts: typeof import('./components/party/PartyOoparts.vue')['default']
     PartySelect: typeof import('./components/party/PartySelect.vue')['default']
+    RaidBanner: typeof import('./components/raid/RaidBanner.vue')['default']
     RaidList: typeof import('./components/raid/RaidList.vue')['default']
     RaidRank: typeof import('./components/raid/RaidRank.vue')['default']
     Recipe: typeof import('./components/parcel/recipe/Recipe.vue')['default']

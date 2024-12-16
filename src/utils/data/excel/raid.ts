@@ -1,5 +1,6 @@
 import { cache } from "@/utils/misc";
 import type {
+  GroundExcelTable,
   RaidSeasonManageExcelTable,
   RaidStageExcelTable,
 } from "~game/types/flatDataExcel";
@@ -17,4 +18,8 @@ export const useExcelRaidStage = cache(() =>
     "RaidStageExcelTable",
     "RaidBossGroup",
   ),
+);
+
+export const useExcelGround = cache(() =>
+  useExcelMapSingle<GroundExcelTable, "Id">("GroundExcelTable", "Id"),
 );
