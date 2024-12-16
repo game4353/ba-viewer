@@ -10,7 +10,7 @@
 
   <v-tabs-window v-model="tab">
     <v-tabs-window-item :value="0">
-      <RaidList :events="raid" />
+      <RaidList />
     </v-tabs-window-item>
     <v-tabs-window-item :value="1">
       <RaidRank />
@@ -19,11 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import type { RaidSeasonManageExcel } from "~game/types/flatDataExcel";
-// @ts-ignore
-import { DataList } from "~game/excel/RaidSeasonManageExcelTable.json";
-
 const tab = ref(0);
-const raid = DataList as RaidSeasonManageExcel[];
 const tabs = ["シーズン", "ランキング"];
 </script>
