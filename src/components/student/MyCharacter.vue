@@ -5,7 +5,13 @@
     :to="`/student/${parcel.unwrap().id}`"
   >
     <Scaled :scaling :width="imgW" :height="imgH">
-      <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
+      <v-img
+        class="absolute"
+        :class="dark ? 'opacity-25' : gray ? 'opacity-75' : ''"
+        :width="imgW"
+        :height="imgH"
+        :src="bg"
+      >
         <GameImg
           :path="parcel.unwrap().iconPath"
           class="absolute top-2 left-2"
@@ -83,6 +89,9 @@ const bg = computed(() => {
   if (parcel.value?.unwrapOrElse(errHandle) == null) return;
   return rarityBgIcon(parcel.value.unwrap().rarity);
 });
+
+const dark = computed(() => chara.lv === 0);
+const gray = computed(() => chara.star < (props.star ?? 0));
 </script>
 
 <style scoped lang="scss">
