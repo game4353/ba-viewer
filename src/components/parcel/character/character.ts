@@ -6,9 +6,9 @@ import {
   type CharacterExcel,
   type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
-import { useBaseStats } from "@/components/character/stat/stat";
-import { CSkill } from "@/components/skill/skill";
+import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
+import { useBaseStats } from "@/components/student/stat";
 import { useCharaStore } from "@/stores/character";
 import {
   useExcelCharacter,
@@ -23,11 +23,11 @@ import { toHiragana, toKatakana } from "wanakana";
 import {
   usePotentialStatBonusRate,
   usePotentialStatRecipeIngredient,
-} from "../../character/potential";
+} from "../../student/potential";
 import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
-} from "../../character/star";
+} from "../../student/star";
 import { AParcel } from "../class";
 import type { CTag, IFilterable } from "../tag";
 import {
@@ -155,7 +155,7 @@ export class CCharacter
   get skillGroups() {
     return asResult(
       computed(() => {
-        const gear = 0; // TODO
+        const gear = this.statNow.gear0 > 1 ? 2 : 0;
         const wpn = this.star.value >= 7 ? 2 : 0;
         return useSkillList(this.id, wpn, gear).value.andThen((o) =>
           Result.all([
@@ -169,15 +169,11 @@ export class CCharacter
     );
   }
 
-  getSkill(i: 0 | 1 | 2 | 3) {
+  getSkill(i: 0 | 1 | 2 | 3, lv?: number) {
     return asResult(
-      computed(() =>
-        this.skillGroups.map((arr) => {
-          const c = new CSkill(arr[i]);
-          c.level = this.statNow[`skill${i}`];
-          return c;
-        }),
-      ).value,
+      this.skillGroups.andThen(
+        (arr) => useSkill(arr[i], lv ?? this.statNow[`skill${i}`]).value,
+      ),
     );
   }
 

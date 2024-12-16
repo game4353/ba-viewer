@@ -3,8 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import SpineCharacter from "@/components/character/SpineCharacter.vue";
-
 const route = useRoute<"/l2d/query/">();
 // const path = route.params.path;
 // TODO: 404

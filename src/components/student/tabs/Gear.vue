@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { uiPath } from "../GameImg/loader";
 import { useExcelCharacterGear } from "@/utils/data/excel/character";
+import { uiPath } from "../../GameImg/loader";
 
 const props = defineProps({
   cid: {

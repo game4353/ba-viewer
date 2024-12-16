@@ -28,3 +28,4 @@ public/game
 src/assets/game
 *.txt
 *.zip
+.vercel

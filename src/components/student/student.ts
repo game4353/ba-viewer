@@ -7,6 +7,7 @@ import {
   useExcelCharacterLevel,
 } from "@/utils/data/excel/character";
 import { KeyNotFoundErr } from "@/utils/error";
+import { Local, useLocalizeCharProfileMap } from "@/utils/localize";
 import { cache, sum } from "@/utils/misc";
 import { Err, Ok, Result, asResult } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
@@ -16,10 +17,39 @@ import {
   useEquipmentFromEnum,
 } from "../parcel/equipment/equipment";
 import { useCharacterGear } from "../parcel/gear/gear";
+import { clubLocalizeKey } from "./club";
+import { schoolFullLocalizeKey } from "./school";
 
 export class CStudent extends CCharacter {
   constructor(...args: ConstructorParameters<typeof CCharacter>) {
     super(...args);
+  }
+
+  useBirthday() {
+    return asResult(
+      useLocalizeCharProfileMap()
+        .value.andThen((map) => map.getResult(this.id))
+        .map((o) => o.BirthDay)
+        .andThen((bd) => {
+          if (bd === "-") return Ok(undefined);
+          if (!/^\d\d?\/\d\d?/.test(bd))
+            return Err(new Error(`Invalid birthday '${bd}'.`));
+          const [month, day] = bd.split("/").map(Number);
+          const year = new Date().getFullYear();
+          return Ok(new Date(year, month - 1, day));
+        }),
+    );
+  }
+
+  useClub() {
+    return Local.useLocalize(clubLocalizeKey(this.obj.Club)).value;
+  }
+  useSchool() {
+    return Local.useLocalize(schoolFullLocalizeKey(this.obj.School)).value;
+  }
+
+  useProfile(key: Parameters<typeof Local.useLocalizeCharProfile>["1"]) {
+    return Local.useLocalizeCharProfile(this.id, key);
   }
 
   useExp(unit: number) {
@@ -94,13 +124,23 @@ function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
   );
 }
 
-export const usePlayableIds = cache(() =>
+export const usePlayableIds = cache((ignoreType2 = false) =>
   computed(() =>
     asResult(
       useExcelCharacter().value.map((map) =>
         Array.from(map.entries())
-          .filter(([, v]) => isPlayable(v))
+          .filter(([, v]) => isPlayable(v) && (!ignoreType2 || v.Id !== 10099))
           .map(([k]) => k),
+      ),
+    ),
+  ),
+);
+
+export const useStudents = cache((ignoreType2 = false) =>
+  computed(() =>
+    asResult(
+      usePlayableIds(ignoreType2).value.andThen((ids) =>
+        Result.all(ids.map((id) => useStudent(id).value)),
       ),
     ),
   ),
