@@ -47,6 +47,7 @@ declare module 'vue' {
     Gear: typeof import('./components/student/tabs/Gear.vue')['default']
     GiftTable: typeof import('./components/student/GiftTable.vue')['default']
     GuideMission: typeof import('./components/guide/GuideMission.vue')['default']
+    HomeBirthday: typeof import('./components/home/HomeBirthday.vue')['default']
     ItemAmount: typeof import('./components/party/ItemAmount.vue')['default']
     ItemDetail: typeof import('./components/parcel/item/ItemDetail.vue')['default']
     LevelSkillData: typeof import('./components/skill/levelSkillData/LevelSkillData.vue')['default']

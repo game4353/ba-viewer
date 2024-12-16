@@ -33,7 +33,7 @@
         </v-col>
         <v-col cols="4">
           <v-sheet rounded="xl" :color="darkColors[5]">
-            <!-- birthday -->
+            <HomeBirthday />
           </v-sheet>
         </v-col>
       </v-row>
