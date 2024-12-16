@@ -82,7 +82,7 @@ function useLocalizeSkill(id: number, desc = false) {
   );
 }
 
-const useLocalizeCharProfileMap = cache(() =>
+export const useLocalizeCharProfileMap = cache(() =>
   useExcelMapSingle<LocalizeCharProfileExcelTable, "CharacterId">(
     "LocalizeCharProfileExcelTable",
     "CharacterId",
