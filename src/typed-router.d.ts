@@ -29,6 +29,7 @@ declare module 'vue-router/auto-routes' {
     '/gacha/': RouteRecordInfo<'/gacha/', '/gacha', Record<never, never>, Record<never, never>>,
     '/gift/': RouteRecordInfo<'/gift/', '/gift', Record<never, never>, Record<never, never>>,
     '/grandassault/': RouteRecordInfo<'/grandassault/', '/grandassault', Record<never, never>, Record<never, never>>,
+    '/grandassault/[id]/': RouteRecordInfo<'/grandassault/[id]/', '/grandassault/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/guide/': RouteRecordInfo<'/guide/', '/guide', Record<never, never>, Record<never, never>>,
     '/guide/[id]/': RouteRecordInfo<'/guide/[id]/', '/guide/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/jointfiringdrill/': RouteRecordInfo<'/jointfiringdrill/', '/jointfiringdrill', Record<never, never>, Record<never, never>>,
@@ -51,5 +52,6 @@ declare module 'vue-router/auto-routes' {
     '/student/[id]/': RouteRecordInfo<'/student/[id]/', '/student/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/test/[...path]': RouteRecordInfo<'/test/[...path]', '/test/:path(.*)', { path: ParamValue<true> }, { path: ParamValue<false> }>,
     '/totalassault/': RouteRecordInfo<'/totalassault/', '/totalassault', Record<never, never>, Record<never, never>>,
+    '/totalassault/[id]/': RouteRecordInfo<'/totalassault/[id]/', '/totalassault/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
   }
 }
