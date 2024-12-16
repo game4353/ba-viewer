@@ -4,13 +4,21 @@
 </template>
 
 <script setup lang="ts">
+import { PropMaybeResult } from "@/utils/result";
+import { ERR_HANDLE } from "../warn/error";
 import { uiPath } from "./loader";
+const errHandle = inject(ERR_HANDLE)!;
 
-defineProps({
+const props = defineProps({
   path: {
-    type: String,
+    type: [String, Object] as PropMaybeResult<string>,
     required: true,
   },
   v: Boolean,
+});
+
+const path = computed(() => {
+  if (typeof props.path === "string") return props.path;
+  return props.path.unwrapOrElse(errHandle) ?? "";
 });
 </script>
