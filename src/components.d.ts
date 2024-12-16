@@ -18,6 +18,8 @@ declare module 'vue' {
     EnemyIcon: typeof import('./components/parcel/character/EnemyIcon.vue')['default']
     Equip: typeof import('./components/student/tabs/Equip.vue')['default']
     EquipmentDetail: typeof import('./components/parcel/equipment/EquipmentDetail.vue')['default']
+    ERaidBanner: typeof import('./components/raid/ERaidBanner.vue')['default']
+    ERaidList: typeof import('./components/raid/ERaidList.vue')['default']
     ErrorPage: typeof import('./components/warn/ErrorPage.vue')['default']
     EventBonus: typeof import('./components/event/EventBonus.vue')['default']
     EventBox: typeof import('./components/event/EventBox.vue')['default']

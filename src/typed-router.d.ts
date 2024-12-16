@@ -29,6 +29,7 @@ declare module 'vue-router/auto-routes' {
     '/gacha/': RouteRecordInfo<'/gacha/', '/gacha', Record<never, never>, Record<never, never>>,
     '/gift/': RouteRecordInfo<'/gift/', '/gift', Record<never, never>, Record<never, never>>,
     '/grandassault/': RouteRecordInfo<'/grandassault/', '/grandassault', Record<never, never>, Record<never, never>>,
+    '/grandassault/[id]/': RouteRecordInfo<'/grandassault/[id]/', '/grandassault/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/guide/': RouteRecordInfo<'/guide/', '/guide', Record<never, never>, Record<never, never>>,
     '/guide/[id]/': RouteRecordInfo<'/guide/[id]/', '/guide/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/jointfiringdrill/': RouteRecordInfo<'/jointfiringdrill/', '/jointfiringdrill', Record<never, never>, Record<never, never>>,

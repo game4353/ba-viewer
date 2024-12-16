@@ -1,5 +1,7 @@
 import { cache } from "@/utils/misc";
 import type {
+  EliminateRaidSeasonManageExcelTable,
+  EliminateRaidStageExcelTable,
   GroundExcelTable,
   RaidSeasonManageExcelTable,
   RaidStageExcelTable,
@@ -16,6 +18,20 @@ export const useExcelRaidSeasonManage = cache(() =>
 export const useExcelRaidStage = cache(() =>
   useExcelMapMany<RaidStageExcelTable, "RaidBossGroup">(
     "RaidStageExcelTable",
+    "RaidBossGroup",
+  ),
+);
+
+export const useExcelEliminateRaidSeasonManage = cache(() =>
+  useExcelMapSingle<EliminateRaidSeasonManageExcelTable, "SeasonId">(
+    "EliminateRaidSeasonManageExcelTable",
+    "SeasonId",
+  ),
+);
+
+export const useExcelEliminateRaidStage = cache(() =>
+  useExcelMapMany<EliminateRaidStageExcelTable, "RaidBossGroup">(
+    "EliminateRaidStageExcelTable",
     "RaidBossGroup",
   ),
 );
