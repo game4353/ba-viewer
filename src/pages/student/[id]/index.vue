@@ -4,7 +4,7 @@
     <div class="flex flex-row">
       <div><SpineCharacter v-if="paths" :paths="paths" /></div>
 
-      <div>
+      <div class="w-[640px]">
         <v-tabs v-model="tab" bg-color="red-darken-4" color="basil" grow>
           <v-tab
             v-for="item in items"

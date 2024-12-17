@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[560px]">
+  <div>
     <v-container class="bg-surface-variant">
       <StatSingle
         v-for="(row, key) in statRows"

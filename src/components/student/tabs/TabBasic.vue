@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="chara" style="margin: auto" width="600">
+  <v-card v-if="chara" style="margin: auto">
     <v-card-text>
       <v-expansion-panels>
         <v-expansion-panel>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[560px]">
+  <div>
     <div v-if="chara" class="flex flex-col gap-1">
       <Skill :cid :skill-no="0" />
       <Skill :cid :skill-no="1" />
