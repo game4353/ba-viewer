@@ -1,11 +1,11 @@
 <template>
-  <Loading v-if="student == null" />
-  <component
-    :is="noRoute ? 'span' : 'router-link'"
-    v-else
-    :to="`/student/${student.id}`"
-  >
-    <Scaled :scaling :width="imgW" :height="imgH">
+  <Scaled :scaling :width="imgW" :height="imgH">
+    <Loading v-if="student == null" />
+    <component
+      :is="noRoute ? 'span' : 'router-link'"
+      v-else
+      :to="`/student/${student.id}`"
+    >
       <v-img
         class="absolute"
         :class="dark ? 'opacity-25' : gray ? 'opacity-75' : ''"
@@ -38,8 +38,8 @@
           :level="bondNum"
         />
       </v-img>
-    </Scaled>
-  </component>
+    </component>
+  </Scaled>
 </template>
 
 <script setup lang="ts">
