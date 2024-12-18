@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 import { useStudent } from "@/components/student/student";
-import { useCharaStore } from "@/stores/character";
+import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import { uiPath } from "../GameImg/loader";
 import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
@@ -122,8 +122,8 @@ const student = computed(() =>
 const name = computed(
   () => student.value?.name.value?.unwrapOrElse(errHandle) ?? "",
 );
-const chara = useCharaStore(Number(props.cid)).now();
-const goal = useCharaStore(Number(props.cid)).goal();
+const chara = dataStudentNow.use(props.cid);
+const goal = dataStudentGoal.use(props.cid);
 const levelNum = computed(() => props.level ?? chara.lv);
 const starNum = ref(props.star);
 watchEffect(() => {

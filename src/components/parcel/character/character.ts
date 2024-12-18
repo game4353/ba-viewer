@@ -9,7 +9,7 @@ import {
 import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
 import { useBaseStats } from "@/components/student/stat";
-import { useCharaStore } from "@/stores/character";
+import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import {
   useExcelCharacter,
   useExcelCharacterGear,
@@ -85,9 +85,8 @@ export class CCharacter
 
   useTags = cache(() =>
     computed(() => {
-      const stat = useCharaStore(this.id).now();
       const tags = this.tags.map((v) => v);
-      const star = StudentTagRarityGroup.getTag(stat.star);
+      const star = StudentTagRarityGroup.getTag(this.statNow.star);
       if (star != null) tags.push(star);
       return tags;
     }),
@@ -117,10 +116,10 @@ export class CCharacter
   // store
 
   get statNow() {
-    return useCharaStore(this.id).now();
+    return dataStudentNow.use(this.id);
   }
   get statGoal() {
-    return useCharaStore(this.id).goal();
+    return dataStudentGoal.use(this.id);
   }
 
   // others
@@ -146,10 +145,10 @@ export class CCharacter
   }
 
   get level() {
-    return computed(() => useCharaStore(this.id).now().lv);
+    return computed(() => this.statNow.lv);
   }
   get star() {
-    return computed(() => useCharaStore(this.id).now().star);
+    return computed(() => this.statNow.star);
   }
 
   get skillGroups() {

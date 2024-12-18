@@ -18,7 +18,7 @@
                   .unwrapOrElse(errHandle)
               }}
             </v-col>
-            <v-col> Lv. {{ charaParam.break1 }} </v-col>
+            <v-col> Lv. {{ student.statNow.break1 }} </v-col>
             <v-col>
               攻撃力
               {{
@@ -30,7 +30,7 @@
                   .unwrapOrElse(errHandle)
               }}
             </v-col>
-            <v-col> Lv. {{ charaParam.break2 }} </v-col>
+            <v-col> Lv. {{ student.statNow.break2 }} </v-col>
           </v-row>
           <v-row>
             <v-col>
@@ -56,7 +56,7 @@
                   .unwrapOrElse(errHandle)
               }}
             </v-col>
-            <v-col> Lv. {{ charaParam.break3 }} </v-col>
+            <v-col> Lv. {{ student.statNow.break3 }} </v-col>
           </v-row>
         </v-sheet>
       </div>
@@ -73,7 +73,6 @@
 import { StatType } from "@/assets/game/types/flatDataExcel";
 import { useStudent } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
-import { useCharaStore } from "@/stores/character";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
@@ -86,5 +85,4 @@ const props = defineProps({
 const student = computed(() =>
   useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
-const charaParam = useCharaStore(props.cid).now();
 </script>

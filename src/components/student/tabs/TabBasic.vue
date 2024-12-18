@@ -29,19 +29,19 @@
                 <v-col>
                   <Equip
                     :category="student.obj.EquipmentSlot[0]"
-                    :tier="charaParam.gear1"
+                    :tier="student.statNow.gear1"
                   />
                 </v-col>
                 <v-col>
                   <Equip
                     :category="student.obj.EquipmentSlot[1]"
-                    :tier="charaParam.gear2"
+                    :tier="student.statNow.gear2"
                   />
                 </v-col>
                 <v-col>
                   <Equip
                     :category="student.obj.EquipmentSlot[2]"
-                    :tier="charaParam.gear3"
+                    :tier="student.statNow.gear3"
                   />
                 </v-col>
                 <v-col><Gear :cid /></v-col>
@@ -66,7 +66,6 @@
 <script setup lang="ts">
 import { useStudent } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
-import { useCharaStore } from "@/stores/character";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
@@ -79,5 +78,4 @@ const props = defineProps({
 const student = computed(() =>
   useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
-const charaParam = useCharaStore(props.cid).now();
 </script>
