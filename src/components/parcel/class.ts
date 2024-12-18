@@ -1,5 +1,5 @@
 import { Rarity, type ParcelType } from "@/assets/game/types/flatDataExcel";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import type { IParcel } from "./parcel";
 
 export abstract class AParcel<

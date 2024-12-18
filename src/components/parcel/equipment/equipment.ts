@@ -4,7 +4,7 @@ import {
   useExcelEquipmentLevel,
 } from "@/utils/data/excel/parcel";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import { cache, noDefault, sum } from "@/utils/misc";
 import { Ok, Result, asResult } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";

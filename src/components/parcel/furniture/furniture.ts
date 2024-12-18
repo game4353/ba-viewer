@@ -1,5 +1,5 @@
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import { isDefined } from "@/utils/misc";
 import type { ComputedResult, Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";

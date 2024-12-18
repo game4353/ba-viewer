@@ -1,5 +1,5 @@
 import { useExcelCurrency } from "@/utils/data/excel/parcel";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import type { ReadonlyDeep } from "type-fest";
 import { ParcelType, type CurrencyExcel } from "~game/types/flatDataExcel";
 import type { IParcel } from "../parcel";

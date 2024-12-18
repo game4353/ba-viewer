@@ -7,7 +7,7 @@ import {
   useExcelCharacterLevel,
 } from "@/utils/data/excel/character";
 import { KeyNotFoundErr } from "@/utils/error";
-import { Local, useLocalizeCharProfileMap } from "@/utils/localize";
+import { Local, useLocalizeCharProfileMap } from "@/utils/i18n/localize";
 import { cache, sum } from "@/utils/misc";
 import { Err, Ok, Result, asResult } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";

@@ -1,5 +1,5 @@
 import { useExcelItem } from "@/utils/data/excel/parcel";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import type { ReadonlyDeep } from "type-fest";
 import { ParcelType, type ItemExcel } from "~game/types/flatDataExcel";
 import type { IParcel } from "../parcel";

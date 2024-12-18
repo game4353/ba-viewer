@@ -8,8 +8,8 @@ import type {
   LocalizeExcel,
   LocalizeSkillExcel,
 } from "~game/types/flatDataExcelDb";
-import { useExcelDbMapSingle, useExcelMapSingle } from "./data/excel";
-import { Err, Ok, asResult } from "./result";
+import { useExcelDbMapSingle, useExcelMapSingle } from "../data/excel";
+import { Err, Ok, asResult } from "../result";
 
 enum Lang {
   JP,

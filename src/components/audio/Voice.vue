@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { CharacterVoiceExcel } from "@/assets/game/types/flatDataExcelDb";
 import { useExcelDbCharacterVoiceSubtitle } from "@/utils/data/excel/voice";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import { ReadonlyDeep } from "type-fest";
 import { ERR_HANDLE } from "../warn/error";
 

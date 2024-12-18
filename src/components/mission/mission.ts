@@ -4,7 +4,7 @@ import {
   type GuideMissionExcel,
 } from "@/assets/game/types/flatDataExcel";
 import { NotImplementErr } from "@/utils/error";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import { Err, Result } from "@/utils/result";
 import type { ReadonlyDeep } from "type-fest";
 import { useItem } from "../parcel/item/item";

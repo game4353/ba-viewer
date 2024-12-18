@@ -1,5 +1,5 @@
 import { useExcelFurnitureGroup } from "@/utils/data/excel/parcel";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import type { ReadonlyDeep } from "type-fest";
 import type { FurnitureGroupExcel } from "~game/types/flatDataExcel";
 

@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import { ReadonlyDeep } from "type-fest";
 import {
   MissionCompleteConditionType,

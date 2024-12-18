@@ -7,7 +7,7 @@ import type { CCharacter } from "@/components/parcel/character/character";
 import { MapResult } from "@/utils/data/excel";
 import { useExcelCharacterTranscendence } from "@/utils/data/excel/character";
 import { useExcelStatLevelInterpolation } from "@/utils/data/excel/stat";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import {
   Result,
   assertSome,

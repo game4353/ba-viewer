@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { useExcelGoods } from "@/utils/data/excel/shop";
-import { Local } from "@/utils/localize";
+import { Local } from "@/utils/i18n/localize";
 import { getParcel } from "../parcel/parcel";
 import { ERR_HANDLE } from "../warn/error";
 
