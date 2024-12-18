@@ -40,7 +40,7 @@
             single-line
           ></v-text-field>
         </div>
-        <div class="flex align-center justify-center pa-4">
+        <div class="flex items-center justify-center pa-4">
           <v-btn
             :disabled="page === 1"
             density="comfortable"
