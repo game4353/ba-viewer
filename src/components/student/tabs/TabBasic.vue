@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="chara" style="margin: auto">
+  <v-card v-if="student" style="margin: auto">
     <v-card-text>
       <v-expansion-panels>
         <v-expansion-panel>
@@ -14,7 +14,7 @@
               name="★"
               keys="star"
               :cid
-              :init="chara.obj.DefaultStarGrade"
+              :init="student.obj.DefaultStarGrade"
             />
             <Slider name="Weapon" keys="weapon" :cid />
             <Slider name="❤" keys="bond" :cid />
@@ -28,19 +28,19 @@
               <v-row>
                 <v-col>
                   <Equip
-                    :category="chara.obj.EquipmentSlot[0]"
+                    :category="student.obj.EquipmentSlot[0]"
                     :tier="charaParam.gear1"
                   />
                 </v-col>
                 <v-col>
                   <Equip
-                    :category="chara.obj.EquipmentSlot[1]"
+                    :category="student.obj.EquipmentSlot[1]"
                     :tier="charaParam.gear2"
                   />
                 </v-col>
                 <v-col>
                   <Equip
-                    :category="chara.obj.EquipmentSlot[2]"
+                    :category="student.obj.EquipmentSlot[2]"
                     :tier="charaParam.gear3"
                   />
                 </v-col>
@@ -64,9 +64,9 @@
 </template>
 
 <script setup lang="ts">
+import { useStudent } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharaStore } from "@/stores/character";
-import { useCharacter } from "~/components/parcel/character/character";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
@@ -76,8 +76,8 @@ const props = defineProps({
   },
 });
 
-const chara = computed(() =>
-  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+const student = computed(() =>
+  useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
 const charaParam = useCharaStore(props.cid).now();
 </script>

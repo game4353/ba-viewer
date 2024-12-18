@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panel v-if="chara">
+  <v-expansion-panel v-if="student">
     <v-expansion-panel-title>
       <div class="flex flex-row gap-2">
         <v-sheet>
@@ -10,7 +10,7 @@
             <v-col>
               HP
               {{
-                chara
+                student
                   .baseStats()
                   .getResult(StatType.MaxHP)
                   .andThen((res) => res)
@@ -22,7 +22,7 @@
             <v-col>
               攻撃力
               {{
-                chara
+                student
                   .baseStats()
                   .getResult(StatType.AttackPower)
                   .andThen((res) => res)
@@ -36,7 +36,7 @@
             <v-col>
               防御力
               {{
-                chara
+                student
                   .baseStats()
                   .getResult(StatType.DefensePower)
                   .andThen((res) => res)
@@ -48,7 +48,7 @@
             <v-col>
               治癒力
               {{
-                chara
+                student
                   .baseStats()
                   .getResult(StatType.HealPower)
                   .andThen((res) => res)
@@ -71,9 +71,9 @@
 
 <script setup lang="ts">
 import { StatType } from "@/assets/game/types/flatDataExcel";
+import { useStudent } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharaStore } from "@/stores/character";
-import { useCharacter } from "../../parcel/character/character";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
@@ -83,8 +83,8 @@ const props = defineProps({
   },
 });
 
-const chara = computed(() =>
-  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+const student = computed(() =>
+  useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
 const charaParam = useCharaStore(props.cid).now();
 </script>
