@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
-import { KeyNotFoundErr } from "@/utils/error";
+import { KeyNotFoundErr } from "@/utils/result/error";
 import { ReadonlyDeep } from "type-fest";
 import type {
   EventContentShopExcel,

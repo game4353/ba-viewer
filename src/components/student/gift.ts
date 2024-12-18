@@ -5,9 +5,9 @@ import type {
 } from "@/assets/game/types/flatDataExcel";
 import { MapResult, useExcel } from "@/utils/data/excel";
 import { useExcelCharacterAcademyTags } from "@/utils/data/excel/character";
-import { NotImplementErr } from "@/utils/error";
 import { cache, range } from "@/utils/misc";
 import { Err, Ok, Result, asResult } from "@/utils/result";
+import { NotImplementErr } from "@/utils/result/error";
 import type { ReadonlyDeep } from "type-fest";
 
 const useExcelItemTag = cache(() => {

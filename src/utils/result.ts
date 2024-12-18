@@ -1,5 +1,5 @@
 import { Err, ErrImpl, Ok, OkImpl, Result } from "ts-results-es";
-import { ManyResultErr, NoResultErr } from "./error";
+import { ManyResultErr, NoResultErr } from "./result/error";
 
 type OkContent<T> = T extends OkImpl<infer U> ? U : never;
 type ErrContent<T> = T extends ErrImpl<infer U> ? U : never;

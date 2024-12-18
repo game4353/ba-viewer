@@ -1,6 +1,6 @@
 import * as EquipmentLevelExcelTable from "@/../public/data/Excel/EquipmentLevelExcelTable.json";
 import { EquipmentCategory } from "@/assets/game/types/flatDataExcel";
-import { TimeoutErr } from "@/utils/error";
+import { TimeoutErr } from "@/utils/result/error";
 import {
   afterEach,
   beforeEach,
