@@ -12,8 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCharacter } from "@/components/parcel/character/character";
-import { usePlayableIds } from "@/components/student/student";
+import { usePlayableIds, useStudent } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { isDefined } from "@/utils/misc";
 
@@ -27,7 +26,7 @@ const studentIds = computed(() => {
 });
 const students = computed(() =>
   studentIds.value
-    .map((id) => useCharacter(id).value?.unwrapOrElse(errHandle))
+    .map((id) => useStudent(id).value?.unwrapOrElse(errHandle))
     .filter(isDefined),
 );
 const orderMap = ref<Map<number, number>>();

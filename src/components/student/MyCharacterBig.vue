@@ -1,5 +1,5 @@
 <template>
-  <router-link v-if="parcel" :to="noRoute ? '' : `/student/${parcel.id}`">
+  <router-link v-if="student" :to="noRoute ? '' : `/student/${student.id}`">
     <Scaled :scaling :width="imgW" :height="imgH">
       <v-img
         class="absolute"
@@ -9,7 +9,7 @@
         :lazy-src="loading"
       >
         <template v-slot:placeholder>
-          <div class="d-flex align-center justify-center fill-height">
+          <div class="flex items-center justify-center h-full">
             <v-progress-circular
               color="grey-lighten-4"
               indeterminate
@@ -24,8 +24,8 @@
           Lv.{{ goal.lv }}
         </span>
         <div class="atk-def">
-          <div :class="parcel.bulletType"></div>
-          <div :class="parcel.armorType"></div>
+          <div :class="student.bulletType"></div>
+          <div :class="student.armorType"></div>
         </div>
         <div class="name">
           <p :class="textSize(name)">
@@ -92,10 +92,10 @@
 </template>
 
 <script setup lang="ts">
-import { useCharaStore } from "@/stores/character";
+import { useStudent } from "@/components/student/student";
+import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import { uiPath } from "../GameImg/loader";
 import { ScaleOption } from "../misc/scale";
-import { useCharacter } from "../parcel/character/character";
 import { ERR_HANDLE } from "../warn/error";
 
 const imgW = 404;
@@ -115,21 +115,21 @@ const props = defineProps({
 });
 const errHandle = inject(ERR_HANDLE)!;
 
-const parcel = computed(() =>
-  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+const student = computed(() =>
+  useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
 
 const name = computed(
-  () => parcel.value?.name.value?.unwrapOrElse(errHandle) ?? "",
+  () => student.value?.name.value?.unwrapOrElse(errHandle) ?? "",
 );
-const chara = useCharaStore(Number(props.cid)).now();
-const goal = useCharaStore(Number(props.cid)).goal();
+const chara = dataStudentNow.use(props.cid);
+const goal = dataStudentGoal.use(props.cid);
 const levelNum = computed(() => props.level ?? chara.lv);
 const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
-  if (parcel.value == null) return;
-  starNum.value = levelNum.value === 0 ? parcel.value.starMin : chara.star;
+  if (student.value == null) return;
+  starNum.value = levelNum.value === 0 ? student.value.starMin : chara.star;
 });
 const bondNum = computed(() => props.bond ?? chara.bond);
 
@@ -157,7 +157,7 @@ watchEffect(() => {
   gearTexts.value[1] = chara.gear2.toString();
   gearTexts.value[2] = chara.gear3.toString();
   gearTexts.value[3] = chara.gear0.toString();
-  if (parcel.value?.gear.value.unwrapOrElse(errHandle) == null)
+  if (student.value?.gear.value.unwrapOrElse(errHandle) == null)
     gearTexts.value[3] = "";
 });
 function goalGearStr(idx: 0 | 1 | 2 | 3) {
@@ -169,7 +169,7 @@ function goalGearStr(idx: 0 | 1 | 2 | 3) {
 }
 
 const bg = computed(() => {
-  const costume = parcel.value?.costume;
+  const costume = student.value?.costume;
   if (costume == null) return undefined;
   return uiPath(costume.CollectionTexturePath);
 });

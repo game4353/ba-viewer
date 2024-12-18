@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropMaybeResult } from "@/utils/result";
+import { PropMaybeResult } from "@/utils/result/result";
 import { ERR_HANDLE } from "../warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 

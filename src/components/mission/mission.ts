@@ -3,9 +3,9 @@ import {
   type EventContentMissionExcel,
   type GuideMissionExcel,
 } from "@/assets/game/types/flatDataExcel";
-import { NotImplementErr } from "@/utils/error";
-import { Local } from "@/utils/localize";
-import { Err, Result } from "@/utils/result";
+import { useLocalize } from "@/utils/i18n/localize";
+import { NotImplementErr } from "@/utils/result/error";
+import { Err, Result } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { useItem } from "../parcel/item/item";
 
@@ -17,7 +17,7 @@ function format(str: string, ...args: any[]) {
 export function missionDescription(
   m: ReadonlyDeep<GuideMissionExcel> | ReadonlyDeep<EventContentMissionExcel>,
 ) {
-  const descRaw = Local.useLocalize(m.Description);
+  const descRaw = computed(() => useLocalize(m.Description));
   const p0 = m.CompleteConditionParameter[0];
   const p1 = m.CompleteConditionParameter[1];
   const c = m.CompleteConditionCount;

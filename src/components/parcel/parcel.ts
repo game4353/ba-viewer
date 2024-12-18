@@ -1,5 +1,5 @@
 import { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
-import { Err, type Result } from "@/utils/result";
+import { Err, type Result } from "@/utils/result/result";
 import { useCharacter, type CCharacter } from "./character/character";
 import { useCurrency, type CCurrency } from "./currency/currency";
 import { useEmblem, type CEmblem } from "./emblem/emblem";

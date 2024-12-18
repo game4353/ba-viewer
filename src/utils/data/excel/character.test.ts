@@ -1,6 +1,6 @@
 import { default as LocalizeEtc } from "@/../public/data/DB/ExcelDB/LocalizeEtc.json";
 import * as CharacterExcelTable from "@/../public/data/Excel/CharacterExcelTable.json";
-import { TimeoutErr } from "@/utils/error";
+import { TimeoutErr } from "@/utils/result/error";
 import {
   afterEach,
   beforeEach,

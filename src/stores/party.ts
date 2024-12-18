@@ -1,4 +1,4 @@
-import { Err, Ok } from "@/utils/result";
+import { Err, Ok } from "@/utils/result/result";
 import { z } from "zod";
 import { IOData } from "./main";
 

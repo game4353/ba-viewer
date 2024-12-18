@@ -3,7 +3,7 @@
     <div
       v-for="(mission, key) in missions"
       :key
-      class="flex flex-col gap-1 align-center"
+      class="flex flex-col gap-1 items-center"
     >
       <EventMission :mission />
     </div>

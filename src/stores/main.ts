@@ -1,5 +1,5 @@
 import { cache } from "@/utils/misc";
-import { Err, type Result } from "@/utils/result";
+import { Err, type Result } from "@/utils/result/result";
 import { useLocalStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { z } from "zod";

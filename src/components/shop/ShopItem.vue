@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { useExcelGoods } from "@/utils/data/excel/shop";
-import { Local } from "@/utils/localize";
+import { useLocalizeEtc } from "@/utils/i18n/localize";
 import { getParcel } from "../parcel/parcel";
 import { ERR_HANDLE } from "../warn/error";
 
@@ -76,7 +76,7 @@ const gain = computed(() =>
 const nameStr = computed(() =>
   props.nameEtcId == null
     ? gain.value?.[0]?.parcel?.name.value?.unwrapOrElse(errHandle)
-    : Local.useLocalizeEtc(props.nameEtcId).value?.unwrapOrElse(errHandle),
+    : useLocalizeEtc(props.nameEtcId).unwrapOrElse(errHandle),
 );
 const nameLen = computed(() => nameStr.value?.length ?? 0);
 const nameSize = computed(() =>

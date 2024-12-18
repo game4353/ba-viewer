@@ -1,5 +1,5 @@
 import { cache } from "@/utils/misc";
-import { Err, Ok } from "@/utils/result";
+import { Err, Ok } from "@/utils/result/result";
 import type { CafeInteractionExcelTable } from "~game/types/flatDataExcel";
 import { MapResult, useExcel } from ".";
 

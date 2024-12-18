@@ -1,6 +1,10 @@
 <template>
+  <template v-if="parcel == null">
+    <div v-if="layout == 'icon'"></div>
+    <Scaled v-else :scaling :width="imgW" :height="imgH"></Scaled>
+  </template>
   <component
-    v-if="parcel"
+    v-else
     :is="route ? 'router-link' : 'div'"
     :to="`/parcel/${ParcelType[parcel.type].toLowerCase()}/${parcel.id}`"
   >

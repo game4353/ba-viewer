@@ -21,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import { Result } from "ts-results-es";
-import { useCharacter } from "~/components/parcel/character/character";
+import { useStudent } from "@/components/student/student";
+import { Result } from "@/utils/result/result";
 import { ERR_HANDLE } from "~/components/warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 
@@ -33,13 +33,13 @@ const props = defineProps({
   },
 });
 
-const chara = computed(() =>
-  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+const student = computed(() =>
+  useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
 const skills = computed(() => {
-  if (chara.value == null) return chara.value;
+  if (student.value == null) return student.value;
   return Result.all(
-    ([0, 1, 2, 3] as const).map((v) => chara.value!.getSkill(v)),
+    ([0, 1, 2, 3] as const).map((v) => student.value!.getSkill(v)),
   ).unwrapOrElse(errHandle);
 });
 </script>

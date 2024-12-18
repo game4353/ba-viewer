@@ -1,6 +1,6 @@
 import { useExcel } from "@/utils/data/excel";
 import { useExcelCharacterSkillList } from "@/utils/data/excel/skill";
-import { asResult, filterSingle } from "@/utils/result";
+import { asResult, filterSingle } from "@/utils/result/result";
 import type {
   CharacterSkillListExcel,
   CharacterSkillListExcelTable,
