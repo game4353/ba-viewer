@@ -1,6 +1,6 @@
 import { useExcelCharacterTranscendence } from "@/utils/data/excel/character";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { Err, Ok } from "~/utils/result";
+import { Err, Ok } from "@/utils/result/result";
 import type { CCharacter } from "../parcel/character/character";
 
 export function useTranscendenceBonusRate(

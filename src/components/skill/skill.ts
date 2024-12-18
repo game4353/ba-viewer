@@ -1,8 +1,8 @@
 import type { SkillExcel } from "@/assets/game/types/flatDataExcel";
 import { useExcelSkill } from "@/utils/data/excel/skill";
-import { Local } from "@/utils/localize";
+import { useLocalizeSkill } from "@/utils/i18n/localize";
 import { cache, range } from "@/utils/misc";
-import { Result, asResult, filterSingle } from "@/utils/result";
+import { Result, asResult, filterSingle } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { recipeToIngredient } from "../parcel/recipe/recipe";
 
@@ -10,7 +10,7 @@ export class CSkill {
   constructor(public obj: ReadonlyDeep<SkillExcel>) {}
 
   get desc() {
-    return Local.useLocalizeSkill(this.obj.LocalizeSkillId, true);
+    return useLocalizeSkill(this.obj.LocalizeSkillId, true);
   }
   get iconPath() {
     return this.obj.IconName;
@@ -19,7 +19,7 @@ export class CSkill {
     return this.obj.Id;
   }
   get name() {
-    return Local.useLocalizeSkill(this.obj.LocalizeSkillId);
+    return useLocalizeSkill(this.obj.LocalizeSkillId);
   }
 
   useLevelUpIngredient(targetLevel: number) {

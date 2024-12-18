@@ -6,10 +6,16 @@ import {
   useExcelCharacter,
   useExcelCharacterLevel,
 } from "@/utils/data/excel/character";
-import { KeyNotFoundErr } from "@/utils/error";
-import { Local, useLocalizeCharProfileMap } from "@/utils/localize";
+import clubLocalizeKey from "@/utils/i18n/custom/keyClub";
+import schoolFullLocalizeKey from "@/utils/i18n/custom/keySchoolFull";
+import {
+  useLocalize,
+  useLocalizeCharProfile,
+  useLocalizeCharProfileMap,
+} from "@/utils/i18n/localize";
 import { cache, sum } from "@/utils/misc";
-import { Err, Ok, Result, asResult } from "@/utils/result";
+import { KeyNotFoundErr } from "@/utils/result/error";
+import { Err, Ok, Result, asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { CCharacter, useCharacter } from "../parcel/character/character";
 import {
@@ -17,8 +23,6 @@ import {
   useEquipmentFromEnum,
 } from "../parcel/equipment/equipment";
 import { useCharacterGear } from "../parcel/gear/gear";
-import { clubLocalizeKey } from "./club";
-import { schoolFullLocalizeKey } from "./school";
 
 export class CStudent extends CCharacter {
   constructor(...args: ConstructorParameters<typeof CCharacter>) {
@@ -42,14 +46,14 @@ export class CStudent extends CCharacter {
   }
 
   useClub() {
-    return Local.useLocalize(clubLocalizeKey(this.obj.Club)).value;
+    return useLocalize(clubLocalizeKey(this.obj.Club));
   }
   useSchool() {
-    return Local.useLocalize(schoolFullLocalizeKey(this.obj.School)).value;
+    return useLocalize(schoolFullLocalizeKey(this.obj.School));
   }
 
-  useProfile(key: Parameters<typeof Local.useLocalizeCharProfile>["1"]) {
-    return Local.useLocalizeCharProfile(this.id, key);
+  useProfile(key: Parameters<typeof useLocalizeCharProfile>["1"]) {
+    return useLocalizeCharProfile(this.id, key);
   }
 
   useExp(unit: number) {
@@ -124,7 +128,7 @@ function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
   );
 }
 
-export const usePlayableIds = cache((ignoreType2 = false) =>
+export const usePlayableIds = cache((ignoreType2: boolean = false) =>
   computed(() =>
     asResult(
       useExcelCharacter().value.map((map) =>

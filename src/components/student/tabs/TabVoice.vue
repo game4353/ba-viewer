@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[560px]">
+  <div>
     <v-tabs v-model="tab" bg-color="red-darken-4" color="basil" grow>
       <v-tab
         v-for="[key, text] in Object.entries(tabs)"

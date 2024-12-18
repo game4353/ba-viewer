@@ -3,7 +3,7 @@ import {
   KeyNotFoundErr,
   NotImplementErr,
   TimeoutErr,
-} from "@/utils/error";
+} from "@/utils/result/error";
 
 export const err = reactive({
   error: false,

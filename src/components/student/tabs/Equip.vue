@@ -1,7 +1,7 @@
 <template>
   <v-img :aspect-ratio="304 / 240" :src="src">
     <template v-slot:placeholder>
-      <div class="d-flex align-center justify-center fill-height">
+      <div class="flex items-center justify-center h-full">
         <v-progress-circular
           color="grey-lighten-4"
           indeterminate

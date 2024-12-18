@@ -33,7 +33,7 @@
               v-for="[cid, amount] in need"
               :key="cid"
             >
-              <MyCharacter :cid :scaling />
+              <MyCharacter :cid :scaling route />
               <p class="text-base">{{ amount }}</p>
             </div>
           </div>

@@ -1,11 +1,7 @@
 <template>
-  <Loading v-if="student == null" />
-  <component
-    :is="noRoute ? 'span' : 'router-link'"
-    v-else
-    :to="`/student/${student.id}`"
-  >
-    <Scaled :scaling :width="imgW" :height="imgH">
+  <Scaled :scaling :width="imgW" :height="imgH">
+    <Loading v-if="student == null" />
+    <component :is="route ? 'router-link' : 'span'" v-else :to="route">
       <v-img
         class="absolute"
         :class="dark ? 'opacity-25' : gray ? 'opacity-75' : ''"
@@ -38,8 +34,8 @@
           :level="bondNum"
         />
       </v-img>
-    </Scaled>
-  </component>
+    </component>
+  </Scaled>
 </template>
 
 <script setup lang="ts">
@@ -62,11 +58,22 @@ const props = defineProps({
   star: Number,
   bond: Number,
   dark: Boolean,
-  noRoute: Boolean,
+  /** `true` is equal to `"/student/{id}"`.
+   * `"{id}"` will be replaced with the student id.
+   */
+  route: [Boolean, String],
 });
 const student = computed(() =>
   useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
+
+const route = computed(() => {
+  if (student.value == null) return undefined;
+  if (props.route == null) return undefined;
+  if (props.route === false) return undefined;
+  const str = props.route === true ? "/student/{id}" : props.route;
+  return str.replace("{id}", student.value.id.toString());
+});
 
 const levelNum = computed(() => props.level ?? student.value?.statNow.lv);
 const starNum = computed(() => {

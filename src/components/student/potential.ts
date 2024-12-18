@@ -3,7 +3,7 @@ import {
   useExcelDbCharacterPotentialStat,
 } from "@/utils/data/excel/character";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { Ok, asResult, filterSingle } from "@/utils/result";
+import { Ok, asResult, filterSingle } from "@/utils/result/result";
 import type { PotentialStatBonusRateType } from "~game/types/flatDataExcelDb";
 import type { CCharacter } from "../parcel/character/character";
 

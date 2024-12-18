@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[640px]">
+  <div>
     <Loading v-if="chara == null" />
     <div v-else class="flex flex-col gap-1">
       <div class="flex flex-row">

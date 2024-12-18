@@ -1,6 +1,6 @@
 import { useStudents, type CStudent } from "@/components/student/student";
 import { range } from "@/utils/misc";
-import { Result, asResult } from "@/utils/result";
+import { Result, asResult } from "@/utils/result/result";
 
 export const useNextBd = () =>
   asResult(

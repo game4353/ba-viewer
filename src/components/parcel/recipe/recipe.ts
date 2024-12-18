@@ -1,5 +1,5 @@
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { Result, asResult } from "@/utils/result";
+import { Result, asResult } from "@/utils/result/result";
 
 export function recipeToIngredient(recipeIds: number[]) {
   return asResult(

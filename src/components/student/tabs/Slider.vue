@@ -41,8 +41,13 @@
 </template>
 
 <script setup lang="ts">
-import { useCharaStore } from "@/stores/character";
-import { CharaProp, defaultMax, defaultMin } from "@/stores/student";
+import {
+  CharaProp,
+  dataStudentGoal,
+  dataStudentNow,
+  defaultMax,
+  defaultMin,
+} from "@/stores/student";
 import { storeToRefs } from "pinia";
 
 const props = defineProps({
@@ -63,9 +68,8 @@ const props = defineProps({
   disabled: Boolean,
 });
 
-const store = useCharaStore(props.cid);
-const charaNow = storeToRefs(store.now());
-const charaGoal = storeToRefs(store.goal());
+const charaNow = storeToRefs(dataStudentNow.use(props.cid));
+const charaGoal = storeToRefs(dataStudentGoal.use(props.cid));
 const val1 = charaNow[props.keys];
 const val2 = charaGoal[props.keys];
 const range = computed({

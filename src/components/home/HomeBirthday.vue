@@ -7,7 +7,7 @@
     </div>
     <div class="flex flex-row flex-wrap gap-3">
       <div v-for="student in students" :key="student.id">
-        <MyCharacter :cid="student.id" :scaling="{ w: 70 }" />
+        <MyCharacter :cid="student.id" :scaling="{ w: 70 }" route />
         <RichText :text="student.useProfile('Birthday')" />
       </div>
     </div>

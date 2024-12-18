@@ -13,7 +13,7 @@ import {
   useExcelEventContentStage,
   useExcelEventContentStageTotalReward,
 } from "@/utils/data/excel/event";
-import { asResult } from "@/utils/result";
+import { asResult } from "@/utils/result/result";
 
 export class CEvent {
   constructor(public id: number) {}

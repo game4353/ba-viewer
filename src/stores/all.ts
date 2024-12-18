@@ -1,4 +1,4 @@
-import { Result } from "@/utils/result";
+import { Result } from "@/utils/result/result";
 import { dataParcel } from "./parcel";
 import { dataParty } from "./party";
 import { dataStudentGoal, dataStudentNow } from "./student";
