@@ -34,7 +34,7 @@ import { Icon } from "@/components/GameImg/icon";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelGround, useExcelRaidStage } from "@/utils/data/excel/raid";
 import { noDefault } from "@/utils/misc";
-import { filterSingle } from "@/utils/result";
+import { filterSingle } from "@/utils/result/result";
 import { ReadonlyDeep } from "type-fest";
 const errHandle = inject(ERR_HANDLE)!;
 

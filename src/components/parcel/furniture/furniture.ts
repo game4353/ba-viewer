@@ -1,7 +1,7 @@
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
 import { Local } from "@/utils/i18n/localize";
 import { isDefined } from "@/utils/misc";
-import type { ComputedResult, Result } from "@/utils/result";
+import type { ComputedResult, Result } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";

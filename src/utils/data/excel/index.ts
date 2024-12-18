@@ -1,6 +1,6 @@
 import { FetchDataErr, KeyNotFoundErr, TimeoutErr } from "@/utils/result/error";
+import { Err, Ok } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { Err, Ok } from "~/utils/result";
 import { useFetch } from "../index";
 
 export function useExcel<T>(name: string) {

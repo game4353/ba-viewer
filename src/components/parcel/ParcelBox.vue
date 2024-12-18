@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
-import { Ok } from "@/utils/result";
+import { Ok } from "@/utils/result/result";
 import { ScaleOption } from "../misc/scale";
 import type { IParcel } from "./parcel";
 

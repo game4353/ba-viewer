@@ -40,7 +40,7 @@ import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelCostume } from "@/utils/data/excel/character";
 import { useSpineCharacterPath } from "@/utils/data/l2d";
 
-import { undefinedIsError } from "@/utils/result";
+import { undefinedIsError } from "@/utils/result/result";
 const errHandle = inject(ERR_HANDLE)!;
 
 const route = useRoute<"/student/[id]/">();

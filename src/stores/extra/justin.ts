@@ -1,4 +1,4 @@
-import { Err, err2 } from "@/utils/result";
+import { Err, err2 } from "@/utils/result/result";
 import { importAll } from "../all";
 
 function parseJustin(json: string) {

@@ -13,7 +13,7 @@ import {
   assertSome,
   filterSingle,
   type ComputedResult,
-} from "@/utils/result";
+} from "@/utils/result/result";
 import type { NumberKeys } from "@/utils/types";
 
 enum StatBuffType {

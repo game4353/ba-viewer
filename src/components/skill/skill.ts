@@ -2,7 +2,7 @@ import type { SkillExcel } from "@/assets/game/types/flatDataExcel";
 import { useExcelSkill } from "@/utils/data/excel/skill";
 import { Local } from "@/utils/i18n/localize";
 import { cache, range } from "@/utils/misc";
-import { Result, asResult, filterSingle } from "@/utils/result";
+import { Result, asResult, filterSingle } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { recipeToIngredient } from "../parcel/recipe/recipe";
 

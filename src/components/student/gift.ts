@@ -6,8 +6,8 @@ import type {
 import { MapResult, useExcel } from "@/utils/data/excel";
 import { useExcelCharacterAcademyTags } from "@/utils/data/excel/character";
 import { cache, range } from "@/utils/misc";
-import { Err, Ok, Result, asResult } from "@/utils/result";
 import { NotImplementErr } from "@/utils/result/error";
+import { Err, Ok, Result, asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 
 const useExcelItemTag = cache(() => {

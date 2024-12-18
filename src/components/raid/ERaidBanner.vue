@@ -45,7 +45,7 @@ import {
   useExcelGround,
 } from "@/utils/data/excel/raid";
 import { noDefault } from "@/utils/misc";
-import { Result } from "@/utils/result";
+import { Result } from "@/utils/result/result";
 import { ReadonlyDeep } from "type-fest";
 const errHandle = inject(ERR_HANDLE)!;
 

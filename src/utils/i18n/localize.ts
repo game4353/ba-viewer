@@ -3,13 +3,13 @@ import type {
   LocalizeCharProfileExcelTable,
 } from "@/assets/game/types/flatDataExcel";
 import { cache } from "@/utils/misc";
+import { Err, Ok, asResult } from "@/utils/result/result";
 import type {
   LocalizeEtcExcel,
   LocalizeExcel,
   LocalizeSkillExcel,
 } from "~game/types/flatDataExcelDb";
 import { useExcelDbMapSingle, useExcelMapSingle } from "../data/excel";
-import { Err, Ok, asResult } from "../result";
 
 enum Lang {
   JP,

@@ -8,8 +8,8 @@ import {
 } from "@/utils/data/excel/character";
 import { Local, useLocalizeCharProfileMap } from "@/utils/i18n/localize";
 import { cache, sum } from "@/utils/misc";
-import { Err, Ok, Result, asResult } from "@/utils/result";
 import { KeyNotFoundErr } from "@/utils/result/error";
+import { Err, Ok, Result, asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { CCharacter, useCharacter } from "../parcel/character/character";
 import {

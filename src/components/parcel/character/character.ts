@@ -17,7 +17,7 @@ import {
   useExcelCostume,
 } from "@/utils/data/excel/character";
 import { cache, isDefined, range } from "@/utils/misc";
-import { Result, asResult, findFirst } from "@/utils/result";
+import { Result, asResult, findFirst } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import {

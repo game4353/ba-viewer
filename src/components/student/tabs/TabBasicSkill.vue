@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { useStudent } from "@/components/student/student";
-import { Result } from "@/utils/result";
+import { Result } from "@/utils/result/result";
 import { ERR_HANDLE } from "~/components/warn/error";
 const errHandle = inject(ERR_HANDLE)!;
 
