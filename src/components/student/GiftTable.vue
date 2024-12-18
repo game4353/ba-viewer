@@ -41,12 +41,7 @@
           />
         </th>
         <td :class="gClass(gid)" v-for="gid in gids" :key="gid">
-          <FavorFace
-            v-if="useStudentGiftFavor(sid, gid).value.unwrapOrElse(errHandle)"
-            :favor="
-              useStudentGiftFavor(sid, gid).value.unwrapOrElse(errHandle)!
-            "
-          />
+          <FavorFace :favor="useStudentGiftFavor(sid, gid).value" />
         </td>
       </tr>
     </tbody>
@@ -70,11 +65,7 @@ const colW = 60;
 const rowH = 64;
 
 const gids = getGiftIds();
-const sids = computed(() =>
-  usePlayableIds()
-    .value.unwrapOrElse(errHandle)
-    ?.filter((v) => v !== 10099),
-);
+const sids = computed(() => usePlayableIds(true).value.unwrapOrElse(errHandle));
 
 const pickedSid = ref(new Set<number>());
 const pickedGid = ref(new Set<number>());
