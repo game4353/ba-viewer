@@ -124,7 +124,7 @@ function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
   );
 }
 
-export const usePlayableIds = cache((ignoreType2 = false) =>
+export const usePlayableIds = cache((ignoreType2: boolean = false) =>
   computed(() =>
     asResult(
       useExcelCharacter().value.map((map) =>
