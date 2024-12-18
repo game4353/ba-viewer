@@ -2,7 +2,7 @@ import type {
   LocalizeCharProfileExcel,
   LocalizeCharProfileExcelTable,
 } from "@/assets/game/types/flatDataExcel";
-import { cache } from "@/utils/misc";
+import { cache, noDefault } from "@/utils/misc";
 import { Err, Ok, asResult } from "@/utils/result/result";
 import type {
   LocalizeEtcExcel,
@@ -27,47 +27,47 @@ export function setLang(lang: Lang) {
 const useLocalizeMap = cache(() =>
   useExcelDbMapSingle<LocalizeExcel, "Key">("Localize", "Key"),
 );
-function useLocalize(id: number) {
-  const table = useLocalizeMap();
-  return computed(() =>
-    table.value?.andThen((map) => {
-      const o = map.get(id);
-      if (o == null)
-        return Err(new Error(`Unable to find '${id}' in Localize.`));
-      switch (settings.lang) {
-        case Lang.JP:
-          return Ok(o.Jp);
-        case Lang.KR:
-          return Ok(o.Kr);
-      }
-    }),
+export function useLocalize(id: number) {
+  return asResult(
+    useLocalizeMap()
+      .value.andThen((map) => map.getResult(id))
+      .map((o) => {
+        switch (settings.lang) {
+          case Lang.JP:
+            return o.Jp;
+          case Lang.KR:
+            return o.Kr;
+          default:
+            return noDefault(settings.lang);
+        }
+      }),
   );
 }
 
 const useLocalizeEtcMap = cache(() =>
   useExcelDbMapSingle<LocalizeEtcExcel, "Key">("LocalizeEtc", "Key"),
 );
-function useLocalizeEtc(id: number, desc = false) {
-  const table = useLocalizeEtcMap();
-  return computed(() =>
-    table.value?.andThen((map) => {
-      const o = map.get(id);
-      if (o == null)
-        return Err(new Error(`Unable to find '${id}' in LocalizeEtc.`));
-      switch (settings.lang) {
-        case Lang.JP:
-          return desc ? Ok(o.DescriptionJp) : Ok(o.NameJp);
-        case Lang.KR:
-          return desc ? Ok(o.DescriptionKr) : Ok(o.NameKr);
-      }
-    }),
+export function useLocalizeEtc(id: number, desc = false) {
+  return asResult(
+    useLocalizeEtcMap()
+      .value.andThen((map) => map.getResult(id))
+      .map((o) => {
+        switch (settings.lang) {
+          case Lang.JP:
+            return desc ? o.DescriptionJp : o.NameJp;
+          case Lang.KR:
+            return desc ? o.DescriptionKr : o.NameKr;
+          default:
+            return noDefault(settings.lang);
+        }
+      }),
   );
 }
 
 const useLocalizeSkillMap = cache(() =>
   useExcelDbMapSingle<LocalizeSkillExcel, "Key">("LocalizeSkill", "Key"),
 );
-function useLocalizeSkill(id: number, desc = false) {
+export function useLocalizeSkill(id: number, desc = false) {
   return asResult(
     useLocalizeSkillMap()
       .value.andThen((map) => map.getResult(id))
@@ -95,7 +95,7 @@ type A = {
       ? Key2
       : never]: LocalizeCharProfileExcel[K];
 };
-function useLocalizeCharProfile(id: number, key: keyof A) {
+export function useLocalizeCharProfile(id: number, key: keyof A) {
   const lang =
     settings.lang === Lang.JP
       ? "Jp"

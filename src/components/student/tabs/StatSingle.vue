@@ -2,7 +2,7 @@
   <v-row class="flex flex-row gap-2" v-if="info && stats" no-gutters>
     <v-col cols="4">
       <v-sheet :color>
-        {{ info.name.value.unwrapOrElse(errHandle) }}
+        {{ info.name.unwrapOrElse(errHandle) }}
       </v-sheet>
     </v-col>
     <v-col cols="2">

@@ -7,7 +7,7 @@ import type { CCharacter } from "@/components/parcel/character/character";
 import { MapResult } from "@/utils/data/excel";
 import { useExcelCharacterTranscendence } from "@/utils/data/excel/character";
 import { useExcelStatLevelInterpolation } from "@/utils/data/excel/stat";
-import { Local } from "@/utils/i18n/localize";
+import { useLocalize } from "@/utils/i18n/localize";
 import {
   Result,
   assertSome,
@@ -38,7 +38,7 @@ class StatBase {
   get name() {
     return computed(() =>
       filterSingle(statRows, (info) => info.type === this.type).andThen(
-        (info) => info.name.value,
+        (info) => info.name,
       ),
     );
   }
@@ -145,8 +145,8 @@ export class StatInfo {
 
   get name() {
     const key = statLocalizeKey(this.type);
-    if (Array.isArray(key)) return Local.useLocalize(key[0]);
-    return Local.useLocalize(key);
+    if (Array.isArray(key)) return useLocalize(key[0]);
+    return useLocalize(key);
   }
 }
 

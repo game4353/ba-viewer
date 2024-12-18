@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { Local } from "@/utils/i18n/localize";
+import { useLocalize } from "@/utils/i18n/localize";
 import { ReadonlyDeep } from "type-fest";
 import {
   MissionCompleteConditionType,
@@ -43,7 +43,7 @@ function format(str: string, ...args: any[]) {
   return str;
 }
 
-const descRaw = Local.useLocalize(m.Description);
+const descRaw = computed(() => useLocalize(m.Description));
 const desc = computed(() => {
   switch (m.CompleteConditionType) {
     case MissionCompleteConditionType.Reset_ClearSpecificChaserDungeonCount:

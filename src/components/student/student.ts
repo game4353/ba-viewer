@@ -6,7 +6,11 @@ import {
   useExcelCharacter,
   useExcelCharacterLevel,
 } from "@/utils/data/excel/character";
-import { Local, useLocalizeCharProfileMap } from "@/utils/i18n/localize";
+import {
+  useLocalize,
+  useLocalizeCharProfile,
+  useLocalizeCharProfileMap,
+} from "@/utils/i18n/localize";
 import { cache, sum } from "@/utils/misc";
 import { KeyNotFoundErr } from "@/utils/result/error";
 import { Err, Ok, Result, asResult } from "@/utils/result/result";
@@ -42,14 +46,14 @@ export class CStudent extends CCharacter {
   }
 
   useClub() {
-    return Local.useLocalize(clubLocalizeKey(this.obj.Club)).value;
+    return useLocalize(clubLocalizeKey(this.obj.Club));
   }
   useSchool() {
-    return Local.useLocalize(schoolFullLocalizeKey(this.obj.School)).value;
+    return useLocalize(schoolFullLocalizeKey(this.obj.School));
   }
 
-  useProfile(key: Parameters<typeof Local.useLocalizeCharProfile>["1"]) {
-    return Local.useLocalizeCharProfile(this.id, key);
+  useProfile(key: Parameters<typeof useLocalizeCharProfile>["1"]) {
+    return useLocalizeCharProfile(this.id, key);
   }
 
   useExp(unit: number) {

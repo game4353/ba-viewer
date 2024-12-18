@@ -20,14 +20,10 @@
     <v-card
       class="border rounded-xl m-4"
       v-if="picked.group.value?.isOk()"
-      :title="
-        picked.group.value.unwrap().groupName.value?.unwrapOrElse(errHandle)
-      "
+      :title="picked.group.value.unwrap().groupName.unwrapOrElse(errHandle)"
     >
       <v-card-text class="bg-surface-light !pt-4">
-        {{
-          picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(errHandle)
-        }}
+        {{ picked.group.value.unwrap().groupDesc.unwrapOrElse(errHandle) }}
       </v-card-text>
     </v-card>
     <v-card

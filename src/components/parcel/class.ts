@@ -1,5 +1,5 @@
 import { Rarity, type ParcelType } from "@/assets/game/types/flatDataExcel";
-import { Local } from "@/utils/i18n/localize";
+import { useLocalizeEtc } from "@/utils/i18n/localize";
 import type { IParcel } from "./parcel";
 
 export abstract class AParcel<
@@ -26,10 +26,10 @@ export abstract class AParcel<
     return this.obj.Id;
   }
   get desc() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
+    return computed(() => useLocalizeEtc(this.obj.LocalizeEtcId, true));
   }
   get name() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
+    return computed(() => useLocalizeEtc(this.obj.LocalizeEtcId));
   }
   get iconPath() {
     return this.obj.Icon ?? "";
