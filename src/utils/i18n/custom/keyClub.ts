@@ -1,7 +1,7 @@
 import { Club } from "@/assets/game/types/flatDataExcel";
 import { noDefault } from "@/utils/misc";
 
-export function clubLocalizeKey(club: Club) {
+export default function clubLocalizeKey(club: Club) {
   switch (club) {
     case Club.None:
       return 0;

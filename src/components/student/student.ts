@@ -6,6 +6,8 @@ import {
   useExcelCharacter,
   useExcelCharacterLevel,
 } from "@/utils/data/excel/character";
+import clubLocalizeKey from "@/utils/i18n/custom/keyClub";
+import schoolFullLocalizeKey from "@/utils/i18n/custom/keySchoolFull";
 import {
   useLocalize,
   useLocalizeCharProfile,
@@ -21,8 +23,6 @@ import {
   useEquipmentFromEnum,
 } from "../parcel/equipment/equipment";
 import { useCharacterGear } from "../parcel/gear/gear";
-import { clubLocalizeKey } from "./club";
-import { schoolFullLocalizeKey } from "./school";
 
 export class CStudent extends CCharacter {
   constructor(...args: ConstructorParameters<typeof CCharacter>) {
