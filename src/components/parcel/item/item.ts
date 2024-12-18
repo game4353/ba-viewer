@@ -1,28 +1,10 @@
+import { AParcel } from "@/components/parcel/class";
 import { useExcelItem } from "@/utils/data/excel/parcel";
-import { Local } from "@/utils/i18n/localize";
 import type { ReadonlyDeep } from "type-fest";
 import { ParcelType, type ItemExcel } from "~game/types/flatDataExcel";
-import type { IParcel } from "../parcel";
 
-export class CItem implements IParcel {
+export class CItem extends AParcel<ReadonlyDeep<ItemExcel>> {
   type = ParcelType.Item as const;
-
-  constructor(public obj: ReadonlyDeep<ItemExcel>) {}
-  get desc() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
-  }
-  get iconPath() {
-    return this.obj.Icon;
-  }
-  get id() {
-    return this.obj.Id;
-  }
-  get name() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
-  }
-  get rarity() {
-    return this.obj.Rarity;
-  }
 }
 
 export function useItem(id: number) {

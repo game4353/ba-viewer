@@ -1,11 +1,10 @@
+import { AParcel } from "@/components/parcel/class";
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
-import { Local } from "@/utils/i18n/localize";
 import { isDefined } from "@/utils/misc";
 import type { ComputedResult, Result } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
 import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";
-import type { IParcel } from "../parcel";
 import type { CTag, IFilterable } from "../tag";
 import { useFurnitureInteract } from "./interact";
 import { useFurnitureGroup, type CFurnitureGroup } from "./series";
@@ -16,7 +15,10 @@ import {
   FurnitureTagSubCategoryGroup,
 } from "./tag";
 
-export class CFurniture implements IFilterable, IParcel {
+export class CFurniture
+  extends AParcel<ReadonlyDeep<FurnitureExcel>>
+  implements IFilterable
+{
   type = ParcelType.Furniture as const;
 
   group: globalThis.ComputedRef<Result<CFurnitureGroup, Error> | undefined>;
@@ -24,6 +26,7 @@ export class CFurniture implements IFilterable, IParcel {
   tags: CTag<Object>[];
   hideCount: number = 0;
   constructor(public obj: ReadonlyDeep<FurnitureExcel>) {
+    super(obj);
     this.group = useFurnitureGroup(this.obj.SetGroudpId);
     this.search = computed(() =>
       this.name.value.map((name) => [toHiragana(name), toKatakana(name)]),
@@ -35,21 +38,6 @@ export class CFurniture implements IFilterable, IParcel {
       FurnitureTagSubCategoryGroup.getTag(obj.SubCategory),
     ].filter(isDefined);
     this.tags.forEach((v) => v.add(this));
-  }
-  get desc() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
-  }
-  get iconPath() {
-    return this.obj.Icon;
-  }
-  get id() {
-    return this.obj.Id;
-  }
-  get name() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
-  }
-  get rarity() {
-    return this.obj.Rarity;
   }
   get category() {
     return this.obj.Category;
