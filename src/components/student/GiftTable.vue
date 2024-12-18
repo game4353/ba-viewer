@@ -36,7 +36,6 @@
           <MyCharacter
             :cid="sid"
             :scaling="{ h: rowH }"
-            no-route
             @click="() => toggle(sid)"
           />
         </th>

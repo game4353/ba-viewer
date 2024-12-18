@@ -50,6 +50,7 @@
                   v-if="c.value.isOk()"
                   :cid="c.value.unwrap()"
                   :scaling="{ r: 0.35 }"
+                  route
                 />
               </div>
             </div>

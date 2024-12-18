@@ -11,7 +11,7 @@
     <tbody>
       <tr v-for="(r, i) in striker" :key="i">
         <td class="bg-striker-dark">
-          <MyCharacter :cid="r[0]" :scaling="{ r: 0.3 }" />
+          <MyCharacter :cid="r[0]" :scaling="{ r: 0.3 }" route />
         </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
           {{ (n ?? 0) === 0 ? "-" : `${n / 100}%` }}
@@ -19,7 +19,7 @@
       </tr>
       <tr v-for="(r, i) in support" :key="i">
         <td class="bg-support-dark">
-          <MyCharacter :cid="r[0]" :scaling="{ r: 0.3 }" />
+          <MyCharacter :cid="r[0]" :scaling="{ r: 0.3 }" route />
         </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
           {{ (n ?? 0) === 0 ? "-" : `${n / 100}%` }}

@@ -7,6 +7,7 @@
           v-for="(cid, key) in shop.InfoCharacterId"
           :key
           :scaling="{ w: 100 }"
+          route
         />
       </div>
       <p>{{ shop.SalePeriodFrom }}</p>

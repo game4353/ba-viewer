@@ -20,6 +20,7 @@
               :level="c.lv"
               :star="c.star"
               dark
+              route
             />
           </div>
         </div>
