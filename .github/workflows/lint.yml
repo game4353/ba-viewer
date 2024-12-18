@@ -3,7 +3,7 @@ name: ESLint
 on: [pull_request]
 
 jobs:
-  prettier-check:
+  lint-check:
     runs-on: ubuntu-latest
 
     steps:
