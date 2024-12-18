@@ -44,7 +44,7 @@
                     :tier="student.statNow.gear3"
                   />
                 </v-col>
-                <v-col><Gear :cid /></v-col>
+                <v-col><Gear v-if="gear" :cid /></v-col>
               </v-row>
             </v-container>
           </v-expansion-panel-title>
@@ -55,7 +55,7 @@
             <Slider name="gear2lv" keys="gear2lv" :cid />
             <Slider name="gear3" keys="gear3" :cid />
             <Slider name="gear3lv" keys="gear3lv" :cid />
-            <Slider name="gear0" keys="gear0" :cid />
+            <Slider v-if="gear" name="gear0" keys="gear0" :cid />
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -78,4 +78,5 @@ const props = defineProps({
 const student = computed(() =>
   useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
+const gear = computed(() => student.value?.useGear().unwrapOrElse(errHandle));
 </script>
