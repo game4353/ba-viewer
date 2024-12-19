@@ -1,4 +1,7 @@
-enum TagState {
+import type { Rarity } from "@/assets/game/types/flatDataExcel";
+import { AParcel } from "@/components/parcel/class";
+
+export enum TagState {
   Show,
   Hide,
   All,
@@ -6,7 +9,26 @@ enum TagState {
 
 export interface IFilterable {
   tags: CTag<Object>[];
-  hideCount: number;
+  hideBy: Set<CTagGroup<any>>;
+}
+
+export abstract class AFilterableParcel<
+  T extends
+    | { Id: number; LocalizeEtcId: number; Icon?: string; Rarity?: Rarity }
+    | { ID: number; LocalizeEtcId: number; Icon?: string; Rarity?: Rarity },
+> extends AParcel<T> {
+  abstract tags: CTag<Object>[];
+  hideBy = reactive(new Set<CTagGroup<any>>());
+
+  useHidden() {
+    return computed(() => this.hideBy.size > 0);
+  }
+
+  initTags() {
+    this.tags.forEach((tag) =>
+      tag.parents.forEach((group) => group.addItem(this, tag.value)),
+    );
+  }
 }
 
 export class CTag<T> {
@@ -22,8 +44,8 @@ export class CTag<T> {
   public set icon(value: string) {
     this._icon = value;
   }
-  instances: IFilterable[] = [];
   state = TagState.All;
+  parents = new Set<CTagGroup<T>>();
 
   constructor(
     public value: T,
@@ -36,43 +58,95 @@ export class CTag<T> {
     return this.state === TagState.Hide;
   }
 
-  add(i: IFilterable) {
-    this.instances.push(i);
-  }
+  /** return whether show/hide is toggled after setting */
   setState(state: TagState) {
-    if (state === this.state) return;
-    if (state === TagState.Hide) {
-      this.instances.forEach((v) => v.hideCount++);
-    } else if (this.state === TagState.Hide) {
-      this.instances.forEach((v) => v.hideCount--);
-    }
+    const h = this.isHide;
     this.state = state;
+    return h !== this.isHide;
   }
 }
 
-export class CTagGroup {
-  static title = "";
-  static picked: number[];
-  static tags: CTag<Object>[];
-  static setPicked(arr: number[]) {
-    if (arr.length === this.picked.length + 1) {
-      const add = arr.at(-1)!;
-      if (arr.length === 1) {
-        this.tags.forEach((v) => v.setState(TagState.Hide));
-      }
-      this.tags[add].setState(TagState.Show);
-    } else if (arr.length === 0) {
-      this.tags.forEach((v) => v.setState(TagState.All));
-    } else if (arr.length === this.picked.length - 1) {
-      const remove = this.picked.find((v, i) => v !== arr[i])!;
-      this.tags[remove].setState(TagState.Hide);
-    } else {
-      console.error("TODO not supported");
-    }
-    this.picked = arr;
+export class CTagGroup<T> {
+  picked = new Set<number>();
+  showCount = new Map<IFilterable, number>();
+  taggedItems: Map<CTag<T>, Set<IFilterable>>;
+  show = new Set<IFilterable>();
+
+  constructor(
+    public title: string,
+    public tags: readonly CTag<T>[],
+  ) {
+    this.taggedItems = new Map();
+    tags.forEach((tag) => {
+      this.taggedItems.set(tag, new Set());
+      tag.parents.add(this);
+    });
   }
-  static getTag<T>(type: T) {
+
+  getTag(type: T) {
     return this.tags.find((v) => v.value === type);
+  }
+  addItem(item: IFilterable, tagValue: T) {
+    const tag = this.getTag(tagValue);
+    if (tag == null) return;
+    const set = this.taggedItems.get(tag)!;
+    if (set.has(item)) return;
+    set.add(item);
+    if (!this.showCount.has(item)) this.showCount.set(item, 0);
+    if (!tag.isHide) this.increaseShowCount(item);
+    if (this.showCount.get(item) === 0) item.hideBy.add(this);
+  }
+  deleteItem(item: IFilterable, tagValue: T) {
+    const tag = this.getTag(tagValue);
+    if (tag == null) return;
+    const set = this.taggedItems.get(tag)!;
+    if (!set.has(item)) return;
+    set.delete(item);
+    if (!tag.isHide) this.decreaseShowCount(item);
+  }
+
+  increaseShowCount(item: IFilterable) {
+    const sc = this.showCount.get(item) ?? 0;
+    this.showCount.set(item, sc + 1);
+    this.show.add(item);
+    item.hideBy.delete(this);
+  }
+  decreaseShowCount(item: IFilterable) {
+    const sc = this.showCount.get(item) ?? 0;
+    this.showCount.set(item, sc - 1);
+    if (sc === 1) {
+      this.show.delete(item);
+      item.hideBy.add(this);
+    }
+  }
+
+  /** vuetify will simply push the modified idx in the end,
+   * or splice the modified idx
+   */
+  setPicked(arr: number[]) {
+    if (arr.length === 0) {
+      this.tags.forEach((tag) => this.on(tag, TagState.All));
+      this.picked.clear();
+    } else {
+      const set = new Set(arr);
+      this.tags.forEach((tag, i) => {
+        if (set.has(i)) this.on(tag);
+        else this.off(tag);
+      });
+      this.picked = set;
+    }
+  }
+  on(tag: CTag<T>, state = TagState.Show) {
+    if (!tag.setState(state)) return;
+    this.taggedItems.get(tag)?.forEach((item) => {
+      this.increaseShowCount(item);
+    });
+  }
+  off(tag: CTag<T>) {
+    if (!tag.setState(TagState.Hide)) return;
+    this.taggedItems.get(tag)?.forEach((item) => {
+      this.decreaseShowCount(item);
+    });
   }
 }
 

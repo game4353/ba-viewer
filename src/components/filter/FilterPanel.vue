@@ -44,12 +44,7 @@
                 column
                 multiple
                 v-model="filterTags[i]"
-                @update:modelValue="
-                  (v: number[]) => {
-                    tagGroup.setPicked(v);
-                    triggerFilter = !triggerFilter;
-                  }
-                "
+                @update:modelValue="(v: number[]) => tagGroup.setPicked(v)"
               >
                 <v-chip
                   v-for="tag in tagGroup.tags"
@@ -100,7 +95,7 @@ const props = defineProps({
   },
 });
 
-const expand = ref("no");
+const expand = ref("on");
 function switchExpand() {
   const s = expand.value;
   expand.value = s[1] + s[0];
@@ -120,11 +115,19 @@ watchEffect(() => {
 
 const allCC = computed(() => new Set(props.items.map((o) => o.id)));
 const search = ref("");
-const triggerFilter = ref(true);
-const filterTags = ref<number[][]>([]);
+const filterTags = ref<number[][]>(
+  characterTags.map((tagGroup) => [...tagGroup.picked]),
+);
 
 const searchVisibles = ref<Set<number>>();
-const filterVisibles = ref<Set<number>>();
+const filterVisibles = computed(
+  () =>
+    new Set(
+      props.items
+        .filter((item) => item.useHidden().value === false)
+        .map((item) => item.id),
+    ),
+);
 
 watch(search, () => {
   const query = toHiragana(search.value ?? "").trim();
@@ -140,19 +143,17 @@ watch(search, () => {
   }
 });
 
-watch([triggerFilter], () => {
-  filterVisibles.value = new Set(
-    props.items.filter((o) => o.hideCount === 0).map((o) => o.id),
-  );
-});
-
-watch([allCC, searchVisibles, filterVisibles], () => {
-  const a = searchVisibles.value ?? allCC.value;
-  const b = filterVisibles.value ?? allCC.value;
-  // const visible = a.intersection(b);
-  const visible = new Set([...a].filter((id) => b.has(id)));
-  props.setVisible(visible);
-});
+watch(
+  [allCC, searchVisibles, filterVisibles],
+  () => {
+    const a = searchVisibles.value ?? allCC.value;
+    const b = filterVisibles.value ?? allCC.value;
+    // const visible = a.intersection(b);
+    const visible = new Set([...a].filter((id) => b.has(id)));
+    props.setVisible(visible);
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>

@@ -28,8 +28,7 @@ import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
 } from "../../student/star";
-import { AParcel } from "../class";
-import type { CTag, IFilterable } from "../tag";
+import { AFilterableParcel, type CTag } from "../tag";
 import {
   CharacterTagArmorTypeGroup,
   CharacterTagBulletTypeGroup,
@@ -42,13 +41,11 @@ import {
   CharacterTagTacticRangeGroup,
   CharacterTagTacticRoleGroup,
   CharacterTagWeaponTypeGroup,
-  StudentTagRarityGroup,
 } from "./tag";
 
-export class CCharacter
-  extends AParcel<ReadonlyDeep<CharacterExcel>>
-  implements IFilterable
-{
+export class CCharacter extends AFilterableParcel<
+  ReadonlyDeep<CharacterExcel>
+> {
   // IParcel
 
   type = ParcelType.Character as const;
@@ -59,7 +56,6 @@ export class CCharacter
   // IFilterable
 
   tags: CTag<Object>[];
-  hideCount: number = 0;
   constructor(
     public obj: ReadonlyDeep<CharacterExcel>,
     public costume: ReadonlyDeep<CostumeExcel>,
@@ -80,20 +76,7 @@ export class CCharacter
       CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[2]),
       CharacterTagProductionGroup.getTag(obj.ProductionStep),
     ].filter(isDefined);
-    this.tags.forEach((v) => v.add(this));
-  }
-
-  useTags = cache(() =>
-    computed(() => {
-      const tags = this.tags.map((v) => v);
-      const star = StudentTagRarityGroup.getTag(this.statNow.star);
-      if (star != null) tags.push(star);
-      return tags;
-    }),
-  );
-
-  useHidden() {
-    return computed(() => this.useTags().value.some((tsg) => tsg.isHide));
+    this.initTags();
   }
 
   get search() {

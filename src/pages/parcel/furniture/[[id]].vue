@@ -97,7 +97,6 @@ import { isDefined } from "@/utils/misc";
 import { toHiragana } from "wanakana";
 import { ParcelType } from "~game/types/flatDataExcel";
 const errHandle = inject(ERR_HANDLE)!;
-
 const currPage = ref(1);
 const search = ref("");
 
@@ -112,8 +111,9 @@ const furnitures = computed(
 
 const sortedItems = computed(() => furnitures.value);
 const filteredItems = computed(() => {
-  if (fire.value) return sortedItems.value.filter((v) => v.hideCount === 0);
-  else return sortedItems.value.filter((v) => v.hideCount === 0);
+  if (fire.value)
+    return sortedItems.value.filter((v) => v.useHidden().value === false);
+  else return sortedItems.value.filter((v) => v.useHidden().value === false);
 });
 const searchedItems = computed(() => {
   const newSearch = search.value ?? "";
@@ -134,7 +134,7 @@ function switchExpand() {
   expand.value = s[1] + s[0];
 }
 
-const tags = ref<number[][]>([]);
+const tags = ref<number[][]>(furnitureTags.map((group) => [...group.picked]));
 const fire = ref(true);
 const route = useRoute<"/parcel/furniture/[[id]]">();
 const pid = computed(() => {
