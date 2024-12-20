@@ -26,9 +26,16 @@ export abstract class AFilterableParcel<
     this.order.value = value;
   }
 
+  abstract searching$: string;
+  abstract search: string[];
+  get hiddenBySearch$() {
+    if (this.searching$ === "") return false;
+    return this.search.every((text) => !text.includes(this.searching$));
+  }
+
   hideBy = reactive(new Set<CTagGroup<any>>());
   get hidden$() {
-    return this.hideBy.size > 0;
+    return this.hideBy.size > 0 || this.hiddenBySearch$;
   }
   addStaticTag(tag?: CTag<any>) {
     tag?.parents.forEach((group) => group.addItem(this, tag.value));

@@ -1,6 +1,5 @@
 <template>
-  <Loading v-if="students == null" />
-  <div v-else class="flex flex-row flex-wrap gap-5">
+  <div class="flex flex-row flex-wrap gap-5">
     <div
       :class="student.hidden$ ? 'hidden' : ''"
       :style="{ order: student.order$ }"
@@ -13,32 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import Loading from "@/components/misc/Loading.vue";
-import { useStudent } from "@/components/student/student";
-import { ERR_HANDLE } from "@/components/warn/error";
-import { Result } from "@/utils/result/result";
-const errHandle = inject(ERR_HANDLE)!;
+import { CStudent } from "@/components/student/student";
 
-const props = defineProps({
-  characterIds: {
-    type: Array as PropType<Array<number>>,
+defineProps({
+  students: {
+    type: Array as PropType<CStudent[]>,
     required: true,
   },
-  visibleIds: {
-    type: Set as PropType<Set<number>>,
-  },
-  orderMap: {
-    type: Map as PropType<Map<number, number>>,
-  },
 });
-
-const students = computed(() => {
-  return Result.all(
-    props.characterIds.map((cid) => useStudent(cid).value),
-  ).unwrapOrElse(errHandle);
-});
-
-// function getOrder(cid: number) {
-//   return props.orderMap?.get(cid) ?? 2147483647;
-// }
 </script>

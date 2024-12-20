@@ -9,6 +9,7 @@ import {
 import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
 import { useBaseStats } from "@/components/student/stat";
+import { useStudentFilterStore } from "@/stores/filter";
 import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import {
   useExcelCharacter,
@@ -19,7 +20,7 @@ import {
 import { cache, range } from "@/utils/misc";
 import { Result, asResult, findFirst } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { toHiragana, toKatakana } from "wanakana";
+import { toHiragana, toKatakana, toRomaji } from "wanakana";
 import {
   usePotentialStatBonusRate,
   usePotentialStatRecipeIngredient,
@@ -78,9 +79,13 @@ export class CCharacter extends AFilterableParcel<
   }
 
   get search() {
-    return computed(() =>
-      this.name.value.map((name) => [toHiragana(name), toKatakana(name)]),
-    );
+    return this.name.value
+      .map((name) => [toHiragana(name), toKatakana(name), toRomaji(name)])
+      .unwrapOr([]);
+  }
+
+  get searching$() {
+    return useStudentFilterStore().search;
   }
 
   sortValue(key: string) {

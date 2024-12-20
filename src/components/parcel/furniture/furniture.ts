@@ -1,7 +1,8 @@
+import { useFurnitureFilterStore } from "@/stores/filter";
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
-import type { ComputedResult, Result } from "@/utils/result/result";
+import type { Result } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { toHiragana, toKatakana } from "wanakana";
+import { toHiragana, toKatakana, toRomaji } from "wanakana";
 import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";
 import { AFilterableParcel } from "../tag";
 import { useFurnitureInteract } from "./interact";
@@ -19,13 +20,10 @@ export class CFurniture extends AFilterableParcel<
   type = ParcelType.Furniture as const;
 
   group: globalThis.ComputedRef<Result<CFurnitureGroup, Error> | undefined>;
-  search: ComputedResult<string[], Error>;
+
   constructor(public obj: ReadonlyDeep<FurnitureExcel>) {
     super(obj);
     this.group = useFurnitureGroup(this.obj.SetGroudpId);
-    this.search = computed(() =>
-      this.name.value.map((name) => [toHiragana(name), toKatakana(name)]),
-    );
     [
       FurnitureTagInteractionGroup.getTag(this.isInteractive),
       FurnitureTagRarityGroup.getTag(obj.Rarity),
@@ -33,6 +31,16 @@ export class CFurniture extends AFilterableParcel<
       FurnitureTagSubCategoryGroup.getTag(obj.SubCategory),
     ].forEach((tag) => this.addStaticTag(tag));
   }
+  get search() {
+    return this.name.value
+      .map((name) => [toHiragana(name), toKatakana(name), toRomaji(name)])
+      .unwrapOr([]);
+  }
+
+  get searching$() {
+    return useFurnitureFilterStore().search;
+  }
+
   get category() {
     return this.obj.Category;
   }

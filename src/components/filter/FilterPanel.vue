@@ -74,26 +74,22 @@
 
 <script setup lang="ts">
 import { studentTags } from "@/components/student/tag";
-import { toHiragana } from "wanakana";
+import { useStudentFilterStore } from "@/stores/filter";
 import { CCharacter } from "../parcel/character/character";
 import { characterTags } from "../parcel/character/tag";
 import { compare } from "../parcel/tag";
-import { ERR_HANDLE } from "../warn/error";
-const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   items: {
     type: Array as PropType<CCharacter[]>,
     required: true,
   },
-  setOrder: {
-    type: Function as PropType<(map: Map<number, number>) => void>,
-    required: true,
-  },
-  setVisible: {
-    type: Function as PropType<(set: Set<number>) => void>,
-    required: true,
-  },
+});
+
+const store = useStudentFilterStore();
+const search = computed({
+  get: () => store.search,
+  set: (v) => (store.search = v ?? ""),
 });
 
 const tagGroups = [
@@ -128,42 +124,8 @@ watchEffect(() => {
   compareValues.forEach((o, i) => (items.value[o.idx].order$ = i));
 });
 
-const allCC = computed(() => new Set(props.items.map((o) => o.id)));
-const search = ref("");
 const filterTags = ref<number[][]>(
   tagGroups.map((tagGroup) => [...tagGroup.picked]),
-);
-
-const searchVisibles = ref<Set<number>>();
-const filterVisibles = computed(
-  () =>
-    new Set(props.items.filter((item) => !item.hidden$).map((item) => item.id)),
-);
-
-watch(search, () => {
-  const query = toHiragana(search.value ?? "").trim();
-  if (query === "") searchVisibles.value = undefined;
-  else {
-    searchVisibles.value = new Set(
-      props.items
-        .filter((o) =>
-          o.search.value.unwrapOrElse(errHandle)?.[0].includes(query),
-        )
-        .map((o) => o.id),
-    );
-  }
-});
-
-watch(
-  [allCC, searchVisibles, filterVisibles],
-  () => {
-    const a = searchVisibles.value ?? allCC.value;
-    const b = filterVisibles.value ?? allCC.value;
-    // const visible = a.intersection(b);
-    const visible = new Set([...a].filter((id) => b.has(id)));
-    props.setVisible(visible);
-  },
-  { immediate: true },
 );
 </script>
 
