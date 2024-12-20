@@ -6,6 +6,7 @@ import {
   type CharacterExcel,
   type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
+import { AFilterableParcel } from "@/components/filter/class";
 import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
 import { useBaseStats } from "@/components/student/stat";
@@ -29,7 +30,6 @@ import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
 } from "../../student/star";
-import { AFilterableParcel } from "../tag";
 import {
   CharacterTagArmorTypeGroup,
   CharacterTagBulletTypeGroup,

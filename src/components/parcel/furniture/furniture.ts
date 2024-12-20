@@ -1,10 +1,10 @@
+import { AFilterableParcel } from "@/components/filter/class";
 import { useFurnitureFilterStore } from "@/stores/filter";
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
 import type { Result } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana, toRomaji } from "wanakana";
 import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";
-import { AFilterableParcel } from "../tag";
 import { useFurnitureInteract } from "./interact";
 import { useFurnitureGroup, type CFurnitureGroup } from "./series";
 import {

@@ -1,4 +1,4 @@
-import { CTag, CTagGroup } from "@/components/parcel/tag";
+import { CTag, CTagGroup } from "@/components/filter/tag";
 
 class StudentTagRarity extends CTag<number> {}
 export const StudentTagRarityGroup = new CTagGroup("所持☆", [

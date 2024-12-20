@@ -73,15 +73,18 @@
 </template>
 
 <script setup lang="ts">
-import { studentTags } from "@/components/student/tag";
+import { compare } from "@/components/filter/sort";
 import { useStudentFilterStore } from "@/stores/filter";
 import { CCharacter } from "../parcel/character/character";
-import { characterTags } from "../parcel/character/tag";
-import { compare } from "../parcel/tag";
+import { CTagGroup } from "@/components/filter/tag";
 
 const props = defineProps({
   items: {
     type: Array as PropType<CCharacter[]>,
+    required: true,
+  },
+  tagGroups: {
+    type: Array as PropType<CTagGroup<any>[]>,
     required: true,
   },
 });
@@ -91,19 +94,6 @@ const search = computed({
   get: () => store.search,
   set: (v) => (store.search = v ?? ""),
 });
-
-const tagGroups = [
-  characterTags.CharacterTagSquadTypeGroup,
-  characterTags.CharacterTagBulletTypeGroup,
-  characterTags.CharacterTagArmorTypeGroup,
-  characterTags.CharacterTagTacticRoleGroup,
-  characterTags.CharacterTagTacticRangeGroup,
-  characterTags.CharacterTagRarityGroup,
-  studentTags.StudentTagRarityGroup,
-  characterTags.CharacterTagWeaponTypeGroup,
-  characterTags.CharacterTagSchoolGroup,
-  characterTags.CharacterTagEquipmentCategoryGroup,
-];
 
 const items = computed(() => props.items);
 
@@ -125,7 +115,7 @@ watchEffect(() => {
 });
 
 const filterTags = ref<number[][]>(
-  tagGroups.map((tagGroup) => [...tagGroup.picked]),
+  props.tagGroups.map((tagGroup) => [...tagGroup.picked]),
 );
 </script>
 

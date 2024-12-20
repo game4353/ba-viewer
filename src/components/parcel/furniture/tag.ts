@@ -1,9 +1,9 @@
+import { CTag, CTagGroup } from "@/components/filter/tag";
 import {
   FurnitureCategory,
   FurnitureSubCategory,
   Rarity,
 } from "~game/types/flatDataExcel";
-import { CTag, CTagGroup } from "../tag";
 
 class FurnitureTagInteraction extends CTag<boolean> {}
 
