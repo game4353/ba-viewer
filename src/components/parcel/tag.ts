@@ -22,6 +22,21 @@ export abstract class AFilterableParcel<
     return computed(() => this.hideBy.size > 0);
   }
 
+  get hidden$() {
+    return this.hideBy.size > 0;
+  }
+
+  private order = ref(0);
+  get order$() {
+    return this.order.value;
+  }
+  set order$(value: number) {
+    this.order.value = value;
+  }
+  setOrder(i: number) {
+    this.order.value = i;
+  }
+
   addStaticTag(tag?: CTag<any>) {
     tag?.parents.forEach((group) => group.addItem(this, tag.value));
   }

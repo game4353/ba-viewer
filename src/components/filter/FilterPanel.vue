@@ -24,7 +24,7 @@
       <Scroll>
         <v-expansion-panel value="on">
           <v-expansion-panel-text class="h-full">
-            <!--v-sheet class="py-4 px-1">
+            <v-sheet class="py-4 px-1">
               <v-chip-group
                 selected-class="text-primary"
                 mandatory
@@ -37,7 +37,7 @@
                   :value="tag"
                 ></v-chip>
               </v-chip-group>
-            </v-sheet-->
+            </v-sheet>
             <div v-for="(tagGroup, i) in tagGroups" :key="i">
               <div class="text-lg">{{ tagGroup.title }}</div>
               <v-chip-group
@@ -115,16 +115,18 @@ function switchExpand() {
   expand.value = s[1] + s[0];
 }
 
-const itemIdx = props.items.map((_, i) => i);
-// const sortTags = ["id", "name"];
+// const itemIdx = props.items.map((_, i) => i);
+const sortTags = ["id", "name"];
 const sortTag = ref("id");
 watchEffect(() => {
-  const compareValues = itemIdx.map((i) => props.items[i].sortValue(sortTag));
-  itemIdx.sort((a, b) =>
-    compare(compareValues[a].value, compareValues[b].value),
-  );
-  const order = new Map(itemIdx.map((v, i) => [props.items[v].id, i]));
-  props.setOrder(order);
+  const compareValues = props.items.map((item, i) => ({
+    idx: i,
+    val: item.sortValue(sortTag.value).value,
+  }));
+  compareValues.sort((a, b) => compare(a.val, b.val));
+  compareValues.forEach((o, i) => props.items[o.idx].setOrder(i));
+  // const order = new Map(itemIdx.map((v, i) => [props.items[v].id, i]));
+  // props.setOrder(order);
 });
 
 const allCC = computed(() => new Set(props.items.map((o) => o.id)));

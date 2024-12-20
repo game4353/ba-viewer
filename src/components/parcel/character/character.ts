@@ -83,9 +83,9 @@ export class CCharacter extends AFilterableParcel<
     );
   }
 
-  sortValue(key: globalThis.Ref<string>) {
+  sortValue(key: string) {
     return computed(() => {
-      switch (key.value) {
+      switch (key) {
         case "name":
           return this.name.value?.unwrapOr(undefined);
         case "id":
