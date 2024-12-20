@@ -38,7 +38,7 @@
                 ></v-chip>
               </v-chip-group>
             </v-sheet-->
-            <div v-for="(tagGroup, i) in characterTags" :key="i">
+            <div v-for="(tagGroup, i) in tagGroups" :key="i">
               <div class="text-lg">{{ tagGroup.title }}</div>
               <v-chip-group
                 column
@@ -73,6 +73,7 @@
 </template>
 
 <script setup lang="ts">
+import { studentTags } from "@/components/student/tag";
 import { toHiragana } from "wanakana";
 import { CCharacter } from "../parcel/character/character";
 import { characterTags } from "../parcel/character/tag";
@@ -95,6 +96,19 @@ const props = defineProps({
   },
 });
 
+const tagGroups = [
+  characterTags.CharacterTagSquadTypeGroup,
+  characterTags.CharacterTagBulletTypeGroup,
+  characterTags.CharacterTagArmorTypeGroup,
+  characterTags.CharacterTagTacticRoleGroup,
+  characterTags.CharacterTagTacticRangeGroup,
+  characterTags.CharacterTagRarityGroup,
+  studentTags.StudentTagRarityGroup,
+  characterTags.CharacterTagWeaponTypeGroup,
+  characterTags.CharacterTagSchoolGroup,
+  characterTags.CharacterTagEquipmentCategoryGroup,
+];
+
 const expand = ref("on");
 function switchExpand() {
   const s = expand.value;
@@ -116,7 +130,7 @@ watchEffect(() => {
 const allCC = computed(() => new Set(props.items.map((o) => o.id)));
 const search = ref("");
 const filterTags = ref<number[][]>(
-  characterTags.map((tagGroup) => [...tagGroup.picked]),
+  tagGroups.map((tagGroup) => [...tagGroup.picked]),
 );
 
 const searchVisibles = ref<Set<number>>();

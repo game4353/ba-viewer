@@ -101,18 +101,6 @@ export const CharacterTagRarityGroup = new CTagGroup("初期☆", [
   new CharacterTagRarity(Rarity.SSR, "☆☆☆"),
 ]);
 
-class StudentTagRarity extends CTag<number> {}
-export const StudentTagRarityGroup = new CTagGroup("所持☆", [
-  new StudentTagRarity(1, "☆"),
-  new StudentTagRarity(2, "☆☆"),
-  new StudentTagRarity(3, "☆☆☆"),
-  new StudentTagRarity(4, "☆☆☆☆"),
-  new StudentTagRarity(5, "☆☆☆☆☆"),
-  new StudentTagRarity(6, "☆☆☆☆☆★"),
-  new StudentTagRarity(7, "☆☆☆☆☆★★"),
-  new StudentTagRarity(8, "☆☆☆☆☆★★★"),
-]);
-
 class CharacterTagWeaponType extends CTag<WeaponType> {}
 export const CharacterTagWeaponTypeGroup = new CTagGroup("武器タイプ", [
   // new CharacterTagWeaponType(WeaponType.None, ""),
@@ -201,15 +189,14 @@ export const CharacterTagEquipmentCategoryGroup = new CTagGroup("装備", [
   // new CharacterTagEquipmentCategory(EquipmentCategory.WeaponExpGrowthZ, ""),
 ]);
 
-export const characterTags = [
+export const characterTags = {
   CharacterTagSquadTypeGroup,
   CharacterTagBulletTypeGroup,
   CharacterTagArmorTypeGroup,
   CharacterTagTacticRoleGroup,
   CharacterTagTacticRangeGroup,
   CharacterTagRarityGroup,
-  // StudentTagRarityGroup,
   CharacterTagWeaponTypeGroup,
   CharacterTagSchoolGroup,
   CharacterTagEquipmentCategoryGroup,
-];
+};

@@ -8,7 +8,6 @@ export enum TagState {
 }
 
 export interface IFilterable {
-  tags: CTag<Object>[];
   hideBy: Set<CTagGroup<any>>;
 }
 
@@ -17,16 +16,27 @@ export abstract class AFilterableParcel<
     | { Id: number; LocalizeEtcId: number; Icon?: string; Rarity?: Rarity }
     | { ID: number; LocalizeEtcId: number; Icon?: string; Rarity?: Rarity },
 > extends AParcel<T> {
-  abstract tags: CTag<Object>[];
   hideBy = reactive(new Set<CTagGroup<any>>());
 
   useHidden() {
     return computed(() => this.hideBy.size > 0);
   }
 
-  initTags() {
-    this.tags.forEach((tag) =>
-      tag.parents.forEach((group) => group.addItem(this, tag.value)),
+  addStaticTag(tag?: CTag<any>) {
+    tag?.parents.forEach((group) => group.addItem(this, tag.value));
+  }
+  addDynamicTag<T>(fn: () => T, tag: (type: T) => CTag<T> | undefined) {
+    watch(
+      fn,
+      (newVal, oldVal) => {
+        const oldTag = oldVal == null ? undefined : tag(oldVal);
+        const newTag = tag(newVal);
+        oldTag?.parents.forEach((group) =>
+          group.deleteItem(this, oldTag!.value),
+        );
+        newTag?.parents.forEach((group) => group.addItem(this, newTag!.value));
+      },
+      { immediate: true },
     );
   }
 }

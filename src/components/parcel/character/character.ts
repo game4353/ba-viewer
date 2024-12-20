@@ -16,7 +16,7 @@ import {
   useExcelCharacterStat,
   useExcelCostume,
 } from "@/utils/data/excel/character";
-import { cache, isDefined, range } from "@/utils/misc";
+import { cache, range } from "@/utils/misc";
 import { Result, asResult, findFirst } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana } from "wanakana";
@@ -28,7 +28,7 @@ import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
 } from "../../student/star";
-import { AFilterableParcel, type CTag } from "../tag";
+import { AFilterableParcel } from "../tag";
 import {
   CharacterTagArmorTypeGroup,
   CharacterTagBulletTypeGroup,
@@ -55,13 +55,12 @@ export class CCharacter extends AFilterableParcel<
 
   // IFilterable
 
-  tags: CTag<Object>[];
   constructor(
     public obj: ReadonlyDeep<CharacterExcel>,
     public costume: ReadonlyDeep<CostumeExcel>,
   ) {
     super(obj);
-    this.tags = [
+    [
       CharacterTagSquadTypeGroup.getTag(obj.SquadType),
       CharacterTagArmorTypeGroup.getTag(obj.ArmorType),
       CharacterTagBulletTypeGroup.getTag(obj.BulletType),
@@ -75,8 +74,7 @@ export class CCharacter extends AFilterableParcel<
       CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[1]),
       CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[2]),
       CharacterTagProductionGroup.getTag(obj.ProductionStep),
-    ].filter(isDefined);
-    this.initTags();
+    ].forEach((tag) => this.addStaticTag(tag));
   }
 
   get search() {
