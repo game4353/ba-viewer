@@ -111,9 +111,8 @@ const furnitures = computed(
 
 const sortedItems = computed(() => furnitures.value);
 const filteredItems = computed(() => {
-  if (fire.value)
-    return sortedItems.value.filter((v) => v.useHidden().value === false);
-  else return sortedItems.value.filter((v) => v.useHidden().value === false);
+  if (fire.value) return sortedItems.value.filter((v) => !v.hidden$);
+  else return sortedItems.value.filter((v) => !v.hidden$);
 });
 const searchedItems = computed(() => {
   const newSearch = search.value ?? "";

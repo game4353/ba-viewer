@@ -9,6 +9,8 @@ export enum TagState {
 
 export interface IFilterable {
   hideBy: Set<CTagGroup<any>>;
+  hidden$: boolean;
+  order$: number;
 }
 
 export abstract class AFilterableParcel<
@@ -16,16 +18,6 @@ export abstract class AFilterableParcel<
     | { Id: number; LocalizeEtcId: number; Icon?: string; Rarity?: Rarity }
     | { ID: number; LocalizeEtcId: number; Icon?: string; Rarity?: Rarity },
 > extends AParcel<T> {
-  hideBy = reactive(new Set<CTagGroup<any>>());
-
-  useHidden() {
-    return computed(() => this.hideBy.size > 0);
-  }
-
-  get hidden$() {
-    return this.hideBy.size > 0;
-  }
-
   private order = ref(0);
   get order$() {
     return this.order.value;
@@ -33,10 +25,11 @@ export abstract class AFilterableParcel<
   set order$(value: number) {
     this.order.value = value;
   }
-  setOrder(i: number) {
-    this.order.value = i;
-  }
 
+  hideBy = reactive(new Set<CTagGroup<any>>());
+  get hidden$() {
+    return this.hideBy.size > 0;
+  }
   addStaticTag(tag?: CTag<any>) {
     tag?.parents.forEach((group) => group.addItem(this, tag.value));
   }

@@ -109,24 +109,23 @@ const tagGroups = [
   characterTags.CharacterTagEquipmentCategoryGroup,
 ];
 
+const items = computed(() => props.items);
+
 const expand = ref("on");
 function switchExpand() {
   const s = expand.value;
   expand.value = s[1] + s[0];
 }
 
-// const itemIdx = props.items.map((_, i) => i);
 const sortTags = ["id", "name"];
 const sortTag = ref("id");
 watchEffect(() => {
-  const compareValues = props.items.map((item, i) => ({
+  const compareValues = items.value.map((item, i) => ({
     idx: i,
     val: item.sortValue(sortTag.value).value,
   }));
   compareValues.sort((a, b) => compare(a.val, b.val));
-  compareValues.forEach((o, i) => props.items[o.idx].setOrder(i));
-  // const order = new Map(itemIdx.map((v, i) => [props.items[v].id, i]));
-  // props.setOrder(order);
+  compareValues.forEach((o, i) => (items.value[o.idx].order$ = i));
 });
 
 const allCC = computed(() => new Set(props.items.map((o) => o.id)));
@@ -138,11 +137,7 @@ const filterTags = ref<number[][]>(
 const searchVisibles = ref<Set<number>>();
 const filterVisibles = computed(
   () =>
-    new Set(
-      props.items
-        .filter((item) => item.useHidden().value === false)
-        .map((item) => item.id),
-    ),
+    new Set(props.items.filter((item) => !item.hidden$).map((item) => item.id)),
 );
 
 watch(search, () => {
