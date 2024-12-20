@@ -48,6 +48,12 @@ export const Icon = {
   Gift2,
   Gift3,
   Gift4,
+  arona: uiPath(
+    "UIs/01_Common/14_CharacterCollect/NPC_Portrait_Arona_Collection",
+  ),
+  plana: uiPath(
+    "UIs/01_Common/14_CharacterCollect/NPC_Portrait_NP0035_Collection",
+  ),
 };
 
 export function stageTopographyIcon(stageTopography: StageTopography) {
