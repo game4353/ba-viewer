@@ -5,6 +5,8 @@ on:
     types:
       - created
 
+permissions: write-all
+
 jobs:
   bot-update:
     if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/bot ') }}
@@ -60,7 +62,7 @@ jobs:
           git config user.email "bot@example.com"
           git add package.json
           git commit -m "Bot updated patch version to $new_version"
-  
+
       - name: Push changes
         run: |
           git push origin HEAD:${{ github.ref }}
