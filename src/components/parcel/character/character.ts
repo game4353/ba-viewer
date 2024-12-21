@@ -6,9 +6,11 @@ import {
   type CharacterExcel,
   type CostumeExcel,
 } from "@/assets/game/types/flatDataExcel";
+import { AFilterableParcel } from "@/components/filter/class";
 import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
 import { useBaseStats } from "@/components/student/stat";
+import { useStudentFilterStore } from "@/stores/filter";
 import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import {
   useExcelCharacter,
@@ -16,10 +18,10 @@ import {
   useExcelCharacterStat,
   useExcelCostume,
 } from "@/utils/data/excel/character";
-import { cache, isDefined, range } from "@/utils/misc";
+import { cache, range } from "@/utils/misc";
 import { Result, asResult, findFirst } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { toHiragana, toKatakana } from "wanakana";
+import { toHiragana, toKatakana, toRomaji } from "wanakana";
 import {
   usePotentialStatBonusRate,
   usePotentialStatRecipeIngredient,
@@ -28,8 +30,6 @@ import {
   useTranscendenceBonusRate,
   useTranscendenceRecipeIngredient,
 } from "../../student/star";
-import { AParcel } from "../class";
-import type { CTag, IFilterable } from "../tag";
 import {
   CharacterTagArmorTypeGroup,
   CharacterTagBulletTypeGroup,
@@ -42,13 +42,11 @@ import {
   CharacterTagTacticRangeGroup,
   CharacterTagTacticRoleGroup,
   CharacterTagWeaponTypeGroup,
-  StudentTagRarityGroup,
 } from "./tag";
 
-export class CCharacter
-  extends AParcel<ReadonlyDeep<CharacterExcel>>
-  implements IFilterable
-{
+export class CCharacter extends AFilterableParcel<
+  ReadonlyDeep<CharacterExcel>
+> {
   // IParcel
 
   type = ParcelType.Character as const;
@@ -58,14 +56,12 @@ export class CCharacter
 
   // IFilterable
 
-  tags: CTag<Object>[];
-  hideCount: number = 0;
   constructor(
     public obj: ReadonlyDeep<CharacterExcel>,
     public costume: ReadonlyDeep<CostumeExcel>,
   ) {
     super(obj);
-    this.tags = [
+    [
       CharacterTagSquadTypeGroup.getTag(obj.SquadType),
       CharacterTagArmorTypeGroup.getTag(obj.ArmorType),
       CharacterTagBulletTypeGroup.getTag(obj.BulletType),
@@ -79,32 +75,22 @@ export class CCharacter
       CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[1]),
       CharacterTagEquipmentCategoryGroup.getTag(obj.EquipmentSlot[2]),
       CharacterTagProductionGroup.getTag(obj.ProductionStep),
-    ].filter(isDefined);
-    this.tags.forEach((v) => v.add(this));
-  }
-
-  useTags = cache(() =>
-    computed(() => {
-      const tags = this.tags.map((v) => v);
-      const star = StudentTagRarityGroup.getTag(this.statNow.star);
-      if (star != null) tags.push(star);
-      return tags;
-    }),
-  );
-
-  useHidden() {
-    return computed(() => this.useTags().value.some((tsg) => tsg.isHide));
+    ].forEach((tag) => this.addStaticTag(tag));
   }
 
   get search() {
-    return computed(() =>
-      this.name.value.map((name) => [toHiragana(name), toKatakana(name)]),
-    );
+    return this.name.value
+      .map((name) => [toHiragana(name), toKatakana(name), toRomaji(name)])
+      .unwrapOr([]);
   }
 
-  sortValue(key: globalThis.Ref<string>) {
+  get searching$() {
+    return useStudentFilterStore().search;
+  }
+
+  sortValue(key: string) {
     return computed(() => {
-      switch (key.value) {
+      switch (key) {
         case "name":
           return this.name.value?.unwrapOr(undefined);
         case "id":

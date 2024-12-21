@@ -29,19 +29,15 @@ export abstract class IOData<T extends z.AnyZodObject> {
     const dft = this.defaultObj;
     const store = defineStore(fullKey, {
       state: () =>
-        useLocalStorage(
-          fullKey,
-          { ...this.defaultObj },
-          {
-            mergeDefaults: true,
-          },
-        ),
+        useLocalStorage(fullKey, structuredClone(dft), {
+          mergeDefaults: true,
+        }),
       actions: {
         update(data: z.infer<T>) {
           this.$state = data;
         },
         reset() {
-          this.$state = dft;
+          this.$state = structuredClone(dft);
         },
       },
     });

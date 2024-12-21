@@ -1,40 +1,36 @@
 <template>
-  <div class="flex flex-row h-full">
+  <Loading v-if="students == null" />
+  <div v-else class="flex flex-row h-full">
     <div class="w-[240px] h-full flex-shrink-0">
-      <FilterPanel :items="students" :setOrder :setVisible />
+      <FilterPanel :items="students" :tagGroups />
     </div>
     <div class="h-full">
       <Scroll class="mx-6 px-2">
-        <StudentList :characterIds="studentIds" :visibleIds :orderMap />
+        <StudentList :students />
       </Scroll>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { usePlayableIds, useStudent } from "@/components/student/student";
+import { characterTags } from "@/components/parcel/character/tag";
+import { useStudents } from "@/components/student/student";
+import { studentTags } from "@/components/student/tag";
 import { ERR_HANDLE } from "@/components/warn/error";
-import { isDefined } from "@/utils/misc";
-
 const errHandle = inject(ERR_HANDLE)!;
 
-const playableIds = usePlayableIds();
-const studentIds = computed(() => {
-  if (playableIds.value == null) return [];
-  if (playableIds.value.isErr()) return [];
-  return playableIds.value.unwrap();
-});
-const students = computed(() =>
-  studentIds.value
-    .map((id) => useStudent(id).value?.unwrapOrElse(errHandle))
-    .filter(isDefined),
-);
-const orderMap = ref<Map<number, number>>();
-const visibleIds = ref<Set<number>>();
-function setOrder(map: Map<number, number>) {
-  orderMap.value = map;
-}
-function setVisible(set: Set<number>) {
-  visibleIds.value = set;
-}
+const students = computed(() => useStudents().value.unwrapOrElse(errHandle));
+
+const tagGroups = [
+  characterTags.CharacterTagSquadTypeGroup,
+  characterTags.CharacterTagBulletTypeGroup,
+  characterTags.CharacterTagArmorTypeGroup,
+  characterTags.CharacterTagTacticRoleGroup,
+  characterTags.CharacterTagTacticRangeGroup,
+  characterTags.CharacterTagRarityGroup,
+  studentTags.StudentTagRarityGroup,
+  characterTags.CharacterTagWeaponTypeGroup,
+  characterTags.CharacterTagSchoolGroup,
+  characterTags.CharacterTagEquipmentCategoryGroup,
+];
 </script>

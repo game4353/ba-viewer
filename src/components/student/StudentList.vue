@@ -1,31 +1,23 @@
 <template>
   <div class="flex flex-row flex-wrap gap-5">
     <div
-      :class="visibleIds?.has(cid) === false ? 'hidden' : ''"
-      :style="{ order: getOrder(cid) }"
-      v-for="cid in characterIds"
-      :key="cid"
+      :class="student.hidden$ ? 'hidden' : ''"
+      :style="{ order: student.order$ }"
+      v-for="student in students"
+      :key="student.id"
     >
-      <MyCharacterBig :cid :scaling="{ w: 120 }" />
+      <MyCharacterBig :cid="student.id" :scaling="{ w: 120 }" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  characterIds: {
-    type: Array as PropType<Array<number>>,
+import { CStudent } from "@/components/student/student";
+
+defineProps({
+  students: {
+    type: Array as PropType<CStudent[]>,
     required: true,
   },
-  visibleIds: {
-    type: Set as PropType<Set<number>>,
-  },
-  orderMap: {
-    type: Map as PropType<Map<number, number>>,
-  },
 });
-
-function getOrder(cid: number) {
-  return props.orderMap?.get(cid) ?? 2147483647;
-}
 </script>

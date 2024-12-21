@@ -2,6 +2,7 @@ import {
   ProductionStep,
   type CharacterExcel,
 } from "@/assets/game/types/flatDataExcel";
+import { StudentTagRarityGroup } from "@/components/student/tag";
 import {
   useExcelCharacter,
   useExcelCharacterLevel,
@@ -27,6 +28,10 @@ import { useCharacterGear } from "../parcel/gear/gear";
 export class CStudent extends CCharacter {
   constructor(...args: ConstructorParameters<typeof CCharacter>) {
     super(...args);
+    this.addDynamicTag(
+      () => this.statNow.star,
+      StudentTagRarityGroup.getTag.bind(StudentTagRarityGroup),
+    );
   }
 
   useBirthday() {
