@@ -1,0 +1,68 @@
+name: Bot Auto Versioning
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  bot-update:
+    if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/bot ') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Increment minor version
+        if: ${{ github.event.comment.body == '/bot minor' }}
+        run: |
+          # Read the current version from package.json
+          version=$(jq -r '.version' package.json)
+          echo "Current version: $version"
+
+          # Increment the minor version
+          IFS='.' read -r major minor patch <<< "$version"
+          new_version="$major.$((minor + 1)).0"
+          echo "New version: $new_version"
+
+          # Update the package.json with the new version
+          jq ".version = \"$new_version\"" package.json > temp.json && mv temp.json package.json
+
+          # Commit the changes
+          git config user.name "GitHub Bot"
+          git config user.email "bot@example.com"
+          git add package.json
+          git commit -m "Bot updated minor version to $new_version"
+
+      - name: Increment patch version
+        if: ${{ github.event.comment.body == '/bot patch' }}
+        run: |
+          # Read the current version from package.json
+          version=$(jq -r '.version' package.json)
+          echo "Current version: $version"
+
+          # Increment the minor version
+          IFS='.' read -r major minor patch <<< "$version"
+          new_version="$major.$minor.$((patch + 1))"
+          echo "New version: $new_version"
+
+          # Update the package.json with the new version
+          jq ".version = \"$new_version\"" package.json > temp.json && mv temp.json package.json
+
+          # Commit the changes
+          git config user.name "GitHub Bot"
+          git config user.email "bot@example.com"
+          git add package.json
+          git commit -m "Bot updated patch version to $new_version"
+  
+      - name: Push changes
+        run: |
+          git push origin HEAD:${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
