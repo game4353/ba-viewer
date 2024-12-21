@@ -97,6 +97,7 @@ import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import { uiPath } from "../GameImg/loader";
 import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
+import { Icon } from "@/components/GameImg/icon";
 
 const imgW = 404;
 const imgH = 456;
@@ -173,10 +174,7 @@ const bg = computed(() => {
   if (costume == null) return undefined;
   return uiPath(costume.CollectionTexturePath);
 });
-const folder = "/src/assets/game/UIs/01_Common/14_CharacterCollect/";
-const arona = folder + "NPC_Portrait_Arona_Collection.png";
-const plana = folder + "NPC_Portrait_NP0035_Collection.png";
-const loading = Math.random() < 0.5 ? arona : plana;
+const loading = Math.random() < 0.5 ? Icon.arona : Icon.plana;
 
 function textSize(text: string) {
   const l = text.length;

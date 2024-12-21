@@ -3,7 +3,7 @@
     <div class="w-1/2 min-w-[364px]">
       <v-data-iterator
         class="flex flex-row flex-wrap gap-y-2 mt-1 overflow-auto"
-        :items="searchedItems"
+        :items="filteredItems"
         :items-per-page="30"
         :page="currPage"
       >
@@ -37,12 +37,7 @@
                   column
                   multiple
                   v-model="tags[i]"
-                  @update:modelValue="
-                    (v: number[]) => {
-                      tagGroup.setPicked(v);
-                      fire = !fire;
-                    }
-                  "
+                  @update:modelValue="(v: number[]) => tagGroup.setPicked(v)"
                 >
                   <v-chip
                     v-for="tag in tagGroup.tags"
@@ -93,13 +88,18 @@ import {
 } from "@/components/parcel/furniture/furniture";
 import { furnitureTags } from "@/components/parcel/furniture/tag";
 import { ERR_HANDLE } from "@/components/warn/error";
+import { useFurnitureFilterStore } from "@/stores/filter";
 import { isDefined } from "@/utils/misc";
-import { toHiragana } from "wanakana";
 import { ParcelType } from "~game/types/flatDataExcel";
 const errHandle = inject(ERR_HANDLE)!;
 
 const currPage = ref(1);
-const search = ref("");
+
+const store = useFurnitureFilterStore();
+const search = computed({
+  get: () => store.search,
+  set: (v) => (store.search = v ?? ""),
+});
 
 const furnitureIds = useFurnitureIds();
 const furnitures = computed(
@@ -112,20 +112,7 @@ const furnitures = computed(
 
 const sortedItems = computed(() => furnitures.value);
 const filteredItems = computed(() => {
-  if (fire.value) return sortedItems.value.filter((v) => v.hideCount === 0);
-  else return sortedItems.value.filter((v) => v.hideCount === 0);
-});
-const searchedItems = computed(() => {
-  const newSearch = search.value ?? "";
-  if (newSearch === "") return filteredItems.value;
-  else {
-    const q = toHiragana(newSearch);
-    return filteredItems.value.filter((f) => {
-      if ((f.search.value.unwrapOrElse(errHandle)?.[0]?.indexOf(q) ?? -1) > -1)
-        return true;
-      return false;
-    });
-  }
+  return sortedItems.value.filter((v) => !v.hidden$);
 });
 
 const expand = ref("no");
@@ -134,8 +121,7 @@ function switchExpand() {
   expand.value = s[1] + s[0];
 }
 
-const tags = ref<number[][]>([]);
-const fire = ref(true);
+const tags = ref<number[][]>(furnitureTags.map((group) => [...group.picked]));
 const route = useRoute<"/parcel/furniture/[[id]]">();
 const pid = computed(() => {
   const id = route.params.id ?? "";
