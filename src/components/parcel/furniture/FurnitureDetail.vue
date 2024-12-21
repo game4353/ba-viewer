@@ -7,7 +7,11 @@
         }}</span>
       </template>
       <template v-slot:prepend>
-        <Parcel :type="ParcelType.Furniture" :pid="picked.id" :scale="0.4" />
+        <Parcel
+          :type="ParcelType.Furniture"
+          :pid="picked.id"
+          :scaling="{ r: 0.4 }"
+        />
       </template>
       <v-card-text class="bg-surface-light !pt-4">
         {{ picked.desc.value.unwrapOrElse(errHandle) ?? "" }}
@@ -16,14 +20,10 @@
     <v-card
       class="border rounded-xl m-4"
       v-if="picked.group.value?.isOk()"
-      :title="
-        picked.group.value.unwrap().groupName.value?.unwrapOrElse(errHandle)
-      "
+      :title="picked.group.value.unwrap().groupName.unwrapOrElse(errHandle)"
     >
       <v-card-text class="bg-surface-light !pt-4">
-        {{
-          picked.group.value.unwrap().groupDesc.value?.unwrapOrElse(errHandle)
-        }}
+        {{ picked.group.value.unwrap().groupDesc.unwrapOrElse(errHandle) }}
       </v-card-text>
     </v-card>
     <v-card
@@ -45,7 +45,8 @@
                 <MyCharacter
                   v-if="c.value.isOk()"
                   :cid="c.value.unwrap()"
-                  :scale="0.35"
+                  :scaling="{ r: 0.35 }"
+                  route
                 />
               </div>
             </div>

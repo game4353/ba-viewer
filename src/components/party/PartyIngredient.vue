@@ -78,7 +78,7 @@ import {
 import { ERR_HANDLE } from "@/components/warn/error";
 import { dataParty } from "@/stores/party";
 import { isDefined } from "@/utils/misc";
-import { Ok, Result } from "@/utils/result";
+import { Ok, Result } from "@/utils/result/result";
 import { ReadonlyDeep } from "type-fest";
 import { useStudent } from "../student/student";
 const errHandle = inject(ERR_HANDLE)!;

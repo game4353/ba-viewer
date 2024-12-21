@@ -2,13 +2,21 @@ import {
   ProductionStep,
   type CharacterExcel,
 } from "@/assets/game/types/flatDataExcel";
+import { StudentTagRarityGroup } from "@/components/student/tag";
 import {
   useExcelCharacter,
   useExcelCharacterLevel,
 } from "@/utils/data/excel/character";
-import { KeyNotFoundErr } from "@/utils/error";
+import clubLocalizeKey from "@/utils/i18n/custom/keyClub";
+import schoolFullLocalizeKey from "@/utils/i18n/custom/keySchoolFull";
+import {
+  useLocalize,
+  useLocalizeCharProfile,
+  useLocalizeCharProfileMap,
+} from "@/utils/i18n/localize";
 import { cache, sum } from "@/utils/misc";
-import { Err, Ok, Result, asResult } from "@/utils/result";
+import { KeyNotFoundErr } from "@/utils/result/error";
+import { Err, Ok, Result, asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { CCharacter, useCharacter } from "../parcel/character/character";
 import {
@@ -20,6 +28,37 @@ import { useCharacterGear } from "../parcel/gear/gear";
 export class CStudent extends CCharacter {
   constructor(...args: ConstructorParameters<typeof CCharacter>) {
     super(...args);
+    this.addDynamicTag(
+      () => this.statNow.star,
+      StudentTagRarityGroup.getTag.bind(StudentTagRarityGroup),
+    );
+  }
+
+  useBirthday() {
+    return asResult(
+      useLocalizeCharProfileMap()
+        .value.andThen((map) => map.getResult(this.id))
+        .map((o) => o.BirthDay)
+        .andThen((bd) => {
+          if (bd === "-") return Ok(undefined);
+          if (!/^\d\d?\/\d\d?/.test(bd))
+            return Err(new Error(`Invalid birthday '${bd}'.`));
+          const [month, day] = bd.split("/").map(Number);
+          const year = new Date().getFullYear();
+          return Ok(new Date(year, month - 1, day));
+        }),
+    );
+  }
+
+  useClub() {
+    return useLocalize(clubLocalizeKey(this.obj.Club));
+  }
+  useSchool() {
+    return useLocalize(schoolFullLocalizeKey(this.obj.School));
+  }
+
+  useProfile(key: Parameters<typeof useLocalizeCharProfile>["1"]) {
+    return useLocalizeCharProfile(this.id, key);
   }
 
   useExp(unit: number) {
@@ -94,13 +133,23 @@ function isPlayable(excel: ReadonlyDeep<CharacterExcel>) {
   );
 }
 
-export const usePlayableIds = cache(() =>
+export const usePlayableIds = cache((ignoreType2: boolean = false) =>
   computed(() =>
     asResult(
       useExcelCharacter().value.map((map) =>
         Array.from(map.entries())
-          .filter(([, v]) => isPlayable(v))
+          .filter(([, v]) => isPlayable(v) && (!ignoreType2 || v.Id !== 10099))
           .map(([k]) => k),
+      ),
+    ),
+  ),
+);
+
+export const useStudents = cache((ignoreType2 = false) =>
+  computed(() =>
+    asResult(
+      usePlayableIds(ignoreType2).value.andThen((ids) =>
+        Result.all(ids.map((id) => useStudent(id).value)),
       ),
     ),
   ),

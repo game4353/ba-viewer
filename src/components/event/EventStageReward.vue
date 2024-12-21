@@ -1,12 +1,17 @@
 <template>
   <div class="flex flex-row">
-    <div class="flex flex-col" v-for="(reward, key) in rewards" :key>
+    <div
+      class="flex flex-col"
+      :class="reward.RewardProb === 0 ? 'hidden' : ''"
+      v-for="(reward, key) in rewards"
+      :key
+    >
       <Parcel
         :type="reward.RewardParcelType"
         :pid="reward.RewardId"
         :amount="reward.RewardAmount"
         :tag="reward.RewardTag"
-        :scale="0.3"
+        :scaling="{ r: 0.3 }"
         route
       />
       <p class="text-center" v-if="reward.RewardProb !== 10000">

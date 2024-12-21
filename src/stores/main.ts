@@ -1,5 +1,5 @@
 import { cache } from "@/utils/misc";
-import { Err, type Result } from "@/utils/result";
+import { Err, type Result } from "@/utils/result/result";
 import { useLocalStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { z } from "zod";
@@ -29,19 +29,15 @@ export abstract class IOData<T extends z.AnyZodObject> {
     const dft = this.defaultObj;
     const store = defineStore(fullKey, {
       state: () =>
-        useLocalStorage(
-          fullKey,
-          { ...this.defaultObj },
-          {
-            mergeDefaults: true,
-          },
-        ),
+        useLocalStorage(fullKey, structuredClone(dft), {
+          mergeDefaults: true,
+        }),
       actions: {
         update(data: z.infer<T>) {
           this.$state = data;
         },
         reset() {
-          this.$state = dft;
+          this.$state = structuredClone(dft);
         },
       },
     });

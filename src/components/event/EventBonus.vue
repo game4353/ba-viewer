@@ -4,25 +4,25 @@
       <tr class="blur-top">
         <td></td>
         <td v-for="(n, i) in tokens" :key="i">
-          <EventCurrency :eid :eit="n" class="max-w-16" />
+          <EventCurrency :currency :eit="n" class="max-w-16" />
         </td>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(r, i) in striker" :key="i">
         <td class="bg-striker-dark">
-          <MyCharacter :cid="r[0]" :scale="0.3" />
+          <MyCharacter :cid="r[0]" :scaling="{ r: 0.3 }" route />
         </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
-          {{ n == null ? "" : `${n / 100}%` }}
+          {{ (n ?? 0) === 0 ? "-" : `${n / 100}%` }}
         </td>
       </tr>
       <tr v-for="(r, i) in support" :key="i">
         <td class="bg-support-dark">
-          <MyCharacter :cid="r[0]" :scale="0.3" />
+          <MyCharacter :cid="r[0]" :scaling="{ r: 0.3 }" route />
         </td>
         <td v-for="(n, j) in r.slice(1)" :key="j">
-          {{ n == null ? "" : `${n / 100}%` }}
+          {{ (n ?? 0) === 0 ? "-" : `${n / 100}%` }}
         </td>
       </tr>
       <tr class="h-[70px]"></tr>
@@ -35,27 +35,26 @@
 </template>
 
 <script setup lang="ts">
-import { useExcelEventContentCharacterBonus } from "@/utils/data/excel/event";
-import { ERR_HANDLE } from "../warn/error";
+import {
+  EventContentCharacterBonusExcel,
+  EventContentCurrencyItemExcel,
+} from "@/assets/game/types/flatDataExcel";
+import { ReadonlyDeep } from "type-fest";
 import EventCurrency from "./EventCurrency.vue";
 
 const props = defineProps({
-  eid: {
-    type: Number,
+  bonus: {
+    type: Array as PropType<ReadonlyDeep<EventContentCharacterBonusExcel>[]>,
+    required: true,
+  },
+  currency: {
+    type: Array as PropType<ReadonlyDeep<EventContentCurrencyItemExcel>[]>,
     required: true,
   },
 });
-const errHandle = inject(ERR_HANDLE)!;
-
-const table = useExcelEventContentCharacterBonus();
-
-const bonus = computed(() =>
-  table.value?.unwrapOrElse(errHandle)?.get(props.eid),
-);
 
 const tokenSet = computed(() => {
-  if (bonus.value == null) return null;
-  return new Set(bonus.value.map((v) => v.EventContentItemType).flat());
+  return new Set(props.bonus.map((v) => v.EventContentItemType).flat());
 });
 
 const tokens = computed(() => {
@@ -64,7 +63,7 @@ const tokens = computed(() => {
 });
 
 const rows = computed(() => {
-  return bonus.value?.map((v) => [
+  return props.bonus.map((v) => [
     v.CharacterId,
     ...tokens.value!.map(
       (t) => v.BonusPercentage[v.EventContentItemType.indexOf(t)] || 0,

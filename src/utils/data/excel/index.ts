@@ -1,6 +1,6 @@
-import { FetchDataErr, KeyNotFoundErr, TimeoutErr } from "@/utils/error";
+import { FetchDataErr, KeyNotFoundErr, TimeoutErr } from "@/utils/result/error";
+import { Err, Ok } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { Err, Ok } from "~/utils/result";
 import { useFetch } from "../index";
 
 export function useExcel<T>(name: string) {
@@ -108,6 +108,17 @@ export class MapResult<T, U> extends Map<T, U> {
   getResult(key: T) {
     if (this.has(key)) return Ok(this.get(key) as U);
     return Err(KeyNotFoundErr.from(key, this.keyName, this.title));
+  }
+
+  /** Adds a new element with a specified key and value
+   * to the Map and returns `true`.
+   * If an element with the same key already exists,
+   * this will do nothing and return `false`.
+   * */
+  trySet(key: T, value: U) {
+    if (this.has(key)) return false;
+    this.set(key, value);
+    return true;
   }
 
   static groupBy<K, T>(

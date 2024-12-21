@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from "vue";
 import type { TargetSortRule } from "./target";
 
 const props = defineProps({

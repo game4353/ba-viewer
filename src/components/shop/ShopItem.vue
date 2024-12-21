@@ -12,7 +12,7 @@
       :key="i"
       :parcel="v?.parcel"
       :amount="v?.amount"
-      :scale="0.33"
+      :scaling="{ r: 0.33 }"
       route
     />
     <div v-if="(amount ?? 0) === 0" class="h-4 w-full"></div>
@@ -21,10 +21,10 @@
     </div>
     <div class="flex flex-row justify-center items-center m-1">
       <Parcel
+        class="w-8"
         :type="good.ConsumeParcelType[0]"
         :pid="good.ConsumeParcelId[0]"
         layout="icon"
-        class="w-8"
       />
       <span class="bg-blue-900 h-4 w-16 text-center text-xs">{{
         good.ConsumeParcelAmount[0]
@@ -35,8 +35,7 @@
 
 <script setup lang="ts">
 import { useExcelGoods } from "@/utils/data/excel/shop";
-import { Local } from "@/utils/localize";
-import { PropType } from "vue";
+import { useLocalizeEtc } from "@/utils/i18n/localize";
 import { getParcel } from "../parcel/parcel";
 import { ERR_HANDLE } from "../warn/error";
 
@@ -77,7 +76,7 @@ const gain = computed(() =>
 const nameStr = computed(() =>
   props.nameEtcId == null
     ? gain.value?.[0]?.parcel?.name.value?.unwrapOrElse(errHandle)
-    : Local.useLocalizeEtc(props.nameEtcId).value?.unwrapOrElse(errHandle),
+    : useLocalizeEtc(props.nameEtcId).unwrapOrElse(errHandle),
 );
 const nameLen = computed(() => nameStr.value?.length ?? 0);
 const nameSize = computed(() =>

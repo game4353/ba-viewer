@@ -1,7 +1,8 @@
 import { ParcelType, Rarity } from "@/assets/game/types/flatDataExcel";
-import { Err, type Result } from "@/utils/result";
+import { Err, type Result } from "@/utils/result/result";
 import { useCharacter, type CCharacter } from "./character/character";
 import { useCurrency, type CCurrency } from "./currency/currency";
+import { useEmblem, type CEmblem } from "./emblem/emblem";
 import { useEquipment, type CEquipment } from "./equipment/equipment";
 import { useFurniture, type CFurniture } from "./furniture/furniture";
 import { useItem, type CItem } from "./item/item";
@@ -25,6 +26,10 @@ export function getParcel(
   type: ParcelType.Currency,
   id: number,
 ): globalThis.ComputedRef<Result<CCurrency, Error> | undefined>;
+export function getParcel(
+  type: ParcelType.Emblem,
+  id: number,
+): globalThis.ComputedRef<Result<CEmblem, Error> | undefined>;
 export function getParcel(
   type: ParcelType.Equipment,
   id: number,
@@ -50,6 +55,8 @@ export function getParcel(
       return useCharacter(id);
     case ParcelType.Currency:
       return useCurrency(id);
+    case ParcelType.Emblem:
+      return computed(() => useEmblem(id));
     case ParcelType.Equipment:
       return computed(() => useEquipment(id));
     case ParcelType.Furniture:

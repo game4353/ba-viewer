@@ -4,6 +4,10 @@ import {
   StageTopography,
 } from "@/assets/game/types/flatDataExcel";
 import Interaction from "~assets/Atlas/Common/Cafe_Icon_Interaction.png";
+import Gift1 from "~assets/Atlas/Common/Cafe_Interaction_Gift_01.png";
+import Gift2 from "~assets/Atlas/Common/Cafe_Interaction_Gift_02.png";
+import Gift3 from "~assets/Atlas/Common/Cafe_Interaction_Gift_03.png";
+import Gift4 from "~assets/Atlas/Common/Cafe_Interaction_Gift_04.png";
 import BgN from "~assets/Atlas/Common/Card_Item_Bg_N.png";
 import BgR from "~assets/Atlas/Common/Card_Item_Bg_R.png";
 import BgSR from "~assets/Atlas/Common/Card_Item_Bg_SR.png";
@@ -40,6 +44,16 @@ export const Icon = {
   Heart,
   Attack: uiPath("UIs/01_Common/25_Campaign/StrategyObjectBuff_Attack"),
   Defense: uiPath("UIs/01_Common/25_Campaign/StrategyObjectBuff_Defense"),
+  Gift1,
+  Gift2,
+  Gift3,
+  Gift4,
+  arona: uiPath(
+    "UIs/01_Common/14_CharacterCollect/NPC_Portrait_Arona_Collection",
+  ),
+  plana: uiPath(
+    "UIs/01_Common/14_CharacterCollect/NPC_Portrait_NP0035_Collection",
+  ),
 };
 
 export function stageTopographyIcon(stageTopography: StageTopography) {

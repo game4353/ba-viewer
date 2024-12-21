@@ -11,7 +11,7 @@
           <MyCharacterBig
             class="cursor-grab active:cursor-grabbing"
             :cid="element"
-            :scaledW="charaWidth"
+            :scaling="{ w: charaWidth }"
             detailed
             :no-route="charaEditing"
           />
@@ -49,7 +49,7 @@
           <MyCharacterBig
             class="cursor-grab active:cursor-grabbing"
             :cid="element"
-            :scaledW="charaWidth"
+            :scaling="{ w: charaWidth }"
             detailed
             :no-route="charaEditing"
           />

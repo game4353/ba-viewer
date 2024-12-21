@@ -2,12 +2,12 @@
   <template v-if="item">
     <RecipeSelection
       v-if="item.RecipeSelectionGroupId !== 0"
-      :scale
+      :scaling
       :gid="item.RecipeSelectionGroupId"
     />
     <RecipeIngredient
       v-else-if="item.RecipeIngredientId !== 0"
-      :scale
+      :scaling
       :gid="item.RecipeIngredientId"
     />
   </template>
@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { RewardTag } from "@/assets/game/types/flatDataExcel";
+import { ScaleOption } from "@/components/misc/scale";
 import { useExcelRecipe } from "@/utils/data/excel/recipe";
 import { ERR_HANDLE } from "../../warn/error";
 const errHandle = inject(ERR_HANDLE)!;
@@ -27,7 +28,7 @@ const props = defineProps({
   amount: Number,
   amountMin: Number,
   amountMax: Number,
-  scale: Number,
+  scaling: Object as PropType<ScaleOption>,
   tag: {
     type: Number as PropType<RewardTag>,
   },

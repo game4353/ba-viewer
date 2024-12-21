@@ -1,15 +1,24 @@
 <template>
-  <router-link v-if="parcel?.isOk()" :to="`/student/${parcel.unwrap().id}`">
-    <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
-      <v-img class="absolute" :width="imgW" :height="imgH" :src="bg">
+  <Scaled :scaling :width="imgW" :height="imgH">
+    <Loading v-if="student == null" />
+    <component :is="route ? 'router-link' : 'span'" v-else :to="route">
+      <v-img
+        class="absolute"
+        :class="dark ? 'opacity-25' : gray ? 'opacity-75' : ''"
+        :width="imgW"
+        :height="imgH"
+        :src="bg"
+      >
         <GameImg
-          :path="parcel.unwrap().iconPath"
-          class="absolute top-0 left-0 p-1 w-auto"
+          :path="student.iconPath"
+          class="absolute top-2 left-2"
+          :width="240"
+          v
         />
         <span class="level" v-if="levelNum! > 0"> Lv.{{ levelNum }} </span>
         <div class="atk-def">
-          <div :class="parcel.unwrap().bulletType"></div>
-          <div :class="parcel.unwrap().armorType"></div>
+          <div :class="student.bulletType"></div>
+          <div :class="student.armorType"></div>
         </div>
         <v-img
           class="star"
@@ -25,16 +34,16 @@
           :level="bondNum"
         />
       </v-img>
-    </Scaled>
-  </router-link>
+    </component>
+  </Scaled>
 </template>
 
 <script setup lang="ts">
-import { useCharaStore } from "@/stores/character";
+import { useStudent } from "@/components/student/student";
 import { Icon, rarityBgIcon } from "../GameImg/icon";
-import Scaled from "../misc/Scaled.vue";
-import { useCharacter } from "../parcel/character/character";
+import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
+const errHandle = inject(ERR_HANDLE)!;
 
 const imgW = 256;
 const imgH = 210;
@@ -44,46 +53,48 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
   level: Number,
   star: Number,
   bond: Number,
+  dark: Boolean,
+  /** `true` is equal to `"/student/{id}"`.
+   * `"{id}"` will be replaced with the student id.
+   */
+  route: [Boolean, String],
 });
-const parcel = useCharacter(props.cid);
+const student = computed(() =>
+  useStudent(props.cid).value.unwrapOrElse(errHandle),
+);
 
-const errHandle = inject(ERR_HANDLE)!;
+const route = computed(() => {
+  if (student.value == null) return undefined;
+  if (props.route == null) return undefined;
+  if (props.route === false) return undefined;
+  const str = props.route === true ? "/student/{id}" : props.route;
+  return str.replace("{id}", student.value.id.toString());
+});
 
-const chara = useCharaStore(Number(props.cid)).now();
-const levelNum = ref(props.level);
-watchEffect(() => {
-  if (props.level != null) return;
-  levelNum.value = chara.lv;
+const levelNum = computed(() => props.level ?? student.value?.statNow.lv);
+const starNum = computed(() => {
+  if (props.star != null) return props.star;
+  const starMin = student.value?.starMin ?? 0;
+  return levelNum.value === 0 ? starMin : student.value?.statNow.star;
 });
-const starNum = ref(props.star);
-watchEffect(() => {
-  if (props.star != null) return;
-  if (parcel.value == null) return;
-  const starMin = parcel.value.unwrapOrElse(errHandle)?.starMin ?? 0;
-  starNum.value = levelNum.value === 0 ? starMin : chara.star;
-});
-const bondNum = ref(props.bond);
-watchEffect(() => {
-  if (props.bond != null) return;
-  bondNum.value = chara.bond;
-});
+const bondNum = computed(() => props.bond ?? student.value?.statNow.bond);
 
 const bg = computed(() => {
-  if (parcel.value?.unwrapOrElse(errHandle) == null) return;
-  return rarityBgIcon(parcel.value.unwrap().rarity);
+  if (student.value == null) return;
+  return rarityBgIcon(student.value.rarity);
 });
+
+const dark = computed(() => props.dark && student.value?.statNow.lv === 0);
+const gray = computed(
+  () => props.dark && (student.value?.statNow.star ?? 0) < (props.star ?? 0),
+);
 </script>
 
 <style scoped lang="scss">
-@use "@/styles/variables" as var;
-
 .level {
   @apply text-white left-11 top-1 text-5xl;
   position: absolute !important;

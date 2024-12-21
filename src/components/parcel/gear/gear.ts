@@ -1,7 +1,7 @@
 import { useExcelCharacterGear } from "@/utils/data/excel/character";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
 import { cache } from "@/utils/misc";
-import { Ok, asResult, filterSingle } from "@/utils/result";
+import { Ok, asResult, filterSingle } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { ParcelType, type CharacterGearExcel } from "~game/types/flatDataExcel";
 import { AParcel } from "../class";

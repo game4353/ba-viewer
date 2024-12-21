@@ -1,12 +1,10 @@
+import { AFilterableParcel } from "@/components/filter/class";
+import { useFurnitureFilterStore } from "@/stores/filter";
 import { useExcelFurniture } from "@/utils/data/excel/parcel";
-import { Local } from "@/utils/localize";
-import { isDefined } from "@/utils/misc";
-import type { ComputedResult, Result } from "@/utils/result";
+import type { Result } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { toHiragana, toKatakana } from "wanakana";
+import { toHiragana, toKatakana, toRomaji } from "wanakana";
 import { ParcelType, type FurnitureExcel } from "~game/types/flatDataExcel";
-import type { IParcel } from "../parcel";
-import type { CTag, IFilterable } from "../tag";
 import { useFurnitureInteract } from "./interact";
 import { useFurnitureGroup, type CFurnitureGroup } from "./series";
 import {
@@ -16,41 +14,33 @@ import {
   FurnitureTagSubCategoryGroup,
 } from "./tag";
 
-export class CFurniture implements IFilterable, IParcel {
+export class CFurniture extends AFilterableParcel<
+  ReadonlyDeep<FurnitureExcel>
+> {
   type = ParcelType.Furniture as const;
 
   group: globalThis.ComputedRef<Result<CFurnitureGroup, Error> | undefined>;
-  search: ComputedResult<string[], Error>;
-  tags: CTag<Object>[];
-  hideCount: number = 0;
+
   constructor(public obj: ReadonlyDeep<FurnitureExcel>) {
+    super(obj);
     this.group = useFurnitureGroup(this.obj.SetGroudpId);
-    this.search = computed(() =>
-      this.name.value.map((name) => [toHiragana(name), toKatakana(name)]),
-    );
-    this.tags = [
+    [
       FurnitureTagInteractionGroup.getTag(this.isInteractive),
       FurnitureTagRarityGroup.getTag(obj.Rarity),
       FurnitureTagCategoryGroup.getTag(obj.Category),
       FurnitureTagSubCategoryGroup.getTag(obj.SubCategory),
-    ].filter(isDefined);
-    this.tags.forEach((v) => v.add(this));
+    ].forEach((tag) => this.addStaticTag(tag));
   }
-  get desc() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
+  get search() {
+    return this.name.value
+      .map((name) => [toHiragana(name), toKatakana(name), toRomaji(name)])
+      .unwrapOr([]);
   }
-  get iconPath() {
-    return this.obj.Icon;
+
+  get searching$() {
+    return useFurnitureFilterStore().search;
   }
-  get id() {
-    return this.obj.Id;
-  }
-  get name() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
-  }
-  get rarity() {
-    return this.obj.Rarity;
-  }
+
   get category() {
     return this.obj.Category;
   }

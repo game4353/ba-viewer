@@ -8,14 +8,13 @@
     :pid="reward.RewardParcelId[i]"
     :type="reward.RewardParcelType[i]"
     :amount="reward.RewardParcelAmount[i]"
-    :scale="0.3"
+    :scaling="{ r: 0.3 }"
     route
   />
 </template>
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import { PropType } from "vue";
 import type { EventContentStageTotalRewardExcel } from "~game/types/flatDataExcel";
 
 defineProps({

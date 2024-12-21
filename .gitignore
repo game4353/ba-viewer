@@ -26,4 +26,6 @@ public/assets
 public/data
 public/game
 src/assets/game
+*.txt
 *.zip
+.vercel

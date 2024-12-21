@@ -1,7 +1,7 @@
 <template>
   <v-dialog max-width="500">
     <template v-slot:activator="{ props: activatorProps }">
-      <ParcelBox v-bind="activatorProps" layout="select" :scale />
+      <ParcelBox v-bind="activatorProps" layout="select" :scaling />
     </template>
 
     <template v-slot:default="{}">
@@ -14,7 +14,7 @@
             :amountMax="item.ResultAmountMax"
             :type="item.ParcelType"
             :pid="item.ParcelId"
-            :scale="0.3"
+            :scaling="{ r: 0.3 }"
             route
           />
         </div>
@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "@/components/misc/scale";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelRecipeSelectionGroup } from "@/utils/data/excel/recipe";
 const errHandle = inject(ERR_HANDLE)!;
@@ -34,7 +35,7 @@ const props = defineProps({
     required: true,
   },
   amount: Number,
-  scale: Number,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const items = computed(() =>

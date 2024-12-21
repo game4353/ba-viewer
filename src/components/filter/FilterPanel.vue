@@ -24,7 +24,7 @@
       <Scroll>
         <v-expansion-panel value="on">
           <v-expansion-panel-text class="h-full">
-            <!--v-sheet class="py-4 px-1">
+            <v-sheet class="py-4 px-1">
               <v-chip-group
                 selected-class="text-primary"
                 mandatory
@@ -37,19 +37,14 @@
                   :value="tag"
                 ></v-chip>
               </v-chip-group>
-            </v-sheet-->
-            <div v-for="(tagGroup, i) in characterTags" :key="i">
+            </v-sheet>
+            <div v-for="(tagGroup, i) in tagGroups" :key="i">
               <div class="text-lg">{{ tagGroup.title }}</div>
               <v-chip-group
                 column
                 multiple
                 v-model="filterTags[i]"
-                @update:modelValue="
-                  (v: number[]) => {
-                    tagGroup.setPicked(v);
-                    triggerFilter = !triggerFilter;
-                  }
-                "
+                @update:modelValue="(v: number[]) => tagGroup.setPicked(v)"
               >
                 <v-chip
                   v-for="tag in tagGroup.tags"
@@ -78,82 +73,50 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
-import { toHiragana } from "wanakana";
+import { compare } from "@/components/filter/sort";
+import { useStudentFilterStore } from "@/stores/filter";
 import { CCharacter } from "../parcel/character/character";
-import { characterTags } from "../parcel/character/tag";
-import { compare } from "../parcel/tag";
-import { ERR_HANDLE } from "../warn/error";
-const errHandle = inject(ERR_HANDLE)!;
+import { CTagGroup } from "@/components/filter/tag";
 
 const props = defineProps({
   items: {
     type: Array as PropType<CCharacter[]>,
     required: true,
   },
-  setOrder: {
-    type: Function as PropType<(map: Map<number, number>) => void>,
-    required: true,
-  },
-  setVisible: {
-    type: Function as PropType<(set: Set<number>) => void>,
+  tagGroups: {
+    type: Array as PropType<CTagGroup<any>[]>,
     required: true,
   },
 });
 
-const expand = ref("no");
+const store = useStudentFilterStore();
+const search = computed({
+  get: () => store.search,
+  set: (v) => (store.search = v ?? ""),
+});
+
+const items = computed(() => props.items);
+
+const expand = ref("on");
 function switchExpand() {
   const s = expand.value;
   expand.value = s[1] + s[0];
 }
 
-const itemIdx = props.items.map((_, i) => i);
-// const sortTags = ["id", "name"];
+const sortTags = ["id", "name"];
 const sortTag = ref("id");
 watchEffect(() => {
-  const compareValues = itemIdx.map((i) => props.items[i].sortValue(sortTag));
-  itemIdx.sort((a, b) =>
-    compare(compareValues[a].value, compareValues[b].value),
-  );
-  const order = new Map(itemIdx.map((v, i) => [props.items[v].id, i]));
-  props.setOrder(order);
+  const compareValues = items.value.map((item, i) => ({
+    idx: i,
+    val: item.sortValue(sortTag.value).value,
+  }));
+  compareValues.sort((a, b) => compare(a.val, b.val));
+  compareValues.forEach((o, i) => (items.value[o.idx].order$ = i));
 });
 
-const allCC = computed(() => new Set(props.items.map((o) => o.id)));
-const search = ref("");
-const triggerFilter = ref(true);
-const filterTags = ref<number[][]>([]);
-
-const searchVisibles = ref<Set<number>>();
-const filterVisibles = ref<Set<number>>();
-
-watch(search, () => {
-  const query = toHiragana(search.value ?? "").trim();
-  if (query === "") searchVisibles.value = undefined;
-  else {
-    searchVisibles.value = new Set(
-      props.items
-        .filter((o) =>
-          o.search.value.unwrapOrElse(errHandle)?.[0].includes(query),
-        )
-        .map((o) => o.id),
-    );
-  }
-});
-
-watch([triggerFilter], () => {
-  filterVisibles.value = new Set(
-    props.items.filter((o) => o.hideCount === 0).map((o) => o.id),
-  );
-});
-
-watch([allCC, searchVisibles, filterVisibles], () => {
-  const a = searchVisibles.value ?? allCC.value;
-  const b = filterVisibles.value ?? allCC.value;
-  // const visible = a.intersection(b);
-  const visible = new Set([...a].filter((id) => b.has(id)));
-  props.setVisible(visible);
-});
+const filterTags = ref<number[][]>(
+  props.tagGroups.map((tagGroup) => [...tagGroup.picked]),
+);
 </script>
 
 <style lang="scss" scoped>

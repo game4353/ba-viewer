@@ -1,12 +1,12 @@
+import { AParcel } from "@/components/parcel/class";
 import type { MapResult } from "@/utils/data/excel";
 import {
   useExcelEquipment,
   useExcelEquipmentLevel,
 } from "@/utils/data/excel/parcel";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
-import { Local } from "@/utils/localize";
 import { cache, noDefault, sum } from "@/utils/misc";
-import { Ok, Result, asResult } from "@/utils/result";
+import { Ok, Result, asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import {
   EquipmentCategory,
@@ -14,31 +14,14 @@ import {
   type EquipmentExcel,
   type EquipmentLevelExcel,
 } from "~game/types/flatDataExcel";
-import type { IParcel } from "../parcel";
 import { recipeToIngredient } from "../recipe/recipe";
 
-export class CEquipment implements IParcel {
+export class CEquipment extends AParcel<ReadonlyDeep<EquipmentExcel>> {
   type = ParcelType.Equipment as const;
   private data = reactive({
     lv: 1,
   });
 
-  constructor(public obj: ReadonlyDeep<EquipmentExcel>) {}
-  get desc() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId, true);
-  }
-  get iconPath() {
-    return this.obj.Icon;
-  }
-  get id() {
-    return this.obj.Id;
-  }
-  get name() {
-    return Local.useLocalizeEtc(this.obj.LocalizeEtcId);
-  }
-  get rarity() {
-    return this.obj.Rarity;
-  }
   get recipe() {
     const rid = this.obj.RecipeId;
     return asResult(

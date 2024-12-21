@@ -8,7 +8,7 @@
             :pid="j"
             :type="ParcelType.Item"
             :need="itemMap?.get(j)"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>
@@ -21,7 +21,7 @@
             :pid="1"
             :type="ParcelType.Currency"
             :need="currencyMap?.get(1)"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>
@@ -37,7 +37,7 @@
             :pid="j"
             :type="ParcelType.Item"
             :need="undefined"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>
@@ -51,7 +51,7 @@
             :own="expOwn"
             :type="ParcelType.Item"
             :need="expMap"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>
@@ -67,7 +67,7 @@
             :pid="j"
             :type="ParcelType.Equipment"
             :need="undefined"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>
@@ -81,7 +81,7 @@
             :own="equipExpOwn"
             :type="ParcelType.Equipment"
             :need="expEquipMap"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>
@@ -97,7 +97,7 @@
             :pid="i * 10 + j"
             :type="ParcelType.Equipment"
             :need="undefined"
-            :scaled-w="parcelWidth"
+            :scaling="{ w: parcelWidth }"
             :mode="editing ? 'edit' : 'display'"
           />
         </div>

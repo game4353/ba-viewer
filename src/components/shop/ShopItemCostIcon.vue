@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { useExcelGoods } from "@/utils/data/excel/shop";
-import { PropType } from "vue";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({

@@ -8,16 +8,16 @@
 </template>
 
 <script setup lang="ts">
-import { useExcelEventContentCurrencyItem } from "@/utils/data/excel/event";
+import { ReadonlyDeep } from "type-fest";
 import {
+  EventContentCurrencyItemExcel,
   ParcelType,
   type EventContentItemType,
 } from "~game/types/flatDataExcel";
-import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
-  eid: {
-    type: Number,
+  currency: {
+    type: Array as PropType<ReadonlyDeep<EventContentCurrencyItemExcel>[]>,
     required: true,
   },
   eit: {
@@ -25,13 +25,8 @@ const props = defineProps({
     required: true,
   },
 });
-const errHandle = inject(ERR_HANDLE)!;
 
-const table = useExcelEventContentCurrencyItem();
 const item = computed(() =>
-  table.value
-    ?.unwrapOrElse(errHandle)
-    ?.get(props.eid)
-    ?.find((v) => v.EventContentItemType === props.eit),
+  props.currency.find((v) => v.EventContentItemType === props.eit),
 );
 </script>

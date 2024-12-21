@@ -1,14 +1,6 @@
 <template>
   <div class="flex flex-row min-w-fit w-fit" :class="bg">
-    <Parcel
-      :pid
-      :type
-      :amount="own ?? hasAmount.amount"
-      :scale
-      :scaled-w
-      :scaled-h
-      :scale-type
-    />
+    <Parcel :pid :type :amount="own ?? hasAmount.amount" :scaling />
     <div class="flex flex-col grow pr-1">
       <v-tooltip content-class="!p-0" location="top" :eager="false">
         <template v-slot:activator="{ props }">
@@ -41,7 +33,7 @@
               v-for="[cid, amount] in need"
               :key="cid"
             >
-              <MyCharacter :cid :scale :scale-type :scaled-w :scaled-h />
+              <MyCharacter :cid :scaling route />
               <p class="text-base">{{ amount }}</p>
             </div>
           </div>
@@ -53,6 +45,7 @@
 <script setup lang="ts">
 import { ParcelType } from "@/assets/game/types/flatDataExcel";
 import { dataParcel } from "@/stores/parcel";
+import { ScaleOption } from "../misc/scale";
 
 const props = defineProps({
   pid: {
@@ -71,10 +64,7 @@ const props = defineProps({
     type: String as PropType<"display" | "edit">,
     required: true,
   },
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const needAmount = computed(() =>

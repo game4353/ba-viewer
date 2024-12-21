@@ -7,7 +7,7 @@
         :amount="item.IngredientAmount[i]"
         :type="item.IngredientParcelType[i]"
         :pid="iid"
-        :scale="0.3"
+        :scaling="{ r: 0.3 }"
         route
       />
       <Parcel
@@ -16,7 +16,7 @@
         :amount="item.CostAmount[i]"
         :type="item.CostParcelType[i]"
         :pid="cid"
-        :scale="0.3"
+        :scaling="{ r: 0.3 }"
         route
       />
     </div>
@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "@/components/misc/scale";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
 import { ERR_HANDLE } from "../../warn/error";
 const errHandle = inject(ERR_HANDLE)!;
@@ -34,7 +35,7 @@ const props = defineProps({
     required: true,
   },
   amount: Number,
-  scale: Number,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const item = computed(() =>

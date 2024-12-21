@@ -1,8 +1,8 @@
 <template>
   <v-card v-if="voiceObj">
-    <div class="flex flex-row items-center">
-      <Bond :level="voiceObj.UnlockFavorRank" scaled :scaledW="60" />
-      {{ Local.custom(voiceObj?.LocalizeCVGroup) }}
+    <div class="flex flex-row items-center h-16">
+      <Bond :level="voiceObj.UnlockFavorRank" :scaling="{ w: 40 }" />
+      <p class="mx-2">{{ localize(voiceObj?.LocalizeCVGroup) }}</p>
       <div class="grow"></div>
       <MusicPlayer :path="voiceObj.Path[0]" />
     </div>
@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { CharacterVoiceExcel } from "@/assets/game/types/flatDataExcelDb";
 import { useExcelDbCharacterVoiceSubtitle } from "@/utils/data/excel/voice";
-import { Local } from "@/utils/localize";
+import localize from "@/utils/i18n/custom/CVGroup";
 import { ReadonlyDeep } from "type-fest";
 import { ERR_HANDLE } from "../warn/error";
 

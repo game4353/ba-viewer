@@ -9,11 +9,9 @@
 </template>
 
 <script setup lang="ts">
+import { ScaleOption, calcScale } from "./scale";
+
 const props = defineProps({
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
   width: {
     type: Number,
     required: true,
@@ -22,17 +20,12 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  scaling: Object as PropType<ScaleOption>,
 });
 
-const scaleVal = computed(() => {
-  const arr = [];
-  if (props.scaledW != null) arr.push(props.scaledW / props.width);
-  if (props.scaledH != null) arr.push(props.scaledH / props.height);
-  if (props.scale != null) arr.push(props.scale);
-  if (arr.length === 0) return 1;
-  if (props.scaleType === "max") return Math.max(...arr);
-  return Math.min(...arr);
-});
+const scaleVal = computed(() =>
+  calcScale(props.width, props.height, props.scaling),
+);
 
 const cssVars = computed(() => ({
   "--scale": scaleVal.value,

@@ -1,6 +1,6 @@
 <template>
-  <router-link v-if="parcel" :to="noRoute ? '' : `/student/${parcel.id}`">
-    <Scaled :scale :scaled-w :scaled-h :scale-type :width="imgW" :height="imgH">
+  <router-link v-if="student" :to="noRoute ? '' : `/student/${student.id}`">
+    <Scaled :scaling :width="imgW" :height="imgH">
       <v-img
         class="absolute"
         :width="imgW"
@@ -9,7 +9,7 @@
         :lazy-src="loading"
       >
         <template v-slot:placeholder>
-          <div class="d-flex align-center justify-center fill-height">
+          <div class="flex items-center justify-center h-full">
             <v-progress-circular
               color="grey-lighten-4"
               indeterminate
@@ -24,8 +24,8 @@
           Lv.{{ goal.lv }}
         </span>
         <div class="atk-def">
-          <div :class="parcel.bulletType"></div>
-          <div :class="parcel.armorType"></div>
+          <div :class="student.bulletType"></div>
+          <div :class="student.armorType"></div>
         </div>
         <div class="name">
           <p :class="textSize(name)">
@@ -92,11 +92,12 @@
 </template>
 
 <script setup lang="ts">
-import { useCharaStore } from "@/stores/character";
+import { useStudent } from "@/components/student/student";
+import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import { uiPath } from "../GameImg/loader";
-import Scaled from "../misc/Scaled.vue";
-import { useCharacter } from "../parcel/character/character";
+import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
+import { Icon } from "@/components/GameImg/icon";
 
 const imgW = 404;
 const imgH = 456;
@@ -108,31 +109,28 @@ const props = defineProps({
   },
   noRoute: Boolean,
   detailed: Boolean,
-  scale: Number,
-  scaledW: Number,
-  scaledH: Number,
-  scaleType: String as PropType<"min" | "max">,
+  scaling: Object as PropType<ScaleOption>,
   level: Number,
   star: Number,
   bond: Number,
 });
 const errHandle = inject(ERR_HANDLE)!;
 
-const parcel = computed(() =>
-  useCharacter(props.cid).value.unwrapOrElse(errHandle),
+const student = computed(() =>
+  useStudent(props.cid).value.unwrapOrElse(errHandle),
 );
 
 const name = computed(
-  () => parcel.value?.name.value?.unwrapOrElse(errHandle) ?? "",
+  () => student.value?.name.value?.unwrapOrElse(errHandle) ?? "",
 );
-const chara = useCharaStore(Number(props.cid)).now();
-const goal = useCharaStore(Number(props.cid)).goal();
+const chara = dataStudentNow.use(props.cid);
+const goal = dataStudentGoal.use(props.cid);
 const levelNum = computed(() => props.level ?? chara.lv);
 const starNum = ref(props.star);
 watchEffect(() => {
   if (props.star != null) return;
-  if (parcel.value == null) return;
-  starNum.value = levelNum.value === 0 ? parcel.value.starMin : chara.star;
+  if (student.value == null) return;
+  starNum.value = levelNum.value === 0 ? student.value.starMin : chara.star;
 });
 const bondNum = computed(() => props.bond ?? chara.bond);
 
@@ -160,7 +158,7 @@ watchEffect(() => {
   gearTexts.value[1] = chara.gear2.toString();
   gearTexts.value[2] = chara.gear3.toString();
   gearTexts.value[3] = chara.gear0.toString();
-  if (parcel.value?.gear.value.unwrapOrElse(errHandle) == null)
+  if (student.value?.gear.value.unwrapOrElse(errHandle) == null)
     gearTexts.value[3] = "";
 });
 function goalGearStr(idx: 0 | 1 | 2 | 3) {
@@ -172,14 +170,11 @@ function goalGearStr(idx: 0 | 1 | 2 | 3) {
 }
 
 const bg = computed(() => {
-  const costume = parcel.value?.costume;
+  const costume = student.value?.costume;
   if (costume == null) return undefined;
   return uiPath(costume.CollectionTexturePath);
 });
-const folder = "/src/assets/game/UIs/01_Common/14_CharacterCollect/";
-const arona = folder + "NPC_Portrait_Arona_Collection.png";
-const plana = folder + "NPC_Portrait_NP0035_Collection.png";
-const loading = Math.random() < 0.5 ? arona : plana;
+const loading = Math.random() < 0.5 ? Icon.arona : Icon.plana;
 
 function textSize(text: string) {
   const l = text.length;

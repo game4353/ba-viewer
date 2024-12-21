@@ -1,7 +1,7 @@
 <template>
   <v-sheet border rounded :elevation="8">
     <div
-      class="flex flex-row flex-wrap p-1 border-[1px] border-red-600"
+      class="flex flex-row flex-wrap gap-2 p-1 border border-red-600"
       v-if="elements"
     >
       <div v-for="(item, key) in elements" :key>
@@ -10,7 +10,7 @@
           :amountMax="item.ParcelAmountMax"
           :type="item.ParcelType"
           :pid="item.ParcelID"
-          :scale
+          :scaling
           route
         />
         <p class="text-center">weight: {{ item.Prob }}</p>
@@ -18,19 +18,20 @@
     </div>
     <div
       v-if="groups"
-      class="flex flex-row flex-wrap border-[1px] border-green-500 p-2 gap-2"
+      class="flex flex-row flex-wrap border border-green-500 p-2 gap-2"
     >
       <GachaGroupSub
         v-for="(group, key) in groups"
         :key
         :pid="group.ParcelID"
-        :scale
+        :scaling
       />
     </div>
   </v-sheet>
 </template>
 
 <script setup lang="ts">
+import { ScaleOption } from "@/components/misc/scale";
 import {
   useExcelGachaElement,
   useExcelGachaElementRecursive,
@@ -44,7 +45,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  scale: Number,
+  scaling: Object as PropType<ScaleOption>,
 });
 
 const obj = computed(() =>

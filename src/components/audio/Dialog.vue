@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="dialogObj">
-    <div class="flex flex-row items-center">
-      <Bond :level="dialogObj.UnlockFavorRank" scaled :scaledW="60" />
+    <div class="flex flex-row items-center h-16">
+      <Bond :level="dialogObj.UnlockFavorRank" :scaling="{ w: 40 }" />
       {{ DialogCategory[dialogObj.DialogCategory] }}
       {{ DialogCondition[dialogObj.DialogCondition] }}
       {{ Anniversary[dialogObj.Anniversary] }}
@@ -10,10 +10,10 @@
         <MusicPlayer v-if="voiceObj" :path="voiceObj.Path[0]" />
       </div>
     </div>
-    <div v-if="subtitleObj">
+    <div class="m-1" v-if="subtitleObj">
       {{ subtitleObj.LocalizeJP }}
     </div>
-    <div v-else-if="dialogObj.LocalizeJP">
+    <div class="m-1" v-else-if="dialogObj.LocalizeJP">
       {{ dialogObj.LocalizeJP }}
     </div>
   </v-card>
@@ -31,7 +31,6 @@ import {
   useExcelDbVoice,
 } from "@/utils/data/excel/voice";
 import { ReadonlyDeep } from "type-fest";
-import { PropType } from "vue";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
