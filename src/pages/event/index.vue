@@ -5,9 +5,13 @@
     align-tabs="center"
     color="deep-purple-accent-4"
   >
-    <v-tab v-for="(v, i) of Object.keys(tabs)" :key="i" :value="i">{{
-      v
-    }}</v-tab>
+    <v-tab
+      v-for="(v, i) of Object.keys(tabs)"
+      :key="i"
+      :value="i"
+      @click="$router.replace(`/event?tab=${i}`)"
+      >{{ v }}</v-tab
+    >
   </v-tabs>
 
   <v-tabs-window v-model="tab">
@@ -24,6 +28,7 @@
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcelEventContentSeason } from "@/utils/data/excel/event";
+import { clamp } from "@vueuse/core";
 import { ReadonlyDeep } from "type-fest";
 import {
   EventContentType,
@@ -31,7 +36,9 @@ import {
 } from "~game/types/flatDataExcel";
 const errHandle = inject(ERR_HANDLE)!;
 
-const tab = ref(0);
+const route = useRoute<"/event/">();
+const qTab = clamp(Number(route.query.tab), 0, 4);
+const tab = ref(isNaN(qTab) ? 0 : qTab);
 
 const table = useExcelEventContentSeason();
 
@@ -42,11 +49,11 @@ const forever = ref<Data[]>([]);
 const mini = ref<Data[]>([]);
 const all = ref<Data[]>([]);
 const tabs = {
+  全部: all,
   初回: normal,
   復刻: rerun,
   常設: forever,
   総決算: mini,
-  全部: all,
 };
 
 watchEffect(() => {
