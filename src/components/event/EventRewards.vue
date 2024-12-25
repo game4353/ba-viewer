@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { EventContentStageTotalRewardExcel } from "@/assets/game/types/flatDataExcel";
+import { EventContentStageTotalRewardExcel } from "~game/excelType";
 import { ReadonlyDeep } from "type-fest";
 
 defineProps({

@@ -95,7 +95,7 @@ import {
 import { characterTags } from "@/components/parcel/character/tag";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { toHiragana } from "wanakana";
-import { ParcelType } from "~game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 const errHandle = inject(ERR_HANDLE)!;
 
 const currPage = ref(1);

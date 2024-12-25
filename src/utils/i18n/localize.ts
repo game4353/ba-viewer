@@ -1,14 +1,12 @@
-import type {
-  LocalizeCharProfileExcel,
-  LocalizeCharProfileExcelTable,
-} from "@/assets/game/types/flatDataExcel";
 import { cache, noDefault } from "@/utils/misc";
 import { Err, Ok, asResult } from "@/utils/result/result";
 import type {
+  LocalizeCharProfileExcel,
+  LocalizeCharProfileExcelTable,
   LocalizeEtcExcel,
   LocalizeExcel,
   LocalizeSkillExcel,
-} from "~game/types/flatDataExcelDb";
+} from "~game/excelType";
 import { useExcelDbMapSingle, useExcelMapSingle } from "../data/excel";
 
 enum Lang {

@@ -90,7 +90,7 @@ import { furnitureTags } from "@/components/parcel/furniture/tag";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useFurnitureFilterStore } from "@/stores/filter";
 import { isDefined } from "@/utils/misc";
-import { ParcelType } from "~game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 const errHandle = inject(ERR_HANDLE)!;
 
 const currPage = ref(1);

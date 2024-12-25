@@ -1,5 +1,5 @@
-import { School } from "@/assets/game/types/flatDataExcel";
 import { noDefault } from "@/utils/misc";
+import { School } from "~game/excelType";
 
 export default function schoolLocalizeKey(school: School) {
   switch (school) {

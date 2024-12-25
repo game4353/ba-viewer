@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { StatType } from "@/assets/game/types/flatDataExcel";
+import { StatType } from "~game/excelType";
 import { useStudent } from "@/components/student/student";
 import { ERR_HANDLE } from "@/components/warn/error";
 const errHandle = inject(ERR_HANDLE)!;

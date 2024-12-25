@@ -3,7 +3,8 @@ import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
 import { cache } from "@/utils/misc";
 import { Ok, asResult, filterSingle } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { ParcelType, type CharacterGearExcel } from "~game/types/flatDataExcel";
+import type { CharacterGearExcel } from "~game/excelType";
+import { ParcelType } from "~game/excelType";
 import { AParcel } from "../class";
 import { recipeToIngredient } from "../recipe/recipe";
 

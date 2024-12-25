@@ -1,7 +1,7 @@
 import { useExcelFurnitureGroup } from "@/utils/data/excel/parcel";
 import { useLocalizeEtc } from "@/utils/i18n/localize";
 import type { ReadonlyDeep } from "type-fest";
-import type { FurnitureGroupExcel } from "~game/types/flatDataExcel";
+import type { FurnitureGroupExcel } from "~game/excelType";
 
 export class CFurnitureGroup {
   constructor(public obj: ReadonlyDeep<FurnitureGroupExcel>) {}

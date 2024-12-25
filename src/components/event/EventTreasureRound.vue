@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { EventContentTreasureRoundExcel } from "@/assets/game/types/flatDataExcelDb";
+import { EventContentTreasureRoundExcel } from "~game/excelType";
 import { useExcelGoods } from "@/utils/data/excel/shop";
 import { ReadonlyDeep } from "type-fest";
 import { ScaleOption } from "../misc/scale";

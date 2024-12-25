@@ -37,7 +37,7 @@ import {
   BulletType,
   EliminateRaidSeasonManageExcel,
   StageTopography,
-} from "@/assets/game/types/flatDataExcel";
+} from "~game/excelType";
 import { Icon } from "@/components/GameImg/icon";
 import { ERR_HANDLE } from "@/components/warn/error";
 import {

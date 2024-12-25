@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { BulletType } from "@/assets/game/types/flatDataExcel";
+import { BulletType } from "~game/excelType";
 import { ScaleOption } from "../misc/scale";
 import { CSkill } from "./skill";
 

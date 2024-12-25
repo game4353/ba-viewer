@@ -13,7 +13,7 @@ import {
   ParcelType,
   type EquipmentExcel,
   type EquipmentLevelExcel,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 import { recipeToIngredient } from "../recipe/recipe";
 
 export class CEquipment extends AParcel<ReadonlyDeep<EquipmentExcel>> {

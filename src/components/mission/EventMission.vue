@@ -18,10 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  EventContentMissionExcel,
-  MissionCategory,
-} from "@/assets/game/types/flatDataExcel";
+import { EventContentMissionExcel, MissionCategory } from "~game/excelType";
 
 import { noDefault } from "@/utils/misc";
 import { ReadonlyDeep } from "type-fest";

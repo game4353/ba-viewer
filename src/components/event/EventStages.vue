@@ -29,10 +29,7 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import {
-  EventContentStageExcel,
-  StageDifficulty,
-} from "~game/types/flatDataExcel";
+import { EventContentStageExcel, StageDifficulty } from "~game/excelType";
 
 const props = defineProps({
   stages: {

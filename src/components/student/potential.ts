@@ -1,10 +1,10 @@
 import {
-  useExcelDbCharacterPotential,
-  useExcelDbCharacterPotentialStat,
+  useExcelCharacterPotential,
+  useExcelCharacterPotentialStat,
 } from "@/utils/data/excel/character";
 import { useExcelRecipeIngredient } from "@/utils/data/excel/recipe";
 import { Ok, asResult, filterSingle } from "@/utils/result/result";
-import type { PotentialStatBonusRateType } from "~game/types/flatDataExcelDb";
+import type { PotentialStatBonusRateType } from "~game/excelType";
 import type { CCharacter } from "../parcel/character/character";
 
 function usePotentialStat(
@@ -12,8 +12,8 @@ function usePotentialStat(
   type: PotentialStatBonusRateType,
   level: number,
 ) {
-  const map1 = useExcelDbCharacterPotential();
-  const map2 = useExcelDbCharacterPotentialStat();
+  const map1 = useExcelCharacterPotential();
+  const map2 = useExcelCharacterPotentialStat();
 
   return asResult(
     computed(() => {

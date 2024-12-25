@@ -34,7 +34,7 @@
 import {
   EventContentBoxGachaManageExcel,
   EventContentBoxGachaShopExcel,
-} from "@/assets/game/types/flatDataExcel";
+} from "~game/excelType";
 import { ReadonlyDeep } from "type-fest";
 
 const props = defineProps({

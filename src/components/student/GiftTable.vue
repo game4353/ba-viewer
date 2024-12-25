@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ParcelType } from "@/assets/game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { dataParcel } from "@/stores/parcel";
 import {

@@ -2,7 +2,7 @@ import { cache } from "@/utils/misc";
 import type {
   CharacterSkillListExcelTable,
   SkillExcelTable,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 import { useExcelMapMany } from ".";
 
 export const useExcelSkill = cache(() =>

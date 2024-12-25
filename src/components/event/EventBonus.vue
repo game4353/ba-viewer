@@ -38,7 +38,7 @@
 import {
   EventContentCharacterBonusExcel,
   EventContentCurrencyItemExcel,
-} from "@/assets/game/types/flatDataExcel";
+} from "~game/excelType";
 import { ReadonlyDeep } from "type-fest";
 import EventCurrency from "./EventCurrency.vue";
 

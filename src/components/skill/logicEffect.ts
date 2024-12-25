@@ -1,3 +1,4 @@
+import type { PartialDeep } from "type-fest";
 import type {
   BulletType,
   EndCondition,
@@ -7,8 +8,7 @@ import type {
   StageTopography,
   StatType,
   TacticEntityType,
-} from "@/assets/game/types/flatDataExcel";
-import type { PartialDeep } from "type-fest";
+} from "~game/excelType";
 //import { default as logic } from "~game/db/LogicEffectDataDBSchema/LogicEffectDataDBSchema.json";
 const logic: any[] = [];
 

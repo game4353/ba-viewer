@@ -1,11 +1,3 @@
-import {
-  ArmorType,
-  BulletType,
-  ParcelType,
-  PotentialStatBonusRateType,
-  type CharacterExcel,
-  type CostumeExcel,
-} from "@/assets/game/types/flatDataExcel";
 import { AFilterableParcel } from "@/components/filter/class";
 import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
@@ -22,6 +14,14 @@ import { cache, range } from "@/utils/misc";
 import { Result, asResult, findFirst } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana, toRomaji } from "wanakana";
+import {
+  ArmorType,
+  BulletType,
+  ParcelType,
+  PotentialStatBonusRateType,
+  type CharacterExcel,
+  type CostumeExcel,
+} from "~game/excelType";
 import {
   usePotentialStatBonusRate,
   usePotentialStatRecipeIngredient,

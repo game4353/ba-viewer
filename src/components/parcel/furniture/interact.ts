@@ -1,6 +1,6 @@
 import { useFurnitureInteractMap } from "@/utils/data/excel/cafe";
 import type { ReadonlyDeep } from "type-fest";
-import type { FurnitureExcel } from "~game/types/flatDataExcel";
+import type { FurnitureExcel } from "~game/excelType";
 
 export const useFurnitureInteractCid = (key: string) =>
   computed(() =>

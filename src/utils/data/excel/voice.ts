@@ -10,64 +10,64 @@ import type {
   VoiceLogicEffectExcel,
   VoiceRoomExceptionExcel,
   VoiceSpineExcel,
-} from "~game/types/flatDataExcelDb";
+} from "~game/excelType";
 import { useExcelDbMapMany, useExcelDbMapSingle } from ".";
 
-export const useExcelDbCharacterVoice = cache(() =>
+export const useExcelCharacterVoice = cache(() =>
   useExcelDbMapMany<CharacterVoiceExcel, "CharacterVoiceGroupId">(
     "CharacterVoice",
     "CharacterVoiceGroupId",
   ),
 );
 
-export const useExcelDbCharacterVoiceSubtitle = cache(() =>
+export const useExcelCharacterVoiceSubtitle = cache(() =>
   useExcelDbMapMany<CharacterVoiceSubtitleExcel, "CharacterVoiceGroupId">(
     "CharacterVoiceSubtitle",
     "CharacterVoiceGroupId",
   ),
 );
 
-export const useExcelDbVoice = cache(() =>
+export const useExcelVoice = cache(() =>
   useExcelDbMapSingle<VoiceExcel, "Id">("Voice", "Id"),
 );
 
-export const useExcelDbVoiceCommon = cache(() =>
+export const useExcelVoiceCommon = cache(() =>
   useExcelDbMapSingle<VoiceCommonExcel, "VoiceEvent">(
     "VoiceCommon",
     "VoiceEvent",
   ),
 );
 
-export const useExcelDbVoiceLogicEffect = cache(() =>
+export const useExcelVoiceLogicEffect = cache(() =>
   useExcelDbMapSingle<VoiceLogicEffectExcel, "LogicEffectNameHash">(
     "VoiceLogicEffect",
     "LogicEffectNameHash",
   ),
 );
-export const useExcelDbVoiceRoomException = cache(() =>
+export const useExcelVoiceRoomException = cache(() =>
   useExcelDbMapSingle<VoiceRoomExceptionExcel, "CostumeUniqueId">(
     "VoiceRoomException",
     "CostumeUniqueId",
   ),
 );
-export const useExcelDbVoiceSpine = cache(() =>
+export const useExcelVoiceSpine = cache(() =>
   useExcelDbMapSingle<VoiceSpineExcel, "Id">("VoiceSpine", "Id"),
 );
 
-export const useExcelDbCharacterDialog = cache(() =>
+export const useExcelCharacterDialog = cache(() =>
   useExcelDbMapMany<CharacterDialogExcel, "CharacterId">(
     "CharacterDialog",
     "CharacterId",
   ),
 );
 
-export const useExcelDbCharacterDialogEvent = cache(() =>
+export const useExcelCharacterDialogEvent = cache(() =>
   useExcelDbMapMany<CharacterDialogEventExcel, "CostumeUniqueId">(
     "CharacterDialogEvent",
     "CostumeUniqueId",
   ),
 );
-export const useExcelDbCharacterDialogSubtitle = cache(() =>
+export const useExcelCharacterDialogSubtitle = cache(() =>
   useExcelDbMapMany<CharacterDialogSubtitleExcel, "CharacterId">(
     "CharacterDialogSubtitle",
     "CharacterId",

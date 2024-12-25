@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
-import { ParcelType } from "~game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 import { useCurrency } from "./currency";
 
 const props = defineProps({

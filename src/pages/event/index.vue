@@ -33,7 +33,7 @@ import { ReadonlyDeep } from "type-fest";
 import {
   EventContentType,
   type EventContentSeasonExcel,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 const errHandle = inject(ERR_HANDLE)!;
 
 const route = useRoute<"/event/">();

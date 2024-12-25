@@ -1,8 +1,3 @@
-import type {
-  EventContentTreasureCellRewardExcel,
-  EventContentTreasureRewardExcel,
-  EventContentTreasureRoundExcel,
-} from "@/assets/game/types/flatDataExcelDb";
 import { cache } from "@/utils/misc";
 import type {
   EventContentBoxGachaElementExcelTable,
@@ -23,7 +18,10 @@ import type {
   EventContentStageExcelTable,
   EventContentStageRewardExcelTable,
   EventContentStageTotalRewardExcelTable,
-} from "~game/types/flatDataExcel";
+  EventContentTreasureCellRewardExcel,
+  EventContentTreasureRewardExcel,
+  EventContentTreasureRoundExcel,
+} from "~game/excelType";
 import {
   useExcelDbMapMany,
   useExcelDbMapSingle,
@@ -31,19 +29,19 @@ import {
   useExcelMapSingle,
 } from ".";
 
-export const useExcelDbEventContentTreasureCellReward = cache(() =>
+export const useExcelEventContentTreasureCellReward = cache(() =>
   useExcelDbMapSingle<EventContentTreasureCellRewardExcel, "Id">(
     "EventContentTreasureCellReward",
     "Id",
   ),
 );
-export const useExcelDbEventContentTreasureReward = cache(() =>
+export const useExcelEventContentTreasureReward = cache(() =>
   useExcelDbMapSingle<EventContentTreasureRewardExcel, "Id">(
     "EventContentTreasureReward",
     "Id",
   ),
 );
-export const useExcelDbEventContentTreasureRound = cache(() =>
+export const useExcelEventContentTreasureRound = cache(() =>
   useExcelDbMapMany<EventContentTreasureRoundExcel, "EventContentId">(
     "EventContentTreasureRound",
     "EventContentId",

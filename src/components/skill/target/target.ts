@@ -1,4 +1,4 @@
-import type { StatType } from "@/assets/game/types/flatDataExcel";
+import type { StatType } from "~game/excelType";
 
 enum TargetSortCriteria {
   None,

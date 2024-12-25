@@ -1,8 +1,3 @@
-import {
-  CharacterStatExcel,
-  StatLevelUpType,
-  StatType,
-} from "@/assets/game/types/flatDataExcel";
 import type { CCharacter } from "@/components/parcel/character/character";
 import { MapResult } from "@/utils/data/excel";
 import { useExcelCharacterTranscendence } from "@/utils/data/excel/character";
@@ -16,6 +11,7 @@ import {
   type ComputedResult,
 } from "@/utils/result/result";
 import type { NumberKeys } from "@/utils/types";
+import { CharacterStatExcel, StatLevelUpType, StatType } from "~game/excelType";
 
 enum StatBuffType {
   Base,

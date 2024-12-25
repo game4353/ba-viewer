@@ -2,7 +2,7 @@ import { cache } from "@/utils/misc";
 import type {
   GuideMissionExcelTable,
   GuideMissionSeasonExcelTable,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 import { useExcelMapMany, useExcelMapSingle } from ".";
 
 export const useExcelGuideMission = cache(() =>
