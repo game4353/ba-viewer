@@ -4,13 +4,14 @@
   "tsconfig": "./tsconfig.json",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "dl": "cd data && tsc && node js/dl/main.mjs",
     "api": "tsc -p src/api/tsconfig.json",
-    "lint": "eslint .",
     "format": "prettier . --write",
-    "pre": "pnpm format && pnpm lint && vue-tsc --noEmit",
+    "lint": "eslint .",
+    "tsc": "pnpx vue-tsc --noEmit",
+    "pre": "pnpm format && pnpm lint && pnpm tsc",
     "test": "vitest"
   },
   "dependencies": {
