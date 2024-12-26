@@ -11,3 +11,9 @@ export const useFurnitureFilterStore = defineStore("furnitureFilter", {
     search: "",
   }),
 });
+
+export const useCharacterFilterStore = defineStore("characterFilter", {
+  state: () => ({
+    search: "",
+  }),
+});

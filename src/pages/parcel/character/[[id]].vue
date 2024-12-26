@@ -1,9 +1,10 @@
 <template>
+  <WIP />
   <div class="flex flex-row flex-wrap">
     <div class="w-1/2 min-w-[364px]">
       <v-data-iterator
         class="flex flex-row flex-wrap gap-y-2 mt-1 overflow-auto"
-        :items="searchedItems"
+        :items="filteredItems"
         :items-per-page="49"
         :page="currPage"
       >
@@ -37,12 +38,7 @@
                   column
                   multiple
                   v-model="tags[i]"
-                  @update:modelValue="
-                    (v: number[]) => {
-                      tagGroup.setPicked(v);
-                      fire = !fire;
-                    }
-                  "
+                  @update:modelValue="(v: number[]) => tagGroup.setPicked(v)"
                 >
                   <v-chip
                     v-for="tag in tagGroup.tags"
@@ -88,18 +84,28 @@
 
 <script setup lang="ts">
 import {
-  CCharacter,
   useCharacter,
   useCharacterIds,
 } from "@/components/parcel/character/character";
-import { characterTags } from "@/components/parcel/character/tag";
+import { characterTags as cTags } from "@/components/parcel/character/tag";
 import { ERR_HANDLE } from "@/components/warn/error";
-import { toHiragana } from "wanakana";
+import { useCharacterFilterStore } from "@/stores/filter";
+import { isDefined } from "@/utils/misc";
 import { ParcelType } from "~game/excelType";
 const errHandle = inject(ERR_HANDLE)!;
 
+const characterTags = [
+  cTags.CharacterTagBulletTypeGroup,
+  cTags.CharacterTagArmorTypeGroup,
+];
+
 const currPage = ref(1);
-const search = ref("");
+
+const store = useCharacterFilterStore();
+const search = computed({
+  get: () => store.search,
+  set: (v) => (store.search = v ?? ""),
+});
 
 const characterIds = useCharacterIds();
 const characters = computed(
@@ -107,24 +113,12 @@ const characters = computed(
     characterIds.value
       ?.unwrapOrElse(errHandle)
       ?.map((id) => useCharacter(id).value?.unwrapOrElse(errHandle))
-      .filter((v): v is CCharacter => v != null) ?? [],
+      .filter(isDefined) ?? [],
 );
 
 const sortedItems = computed(() => characters.value);
 const filteredItems = computed(() => {
-  if (fire.value) return sortedItems.value.filter((v) => v.hideCount === 0);
-  else return sortedItems.value.filter((v) => v.hideCount === 0);
-});
-const searchedItems = computed(() => {
-  const newSearch = search.value ?? "";
-  if (newSearch === "") return filteredItems.value;
-  else {
-    const q = toHiragana(newSearch);
-    return filteredItems.value.filter((f) => {
-      if (f.search.value.unwrapOrElse(errHandle)?.[0]?.includes(q)) return true;
-      return false;
-    });
-  }
+  return sortedItems.value.filter((v) => !v.hidden$);
 });
 
 const expand = ref("no");
@@ -133,8 +127,7 @@ function switchExpand() {
   expand.value = s[1] + s[0];
 }
 
-const tags = ref<number[][]>([]);
-const fire = ref(true);
+const tags = ref<number[][]>(characterTags.map((group) => [...group.picked]));
 const route = useRoute<"/parcel/character/[[id]]">();
 const pid = computed(() => {
   const id = route.params.id ?? "";

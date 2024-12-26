@@ -2,7 +2,7 @@ import { AFilterableParcel } from "@/components/filter/class";
 import { useSkill } from "@/components/skill/skill";
 import { useSkillList } from "@/components/skill/skillList";
 import { useBaseStats } from "@/components/student/stat";
-import { useStudentFilterStore } from "@/stores/filter";
+import { useCharacterFilterStore } from "@/stores/filter";
 import { dataStudentGoal, dataStudentNow } from "@/stores/student";
 import {
   useExcelCharacter,
@@ -85,7 +85,7 @@ export class CCharacter extends AFilterableParcel<
   }
 
   get searching$() {
-    return useStudentFilterStore().search;
+    return useCharacterFilterStore().search;
   }
 
   sortValue(key: string) {

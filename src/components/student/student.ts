@@ -1,4 +1,5 @@
 import { StudentTagRarityGroup } from "@/components/student/tag";
+import { useStudentFilterStore } from "@/stores/filter";
 import {
   useExcelCharacter,
   useExcelCharacterLevel,
@@ -29,6 +30,10 @@ export class CStudent extends CCharacter {
       () => this.statNow.star,
       StudentTagRarityGroup.getTag.bind(StudentTagRarityGroup),
     );
+  }
+
+  get searching$() {
+    return useStudentFilterStore().search;
   }
 
   useBirthday() {
