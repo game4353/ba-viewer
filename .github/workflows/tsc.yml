@@ -18,5 +18,8 @@ jobs:
       - name: Install dependencies
         run: npm i
 
+      - name: Download data
+        run: npm run dl
+
       - name: Run vue-tsc
         run: npx vue-tsc --noEmit
