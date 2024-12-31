@@ -1,5 +1,5 @@
-import { StatType } from "@/assets/game/types/flatDataExcel";
 import { noDefault } from "@/utils/misc";
+import { StatType } from "~game/excelType";
 
 export default function statLocalizeKey(stat: StatType) {
   switch (stat) {

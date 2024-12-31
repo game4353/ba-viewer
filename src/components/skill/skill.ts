@@ -1,9 +1,9 @@
-import type { SkillExcel } from "@/assets/game/types/flatDataExcel";
 import { useExcelSkill } from "@/utils/data/excel/skill";
 import { useLocalizeSkill } from "@/utils/i18n/localize";
 import { cache, range } from "@/utils/misc";
 import { Result, asResult, filterSingle } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
+import type { SkillExcel } from "~game/excelType";
 import { recipeToIngredient } from "../parcel/recipe/recipe";
 
 export class CSkill {

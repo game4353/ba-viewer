@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import type { EventContentSeasonExcel } from "~game/types/flatDataExcel";
+import type { EventContentSeasonExcel } from "~game/excelType";
 
 defineProps({
   events: {

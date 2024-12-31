@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useExcel } from "@/utils/data/excel";
-import type { GuideMissionSeasonExcelTable } from "~game/types/flatDataExcel";
+import type { GuideMissionSeasonExcelTable } from "~game/excelType";
 const errHandle = inject(ERR_HANDLE)!;
 
 const table = useExcel<GuideMissionSeasonExcelTable>(

@@ -3,7 +3,7 @@ import type {
   GoodsExcelTable,
   ShopExcelTable,
   ShopRecruitExcelTable,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 import { useExcelMapSingle } from ".";
 
 export const useExcelGoods = cache(() =>

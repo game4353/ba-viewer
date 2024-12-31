@@ -47,7 +47,7 @@
 import {
   EventContentCardExcel,
   EventContentCardShopExcel,
-} from "@/assets/game/types/flatDataExcel";
+} from "~game/excelType";
 import { ObjectKeys } from "@/utils/types";
 import { ReadonlyDeep } from "type-fest";
 

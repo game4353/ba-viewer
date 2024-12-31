@@ -29,7 +29,7 @@ import {
   useExcelGachaElement,
   useExcelGachaGroup,
 } from "@/utils/data/excel/gacha";
-import { GachaGroupType, RewardTag } from "~game/types/flatDataExcel";
+import { GachaGroupType, RewardTag } from "~game/excelType";
 import { ERR_501, ERR_HANDLE } from "../../warn/error";
 
 const props = defineProps({

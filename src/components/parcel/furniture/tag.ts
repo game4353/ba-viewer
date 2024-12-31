@@ -3,7 +3,7 @@ import {
   FurnitureCategory,
   FurnitureSubCategory,
   Rarity,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 
 class FurnitureTagInteraction extends CTag<boolean> {}
 

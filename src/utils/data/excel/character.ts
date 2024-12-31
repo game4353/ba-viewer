@@ -2,17 +2,15 @@ import { cache } from "@/utils/misc";
 import type {
   CharacterAcademyTagsExcelTable,
   CharacterExcelTable,
-  CharacterGearExcelTable,
+  CharacterGearExcel,
   CharacterLevelExcelTable,
+  CharacterPotentialExcel,
+  CharacterPotentialStatExcel,
   CharacterStatExcelTable,
   CharacterTranscendenceExcelTable,
   CostumeExcelTable,
-} from "~game/types/flatDataExcel";
-import type {
-  CharacterPotentialExcel,
-  CharacterPotentialStatExcel,
-} from "~game/types/flatDataExcelDb";
-import { useExcelDbMapMany, useExcelMapMany, useExcelMapSingle } from ".";
+} from "~game/excelType";
+import { useExcelDbMapMany, useExcelMapSingle } from ".";
 
 export const useExcelCharacter = cache(() =>
   useExcelMapSingle<CharacterExcelTable, "Id">("CharacterExcelTable", "Id"),
@@ -47,17 +45,17 @@ export const useExcelCharacterTranscendence = cache(() =>
 );
 
 export const useExcelCharacterGear = cache(() =>
-  useExcelMapMany<CharacterGearExcelTable, "CharacterId">(
-    "CharacterGearExcelTable",
+  useExcelDbMapMany<CharacterGearExcel, "CharacterId">(
+    "CharacterGear",
     "CharacterId",
   ),
 );
 
-export const useExcelDbCharacterPotential = cache(() =>
+export const useExcelCharacterPotential = cache(() =>
   useExcelDbMapMany<CharacterPotentialExcel, "Id">("CharacterPotential", "Id"),
 );
 
-export const useExcelDbCharacterPotentialStat = cache(() =>
+export const useExcelCharacterPotentialStat = cache(() =>
   useExcelDbMapMany<CharacterPotentialStatExcel, "PotentialStatGroupId">(
     "CharacterPotentialStat",
     "PotentialStatGroupId",

@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import type { EventContentShopExcel } from "~game/types/flatDataExcel";
+import type { EventContentShopExcel } from "~game/excelType";
 
 defineProps({
   shops: {

@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
 import { ObjectKeys } from "@/utils/types";
-import { ParcelType } from "~game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 import { useFurniture } from "./furniture";
 
 const props = defineProps({

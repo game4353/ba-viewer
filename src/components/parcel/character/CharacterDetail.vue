@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { useSkillListFull } from "@/components/skill/skillList";
 import { ERR_HANDLE } from "@/components/warn/error";
-import { ParcelType } from "~game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 import { useCharacter } from "./character";
 
 const props = defineProps({

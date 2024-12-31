@@ -1,5 +1,5 @@
-import { Club } from "@/assets/game/types/flatDataExcel";
 import { noDefault } from "@/utils/misc";
+import { Club } from "~game/excelType";
 
 export default function clubLocalizeKey(club: Club) {
   switch (club) {

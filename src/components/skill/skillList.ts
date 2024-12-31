@@ -4,7 +4,7 @@ import { asResult, filterSingle } from "@/utils/result/result";
 import type {
   CharacterSkillListExcel,
   CharacterSkillListExcelTable,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 
 interface Data {
   CharacterSkillListGroupId: number;

@@ -1,7 +1,7 @@
 import { useExcelEmblem } from "@/utils/data/excel/parcel";
 import { asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { ParcelType, type EmblemExcel } from "~game/types/flatDataExcel";
+import { ParcelType, type EmblemExcel } from "~game/excelType";
 import { AParcel } from "../class";
 
 export class CEmblem extends AParcel<ReadonlyDeep<EmblemExcel>> {

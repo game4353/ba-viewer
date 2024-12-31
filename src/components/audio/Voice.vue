@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts" setup>
-import { CharacterVoiceExcel } from "@/assets/game/types/flatDataExcelDb";
-import { useExcelDbCharacterVoiceSubtitle } from "@/utils/data/excel/voice";
+import { useExcelCharacterVoiceSubtitle } from "@/utils/data/excel/voice";
 import localize from "@/utils/i18n/custom/CVGroup";
 import { ReadonlyDeep } from "type-fest";
+import { CharacterVoiceExcel } from "~game/excelType";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
@@ -33,7 +33,7 @@ const voiceObj = computed(() => {
 });
 const subtitleObj = computed(() => {
   if (voiceObj.value == null) return undefined;
-  return useExcelDbCharacterVoiceSubtitle()
+  return useExcelCharacterVoiceSubtitle()
     .value?.unwrapOrElse(errHandle)
     ?.getResult(voiceObj.value.CharacterVoiceGroupId)
     .unwrapOrElse(errHandle)

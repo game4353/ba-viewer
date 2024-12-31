@@ -1,7 +1,7 @@
 import { AParcel } from "@/components/parcel/class";
 import { useExcelCurrency } from "@/utils/data/excel/parcel";
 import type { ReadonlyDeep } from "type-fest";
-import { ParcelType, type CurrencyExcel } from "~game/types/flatDataExcel";
+import { ParcelType, type CurrencyExcel } from "~game/excelType";
 
 export class CCurrency extends AParcel<ReadonlyDeep<CurrencyExcel>> {
   type = ParcelType.Currency as const;

@@ -13,7 +13,7 @@ import {
   EventContentCurrencyItemExcel,
   ParcelType,
   type EventContentItemType,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 
 const props = defineProps({
   currency: {

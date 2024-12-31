@@ -1,54 +1,69 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th
-          :class="
-            pickedSid.size + pickedGid.size > 0
-              ? 'cursor-pointer !bg-green-900'
-              : ''
-          "
-          @click="
-            () => {
-              pickedGid.clear();
-              pickedSid.clear();
-            }
-          "
-        ></th>
-        <td
-          :class="gClass(gid, true)"
-          v-for="gid in gids"
-          :key="gid"
-          @click="() => gid < 5900 && toggle(gid)"
-        >
+  <div class="w-fit">
+    <div class="row1" :style="cssVar">
+      <div
+        class="col1"
+        :class="
+          pickedSid.size + pickedGid.size > 0
+            ? 'cursor-pointer !bg-green-900'
+            : ''
+        "
+        :style="cssVar"
+        @click="
+          () => {
+            pickedGid.clear();
+            pickedSid.clear();
+          }
+        "
+      ></div>
+      <div
+        class="colX"
+        :class="gClass(gid, true)"
+        :style="cssVar"
+        v-for="gid in gids"
+        :key="gid"
+        @click="() => gid < 5900 && toggle(gid)"
+      >
+        <Lazy>
           <Parcel
             :type="ParcelType.Item"
             :pid="gid"
-            :scaling="{ w: colW }"
+            :scaling="{ w: cssVar['--colW'] - 10 }"
             :amount="dataParcel.use(ParcelType.Item, gid).amount"
           />
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr :class="sClass(sid)" v-for="sid in sids" :key="sid" :height="rowH">
-        <th class="cursor-pointer" :class="sClass(sid, true)">
-          <MyCharacter
-            :cid="sid"
-            :scaling="{ h: rowH }"
-            @click="() => toggle(sid)"
-          />
-        </th>
-        <td :class="gClass(gid)" v-for="gid in gids" :key="gid">
-          <FavorFace :favor="useStudentGiftFavor(sid, gid).value" />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </Lazy>
+      </div>
+    </div>
+
+    <Lazy
+      class="rowX"
+      :class="sClass(sid)"
+      :style="cssVar"
+      v-for="sid in sids"
+      :key="sid"
+    >
+      <div class="col1" :class="sClass(sid, true)" :style="cssVar">
+        <MyCharacter
+          :cid="sid"
+          :scaling="{ h: cssVar['--rowH'] - 10 }"
+          @click="() => toggle(sid)"
+        />
+      </div>
+      <div
+        class="colX"
+        :class="gClass(gid)"
+        :style="cssVar"
+        v-for="gid in gids"
+        :key="gid"
+      >
+        <FavorFace :favor="useStudentGiftFavor(sid, gid).value" />
+      </div>
+    </Lazy>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ParcelType } from "@/assets/game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { dataParcel } from "@/stores/parcel";
 import {
@@ -60,8 +75,12 @@ import {
 import { usePlayableIds } from "../student/student";
 const errHandle = inject(ERR_HANDLE)!;
 
-const colW = 60;
-const rowH = 64;
+const cssVar = {
+  "--col1W": 82,
+  "--colW": 64,
+  "--row1H": 56,
+  "--rowH": 68,
+};
 
 const gids = getGiftIds();
 const sids = computed(() => usePlayableIds(true).value.unwrapOrElse(errHandle));
@@ -118,35 +137,53 @@ function toggle(id: number) {
 </script>
 
 <style lang="scss" scoped>
-.picked {
-  @apply bg-green-700;
+%row {
+  @apply flex flex-row w-fit;
 }
-
-.frozen {
+%cell {
+  height: 100%;
+  outline: 1px solid #ccc;
+  outline-offset: -1px;
+  padding: 5px;
+}
+%frozen {
   position: sticky;
   z-index: 5;
   background-color: black;
 }
-thead {
-  tr th {
-    z-index: 10;
-  }
-  th,
-  td {
-    @extend .frozen;
-    top: 0px;
+
+.hidden.hidden {
+  display: none;
+}
+.picked.picked.picked {
+  @apply bg-green-700;
+}
+
+.row1 {
+  @extend %row;
+  @extend %frozen;
+  height: calc(1px * var(--row1H));
+  top: 0;
+  z-index: 7;
+}
+.rowX {
+  @extend %row;
+  min-width: 100%;
+  height: calc(1px * var(--rowH));
+  .col1 {
+    cursor: pointer;
   }
 }
-th {
-  @extend .frozen;
+.col1 {
+  @extend %cell;
+  @extend %frozen;
+  min-width: calc(1px * var(--col1W));
+  max-width: calc(1px * var(--col1W));
   left: 0;
 }
-th,
-td {
-  font-weight: 100;
-  outline: 1px solid #ccc;
-  outline-offset: -1px;
-  padding: 5px;
-  text-align: left;
+.colX {
+  @extend %cell;
+  min-width: calc(1px * var(--colW));
+  max-width: calc(1px * var(--colW));
 }
 </style>

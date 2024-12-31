@@ -1,8 +1,5 @@
-import {
-  ProductionStep,
-  type CharacterExcel,
-} from "@/assets/game/types/flatDataExcel";
 import { StudentTagRarityGroup } from "@/components/student/tag";
+import { useStudentFilterStore } from "@/stores/filter";
 import {
   useExcelCharacter,
   useExcelCharacterLevel,
@@ -18,6 +15,7 @@ import { cache, sum } from "@/utils/misc";
 import { KeyNotFoundErr } from "@/utils/result/error";
 import { Err, Ok, Result, asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
+import { ProductionStep, type CharacterExcel } from "~game/excelType";
 import { CCharacter, useCharacter } from "../parcel/character/character";
 import {
   equipmentExp,
@@ -32,6 +30,10 @@ export class CStudent extends CCharacter {
       () => this.statNow.star,
       StudentTagRarityGroup.getTag.bind(StudentTagRarityGroup),
     );
+  }
+
+  get searching$() {
+    return useStudentFilterStore().search;
   }
 
   useBirthday() {

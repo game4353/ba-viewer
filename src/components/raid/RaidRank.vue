@@ -55,7 +55,11 @@
             <v-text-field
               @input="
                 ({ target }: InputEvent) =>
-                  setPage((target as HTMLInputElement | null)?.value)
+                  setPage(
+                    toInt((target as HTMLInputElement | null)?.value).unwrapOr(
+                      1,
+                    ),
+                  )
               "
               :value="page"
               density="compact"
@@ -81,6 +85,8 @@
 </template>
 
 <script setup lang="ts">
+import { toInt } from "@/utils/result/misc";
+
 type Data = {
   no: number;
   score: number;

@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ShopRecruitExcel } from "@/assets/game/types/flatDataExcel";
+import { ShopRecruitExcel } from "~game/excelType";
 import { ReadonlyDeep } from "type-fest";
 
 defineProps({

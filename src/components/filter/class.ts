@@ -1,6 +1,6 @@
-import type { Rarity } from "@/assets/game/types/flatDataExcel";
 import type { CTag, CTagGroup } from "@/components/filter/tag";
 import { AParcel } from "@/components/parcel/class";
+import type { Rarity } from "~game/excelType";
 
 export interface IFilterable {
   hideBy: Set<CTagGroup<any>>;

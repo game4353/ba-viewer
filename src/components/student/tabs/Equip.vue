@@ -13,10 +13,7 @@
 
 <script setup lang="ts">
 import { useExcel } from "@/utils/data/excel";
-import {
-  EquipmentCategory,
-  EquipmentExcelTable,
-} from "~game/types/flatDataExcel";
+import { EquipmentCategory, EquipmentExcelTable } from "~game/excelType";
 import { uiPath } from "../../GameImg/loader";
 
 const props = defineProps({

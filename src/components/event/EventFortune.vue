@@ -48,7 +48,7 @@ import { ReadonlyDeep } from "type-fest";
 import type {
   EventContentFortuneGachaModifyExcel,
   EventContentFortuneGachaShopExcel,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 
 const props = defineProps({
   modify: {

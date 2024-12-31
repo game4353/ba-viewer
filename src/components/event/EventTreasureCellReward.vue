@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { useExcelDbEventContentTreasureCellReward } from "@/utils/data/excel/event";
+import { useExcelEventContentTreasureCellReward } from "@/utils/data/excel/event";
 import { ScaleOption } from "../misc/scale";
 import { ERR_HANDLE } from "../warn/error";
 const errHandle = inject(ERR_HANDLE)!;
@@ -29,7 +29,7 @@ const props = defineProps({
 });
 
 const reward = computed(() =>
-  useExcelDbEventContentTreasureCellReward()
+  useExcelEventContentTreasureCellReward()
     .value.andThen((map) => map.getResult(props.rid))
     .unwrapOrElse(errHandle),
 );

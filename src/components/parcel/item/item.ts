@@ -1,7 +1,7 @@
 import { AParcel } from "@/components/parcel/class";
 import { useExcelItem } from "@/utils/data/excel/parcel";
 import type { ReadonlyDeep } from "type-fest";
-import { ParcelType, type ItemExcel } from "~game/types/flatDataExcel";
+import { ParcelType, type ItemExcel } from "~game/excelType";
 
 export class CItem extends AParcel<ReadonlyDeep<ItemExcel>> {
   type = ParcelType.Item as const;

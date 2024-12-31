@@ -1,31 +1,33 @@
 <template>
   <div class="relative h-full">
-    <div class="overflow-y-auto h-full" @scroll="handleScroll" ref="container">
+    <div class="overflow-y-auto h-full" ref="root">
+      <div class="h-[1px]" v-intersection-observer="[checkTop, { root }]"></div>
       <slot></slot>
+      <div class="h-[1px]" v-intersection-observer="[checkPot, { root }]"></div>
     </div>
-    <div v-if="!isTop" class="blur-top"></div>
-    <div v-if="!isEnd" class="blur-bottom"></div>
+    <transition name="blur" mode="out-in">
+      <div v-show="!seeTop" class="blur-top"></div>
+    </transition>
+    <transition name="blur" mode="out-in">
+      <div v-show="!seePot" class="blur-bottom"></div>
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { isScrollEnd, isScrollTop } from "./scroll";
+import { vIntersectionObserver } from "@vueuse/components";
 
-const isTop = ref(true);
-const isEnd = ref(true);
-const container = ref<HTMLDivElement | undefined>(undefined);
+const root = ref();
 
-const handleScroll = () => {
-  const el = container.value;
-  if (el) {
-    isTop.value = isScrollTop(el);
-    isEnd.value = isScrollEnd(el);
-  }
-};
+const seeTop = ref(false);
+function checkTop([entry]: IntersectionObserverEntry[]) {
+  seeTop.value = entry?.isIntersecting ?? false;
+}
 
-watchEffect(() => {
-  if (container.value?.clientHeight ?? 0 > 0) handleScroll();
-});
+const seePot = ref(false);
+function checkPot([entry]: IntersectionObserverEntry[]) {
+  seePot.value = entry?.isIntersecting ?? false;
+}
 </script>
 
 <style scoped lang="scss">
@@ -45,5 +47,13 @@ watchEffect(() => {
   @include blur;
   @apply bg-gradient-to-t;
   bottom: 0;
+}
+.blur-enter-active,
+.blur-leave-active {
+  transition: height 0.1s ease-out;
+}
+.blur-enter-from,
+.blur-leave-to {
+  height: 0;
 }
 </style>

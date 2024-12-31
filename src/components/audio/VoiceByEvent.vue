@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts" setup>
-import { VoiceEvent } from "@/assets/game/types/flatDataExcel";
 import {
-  useExcelDbCharacterVoice,
-  useExcelDbVoiceCommon,
+  useExcelCharacterVoice,
+  useExcelVoiceCommon,
 } from "@/utils/data/excel/voice";
+import { VoiceEvent } from "~game/excelType";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
@@ -32,7 +32,7 @@ const props = defineProps({
 const errHandle = inject(ERR_HANDLE)!;
 
 const common = computed(() =>
-  useExcelDbVoiceCommon()
+  useExcelVoiceCommon()
     .value?.unwrapOrElse(errHandle)
     ?.getResult(props.event)
     .unwrapOrElse(errHandle),
@@ -40,7 +40,7 @@ const common = computed(() =>
 const voices = computed(() => {
   if (common.value == null) return undefined;
 
-  const arr = useExcelDbCharacterVoice()
+  const arr = useExcelCharacterVoice()
     .value?.unwrapOrElse(errHandle)
     ?.getResult(props.cid)
     .unwrapOrElse(errHandle);

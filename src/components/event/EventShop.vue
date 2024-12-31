@@ -24,10 +24,7 @@
 import { ERR_HANDLE } from "@/components/warn/error";
 import { KeyNotFoundErr } from "@/utils/result/error";
 import { ReadonlyDeep } from "type-fest";
-import type {
-  EventContentShopExcel,
-  ShopCategoryType,
-} from "~game/types/flatDataExcel";
+import type { EventContentShopExcel, ShopCategoryType } from "~game/excelType";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({

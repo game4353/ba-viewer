@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ShopCategoryType } from "@/assets/game/types/flatDataExcel";
+import { ShopCategoryType } from "~game/excelType";
 import { useExcelShopRecruit } from "@/utils/data/excel/shop";
 
 const shops = computed(() =>

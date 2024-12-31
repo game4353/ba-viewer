@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ParcelType } from "@/assets/game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 import { range } from "@/utils/misc";
 
 defineProps({

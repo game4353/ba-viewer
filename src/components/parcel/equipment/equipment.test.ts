@@ -1,5 +1,4 @@
 import * as EquipmentLevelExcelTable from "@/../public/data/Excel/EquipmentLevelExcelTable.json";
-import { EquipmentCategory } from "@/assets/game/types/flatDataExcel";
 import { TimeoutErr } from "@/utils/result/error";
 import {
   afterEach,
@@ -10,6 +9,7 @@ import {
   vi,
   type Mock,
 } from "vitest";
+import { EquipmentCategory } from "~game/excelType";
 import { equipmentExp } from "./equipment";
 
 const data: any = {

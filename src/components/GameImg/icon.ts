@@ -1,8 +1,3 @@
-import {
-  Rarity,
-  School,
-  StageTopography,
-} from "@/assets/game/types/flatDataExcel";
 import Interaction from "~assets/Atlas/Common/Cafe_Icon_Interaction.png";
 import Gift1 from "~assets/Atlas/Common/Cafe_Interaction_Gift_01.png";
 import Gift2 from "~assets/Atlas/Common/Cafe_Interaction_Gift_02.png";
@@ -23,6 +18,7 @@ import Street from "~assets/Atlas/Common/Common_Icon_Street.png";
 import Supporter from "~assets/Atlas/Common/Common_Icon_Supporter.png";
 import Tanker from "~assets/Atlas/Common/Common_Icon_Tanker.png";
 import Vehicle from "~assets/Atlas/Common/Common_Icon_Vehicle.png";
+import { Rarity, School, StageTopography } from "~game/excelType";
 import { uiPath } from "./loader";
 
 export const Icon = {

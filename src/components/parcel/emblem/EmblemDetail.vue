@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
-import { ParcelType } from "~game/types/flatDataExcel";
+import { ParcelType } from "~game/excelType";
 import { useEmblem } from "./emblem";
 const errHandle = inject(ERR_HANDLE)!;
 

@@ -52,6 +52,7 @@ declare module 'vue' {
     HomeBirthday: typeof import('./components/home/HomeBirthday.vue')['default']
     ItemAmount: typeof import('./components/party/ItemAmount.vue')['default']
     ItemDetail: typeof import('./components/parcel/item/ItemDetail.vue')['default']
+    Lazy: typeof import('./components/misc/Lazy.vue')['default']
     LevelSkillData: typeof import('./components/skill/levelSkillData/LevelSkillData.vue')['default']
     Loading: typeof import('./components/misc/Loading.vue')['default']
     MusicPlayer: typeof import('./components/audio/MusicPlayer.vue')['default']

@@ -15,7 +15,7 @@
   >
     <template v-slot:prepend>
       <v-text-field
-        v-model="val1"
+        v-model="charaNow[props.keys]"
         density="compact"
         style="width: 80px"
         type="number"
@@ -27,7 +27,7 @@
     </template>
     <template v-slot:append>
       <v-text-field
-        v-model="val2"
+        v-model="charaGoal[props.keys]"
         density="compact"
         style="width: 80px"
         type="number"
@@ -48,7 +48,6 @@ import {
   defaultMax,
   defaultMin,
 } from "@/stores/student";
-import { storeToRefs } from "pinia";
 
 const props = defineProps({
   cid: {
@@ -68,17 +67,15 @@ const props = defineProps({
   disabled: Boolean,
 });
 
-const charaNow = storeToRefs(dataStudentNow.use(props.cid));
-const charaGoal = storeToRefs(dataStudentGoal.use(props.cid));
-const val1 = charaNow[props.keys];
-const val2 = charaGoal[props.keys];
+const charaNow = computed(() => dataStudentNow.use(props.cid));
+const charaGoal = computed(() => dataStudentGoal.use(props.cid));
 const range = computed({
   get() {
-    return [val1.value, val2.value];
+    return [charaNow.value[props.keys], charaGoal.value[props.keys]];
   },
   set(values) {
-    val1.value = Math.max(values[0], leftMin);
-    val2.value = values[1];
+    charaNow.value[props.keys] = Math.max(values[0], leftMin);
+    charaGoal.value[props.keys] = values[1];
   },
 });
 
@@ -86,8 +83,8 @@ const sliderMin = defaultMin[props.keys];
 const sliderMax = defaultMax[props.keys];
 
 const leftMin = props.init ?? sliderMin;
-if (val1.value < leftMin) val1.value = leftMin;
+if (charaNow.value[props.keys] < leftMin) charaNow.value[props.keys] = leftMin;
 const rightMax = sliderMax;
-const leftMax = val2;
-const rightMin = val1;
+const leftMax = charaGoal.value[props.keys];
+const rightMin = charaNow.value[props.keys];
 </script>

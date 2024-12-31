@@ -1,6 +1,6 @@
 import { cache } from "@/utils/misc";
 import { Err, Ok } from "@/utils/result/result";
-import type { CafeInteractionExcelTable } from "~game/types/flatDataExcel";
+import type { CafeInteractionExcelTable } from "~game/excelType";
 import { MapResult, useExcel } from ".";
 
 export const useFurnitureInteractMap = cache(() => {

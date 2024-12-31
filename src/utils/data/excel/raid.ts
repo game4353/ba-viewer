@@ -2,11 +2,11 @@ import { cache } from "@/utils/misc";
 import type {
   EliminateRaidSeasonManageExcelTable,
   EliminateRaidStageExcelTable,
-  GroundExcelTable,
+  GroundExcel,
   RaidSeasonManageExcelTable,
   RaidStageExcelTable,
-} from "~game/types/flatDataExcel";
-import { useExcelMapMany, useExcelMapSingle } from ".";
+} from "~game/excelType";
+import { useExcelDbMapSingle, useExcelMapMany, useExcelMapSingle } from ".";
 
 export const useExcelRaidSeasonManage = cache(() =>
   useExcelMapSingle<RaidSeasonManageExcelTable, "SeasonId">(
@@ -37,5 +37,5 @@ export const useExcelEliminateRaidStage = cache(() =>
 );
 
 export const useExcelGround = cache(() =>
-  useExcelMapSingle<GroundExcelTable, "Id">("GroundExcelTable", "Id"),
+  useExcelDbMapSingle<GroundExcel, "Id">("Ground", "Id"),
 );

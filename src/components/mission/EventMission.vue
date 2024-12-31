@@ -18,10 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  EventContentMissionExcel,
-  MissionCategory,
-} from "@/assets/game/types/flatDataExcel";
+import { EventContentMissionExcel, MissionCategory } from "~game/excelType";
 
 import { noDefault } from "@/utils/misc";
 import { ReadonlyDeep } from "type-fest";
@@ -58,7 +55,7 @@ const chipData = computed(() => {
     case MissionCategory.MiniGameEvent:
     case MissionCategory.DailySudden:
     case MissionCategory.DailyFixed:
-      return ["", props.mission.Category];
+      return ["", MissionCategory[props.mission.Category]];
     default:
       return noDefault(props.mission.Category);
   }

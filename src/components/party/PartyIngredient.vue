@@ -71,10 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ParcelType,
-  RecipeIngredientExcel,
-} from "@/assets/game/types/flatDataExcel";
+import { ParcelType, RecipeIngredientExcel } from "~game/excelType";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { dataParty } from "@/stores/party";
 import { isDefined } from "@/utils/misc";

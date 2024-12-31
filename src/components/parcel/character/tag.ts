@@ -1,3 +1,5 @@
+import { CTag, CTagGroup } from "@/components/filter/tag";
+import { Icon, schoolIcon } from "@/components/GameImg/icon";
 import {
   ArmorType,
   BulletType,
@@ -10,9 +12,7 @@ import {
   TacticRange,
   TacticRole,
   WeaponType,
-} from "@/assets/game/types/flatDataExcel";
-import { CTag, CTagGroup } from "@/components/filter/tag";
-import { Icon, schoolIcon } from "@/components/GameImg/icon";
+} from "~game/excelType";
 
 class CharacterTagSquadType extends CTag<SquadType> {}
 export const CharacterTagSquadTypeGroup = new CTagGroup("", [

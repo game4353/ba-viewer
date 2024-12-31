@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ParcelType, RewardTag } from "~game/types/flatDataExcel";
+import { ParcelType, RewardTag } from "~game/excelType";
 import { Icon, rarityBgIcon } from "../GameImg/icon";
 import { ScaleOption } from "../misc/scale";
 import { ERR_501 } from "../warn/error";

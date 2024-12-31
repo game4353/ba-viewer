@@ -23,7 +23,7 @@ import { ReadonlyDeep } from "type-fest";
 import {
   MissionCompleteConditionType,
   type GuideMissionExcel,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({

@@ -1,22 +1,22 @@
 import { cache } from "@/utils/misc";
 import type {
-  CurrencyExcelTable,
-  EmblemExcelTable,
+  CurrencyExcel,
+  EmblemExcel,
   EquipmentExcelTable,
   EquipmentLevelExcelTable,
   EquipmentStatExcelTable,
   FurnitureExcelTable,
   FurnitureGroupExcelTable,
   ItemExcelTable,
-} from "~game/types/flatDataExcel";
-import { useExcelMapSingle } from ".";
+} from "~game/excelType";
+import { useExcelDbMapSingle, useExcelMapSingle } from ".";
 
 export const useExcelCurrency = cache(() =>
-  useExcelMapSingle<CurrencyExcelTable, "ID">("CurrencyExcelTable", "ID"),
+  useExcelDbMapSingle<CurrencyExcel, "ID">("Currency", "ID"),
 );
 
 export const useExcelEmblem = cache(() =>
-  useExcelMapSingle<EmblemExcelTable, "Id">("EmblemExcelTable", "Id"),
+  useExcelDbMapSingle<EmblemExcel, "Id">("Emblem", "Id"),
 );
 
 export const useExcelEquipment = cache(() =>

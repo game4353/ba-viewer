@@ -3,7 +3,7 @@ import type {
   RecipeExcelTable,
   RecipeIngredientExcelTable,
   RecipeSelectionGroupExcelTable,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 import { useExcelMapMany, useExcelMapSingle } from ".";
 
 export const useExcelRecipe = cache(() =>

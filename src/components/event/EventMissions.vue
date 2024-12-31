@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import type { EventContentMissionExcel } from "@/assets/game/types/flatDataExcel";
+import type { EventContentMissionExcel } from "~game/excelType";
 import type { ReadonlyDeep } from "type-fest";
 
 defineProps({

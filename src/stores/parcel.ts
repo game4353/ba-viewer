@@ -1,6 +1,6 @@
-import type { ParcelType } from "@/assets/game/types/flatDataExcel";
 import { Err, Ok } from "@/utils/result/result";
 import { z } from "zod";
+import type { ParcelType } from "~game/excelType";
 import { IOData } from "./main";
 
 const schema = z.object({

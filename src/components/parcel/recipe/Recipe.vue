@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { RewardTag } from "@/assets/game/types/flatDataExcel";
+import { RewardTag } from "~game/excelType";
 import { ScaleOption } from "@/components/misc/scale";
 import { useExcelRecipe } from "@/utils/data/excel/recipe";
 import { ERR_HANDLE } from "../../warn/error";

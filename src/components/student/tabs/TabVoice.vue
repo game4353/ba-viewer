@@ -52,12 +52,12 @@
 
 <script lang="ts" setup>
 import {
-  useExcelDbCharacterDialog,
-  useExcelDbCharacterVoice,
-  useExcelDbVoiceCommon,
+  useExcelCharacterDialog,
+  useExcelCharacterVoice,
+  useExcelVoiceCommon,
 } from "@/utils/data/excel/voice";
 import { ERR_HANDLE } from "~/components/warn/error";
-import { CVCollectionType } from "~game/types/flatDataExcelDb";
+import { CVCollectionType } from "~game/excelType";
 
 const props = defineProps({
   cid: {
@@ -69,16 +69,16 @@ const errHandle = inject(ERR_HANDLE)!;
 
 const eventIds = computed(() =>
   Array.from(
-    useExcelDbVoiceCommon().value?.unwrapOrElse(errHandle)?.keys() ?? [],
+    useExcelVoiceCommon().value?.unwrapOrElse(errHandle)?.keys() ?? [],
   ),
 );
 const voices = computed(() =>
-  useExcelDbCharacterVoice()
+  useExcelCharacterVoice()
     .value?.andThen((map) => map.getResult(props.cid))
     .unwrapOrElse(errHandle),
 );
 const dialogs = computed(() =>
-  useExcelDbCharacterDialog()
+  useExcelCharacterDialog()
     .value?.andThen((map) => map.getResult(props.cid))
     .unwrapOrElse(errHandle),
 );

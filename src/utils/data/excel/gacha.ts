@@ -3,7 +3,7 @@ import type {
   GachaElementExcelTable,
   GachaElementRecursiveExcelTable,
   GachaGroupExcelTable,
-} from "~game/types/flatDataExcel";
+} from "~game/excelType";
 import { useExcelMapMany, useExcelMapSingle } from ".";
 
 export const useExcelGachaGroup = cache(() =>

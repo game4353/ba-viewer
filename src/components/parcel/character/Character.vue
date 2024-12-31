@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { RewardTag, TacticEntityType } from "@/assets/game/types/flatDataExcel";
+import { RewardTag, TacticEntityType } from "~game/excelType";
 import { ScaleOption } from "@/components/misc/scale";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useCharacter } from "./character";

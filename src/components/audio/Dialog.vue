@@ -21,16 +21,16 @@
 
 <script lang="ts" setup>
 import {
+  useExcelCharacterDialogSubtitle,
+  useExcelVoice,
+} from "@/utils/data/excel/voice";
+import { ReadonlyDeep } from "type-fest";
+import {
   Anniversary,
   CharacterDialogExcel,
   DialogCategory,
   DialogCondition,
-} from "@/assets/game/types/flatDataExcelDb";
-import {
-  useExcelDbCharacterDialogSubtitle,
-  useExcelDbVoice,
-} from "@/utils/data/excel/voice";
-import { ReadonlyDeep } from "type-fest";
+} from "~game/excelType";
 import { ERR_HANDLE } from "../warn/error";
 
 const props = defineProps({
@@ -48,7 +48,7 @@ const dialogObj = computed(() => {
 });
 const subtitleObj = computed(() => {
   if (dialogObj.value == null) return undefined;
-  return useExcelDbCharacterDialogSubtitle()
+  return useExcelCharacterDialogSubtitle()
     .value?.andThen((map) => map.getResult(dialogObj.value!.CharacterId))
     .map((arr) =>
       arr.find((o) => o.LocalizeCVGroup === dialogObj.value!.LocalizeCVGroup),
@@ -57,7 +57,7 @@ const subtitleObj = computed(() => {
 });
 const voiceObjs = computed(() => {
   const voiceIds = dialogObj.value?.VoiceId ?? [];
-  const map = useExcelDbVoice().value?.unwrapOrElse(errHandle);
+  const map = useExcelVoice().value?.unwrapOrElse(errHandle);
   if (map == null) return [];
   return voiceIds.map((id) => map.getResult(id).unwrapOrElse(errHandle));
 });

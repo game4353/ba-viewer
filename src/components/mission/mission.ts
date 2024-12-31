@@ -1,12 +1,12 @@
-import {
-  MissionCompleteConditionType,
-  type EventContentMissionExcel,
-  type GuideMissionExcel,
-} from "@/assets/game/types/flatDataExcel";
 import { useLocalize } from "@/utils/i18n/localize";
 import { NotImplementErr } from "@/utils/result/error";
 import { Err, Result } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
+import {
+  MissionCompleteConditionType,
+  type EventContentMissionExcel,
+  type GuideMissionExcel,
+} from "~game/excelType";
 import { useItem } from "../parcel/item/item";
 
 function format(str: string, ...args: any[]) {

@@ -46,7 +46,7 @@
 import { CItem, useItem, useItemIds } from "@/components/parcel/item/item";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { ObjectEntries, ObjectKeys } from "@/utils/types";
-import { ItemCategory, ParcelType } from "~game/types/flatDataExcel";
+import { ItemCategory, ParcelType } from "~game/excelType";
 const errHandle = inject(ERR_HANDLE)!;
 
 const tabs: Record<keyof typeof ItemCategory, string> = {

@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import type { EventContentStageTotalRewardExcel } from "~game/types/flatDataExcel";
+import type { EventContentStageTotalRewardExcel } from "~game/excelType";
 
 defineProps({
   reward: {
