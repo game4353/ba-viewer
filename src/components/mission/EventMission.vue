@@ -55,7 +55,7 @@ const chipData = computed(() => {
     case MissionCategory.MiniGameEvent:
     case MissionCategory.DailySudden:
     case MissionCategory.DailyFixed:
-      return ["", props.mission.Category];
+      return ["", MissionCategory[props.mission.Category]];
     default:
       return noDefault(props.mission.Category);
   }
