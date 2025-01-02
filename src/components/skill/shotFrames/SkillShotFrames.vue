@@ -3,17 +3,17 @@
 </template>
 
 <script lang="ts" setup>
-import { tidyShot } from "../entity/timeline";
+import { ReadonlyDeep } from "type-fest";
+import { TimelineType } from "../skillLogic/timeline/schema";
 
 const props = defineProps({
   data: {
-    type: Object,
+    type: Array as PropType<Readonly<ReadonlyDeep<TimelineType>[]>>,
     required: true,
   },
 });
 
 const shot = computed(() => {
-  if (props.data.ShotFrames == null) return null;
-  return tidyShot(props.data.ShotFrames);
+  return props.data;
 });
 </script>

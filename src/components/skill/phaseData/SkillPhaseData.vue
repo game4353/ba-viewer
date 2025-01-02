@@ -37,14 +37,25 @@
 </template>
 
 <script lang="ts" setup>
+import { ReadonlyDeep } from "type-fest";
+import { z } from "zod";
+import { NormalAttackSkillAction } from "../skillLogic/schema";
 import { NormalAttackPhaseNameList, tidyPhaseData } from "./phaseData";
 
 const props = defineProps({
-  data: {
-    type: Object,
+  phase: {
+    type: Object as PropType<
+      ReadonlyDeep<z.infer<typeof NormalAttackSkillAction>["PhaseData"]>
+    >,
+    required: true,
+  },
+  frame: {
+    type: Array as PropType<
+      ReadonlyDeep<z.infer<typeof NormalAttackSkillAction>["AnimationFrames"]>
+    >,
     required: true,
   },
 });
 
-const table = tidyPhaseData(props.data.PhaseData, props.data.AnimationFrames);
+const table = tidyPhaseData(props.phase, props.frame);
 </script>

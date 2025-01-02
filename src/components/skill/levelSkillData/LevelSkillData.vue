@@ -1,71 +1,46 @@
 <template>
-  <div>
-    <div v-if="Object.keys(misc).length > 0">{{ misc }}</div>
-    <div v-if="mainEntity">
-      <br />
-      Main Entity:<br />
-      {{ mainEntity }}
-    </div>
-    <div v-for="(o, i) in data?.EntityTimeline ?? {}" :key="i">
-      <br />
-      EntityTimeline{{ i + 1 }}:<br />
-      <SkillEntity :tl="o" />
-    </div>
-    <SkillPhaseData :data />
-    <SkillTarget :sort="data.TargetSortRule" />
-    <SkillShotFrames :data />
-  </div>
+  {{ group }}
+  <Loading v-if="data == null" />
+  <ManualSkill v-else-if="data.$type === 'ManualSkill'" :data :lv />
+  <NormalAttackSkillAction
+    v-else-if="data.$type === 'NormalAttackSkillAction'"
+    :data
+    :lv
+  />
+  <TimelineSkillAction
+    v-else-if="data.$type === 'TimelineSkillAction'"
+    :data
+    :lv
+  />
+  <PassiveSkill v-else-if="data.$type === 'PassiveSkill'" :data :lv />
+  <NewSkillAction v-else-if="data.$type === 'NewSkillAction'" :data :lv />
 </template>
 
 <script setup lang="ts">
-import { computedAsync } from "@vueuse/core";
-import { tidyGeneralEntity } from "../entity/timeline";
+import { SkillLogicSchema } from "@/components/skill/skillLogic/schema";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { NotImplementErr } from "@/utils/result/error";
+import { Err, Ok } from "@/utils/result/result";
 import { getLevelSkillData } from "./levelSkillData";
+const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({
   group: {
     type: String,
     required: true,
   },
+  lv: Number,
 });
 
-const data = computedAsync(
-  async () => await getLevelSkillData(props.group),
-  {},
+const data = computed(() =>
+  getLevelSkillData(props.group)
+    .andThen2((v) => {
+      const res = SkillLogicSchema.safeParse(v);
+      if (res.success) return Ok(res.data);
+      console.error(res.error);
+      return Err(NotImplementErr.from(`Skill group "${props.group}"`));
+    })
+    .unwrapOrElse(errHandle),
 );
-const mainEntity = computed(() => {
-  const e = data.value?.MainEntityData;
-  if (e == null) return null;
-  return tidyGeneralEntity(e, {});
-});
-
-// TODO:
-// AutoUseRule
-// InvokerDirection
-// InvokerDirectionWorldPosition
-// ExclusiveIngInvokerDirectionOverride
-// ExclusiveIngInvokerDirectionOverrideWorldPosition
-const misc = computed(() => {
-  const skill = data.value;
-  if (skill == null) return {};
-  const out: any = {};
-  if (skill.SkillTargetType != null)
-    out["SkillTargetType"] = skill.SkillTargetType;
-  if (skill.DistributeType !== 0) out["DistributeType"] = skill.DistributeType;
-  if (skill.Range !== 0) out["Range"] = skill.Range;
-  if (skill.Angle !== 0) out["Angle"] = skill.Angle;
-  if (skill.CheckCanUseSkillPoint)
-    out["CheckCanUseSkillPoint"] = skill.CheckCanUseSkillPoint;
-  if (skill.IsWeaponMountAfterSkill)
-    out["IsWeaponMountAfterSkill"] = skill.IsWeaponMountAfterSkill;
-  if (skill.Duration !== 2147483647) out["Duration"] = skill.Duration;
-  if (skill.RootMotionMoveData != null)
-    out["RootMotionMoveData"] = skill.RootMotionMoveData;
-  if (skill.SkipAttackEnterAfterRootMotion)
-    out["SkipAttackEnterAfterRootMotion"] =
-      skill.SkipAttackEnterAfterRootMotion;
-  if (skill.MinRange !== 0) out["MinRange"] = skill.MinRange;
-  if (skill.hideFlags !== 0) out["hideFlags"] = skill.hideFlags;
-  return out;
-});
+const lv = props.lv ?? 1;
 </script>

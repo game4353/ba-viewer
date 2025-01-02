@@ -2,7 +2,7 @@
   <div v-if="picked != null">
     <v-card class="mx-auto">
       <template v-slot:title>
-        <span class="font-weight-black">{{ picked.name }}</span>
+        <RichText class="font-weight-black" :text="picked.name.value" />
       </template>
       <template v-slot:prepend>
         <Parcel :type="ParcelType.Character" :pid :scaling="{ w: 80 }" />
@@ -42,7 +42,7 @@
         <v-card-text class="bg-surface-light !pt-4" v-if="normalAttack">
           <div class="big">通常攻撃</div>
           <template v-for="s in normalAttack" :key="s">
-            <Skill :group="s" normalAttack />
+            <Skill :group="s" normalAttack layout="full" />
           </template>
         </v-card-text>
         <v-card-text class="bg-surface-light !pt-4" v-if="skillEx">

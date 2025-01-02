@@ -1,4 +1,8 @@
 import { ObjectKeys } from "@/utils/types";
+import type { ReadonlyDeep } from "type-fest";
+import type { z } from "zod";
+import type { NormalAttackPhaseControl } from "../skillLogic/misc";
+import type { NormalAttackSkillAction } from "../skillLogic/schema";
 
 enum NormalAttackCondition {
   None,
@@ -33,8 +37,12 @@ export const NormalAttackPhaseNameList: PhaseName[] = ObjectKeys(
   NormalAttackPhaseName,
 ).filter((v) => isNaN(Number(v)));
 
-export function tidyPhaseData(phaseData: any, animation: any[]) {
-  if (phaseData == null) return null;
+export function tidyPhaseData(
+  phaseData: ReadonlyDeep<z.infer<typeof NormalAttackSkillAction>["PhaseData"]>,
+  animation: ReadonlyDeep<
+    z.infer<typeof NormalAttackSkillAction>["AnimationFrames"]
+  >,
+) {
   const keys = [
     "OnEnterNormalAttack",
     "AfterAttackEnter",
@@ -46,7 +54,7 @@ export function tidyPhaseData(phaseData: any, animation: any[]) {
     "AfterMountWeapon",
     "AfterUnmountWeapon",
     "AfterSearchNewTarget",
-  ];
+  ] as const;
   const out: {
     frame: Partial<Record<PhaseName, number>>;
   } & {
@@ -54,9 +62,9 @@ export function tidyPhaseData(phaseData: any, animation: any[]) {
   } = { frame: {} };
 
   keys.forEach((v) => {
-    out[v] = tidyPhaseDataRow(phaseData[v]);
+    if (phaseData[v] != null) out[v] = tidyPhaseDataRow(phaseData[v]);
   });
-  animation?.forEach((o) => {
+  animation.forEach((o) => {
     switch (o.Key) {
       case "AttackEnterDuration":
         out.frame["AttackEnter"] = o.Frame;
@@ -92,7 +100,10 @@ export function tidyPhaseData(phaseData: any, animation: any[]) {
   });
   return out;
 }
-function tidyPhaseDataRow(phaseData: any[]) {
+
+function tidyPhaseDataRow(
+  phaseData: ReadonlyDeep<z.infer<typeof NormalAttackPhaseControl>[]>,
+) {
   const out: Partial<Record<keyof typeof NormalAttackPhaseName, string[]>> = {};
   phaseData.forEach((obj, i) => {
     const order = i + 1;

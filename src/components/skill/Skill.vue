@@ -50,7 +50,7 @@
           <RichText :text="skill.desc" />
           <template v-if="layout === 'full' && group">
             <v-divider></v-divider>
-            <LevelSkillData :group />
+            <LevelSkillData :group :lv="lvVal" />
           </template>
         </div>
       </v-card-text>
@@ -98,6 +98,7 @@ const lvNG = computed({
 const lvVal = ref(lvNG.value?.[0] ?? 1);
 
 const skill = computed(() => {
+  if (props.group === "EmptySkill") return null;
   if (props.group != null)
     return useSkill(props.group, lvVal.value).value.unwrapOrElse(errHandle);
   if (props.skillNo != null && student.value != null)

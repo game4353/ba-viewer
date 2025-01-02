@@ -3,11 +3,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { TargetSortRule } from "./target";
+import type { TargetSortRuleType } from "@/components/skill/skillLogic/misc";
 
 const props = defineProps({
   data: Object,
-  sort: Object as PropType<TargetSortRule>,
+  sort: Object as PropType<TargetSortRuleType>,
 });
 
 // data.TargetSortRule
