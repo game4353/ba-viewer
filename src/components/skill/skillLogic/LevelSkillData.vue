@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { SkillLogicSchema } from "@/components/skill/skillLogic/schema";
 import { ERR_HANDLE } from "@/components/warn/error";
 import { NotImplementErr } from "@/utils/result/error";
 import { Err, Ok } from "@/utils/result/result";
 import { getLevelSkillData } from "./levelSkillData";
+import { SkillLogicSchema } from "./schema";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({

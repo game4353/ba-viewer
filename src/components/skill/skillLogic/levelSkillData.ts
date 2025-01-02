@@ -4,7 +4,7 @@ import { cache } from "@/utils/misc";
 import { TimeoutErr } from "@/utils/result/error";
 import { asResult, Err } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import type { SkillLogicType } from "../skillLogic/schema";
+import type { SkillLogicType } from "./schema";
 
 const useLevelSkillMap = cache((name: string) => {
   const state = useRemoteLevelSkillData(name);
