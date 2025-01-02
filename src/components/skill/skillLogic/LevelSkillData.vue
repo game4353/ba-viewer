@@ -42,5 +42,5 @@ const data = computed(() =>
     })
     .unwrapOrElse(errHandle),
 );
-const lv = props.lv ?? 1;
+const lv = computed(() => props.lv ?? 1);
 </script>

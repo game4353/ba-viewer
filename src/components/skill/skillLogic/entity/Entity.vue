@@ -5,11 +5,11 @@
         {{ key }} {{ entity[key as keyof typeof entity] }}
       </div>
     </div>
-    <div>
-      <div v-if="'Abilities' in entity">{{ entity["Abilities"] }}</div>
+    <div v-if="'Abilities' in entity && entity.Abilities">
+      <Abilities :abilities="entity.Abilities" :lv />
     </div>
-    <div>
-      <div v-if="'AreaAbilities' in entity">{{ entity["AreaAbilities"] }}</div>
+    <div v-if="'AreaAbilities' in entity && entity.AreaAbilities">
+      <Abilities :abilities="entity.AreaAbilities" :lv />
     </div>
     <div>
       <div v-if="'BounceEntity' in entity">{{ entity["BounceEntity"] }}</div>
@@ -19,11 +19,15 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import { SkillEntityType } from "../skillLogic/entity/schema";
+import { SkillEntityType } from "./schema";
 
 defineProps({
   entity: {
     type: Object as PropType<ReadonlyDeep<SkillEntityType>>,
+    required: true,
+  },
+  lv: {
+    type: Number,
     required: true,
   },
 });

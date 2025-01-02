@@ -27,3 +27,5 @@ export const SkillAbilitySchema = z.discriminatedUnion("$type", [
   LevelDotAbility,
   LevelOneTimeAbility,
 ]);
+
+export type SkillAbilityType = z.infer<typeof SkillAbilitySchema>;

@@ -7,7 +7,7 @@
     <div v-if="tl.DamageDistributeRate > 0">
       Damage: {{ tl.DamageDistributeRate / 100 }}%
     </div>
-    <Entity v-if="tl.Entity" :entity="tl.Entity" />
+    <Entity v-if="tl.Entity" :entity="tl.Entity" :lv />
     <div
       v-if="'InvokerDirectionOverride' in tl && tl.InvokerDirectionOverride > 0"
     >
@@ -38,6 +38,10 @@ import { TimelineType } from "./schema";
 defineProps({
   timelines: {
     type: Array as PropType<ReadonlyDeep<TimelineType[]>>,
+    required: true,
+  },
+  lv: {
+    type: Number,
     required: true,
   },
 });

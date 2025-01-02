@@ -1,5 +1,8 @@
 <template>
-  <SkillEntityTimeline :timelines="data.EntityTimeline" />
+  <div v-for="key in keys" :key>
+    <div v-if="key in data">{{ key }} {{ data[key as keyof typeof data] }}</div>
+  </div>
+  <SkillEntityTimeline :timelines="data.EntityTimeline" :lv />
 </template>
 
 <script setup lang="ts">
@@ -16,4 +19,15 @@ defineProps({
     required: true,
   },
 });
+
+const keys = [
+  "Duration",
+  "MaxTriggerCount",
+  "CoolTimeNotTrigger",
+  "TryCount",
+  "ResetTryCountUseSkill",
+  "TriggerCondition",
+  "TriggerSourceFindRule",
+  "SkillTargetType",
+] as const;
 </script>

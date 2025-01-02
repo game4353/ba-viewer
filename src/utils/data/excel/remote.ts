@@ -1,3 +1,4 @@
+import type { LogicEffectType } from "@/components/skill/logicEffect/schema";
 import type { SkillLogicType } from "@/components/skill/skillLogic/schema";
 import { TimeoutErr } from "@/utils/result/error";
 import { asResult, Err } from "@/utils/result/result";
@@ -42,6 +43,21 @@ export function useRemoteLevelSkillData(name: string) {
         version.value.andThen((vers) => {
           const url = base + vers[0] + suffix;
           return useFetchResult<{ Bytes: SkillLogicType }[]>(url).value.map(
+            (arr) => arr.map((o) => o.Bytes),
+          );
+        }),
+      ),
+    ),
+  );
+}
+export function useRemoteLogicEffectData() {
+  const suffix = `/DB/LogicEffectDataDBSchema/LogicEffectDataDBSchema.json`;
+  return readonly(
+    computed(() =>
+      asResult(
+        version.value.andThen((vers) => {
+          const url = base + vers[0] + suffix;
+          return useFetchResult<{ Bytes: LogicEffectType }[]>(url).value.map(
             (arr) => arr.map((o) => o.Bytes),
           );
         }),

@@ -1,9 +1,11 @@
 <template>
-  {{ data }}
+  {{ ManualSkillTypes[data.ManualSkillType] }}
+  {{ data.Abilities }}
 </template>
 
 <script setup lang="ts">
 import { z } from "zod";
+import { ManualSkillTypes } from "../../enum";
 import { ZManualSkill } from "./ManualSkill";
 
 defineProps({
