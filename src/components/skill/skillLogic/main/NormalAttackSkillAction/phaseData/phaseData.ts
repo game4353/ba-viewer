@@ -1,8 +1,6 @@
 import { ObjectKeys } from "@/utils/types";
 import type { ReadonlyDeep } from "type-fest";
-import type { z } from "zod";
-import type { NormalAttackPhaseControl } from "../skillLogic/misc";
-import type { NormalAttackSkillAction } from "../skillLogic/schema";
+import { z } from "zod";
 
 enum NormalAttackCondition {
   None,
@@ -33,15 +31,38 @@ type PhaseName =
   | "AttackReadyStart"
   | "AttackReadyEnd";
 
+export const NormalAttackPhaseControl = z.object({
+  Condition: z.nativeEnum(NormalAttackCondition),
+  ConditionSecond: z.nativeEnum(NormalAttackCondition),
+  NextPhase: z.nativeEnum(NormalAttackPhaseName),
+});
+export const NormalAttackPhase = z.object({
+  Description: z.string().optional(),
+  PhaseDataId: z.number(),
+  OnEnterNormalAttack: NormalAttackPhaseControl.array(),
+  AfterAttackEnter: NormalAttackPhaseControl.array(),
+  AfterReload: NormalAttackPhaseControl.array(),
+  AfterAttackStart: NormalAttackPhaseControl.array(),
+  AfterAttackIng: NormalAttackPhaseControl.array(),
+  AfterAttackBurstDelay: NormalAttackPhaseControl.array(),
+  AfterAttackFinish: NormalAttackPhaseControl.array(),
+  AfterMountWeapon: NormalAttackPhaseControl.array().optional(),
+  AfterUnmountWeapon: NormalAttackPhaseControl.array().optional(),
+  AfterSearchNewTarget: NormalAttackPhaseControl.array(),
+});
+
+export const ExtraFrameData = z.object({
+  Key: z.string(),
+  Frame: z.number(),
+});
+
 export const NormalAttackPhaseNameList: PhaseName[] = ObjectKeys(
   NormalAttackPhaseName,
 ).filter((v) => isNaN(Number(v)));
 
 export function tidyPhaseData(
-  phaseData: ReadonlyDeep<z.infer<typeof NormalAttackSkillAction>["PhaseData"]>,
-  animation: ReadonlyDeep<
-    z.infer<typeof NormalAttackSkillAction>["AnimationFrames"]
-  >,
+  phaseData: ReadonlyDeep<z.infer<typeof NormalAttackPhase>>,
+  animation: ReadonlyDeep<z.infer<typeof ExtraFrameData>[]>,
 ) {
   const keys = [
     "OnEnterNormalAttack",

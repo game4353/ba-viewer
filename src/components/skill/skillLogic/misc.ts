@@ -7,8 +7,6 @@ import {
   AutoUseConditionType,
   CoverState,
   ModifierCheckTarget,
-  NormalAttackCondition,
-  NormalAttackPhaseName,
   PassiveTriggerEvent,
   TargetEntityType,
   TargetSideId,
@@ -20,10 +18,6 @@ import {
 export const Vector2 = z.object({
   x: z.number(),
   y: z.number(),
-});
-export const ExtraFrameData = z.object({
-  Key: z.string(),
-  Frame: z.number(),
 });
 
 export const AutoUseRule = z.object({
@@ -84,26 +78,6 @@ export const TargetCandidateRule = z.object({
   // TacticRoleConstraint: TacticRoleConstraint,
   CoverState: z.nativeEnum(CoverState),
   NeedSearchTarget: z.boolean(),
-});
-
-export const NormalAttackPhaseControl = z.object({
-  Condition: z.nativeEnum(NormalAttackCondition),
-  ConditionSecond: z.nativeEnum(NormalAttackCondition),
-  NextPhase: z.nativeEnum(NormalAttackPhaseName),
-});
-export const NormalAttackPhase = z.object({
-  Description: z.string().optional(),
-  PhaseDataId: z.number(),
-  OnEnterNormalAttack: NormalAttackPhaseControl.array(),
-  AfterAttackEnter: NormalAttackPhaseControl.array(),
-  AfterReload: NormalAttackPhaseControl.array(),
-  AfterAttackStart: NormalAttackPhaseControl.array(),
-  AfterAttackIng: NormalAttackPhaseControl.array(),
-  AfterAttackBurstDelay: NormalAttackPhaseControl.array(),
-  AfterAttackFinish: NormalAttackPhaseControl.array(),
-  AfterMountWeapon: NormalAttackPhaseControl.array().optional(),
-  AfterUnmountWeapon: NormalAttackPhaseControl.array().optional(),
-  AfterSearchNewTarget: NormalAttackPhaseControl.array(),
 });
 
 export const EchelonConstraint = z.object({

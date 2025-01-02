@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { ReadonlyDeep } from "type-fest";
-import { TimelineType } from "../skillLogic/timeline/schema";
+import { TimelineType } from "../../../timeline/schema";
 
 const props = defineProps({
   data: {

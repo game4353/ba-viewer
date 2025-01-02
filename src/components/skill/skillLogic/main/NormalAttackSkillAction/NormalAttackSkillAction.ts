@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { SkillToTargetDistributeType, SpawnDirectionTypes } from "../../enum";
-import { ExtraFrameData, NormalAttackPhase, Vector2 } from "../../misc";
+import { Vector2 } from "../../misc";
 import { SkillEntityTimeline } from "../../timeline/schema";
 import { ZNewSkillAction } from "../NewSkillAction/NewSkillAction";
+import { ExtraFrameData, NormalAttackPhase } from "./phaseData/phaseData";
 
 // 1
 export const ZNormalAttackSkillAction = ZNewSkillAction.extend({
