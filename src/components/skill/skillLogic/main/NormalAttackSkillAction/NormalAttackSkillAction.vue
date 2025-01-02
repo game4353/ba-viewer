@@ -1,6 +1,6 @@
 <template>
   <SkillPhaseData :data :phase="data.PhaseData" :frame="data.AnimationFrames" />
-  <SkillShotFrames :data="data.ShotFrames" />
+  <SkillEntityTimeline :timelines="data.ShotFrames" />
 </template>
 
 <script setup lang="ts">

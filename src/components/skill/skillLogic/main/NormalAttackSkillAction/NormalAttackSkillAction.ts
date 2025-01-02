@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { SkillToTargetDistributeType, SpawnDirectionTypes } from "../../enum";
 import { Vector2 } from "../../misc";
-import { SkillEntityTimeline } from "../../timeline/schema";
+import { ZSkillEntityTimeline } from "../../timeline/schema";
 import { ZNewSkillAction } from "../NewSkillAction/NewSkillAction";
 import { ExtraFrameData, NormalAttackPhase } from "./phaseData/phaseData";
 
@@ -12,6 +12,6 @@ export const ZNormalAttackSkillAction = ZNewSkillAction.extend({
   ExclusiveIngInvokerDirectionOverrideWorldPosition: Vector2,
   DistributeType: z.nativeEnum(SkillToTargetDistributeType),
   AnimationFrames: ExtraFrameData.array(),
-  ShotFrames: SkillEntityTimeline.array(),
+  ShotFrames: ZSkillEntityTimeline.array(),
   PhaseData: NormalAttackPhase,
 });

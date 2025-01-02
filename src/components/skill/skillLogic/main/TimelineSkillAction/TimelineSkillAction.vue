@@ -1,9 +1,5 @@
 <template>
-  <div v-for="(o, i) in data.EntityTimeline" :key="i">
-    <br />
-    EntityTimeline{{ i + 1 }}:<br />
-    <SkillEntity :tl="o" />
-  </div>
+  <SkillEntityTimeline :timelines="data.EntityTimeline" />
 </template>
 
 <script setup lang="ts">

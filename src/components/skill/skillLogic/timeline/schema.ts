@@ -13,13 +13,12 @@ type SkillEntityTimelineType = {
   DamageDistributeRate: number;
   Entity?: SkillEntityType;
 };
-export const SkillEntityTimeline: z.ZodType<SkillEntityTimelineType> = z.object(
-  {
+export const ZSkillEntityTimeline: z.ZodType<SkillEntityTimelineType> =
+  z.object({
     Frame: z.number(),
     DamageDistributeRate: z.number(),
     Entity: z.lazy(() => SkillEntitySchema).optional(),
-  },
-);
+  });
 export type ExSkillEntityTimelineType = SkillEntityTimelineType & {
   Tag: AbilityActivateTag;
   InvokerDirectionOverride: SpawnDirectionTypes;
