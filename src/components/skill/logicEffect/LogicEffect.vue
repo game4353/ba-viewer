@@ -1,5 +1,12 @@
 <template>
-  <div>{{ obj }}</div>
+  <Loading v-if="obj === undefined" />
+  <div v-else>
+    <div v-if="obj.ApplyRate < 10000">発動率: {{ obj.ApplyRate / 100 }}%</div>
+    <v-chip class="w-fit">Channel: {{ obj.Channel }}</v-chip>
+
+    <DamageEffect v-if="obj?.$type === 'DamageEffect'" :data="obj" />
+    <div v-else>{{ obj }}</div>
+  </div>
 </template>
 
 <script setup lang="ts">

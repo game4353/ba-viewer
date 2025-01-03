@@ -1,7 +1,7 @@
 <template>
   <div v-for="(ab, key) in abilities" :key>
     <div v-if="ab">
-      <div>StartDelay: {{ ab.StartDelay }}</div>
+      <div v-if="ab.StartDelay > 0">StartDelay: {{ ab.StartDelay }}</div>
       <div v-if="ab.$type === 'LevelDotAbility'">
         <div>TotalCount: {{ ab.TotalCount }}</div>
         <div>Interval: {{ ab.Interval }}</div>

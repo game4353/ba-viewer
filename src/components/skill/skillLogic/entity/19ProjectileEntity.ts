@@ -39,9 +39,10 @@ const ProjectileEntity = SkillEntity.extend({
   SkillEntitySpawnerData: SkillEntitySpawner.optional(),
 });
 
-const TargetProjectileEntity = ProjectileEntity;
+export const ZTargetProjectileEntity = ProjectileEntity;
+export type TZTargetProjectileEntity = z.infer<typeof ZTargetProjectileEntity>;
 
-const ExtraHitTargetProjectileEntity = TargetProjectileEntity.extend({
+const ExtraHitTargetProjectileEntity = ZTargetProjectileEntity.extend({
   ExtraHitCheckTargetSide: zFlag(TargetSideId),
   ExtraHitCheckTargetEntityType: zFlag(TargetEntityType),
   Piercing: bool(),
@@ -63,21 +64,21 @@ const NontargetDestructibleProjectileEntity = NontargetProjectileEntity.extend({
 });
 
 type TargetBounceProjectileEntityType = z.infer<
-  typeof TargetProjectileEntity
+  typeof ZTargetProjectileEntity
 > & {
   BounceRadius: number;
   AllowBounceTargetDuplication: boolean;
   BounceProjectileEntity?: TargetBounceProjectileEntityType;
 };
 const TargetBounceProjectileEntity_sub: z.ZodType<TargetBounceProjectileEntityType> =
-  TargetProjectileEntity.extend({
+  ZTargetProjectileEntity.extend({
     BounceRadius: long(),
     AllowBounceTargetDuplication: bool(),
     BounceProjectileEntity: z
       .lazy(() => TargetBounceProjectileEntity_sub)
       .optional(),
   });
-export const TargetBounceProjectileEntity = TargetProjectileEntity.extend({
+export const TargetBounceProjectileEntity = ZTargetProjectileEntity.extend({
   BounceRadius: long(),
   AllowBounceTargetDuplication: bool(),
   BounceProjectileEntity: TargetBounceProjectileEntity_sub.optional(),
@@ -87,7 +88,7 @@ export const ProjectileEntityList = [
   ProjectileEntity.extend({
     $type: z.literal("ProjectileEntity"),
   }), // x // 19
-  TargetProjectileEntity.extend({
+  ZTargetProjectileEntity.extend({
     $type: z.literal("TargetProjectileEntity"),
   }), // 1 // 20
   TargetBounceProjectileEntity.extend({

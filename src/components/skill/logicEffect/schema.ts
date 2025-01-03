@@ -11,6 +11,8 @@ import {
   TacticEntityType,
 } from "~game/excelType";
 import { TargetSideId } from "../skillLogic/enum";
+import { ZDamageEffect } from "./17DamageEffect/DamageEffect";
+import { ZLogicEffect } from "./_base";
 import * as DamageByHitEffectData from "./DamageByHitEffectData";
 import * as DamageOverTimeEffectData from "./DamageOverTimeEffectData";
 import {
@@ -22,17 +24,7 @@ import {
 import * as ExSkillCardRedrawGaugeEffectData from "./ExSkillCardRedrawGaugeEffectData";
 import * as HealByHitEffectData from "./HealByHitEffectData";
 
-const LogicEffect = z.object({
-  Level: z.number(),
-  GroupId: z.string(),
-  Category: z.nativeEnum(LogicEffectCategory),
-  TemplateId: z.string(),
-  Channel: z.number(),
-  ApplyRate: z.number(),
-  CommonVisualId: z.string(),
-  CommonVisualHash: z.number(),
-  PriorityWhenSameFrame: z.number(),
-});
+const LogicEffect = ZLogicEffect;
 
 // 7
 const BulletTypeChangeEffect = LogicEffect.extend({
@@ -99,28 +91,6 @@ const DamagedMultiplierbyDamageOverTimeEffect = LogicEffect.extend({
   RemoveCondition: z.nativeEnum(EndCondition),
   RemoveConditionArgument: z.string(),
   IsDispellable: z.boolean(),
-});
-
-// 17
-const DamageEffect = LogicEffect.extend({
-  $type: z.literal("DamageEffect"),
-  CriticalCheck: z.nativeEnum(DamageCriticalType),
-  CanEvade: z.boolean(),
-  Amount: z.number(),
-  BonusSourceFirst: z.nativeEnum(StatType),
-  BonusRateFirst: z.number(),
-  LifeRecover: z.number(),
-  ApplyBulletType: z.boolean(),
-  ApplyDefense: z.boolean(),
-  ApplyDamageRatio: z.boolean(),
-  ApplyDamageRatio2: z.boolean(),
-  DefensePenetrationRate: z.number(),
-  ChangeRateByCost: z.string(),
-  IgnoreShield: z.boolean(),
-  ApplyStability: z.boolean(),
-  ApplyTerrainAdaptationDamage: z.boolean(),
-  ApplyExDamagedRatio: z.boolean(),
-  ForceFloaterHide: z.boolean(),
 });
 
 // 18
@@ -620,7 +590,9 @@ export const LogicEffectSchema = z.discriminatedUnion("$type", [
   DamageByHitEffect, // 14
   DamagedLimitEffect, // 15
   DamagedMultiplierbyDamageOverTimeEffect, // 16
-  DamageEffect, // 17
+  ZDamageEffect.extend({
+    $type: z.literal("DamageEffect"),
+  }), // 17
   DamageOverTimeEffect, // 18
   DamageTransferEffect, // 19
   DeadlyAttackEffect, // 20

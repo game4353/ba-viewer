@@ -1,5 +1,5 @@
 <template>
-  {{ group }}
+  <p>{{ group }}</p>
   <Loading v-if="data == null" />
   <ManualSkill v-else-if="data.$type === 'ManualSkill'" :data :lv />
   <NormalAttackSkillAction
