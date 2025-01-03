@@ -1,8 +1,6 @@
 <template>
   <SkillPhaseData :data :phase="data.PhaseData" :frame="data.AnimationFrames" />
-  <div v-if="data.DistributeType > 0">
-    {{ SkillToTargetDistributeType[data.DistributeType] }}
-  </div>
+  <DistributeType :val="data.DistributeType" />
   <div v-if="data.ExclusiveIngInvokerDirectionOverride > 0">
     {{ SpawnDirectionTypes[data.ExclusiveIngInvokerDirectionOverride] }}
     {{ data.ExclusiveIngInvokerDirectionOverrideWorldPosition }}
@@ -12,7 +10,7 @@
 
 <script setup lang="ts">
 import { z } from "zod";
-import { SkillToTargetDistributeType, SpawnDirectionTypes } from "../../enum";
+import { SpawnDirectionTypes } from "../../enum";
 import { ZNormalAttackSkillAction } from "./NormalAttackSkillAction";
 
 defineProps({

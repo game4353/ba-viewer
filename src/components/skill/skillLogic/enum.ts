@@ -25,6 +25,10 @@ export enum AliveState {
   DeadOrDying = 6,
   All = -1,
 }
+export enum BarrierShape {
+  Circle,
+  Square,
+}
 export enum CoverState {
   None,
   NotCovered,
@@ -67,6 +71,7 @@ export enum SpawnDirectionTypes {
 }
 export enum SkillApplyType {
   None,
+  UNKNOWN = 1, // TODO used in ShimikoPassive01 and CH0153Passive01, unknown type
   Direct = 2,
   Hitscan = 4,
   AlwaysBlocked,

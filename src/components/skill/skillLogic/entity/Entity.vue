@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div v-for="key in keys" :key>
-      <div v-if="key in entity">
-        {{ key }} {{ entity[key as keyof typeof entity] }}
+    <div>
+      <div v-for="key in keys" :key>
+        <div v-if="key in entity">
+          {{ key }} {{ entity[key as keyof typeof entity] }}
+        </div>
       </div>
     </div>
     <div v-if="'Abilities' in entity && entity.Abilities">

@@ -7,10 +7,10 @@ import { ZNewSkillAction } from "../NewSkillAction/NewSkillAction";
 export const ZTimelineSkillAction = ZNewSkillAction.extend({
   $type: z.literal("TimelineSkillAction"),
   DistributeType: z.nativeEnum(SkillToTargetDistributeType),
-  RotateTurretOnly: z.boolean(),
-  RotateTurretDirectionTargetTracking: z.boolean(),
-  RotatingTurretFrameMin: z.number(),
-  RotatingTurretFrameMax: z.number(),
-  RotateInvokerDirectionEveryFrame: z.boolean(),
+  // RotateTurretOnly: z.boolean(), // not important I guess
+  // RotateTurretDirectionTargetTracking: z.boolean(), // not important I guess
+  // RotatingTurretFrameMin: z.number(), // not important I guess
+  // RotatingTurretFrameMax: z.number(), // not important I guess
+  // RotateInvokerDirectionEveryFrame: z.boolean(), // not important I guess
   EntityTimeline: ExSkillEntityTimeline.array(),
 });

@@ -1,7 +1,5 @@
 <template>
-  <div v-for="key in keys" :key>
-    <div v-if="key in data">{{ key }} {{ data[key as keyof typeof data] }}</div>
-  </div>
+  <DistributeType :val="data.DistributeType" />
   <SkillEntityTimeline :timelines="data.EntityTimeline" :lv />
 </template>
 
@@ -19,12 +17,4 @@ defineProps({
     required: true,
   },
 });
-const keys = [
-  "DistributeType",
-  "RotateTurretOnly",
-  "RotateTurretDirectionTargetTracking",
-  "RotatingTurretFrameMin",
-  "RotatingTurretFrameMax",
-  "RotateInvokerDirectionEveryFrame",
-] as const;
 </script>

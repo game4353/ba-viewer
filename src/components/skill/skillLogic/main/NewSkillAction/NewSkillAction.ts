@@ -1,9 +1,9 @@
 import { z } from "zod";
+import { AutoUseRule } from "../../ability/schema";
 import { RootMotionMoveBaseSchema } from "../../entity/RootMotionMove";
 import { SkillEntitySchema } from "../../entity/schema";
 import { SpawnDirectionTypes } from "../../enum";
 import {
-  AutoUseRule,
   EssentialCandidateRule,
   OptionalCandidateRule,
   TargetSortRule,

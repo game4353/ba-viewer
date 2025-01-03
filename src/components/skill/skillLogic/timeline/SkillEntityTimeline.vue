@@ -2,10 +2,12 @@
   <div v-for="(tl, key) in timelines" :key>
     <p>EntityTimeline{{ key + 1 }}:</p>
 
-    <div>Frame: {{ tl.Frame }}</div>
-    <div v-if="'Tag' in tl">{{ AbilityActivateTag[tl.Tag] }}</div>
-    <div v-if="tl.DamageDistributeRate > 0">
-      Damage: {{ tl.DamageDistributeRate / 100 }}%
+    <div class="flex flex-row gap-6">
+      <div>Frame: {{ tl.Frame }}</div>
+      <div v-if="'Tag' in tl">{{ AbilityActivateTag[tl.Tag] }}</div>
+      <div v-if="tl.DamageDistributeRate > 0">
+        Damage: {{ tl.DamageDistributeRate / 100 }}%
+      </div>
     </div>
     <Entity v-if="tl.Entity" :entity="tl.Entity" :lv />
     <div

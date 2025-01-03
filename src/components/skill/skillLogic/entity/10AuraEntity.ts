@@ -18,7 +18,7 @@ const AuraEntity = SkillEntity.extend({
   ),
   RemoveEntityIfSkillCancel: z.boolean(),
   MovingAreaOption: zFlag(MovingAreaOptions),
-  AreaAbilities: SkillAbilitySchema.array(),
+  AreaAbilities: SkillAbilitySchema.array().optional(),
 });
 
 const CircleAuraEntity = AuraEntity.extend({

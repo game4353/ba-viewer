@@ -1,12 +1,9 @@
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { StatType } from "~game/excelType";
-import { SkillAbilityModifier } from "./ability/schema";
 import {
   AliveState,
-  AutoUseConditionType,
   CoverState,
-  ModifierCheckTarget,
   PassiveTriggerEvent,
   TargetEntityType,
   TargetSideId,
@@ -15,23 +12,16 @@ import {
   TargetingType,
 } from "./enum";
 
+export const bool = () => z.boolean();
+export const float = () => z.number();
+export const int = () => z.number().int();
+export const long = () => z.number().int();
+
 export const Vector2 = z.object({
   x: z.number(),
   y: z.number(),
 });
 
-export const AutoUseRule = z.object({
-  ConditionType: z.nativeEnum(AutoUseConditionType),
-  ConditionArgument: z.string().optional(),
-  ConditionCheckTarget: z.nativeEnum(ModifierCheckTarget),
-  CoolTimeNotTrigger: z.number(),
-  TryCount: z.number(),
-  ResetTryCountUseSkill: z.boolean(),
-  TriggerRate: z.number(),
-  MaxTriggerCount: z.number(),
-  CheckMountStatus: z.boolean(),
-  TryToUseSkillModifiers: SkillAbilityModifier.array().optional(),
-});
 export const TargetSortRule = z.object({
   SortCriteria: z.nativeEnum(TargetSortCriteria),
   SortStat: z.nativeEnum(StatType),

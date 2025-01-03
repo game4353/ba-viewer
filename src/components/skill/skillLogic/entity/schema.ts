@@ -2,9 +2,14 @@ import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { SkillAbilitySchema } from "../ability/schema";
 import { TargetEntityType } from "../enum";
+import { int } from "../misc";
 import { AreaEntityList } from "./0AreaEntity";
 import { AuraEntityList } from "./10AuraEntity";
-import { ProjectileEntityList } from "./19ProjectileEntity";
+import {
+  ProjectileEntityList,
+  ProjectileEntitySchema,
+} from "./19ProjectileEntity";
+import { FixedFrameProjectileEntityList } from "./21FixedFrameProjectileEntity";
 import { SummonEntityList } from "./37SummonEntity";
 import { AreaSpawner } from "./45AreaSpawner";
 import { SkillEntitySpawner } from "./46SkillEntitySpawner";
@@ -26,6 +31,15 @@ const NormalAttackBulletEntity = TargetSkillEntity.extend({
   Speed: z.number(),
 });
 
+const RandomProjectileEntity = z.object({
+  SpawnProb: int(),
+  ProjectileData: ProjectileEntitySchema,
+});
+// 47
+const RandomProjectileEntitySpawner = SkillEntity.extend({
+  EntityList: RandomProjectileEntity.array(),
+});
+
 // 62
 const RootMotionMove = SkillEntity.extend({
   $type: z.literal("RootMotionMove"),
@@ -36,7 +50,8 @@ const RootMotionMove = SkillEntity.extend({
 export const SkillEntitySchema = z.discriminatedUnion("$type", [
   ...AreaEntityList, // 0
   ...AuraEntityList, // 10
-  ...ProjectileEntityList, // 19
+  ...ProjectileEntityList, // 19, 20, 23, 27~29, 50
+  ...FixedFrameProjectileEntityList, // 21, 22, 24~26, 30
   TargetAttachedEntity, // 31
   NormalAttackBulletEntity, // 33
   TargetSkillEntity, // 34
@@ -47,6 +62,9 @@ export const SkillEntitySchema = z.discriminatedUnion("$type", [
   SkillEntitySpawner.extend({
     $type: z.literal("SkillEntitySpawner"),
   }), // 46
+  RandomProjectileEntitySpawner.extend({
+    $type: z.literal("RandomProjectileEntitySpawner"),
+  }), // 47
   RootMotionMove, // 62
 ]);
 

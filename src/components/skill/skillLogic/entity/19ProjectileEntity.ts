@@ -1,3 +1,4 @@
+import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { SkillAbilitySchema } from "../ability/schema";
 import {
@@ -5,16 +6,18 @@ import {
   ShapeType,
   SpawnDirectionTypes,
   SpawnPositionTypes,
+  TargetEntityType,
+  TargetSideId,
 } from "../enum";
-import { Vector2 } from "../misc";
+import { bool, int, long, Vector2 } from "../misc";
 import { AreaEntitySchema } from "./0AreaEntity";
+import { CharacterEntity } from "./37SummonEntity";
 import { AreaSpawner } from "./45AreaSpawner";
 import { SkillEntitySpawner } from "./46SkillEntitySpawner";
 import { SkillEntity } from "./_base";
 import * as LevelNontargetProjectileEntityData from "./LevelNontargetProjectileEntityData";
 
 const ProjectileEntity = SkillEntity.extend({
-  $type: z.literal("ProjectileEntity"),
   DestinationType: z.nativeEnum(SpawnPositionTypes),
   DestinationWorldPosition: Vector2,
   DestinationPositionOffset: Vector2,
@@ -36,12 +39,15 @@ const ProjectileEntity = SkillEntity.extend({
   SkillEntitySpawnerData: SkillEntitySpawner.optional(),
 });
 
-const TargetProjectileEntity = ProjectileEntity.extend({
-  $type: z.literal("TargetProjectileEntity"),
-});
+const TargetProjectileEntity = ProjectileEntity;
 
+const ExtraHitTargetProjectileEntity = TargetProjectileEntity.extend({
+  ExtraHitCheckTargetSide: zFlag(TargetSideId),
+  ExtraHitCheckTargetEntityType: zFlag(TargetEntityType),
+  Piercing: bool(),
+  MaxExtraHitCount: int(),
+});
 const NontargetProjectileEntity = ProjectileEntity.extend({
-  $type: z.literal("NontargetProjectileEntity"),
   AngleOffset: z.number(),
   ExpireDistance: z.number(),
   Piercing: z.boolean(),
@@ -51,13 +57,52 @@ const NontargetProjectileEntity = ProjectileEntity.extend({
   BounceEntity: SkillEntity.optional(),
 });
 
+const NontargetDestructibleProjectileEntity = NontargetProjectileEntity.extend({
+  CharacterEntityForStat: CharacterEntity,
+  DestroyedSpawnEntity: SkillEntitySpawner,
+});
+
+type TargetBounceProjectileEntityType = z.infer<
+  typeof TargetProjectileEntity
+> & {
+  BounceRadius: number;
+  AllowBounceTargetDuplication: boolean;
+  BounceProjectileEntity?: TargetBounceProjectileEntityType;
+};
+const TargetBounceProjectileEntity_sub: z.ZodType<TargetBounceProjectileEntityType> =
+  TargetProjectileEntity.extend({
+    BounceRadius: long(),
+    AllowBounceTargetDuplication: bool(),
+    BounceProjectileEntity: z
+      .lazy(() => TargetBounceProjectileEntity_sub)
+      .optional(),
+  });
+export const TargetBounceProjectileEntity = TargetProjectileEntity.extend({
+  BounceRadius: long(),
+  AllowBounceTargetDuplication: bool(),
+  BounceProjectileEntity: TargetBounceProjectileEntity_sub.optional(),
+});
+
 export const ProjectileEntityList = [
-  TargetProjectileEntity, // 1
-  // TargetBounceProjectileEntity, // 2
-  // ExtraHitTargetProjectileEntity, // 3
-  NontargetProjectileEntity, // 4
-  // NontargetDestructibleProjectileEntity, // 5
-  // NontargetDestructibleOnRailsProjectileEntity, // 6
+  ProjectileEntity.extend({
+    $type: z.literal("ProjectileEntity"),
+  }), // x // 19
+  TargetProjectileEntity.extend({
+    $type: z.literal("TargetProjectileEntity"),
+  }), // 1 // 20
+  TargetBounceProjectileEntity.extend({
+    $type: z.literal("TargetBounceProjectileEntity"),
+  }), // 2 // 29
+  ExtraHitTargetProjectileEntity.extend({
+    $type: z.literal("ExtraHitTargetProjectileEntity"),
+  }), // 3 // 23
+  NontargetProjectileEntity.extend({
+    $type: z.literal("NontargetProjectileEntity"),
+  }), // 4 // 27
+  NontargetDestructibleProjectileEntity.extend({
+    $type: z.literal("NontargetDestructibleProjectileEntity"),
+  }), // 5 // 28
+  // NontargetDestructibleOnRailsProjectileEntity, // 6 // 50
 ] as const;
 export const ProjectileEntitySchema = z.discriminatedUnion("$type", [
   ...ProjectileEntityList,
