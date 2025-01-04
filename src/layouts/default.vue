@@ -73,7 +73,7 @@ const items: Array<[string, Tab[]]> = [
       // TABS.shop,
     ],
   ],
-  // ["ステージ", [TABS.mission, TABS.bounty, TABS.commissions, TABS.scrimmage]],
+  ["ステージ", [TABS.mission, TABS.bounty, TABS.commissions, TABS.scrimmage]],
   ["イベント", [TABS.event, TABS.guide]],
   [
     "競技",
