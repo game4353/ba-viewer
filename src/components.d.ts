@@ -114,6 +114,7 @@ declare module 'vue' {
     TabSkill: typeof import('./components/student/tabs/TabSkill.vue')['default']
     TabStat: typeof import('./components/student/tabs/TabStat.vue')['default']
     TabVoice: typeof import('./components/student/tabs/TabVoice.vue')['default']
+    TAStage: typeof import('./components/raid/TAStage.vue')['default']
     Voice: typeof import('./components/audio/Voice.vue')['default']
     VoiceByEvent: typeof import('./components/audio/VoiceByEvent.vue')['default']
     WeekStage: typeof import('./components/stage/WeekStage.vue')['default']

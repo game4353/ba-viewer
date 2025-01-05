@@ -1,25 +1,27 @@
 <template>
   <Loading v-if="dungeon == null" />
-  <v-card v-else>
-    <div class="flex flex-col items-center w-fit">
-      <div class="flex flex-row -mb-2">
-        <GameImg class="w-20" :path="bg" v>
-          <GameImg class="top-2 h-4/5" :path="dungeon.IconPath" v />
-        </GameImg>
-        <div class="flex flex-row flex-wrap w-[72px] py-1 ml-2">
-          <div
-            class="w-1/2 h-fit"
-            v-for="(path, key) in data!.GeasIconPath"
-            :key
-          >
-            <GameImg :path />
+  <router-link v-else :to="`/jointfiringdrill/${season.Id}`">
+    <v-card>
+      <div class="flex flex-col items-center w-fit">
+        <div class="flex flex-row -mb-2">
+          <GameImg class="w-20" :path="bg" v>
+            <GameImg class="top-2 h-4/5" :path="dungeon.IconPath" v />
+          </GameImg>
+          <div class="flex flex-row flex-wrap w-[72px] py-1 ml-2">
+            <div
+              class="w-1/2 h-fit"
+              v-for="(path, key) in data!.GeasIconPath"
+              :key
+            >
+              <GameImg :path />
+            </div>
           </div>
         </div>
+        <div>{{ season.StartDate }}</div>
+        <div>{{ season.EndDate }}</div>
       </div>
-      <div>{{ season.StartDate }}</div>
-      <div>{{ season.EndDate }}</div>
-    </div>
-  </v-card>
+    </v-card>
+  </router-link>
 </template>
 
 <script setup lang="ts">
