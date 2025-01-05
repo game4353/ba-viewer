@@ -1,7 +1,18 @@
-<script setup lang="ts">
-import { ERR_501 } from "@/components/warn/error";
+<template>
+  <div class="flex flex-row flex-wrap">
+    <TABanner class="m-4" v-for="season in seasons" :key="season.Id" :season />
+  </div>
+</template>
 
-const route = useRoute();
-const error501 = inject(ERR_501)!;
-error501(`The requested URL '${route.fullPath}'`);
+<script setup lang="ts">
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useExcelTimeAttackDungeonSeasonManage } from "@/utils/data/excel/stage";
+
+const errHandle = inject(ERR_HANDLE)!;
+
+const seasons = computed(() =>
+  useExcelTimeAttackDungeonSeasonManage()
+    .value.map((map) => [...map.values()])
+    .unwrapOrElse(errHandle),
+);
 </script>

@@ -79,7 +79,8 @@ const items: Array<[string, Tab[]]> = [
     "競技",
     [
       TABS.totalAssault,
-      /*TABS.jointFiringDrill,*/ TABS.grandAssault /*, TABS.set*/,
+      TABS.jointFiringDrill,
+      TABS.grandAssault /*, TABS.set*/,
     ],
   ],
   ["モモトーク", [/*TABS.message, TABS.storyBond,*/ TABS.gift]],

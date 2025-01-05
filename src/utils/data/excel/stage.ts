@@ -10,6 +10,10 @@ import type {
   GroundModuleRewardExcel,
   SchoolDungeonRewardExcel,
   SchoolDungeonStageExcel,
+  TimeAttackDungeonExcelTable,
+  TimeAttackDungeonGeasExcelTable,
+  TimeAttackDungeonRewardExcelTable,
+  TimeAttackDungeonSeasonManageExcelTable,
   WeekDungeonExcelTable,
   WeekDungeonRewardExcelTable,
 } from "~game/excelType";
@@ -98,5 +102,33 @@ export const useExcelWeekDungeonReward = cache(() =>
   useExcelMapMany<WeekDungeonRewardExcelTable, "GroupId">(
     "WeekDungeonRewardExcelTable",
     "GroupId",
+  ),
+);
+
+export const useExcelTimeAttackDungeon = cache(() =>
+  useExcelMapSingle<TimeAttackDungeonExcelTable, "Id">(
+    "TimeAttackDungeonExcelTable",
+    "Id",
+  ),
+);
+
+export const useExcelTimeAttackDungeonGeas = cache(() =>
+  useExcelMapSingle<TimeAttackDungeonGeasExcelTable, "Id">(
+    "TimeAttackDungeonGeasExcelTable",
+    "Id",
+  ),
+);
+
+export const useExcelTimeAttackDungeonReward = cache(() =>
+  useExcelMapSingle<TimeAttackDungeonRewardExcelTable, "Id">(
+    "TimeAttackDungeonRewardExcelTable",
+    "Id",
+  ),
+);
+
+export const useExcelTimeAttackDungeonSeasonManage = cache(() =>
+  useExcelMapSingle<TimeAttackDungeonSeasonManageExcelTable, "Id">(
+    "TimeAttackDungeonSeasonManageExcelTable",
+    "Id",
   ),
 );

@@ -106,6 +106,7 @@ declare module 'vue' {
     StarGoal: typeof import('./components/stage/StarGoal.vue')['default']
     StatSingle: typeof import('./components/student/tabs/StatSingle.vue')['default']
     StudentList: typeof import('./components/student/StudentList.vue')['default']
+    TABanner: typeof import('./components/raid/TABanner.vue')['default']
     TabBasic: typeof import('./components/student/tabs/TabBasic.vue')['default']
     TabBasicSkill: typeof import('./components/student/tabs/TabBasicSkill.vue')['default']
     TabBasicStat: typeof import('./components/student/tabs/TabBasicStat.vue')['default']
