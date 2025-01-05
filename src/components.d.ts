@@ -60,6 +60,8 @@ declare module 'vue' {
     LevelSkillData: typeof import('./components/skill/levelSkillData/LevelSkillData.vue')['default']
     Loading: typeof import('./components/misc/Loading.vue')['default']
     ModuleReward: typeof import('./components/stage/ModuleReward.vue')['default']
+    MRaidBanner: typeof import('./components/raid/MRaidBanner.vue')['default']
+    MRaidStage: typeof import('./components/raid/MRaidStage.vue')['default']
     MusicPlayer: typeof import('./components/audio/MusicPlayer.vue')['default']
     MyCharacter: typeof import('./components/student/MyCharacter.vue')['default']
     MyCharacterBig: typeof import('./components/student/MyCharacterBig.vue')['default']

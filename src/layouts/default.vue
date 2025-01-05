@@ -80,7 +80,8 @@ const items: Array<[string, Tab[]]> = [
     [
       TABS.totalAssault,
       TABS.jointFiringDrill,
-      TABS.grandAssault /*, TABS.set*/,
+      TABS.grandAssault,
+      TABS.finalRestrictionRelease,
     ],
   ],
   ["モモトーク", [/*TABS.message, TABS.storyBond,*/ TABS.gift]],

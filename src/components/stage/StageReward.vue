@@ -10,17 +10,23 @@
         :type="
           'RewardParcelType' in reward
             ? reward.RewardParcelType
-            : reward.StageRewardParcelType
+            : 'StageRewardParcelType' in reward
+              ? reward.StageRewardParcelType
+              : reward.ClearStageRewardParcelType
         "
         :pid="
           'RewardParcelId' in reward
             ? reward.RewardParcelId
-            : reward.StageRewardId
+            : 'StageRewardId' in reward
+              ? reward.StageRewardId
+              : reward.ClearStageRewardParcelUniqueID
         "
         :amount="
           'RewardParcelAmount' in reward
             ? reward.RewardParcelAmount
-            : reward.StageRewardAmount
+            : 'StageRewardAmount' in reward
+              ? reward.StageRewardAmount
+              : reward.ClearStageRewardAmount
         "
         :tag="'RewardTag' in reward ? reward.RewardTag : undefined"
         :scaling="{ r: 0.3 }"
@@ -37,9 +43,11 @@
 import type {
   CampaignStageRewardExcel,
   GroundModuleRewardExcel,
+  MultiFloorRaidRewardExcel,
   SchoolDungeonRewardExcel,
   WeekDungeonRewardExcel,
 } from "@/assets/game/excelType";
+import { useExcelMultiFloorRaidReward } from "@/utils/data/excel/raid";
 import {
   useExcelCampaignStageReward,
   useExcelGroundModuleReward,
@@ -57,7 +65,9 @@ const props = defineProps({
     required: true,
   },
   type: {
-    type: String as PropType<"week" | "school" | "campaign" | "module">,
+    type: String as PropType<
+      "week" | "school" | "campaign" | "module" | "floor"
+    >,
     required: true,
   },
 });
@@ -72,6 +82,8 @@ const map = computed(() => {
       return useExcelCampaignStageReward().value;
     case "module":
       return useExcelGroundModuleReward().value;
+    case "floor":
+      return useExcelMultiFloorRaidReward().value;
     default:
       return noDefault(props.type);
   }
@@ -88,9 +100,12 @@ function prob(
     | ReadonlyDeep<WeekDungeonRewardExcel>
     | ReadonlyDeep<SchoolDungeonRewardExcel>
     | ReadonlyDeep<CampaignStageRewardExcel>
-    | ReadonlyDeep<GroundModuleRewardExcel>,
+    | ReadonlyDeep<GroundModuleRewardExcel>
+    | ReadonlyDeep<MultiFloorRaidRewardExcel>,
 ) {
   if ("StageRewardProb" in reward) return reward.StageRewardProb;
-  return reward.RewardParcelProbability;
+  else if ("RewardParcelProbability" in reward)
+    return reward.RewardParcelProbability;
+  return reward.ClearStageRewardProb;
 }
 </script>
