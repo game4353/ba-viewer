@@ -1,6 +1,6 @@
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
-import { SkillAbilitySchema } from "../ability/schema";
+import { SkillAbilitySchema } from "../../ability/schema";
 import {
   ProjectileTypes,
   ShapeType,
@@ -8,14 +8,14 @@ import {
   SpawnPositionTypes,
   TargetEntityType,
   TargetSideId,
-} from "../enum";
-import { bool, int, long, Vector2 } from "../misc";
-import { AreaEntitySchema } from "./0AreaEntity";
-import { CharacterEntity } from "./37SummonEntity";
-import { AreaSpawner } from "./45AreaSpawner";
-import { SkillEntitySpawner } from "./46SkillEntitySpawner";
-import { ZSkillEntity } from "./_base";
-import * as LevelNontargetProjectileEntityData from "./LevelNontargetProjectileEntityData";
+} from "../../enum";
+import { bool, int, long, Vector2 } from "../../misc";
+import { AreaEntitySchema } from "../0AreaEntity";
+import { CharacterEntity } from "../37SummonEntity";
+import { AreaSpawner } from "../45AreaSpawner";
+import { SkillEntitySpawner } from "../46SkillEntitySpawner";
+import { ZSkillEntity } from "../_base";
+import * as LevelNontargetProjectileEntityData from "../LevelNontargetProjectileEntityData";
 
 const ProjectileEntity = ZSkillEntity.extend({
   DestinationType: z.nativeEnum(SpawnPositionTypes),
@@ -39,7 +39,7 @@ const ProjectileEntity = ZSkillEntity.extend({
   SkillEntitySpawnerData: SkillEntitySpawner.optional(),
 });
 
-export const ZTargetProjectileEntity = ProjectileEntity;
+const ZTargetProjectileEntity = ProjectileEntity;
 export type TZTargetProjectileEntity = z.infer<typeof ZTargetProjectileEntity>;
 
 const ExtraHitTargetProjectileEntity = ZTargetProjectileEntity.extend({
@@ -105,6 +105,6 @@ export const ProjectileEntityList = [
   }), // 5 // 28
   // NontargetDestructibleOnRailsProjectileEntity, // 6 // 50
 ] as const;
-export const ProjectileEntitySchema = z.discriminatedUnion("$type", [
+export const ZProjectileEntity = z.discriminatedUnion("$type", [
   ...ProjectileEntityList,
 ]);

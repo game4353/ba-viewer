@@ -5,10 +5,7 @@ import { TargetEntityType } from "../enum";
 import { int } from "../misc";
 import { AreaEntityList } from "./0AreaEntity";
 import { AuraEntityList } from "./10AuraEntity";
-import {
-  ProjectileEntityList,
-  ProjectileEntitySchema,
-} from "./19ProjectileEntity";
+import { ProjectileEntityList, ZProjectileEntity } from "./19ProjectileEntity";
 import { FixedFrameProjectileEntityList } from "./21FixedFrameProjectileEntity";
 import { ZNormalAttackBulletEntity } from "./33NormalAttackBulletEntity";
 import { ZTargetSkillEntity } from "./34TargetSkillEntity";
@@ -25,7 +22,7 @@ const TargetAttachedEntity = ZSkillEntity.extend({
 
 const RandomProjectileEntity = z.object({
   SpawnProb: int(),
-  ProjectileData: ProjectileEntitySchema,
+  ProjectileData: ZProjectileEntity,
 });
 // 47
 const RandomProjectileEntitySpawner = ZSkillEntity.extend({

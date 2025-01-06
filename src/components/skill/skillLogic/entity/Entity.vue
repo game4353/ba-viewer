@@ -3,17 +3,35 @@
     <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
   </Info>
 
-  <!-- <TargetProjectileEntity
-    v-if="entity.$type === 'TargetProjectileEntity'"
-    :data="entity"
+  <!-- 19 -->
+  <ProjectileEntity
+    v-if="entity.$type === 'ProjectileEntity'"
+    :entity
     :lv
-  /> -->
-  <div v-if="entity.$type === 'NormalAttackBulletEntity'">
-    <NormalAttackBulletEntity :entity :lv ref="base" />
-  </div>
-  <div v-else-if="entity.$type === 'TargetSkillEntity'">
-    <TargetSkillEntity :entity :lv ref="base" />
-  </div>
+    ref="base"
+  />
+  <!-- 20 -->
+  <TargetProjectileEntity
+    v-if="entity.$type === 'TargetProjectileEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
+  <!-- 33 -->
+  <NormalAttackBulletEntity
+    v-else-if="entity.$type === 'NormalAttackBulletEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
+  <!-- 34 -->
+  <TargetSkillEntity
+    v-else-if="entity.$type === 'TargetSkillEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
+
   <div v-else>
     <div>"{{ entity.$type }}" is not done yet.</div>
   </div>

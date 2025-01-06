@@ -89,6 +89,7 @@ declare module 'vue' {
     PartyOoparts: typeof import('./components/party/PartyOoparts.vue')['default']
     PartySelect: typeof import('./components/party/PartySelect.vue')['default']
     PassiveSkill: typeof import('./components/skill/skillLogic/main/PassiveSkill/PassiveSkill.vue')['default']
+    ProjectileEntity: typeof import('./components/skill/skillLogic/entity/19ProjectileEntity/ProjectileEntity.vue')['default']
     RaidBanner: typeof import('./components/raid/RaidBanner.vue')['default']
     RaidList: typeof import('./components/raid/RaidList.vue')['default']
     RaidRank: typeof import('./components/raid/RaidRank.vue')['default']
