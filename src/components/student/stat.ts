@@ -210,8 +210,9 @@ export function useBaseStats(this: CCharacter) {
   statRows.forEach((info) => {
     const bonus = computed(() =>
       useExcelCharacterTranscendence()
-        .value.andThen((map) => map.getResult(this.id))
-        .map((excel) => {
+        .value.map((map) => {
+          const excel = map.get(this.id);
+          if (excel == null) return [];
           switch (info.type) {
             case StatType.MaxHP:
               return excel.StatBonusRateHP;

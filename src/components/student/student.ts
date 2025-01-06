@@ -11,17 +11,22 @@ import {
   useLocalizeCharProfile,
   useLocalizeCharProfileMap,
 } from "@/utils/i18n/localize";
-import { cache, sum } from "@/utils/misc";
+import { cache, range, sum } from "@/utils/misc";
 import { KeyNotFoundErr } from "@/utils/result/error";
 import { Err, Ok, Result, asResult } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
-import { ProductionStep, type CharacterExcel } from "~game/excelType";
+import {
+  ProductionStep,
+  type CharacterExcel,
+  type PotentialStatBonusRateType,
+} from "~game/excelType";
 import { CCharacter, useCharacter } from "../parcel/character/character";
 import {
   equipmentExp,
   useEquipmentFromEnum,
 } from "../parcel/equipment/equipment";
 import { useCharacterGear } from "../parcel/gear/gear";
+import { usePotentialStatRecipeIngredient } from "./potential";
 
 export class CStudent extends CCharacter {
   constructor(...args: ConstructorParameters<typeof CCharacter>) {
@@ -112,6 +117,26 @@ export class CStudent extends CCharacter {
     return asResult(
       useCharacterGear(this.id, this.statNow.gear0 || 1).value.orElse2((e) =>
         e instanceof KeyNotFoundErr ? Ok(null) : Err(e),
+      ),
+    );
+  }
+
+  // starBonus = useTranscendenceBonusRate;
+  // starRecipe = useTranscendenceRecipeIngredient;
+  // potentialBonus = usePotentialStatBonusRate;
+
+  usePotentialRecipe = usePotentialStatRecipeIngredient;
+  usePotentialRecipes(
+    type: Exclude<PotentialStatBonusRateType, PotentialStatBonusRateType.None>,
+    currentLevel?: number,
+    targetLevel?: number,
+  ) {
+    const i = type as 1 | 2 | 3;
+    currentLevel ??= this.statNow[`break${i}`];
+    targetLevel ??= this.statGoal[`break${i}`];
+    return Result.all(
+      [...range(currentLevel, targetLevel)].map((lv) =>
+        this.usePotentialRecipe(type, lv),
       ),
     );
   }
