@@ -130,7 +130,9 @@ html {
 .ElasticArmor {
   background-color: var.$color-sonic;
 }
-// .Normal{}
+.Normal {
+  background-color: var.$color-normal;
+}
 // .None, .Structure {}
 // .Siege{}
 </style>
