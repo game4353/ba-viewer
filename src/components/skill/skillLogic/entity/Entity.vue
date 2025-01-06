@@ -1,39 +1,21 @@
 <template>
-  <div class="flex flex-row flex-wrap gap-2 m-2">
-    <div v-for="chip in chips" :key="chip.key">
-      <v-chip class="w-fit" v-if="entity[chip.key] !== chip.value">
-        <span v-if="chip.display">{{ chip.display }}:&nbsp;</span>
-        <span>{{
-          //@ts-ignore
-          chip.toDisplay(entity[chip.key])
-        }}</span>
-      </v-chip>
-    </div>
-  </div>
+  <Info>
+    <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
+  </Info>
 
-  <TargetProjectileEntity
+  <!-- <TargetProjectileEntity
     v-if="entity.$type === 'TargetProjectileEntity'"
     :data="entity"
     :lv
-  />
+  /> -->
+  <div v-if="entity.$type === 'NormalAttackBulletEntity'">
+    <NormalAttackBulletEntity :entity :lv ref="base" />
+  </div>
+  <div v-else-if="entity.$type === 'TargetSkillEntity'">
+    <TargetSkillEntity :entity :lv ref="base" />
+  </div>
   <div v-else>
-    <div class="flex flex-row flex-wrap gap-2 m-2">
-      <div v-for="key in keys.filter((k) => k in entity)" :key>
-        {{ key }}: {{ entity[key as keyof typeof entity] }}
-      </div>
-      <div v-if="'Speed' in entity">
-        <v-chip class="w-fit">Speed: {{ entity.Speed }}</v-chip>
-      </div>
-    </div>
-    <div v-if="'Abilities' in entity && entity.Abilities">
-      <Abilities :abilities="entity.Abilities" :lv />
-    </div>
-    <div v-if="'AreaAbilities' in entity && entity.AreaAbilities">
-      <Abilities :abilities="entity.AreaAbilities" :lv />
-    </div>
-    <div>
-      <div v-if="'BounceEntity' in entity">{{ entity["BounceEntity"] }}</div>
-    </div>
+    <div>"{{ entity.$type }}" is not done yet.</div>
   </div>
 </template>
 
@@ -52,6 +34,8 @@ defineProps({
     required: true,
   },
 });
+
+const base = ref();
 
 class Chip<T extends keyof SkillEntityType> {
   display: string;

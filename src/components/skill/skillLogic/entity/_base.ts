@@ -33,3 +33,5 @@ export const ZSkillEntity = z.object({
   HighlightOption: z.nativeEnum(HighlightOption),
   CheckSpawnPositionMovable: z.boolean(),
 });
+
+export type TZSkillEntity = z.infer<typeof ZSkillEntity>;

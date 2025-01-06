@@ -21,6 +21,9 @@ export const Vector2 = z.object({
   x: z.number(),
   y: z.number(),
 });
+export function formatVec2(vec: z.infer<typeof Vector2>) {
+  return `(${vec.x}, ${vec.y})`;
+}
 
 export const TargetSortRule = z.object({
   SortCriteria: z.nativeEnum(TargetSortCriteria),
