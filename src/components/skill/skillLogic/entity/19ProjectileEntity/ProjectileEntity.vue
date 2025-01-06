@@ -19,6 +19,7 @@
 import { ReadonlyDeep } from "type-fest";
 import { TZTargetProjectileEntity } from ".";
 import { ShapeType, SpawnDirectionTypes, SpawnPositionTypes } from "../../enum";
+import { InfoBuilder } from "../../misc";
 
 const props = defineProps({
   entity: {
@@ -31,46 +32,40 @@ const props = defineProps({
   },
 });
 
-const base = ref();
 const info = computed(() => {
-  const arr = [...base.value.info];
-
-  function add<T extends keyof TZTargetProjectileEntity>(
-    key: T,
-    dft: TZTargetProjectileEntity[T],
-    toVal = (val: ReadonlyDeep<TZTargetProjectileEntity>[T]) => String(val),
-    toKey = (key: T) => String(key),
-  ) {
-    const val = props.entity[key];
-    if (val !== dft) arr.push(`${toKey(key)}: ${toVal(val)}`);
-  }
-
-  add("Width", 0);
-  add("Height", 0);
-  add("Speed", 0);
-  add(
+  const builder = new InfoBuilder(props.entity);
+  builder.add("Width", 0);
+  builder.add("Height", 0);
+  builder.add("Speed", 0);
+  builder.add(
     "ShapeType",
     ShapeType.None,
-    (t) => ShapeType[t],
-    () => "Shape",
+    (v) => ShapeType[v],
+    () => "Shape: ",
   );
-  add("FireDelayFrame", 0);
-  add("SplashDelayFrame", 0);
-  add("DestinationType", SpawnPositionTypes.None, (t) => SpawnPositionTypes[t]);
-  add("DestinationPositionRandomOffsetRange", 0);
-  add(
+  builder.add("FireDelayFrame", 0);
+  builder.add("SplashDelayFrame", 0);
+  builder.add(
+    "DestinationType",
+    SpawnPositionTypes.None,
+    (t) => SpawnPositionTypes[t],
+  );
+  builder.add("DestinationPositionRandomOffsetRange", 0);
+  builder.add(
     "DestinationOffsetDirectionType",
     SpawnDirectionTypes.None,
     (t) => SpawnDirectionTypes[t],
   );
-  add("ReduceDamageRatePerHit", 0);
-  add("MaxReducedDamageRate", 0);
-  add(
+  builder.add("ReduceDamageRatePerHit", 0);
+  builder.add("MaxReducedDamageRate", 0);
+  builder.add(
     "IsStickToTargetAfterHit",
     false,
     () => "Stick",
     () => "",
   );
+
+  return builder.arr;
 });
 defineExpose({ info });
 </script>

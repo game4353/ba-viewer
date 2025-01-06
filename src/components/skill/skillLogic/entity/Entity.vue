@@ -3,16 +3,32 @@
     <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
   </Info>
 
+  <!-- 10 -->
+  <AuraEntity v-if="entity.$type === 'AuraEntity'" :entity :lv ref="base" />
+  <!-- 11 -->
+  <CircleAuraEntity
+    v-else-if="entity.$type === 'CircleAuraEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
+  <!-- 12 -->
+  <ObbAuraEntity
+    v-else-if="entity.$type === 'ObbAuraEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
   <!-- 19 -->
   <ProjectileEntity
-    v-if="entity.$type === 'ProjectileEntity'"
+    v-else-if="entity.$type === 'ProjectileEntity'"
     :entity
     :lv
     ref="base"
   />
   <!-- 20 -->
   <TargetProjectileEntity
-    v-if="entity.$type === 'TargetProjectileEntity'"
+    v-else-if="entity.$type === 'TargetProjectileEntity'"
     :entity
     :lv
     ref="base"
@@ -39,7 +55,6 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import { SkillApplyType, SpawnPositionTypes } from "../enum";
 import { SkillEntityType } from "./schema";
 
 defineProps({
@@ -54,54 +69,4 @@ defineProps({
 });
 
 const base = ref();
-
-class Chip<T extends keyof SkillEntityType> {
-  display: string;
-  constructor(
-    public key: T,
-    public value: SkillEntityType[T],
-    public toDisplay = (x: SkillEntityType[T]) => String(x),
-    display?: string,
-  ) {
-    if (display == null) this.display = key as string;
-    else this.display = display;
-  }
-}
-const chips = [
-  new Chip("SpawnDelay", 0),
-  new Chip("SpawnRate", 10000, (v) => `${v / 100}%`),
-  new Chip("ApplyType", SkillApplyType.None, (t) => SkillApplyType[t]),
-  new Chip(
-    "SpawnPositionType",
-    SpawnPositionTypes.None,
-    (t) => SpawnPositionTypes[t],
-  ),
-];
-const keys = [
-  "Radius",
-  "Degree",
-  "AttachSpawnTarget",
-  "RemoveEntityIfAttachSpawnTargetDie",
-  "Duration",
-  "Interval",
-  "RemoveEntityIfSameEntitySpawn",
-  "RemoveEntityIfSkillCancel",
-  "AngleOffset",
-  "ExpireDistance",
-  "Piercing",
-  "BounceCondition",
-  "DestinationType",
-  "ReduceDamageRatePerHit",
-  "MaxReducedDamageRate",
-  "ProjectileType",
-  "ShapeType",
-  "Width",
-  "Height",
-  "FireDelayFrame",
-  "ExcludeRadius",
-  "AttachTarget",
-  "AllowDuplicateHit",
-  "HitFrames",
-  "CheckBlockHit",
-] as const;
 </script>

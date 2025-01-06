@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
 import { TZTargetSkillEntity } from ".";
+import SkillEntityBase from "../SkillEntityBase.vue";
 
 defineProps({
   entity: {
@@ -18,9 +19,9 @@ defineProps({
   },
 });
 
-const base = ref();
+const base = ref<InstanceType<typeof SkillEntityBase>>();
 const info = computed(() => {
-  return [...base.value.info];
+  return base.value?.info;
 });
 defineExpose({ info });
 </script>

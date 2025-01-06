@@ -92,3 +92,18 @@ export const TargetFindRule = z.object({
   EssentialCandidate: EssentialCandidateRule,
   OptionalCandidate: OptionalCandidateRule,
 });
+
+export class InfoBuilder<T> {
+  arr: string[] = [];
+  constructor(private data: T) {}
+
+  add<K extends keyof T>(
+    key: K,
+    dft: T[K],
+    toVal = (val: T[K]) => String(val),
+    toKey = (key: K) => String(key) + ": ",
+  ) {
+    const val = this.data[key];
+    if (val !== dft) this.arr.push(toKey(key) + toVal(val));
+  }
+}

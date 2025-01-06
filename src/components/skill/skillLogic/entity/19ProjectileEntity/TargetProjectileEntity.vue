@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
 import { TZTargetProjectileEntity } from ".";
+import ProjectileEntity from "./ProjectileEntity.vue";
 
 defineProps({
   entity: {
@@ -17,9 +18,9 @@ defineProps({
   },
 });
 
-const base = ref();
+const base = ref<InstanceType<typeof ProjectileEntity>>();
 const info = computed(() => {
-  return [...base.value.info];
+  return base.value?.info;
 });
 defineExpose({ info });
 </script>

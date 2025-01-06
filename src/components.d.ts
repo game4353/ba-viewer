@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Abilities: typeof import('./components/skill/skillLogic/ability/Abilities.vue')['default']
     ActionButton: typeof import('./components/misc/ActionButton.vue')['default']
+    AuraEntity: typeof import('./components/skill/skillLogic/entity/10AuraEntity/AuraEntity.vue')['default']
     BG: typeof import('./components/GameImg/BG.vue')['default']
     Bond: typeof import('./components/GameImg/Bond.vue')['default']
     CampaignChapter: typeof import('./components/stage/CampaignChapter.vue')['default']
@@ -16,6 +17,7 @@ declare module 'vue' {
     CampaignStage: typeof import('./components/stage/CampaignStage.vue')['default']
     Character: typeof import('./components/parcel/character/Character.vue')['default']
     CharacterDetail: typeof import('./components/parcel/character/CharacterDetail.vue')['default']
+    CircleAuraEntity: typeof import('./components/skill/skillLogic/entity/10AuraEntity/CircleAuraEntity.vue')['default']
     CurrencyDetail: typeof import('./components/parcel/currency/CurrencyDetail.vue')['default']
     DamageEffect: typeof import('./components/skill/logicEffect/17DamageEffect/DamageEffect.vue')['default']
     Dialog: typeof import('./components/audio/Dialog.vue')['default']
@@ -76,6 +78,7 @@ declare module 'vue' {
     NoError: typeof import('./components/warn/NoError.vue')['default']
     NormalAttackBulletEntity: typeof import('./components/skill/skillLogic/entity/33NormalAttackBulletEntity/NormalAttackBulletEntity.vue')['default']
     NormalAttackSkillAction: typeof import('./components/skill/skillLogic/main/NormalAttackSkillAction/NormalAttackSkillAction.vue')['default']
+    ObbAuraEntity: typeof import('./components/skill/skillLogic/entity/10AuraEntity/ObbAuraEntity.vue')['default']
     Parcel: typeof import('./components/parcel/Parcel.vue')['default']
     ParcelBox: typeof import('./components/parcel/ParcelBox.vue')['default']
     ParcelCommon: typeof import('./components/parcel/ParcelCommon.vue')['default']

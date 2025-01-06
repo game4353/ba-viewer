@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
 import { TZNormalAttackBulletEntity } from ".";
+import TargetSkillEntity from "../34TargetSkillEntity/TargetSkillEntity.vue";
 
 const props = defineProps({
   entity: {
@@ -17,8 +18,9 @@ const props = defineProps({
   },
 });
 
-const base = ref();
+const base = ref<InstanceType<typeof TargetSkillEntity>>();
 const info = computed(() => {
+  if (base.value?.info == null) return base.value?.info;
   return [...base.value.info, `Speed: ${props.entity.Speed}`];
 });
 defineExpose({ info });

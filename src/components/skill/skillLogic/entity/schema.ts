@@ -4,7 +4,7 @@ import { SkillAbilitySchema } from "../ability/schema";
 import { TargetEntityType } from "../enum";
 import { int } from "../misc";
 import { AreaEntityList } from "./0AreaEntity";
-import { AuraEntityList } from "./10AuraEntity";
+import { ZAuraEntity, ZCircleAuraEntity, ZObbAuraEntity } from "./10AuraEntity";
 import { ProjectileEntityList, ZProjectileEntity } from "./19ProjectileEntity";
 import { FixedFrameProjectileEntityList } from "./21FixedFrameProjectileEntity";
 import { ZNormalAttackBulletEntity } from "./33NormalAttackBulletEntity";
@@ -38,7 +38,15 @@ const RootMotionMove = ZSkillEntity.extend({
 
 export const SkillEntitySchema = z.discriminatedUnion("$type", [
   ...AreaEntityList, // 0
-  ...AuraEntityList, // 10
+  ZAuraEntity.extend({
+    $type: z.literal("AuraEntity"),
+  }), // 10
+  ZCircleAuraEntity.extend({
+    $type: z.literal("CircleAuraEntity"),
+  }), // 11
+  ZObbAuraEntity.extend({
+    $type: z.literal("ObbAuraEntity"),
+  }), // 12
   ...ProjectileEntityList, // 19, 20, 23, 27~29, 50
   ...FixedFrameProjectileEntityList, // 21, 22, 24~26, 30
   TargetAttachedEntity, // 31
