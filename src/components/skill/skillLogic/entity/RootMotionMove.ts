@@ -1,9 +1,9 @@
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { TargetEntityType } from "../enum";
-import { SkillEntity } from "./_base";
+import { ZSkillEntity } from "./_base";
 
-const RootMotionMoveBase = SkillEntity.extend({});
+const RootMotionMoveBase = ZSkillEntity.extend({});
 const RootMotionMove = RootMotionMoveBase.extend({
   $type: z.literal("RootMotionMove"),
   CheckCollisionType: zFlag(TargetEntityType),

@@ -15,10 +15,10 @@ import { ZTargetSkillEntity } from "./34TargetSkillEntity";
 import { SummonEntityList } from "./37SummonEntity";
 import { AreaSpawner } from "./45AreaSpawner";
 import { SkillEntitySpawner } from "./46SkillEntitySpawner";
-import { SkillEntity } from "./_base";
+import { ZSkillEntity } from "./_base";
 
 // 31
-const TargetAttachedEntity = SkillEntity.extend({
+const TargetAttachedEntity = ZSkillEntity.extend({
   $type: z.literal("TargetAttachedEntity"),
   Abilities: SkillAbilitySchema.nullable().array().optional(),
 });
@@ -28,12 +28,12 @@ const RandomProjectileEntity = z.object({
   ProjectileData: ProjectileEntitySchema,
 });
 // 47
-const RandomProjectileEntitySpawner = SkillEntity.extend({
+const RandomProjectileEntitySpawner = ZSkillEntity.extend({
   EntityList: RandomProjectileEntity.array(),
 });
 
 // 62
-const RootMotionMove = SkillEntity.extend({
+const RootMotionMove = ZSkillEntity.extend({
   $type: z.literal("RootMotionMove"),
   CheckCollisionType: zFlag(TargetEntityType),
   IgnoreMovableCheckInMove: z.boolean(),

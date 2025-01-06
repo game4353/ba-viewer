@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AreaEntitySchema } from "./0AreaEntity";
-import { SkillEntity } from "./_base";
+import { ZSkillEntity } from "./_base";
 
 const AreaTimeline = z.object({
   Frame: z.number(),
@@ -8,7 +8,7 @@ const AreaTimeline = z.object({
   AreaData: AreaEntitySchema,
 });
 
-export const AreaSpawner = SkillEntity.extend({
+export const AreaSpawner = ZSkillEntity.extend({
   Duration: z.number(),
   EntityTimeline: AreaTimeline.array(),
 });

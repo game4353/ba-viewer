@@ -6,9 +6,9 @@ import { BarrierShape, MovingAreaOptions } from "../enum";
 import { bool, float, int, long } from "../misc";
 import { AreaSpawner } from "./45AreaSpawner";
 import { SkillEntitySpawner } from "./46SkillEntitySpawner";
-import { SkillEntity } from "./_base";
+import { ZSkillEntity } from "./_base";
 
-export const SummonEntity = SkillEntity.extend({
+export const SummonEntity = ZSkillEntity.extend({
   UniqueName: z.string().optional(),
   AngleOffset: z.number(),
   Duration: z.number(),

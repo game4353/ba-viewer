@@ -13,7 +13,7 @@ import {
   Vector2,
 } from "../misc";
 
-export const SkillEntity = z.object({
+export const ZSkillEntity = z.object({
   EntityName: z.string().optional(),
   SpawnRate: z.number(),
   SpawnDelay: z.number(),

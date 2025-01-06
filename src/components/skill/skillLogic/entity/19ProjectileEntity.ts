@@ -14,10 +14,10 @@ import { AreaEntitySchema } from "./0AreaEntity";
 import { CharacterEntity } from "./37SummonEntity";
 import { AreaSpawner } from "./45AreaSpawner";
 import { SkillEntitySpawner } from "./46SkillEntitySpawner";
-import { SkillEntity } from "./_base";
+import { ZSkillEntity } from "./_base";
 import * as LevelNontargetProjectileEntityData from "./LevelNontargetProjectileEntityData";
 
-const ProjectileEntity = SkillEntity.extend({
+const ProjectileEntity = ZSkillEntity.extend({
   DestinationType: z.nativeEnum(SpawnPositionTypes),
   DestinationWorldPosition: Vector2,
   DestinationPositionOffset: Vector2,
@@ -55,7 +55,7 @@ const NontargetProjectileEntity = ProjectileEntity.extend({
   BounceCondition: z.nativeEnum(
     LevelNontargetProjectileEntityData.NontargetBounceCondition,
   ),
-  BounceEntity: SkillEntity.optional(),
+  BounceEntity: ZSkillEntity.optional(),
 });
 
 const NontargetDestructibleProjectileEntity = NontargetProjectileEntity.extend({

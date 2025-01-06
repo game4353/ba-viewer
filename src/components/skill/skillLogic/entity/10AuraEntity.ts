@@ -2,10 +2,10 @@ import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { SkillAbilitySchema } from "../ability/schema";
 import { MovingAreaOptions } from "../enum";
-import { SkillEntity } from "./_base";
+import { ZSkillEntity } from "./_base";
 import * as LevelAuraEntityData from "./LevelAuraEntityData";
 
-const AuraEntity = SkillEntity.extend({
+const AuraEntity = ZSkillEntity.extend({
   $type: z.literal("AuraEntity"),
   AttachSpawnTarget: z.boolean(),
   RotateEntityDirectionEveryFrame: z.boolean(),

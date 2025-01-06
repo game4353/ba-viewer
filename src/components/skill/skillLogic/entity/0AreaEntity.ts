@@ -2,14 +2,14 @@ import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { SkillAbilitySchema } from "../ability/schema";
 import { AreaTransformTypes, MovingAreaOptions } from "../enum";
-import { SkillEntity } from "./_base";
+import { ZSkillEntity } from "./_base";
 
 const AreaCollisionProperty = z.object({
   TransformType: z.nativeEnum(AreaTransformTypes),
   TransformCount: z.number(),
 });
 
-const AreaEntity = SkillEntity.extend({
+const AreaEntity = ZSkillEntity.extend({
   $type: z.literal("AreaEntity"),
   AttachTarget: z.boolean(),
   AllowDuplicateHit: z.boolean(),

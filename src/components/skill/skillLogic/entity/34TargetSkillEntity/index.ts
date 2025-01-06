@@ -1,6 +1,6 @@
 import { SkillAbilitySchema } from "../../ability/schema";
-import { SkillEntity } from "../_base";
+import { ZSkillEntity } from "../_base";
 
-export const ZTargetSkillEntity = SkillEntity.extend({
+export const ZTargetSkillEntity = ZSkillEntity.extend({
   Abilities: SkillAbilitySchema.array(),
 });
