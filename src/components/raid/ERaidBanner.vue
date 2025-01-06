@@ -32,21 +32,19 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from "@/components/GameImg/icon";
+import { ERR_HANDLE } from "@/components/warn/error";
+import { useExcelEliminateRaidStage } from "@/utils/data/excel/raid";
+import { useExcelGround } from "@/utils/data/excel/stage";
+import { noDefault } from "@/utils/misc";
+import { Result } from "@/utils/result/result";
+import { ReadonlyDeep } from "type-fest";
 import {
   ArmorType,
   BulletType,
   EliminateRaidSeasonManageExcel,
   StageTopography,
 } from "~game/excelType";
-import { Icon } from "@/components/GameImg/icon";
-import { ERR_HANDLE } from "@/components/warn/error";
-import {
-  useExcelEliminateRaidStage,
-  useExcelGround,
-} from "@/utils/data/excel/raid";
-import { noDefault } from "@/utils/misc";
-import { Result } from "@/utils/result/result";
-import { ReadonlyDeep } from "type-fest";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({

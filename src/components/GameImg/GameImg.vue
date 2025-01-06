@@ -1,5 +1,7 @@
 <template>
-  <v-img v-if="v" :src="uiPath(path)"></v-img>
+  <v-img v-if="v" :src="uiPath(path)">
+    <slot></slot>
+  </v-img>
   <img v-else :src="uiPath(path)" />
 </template>
 
