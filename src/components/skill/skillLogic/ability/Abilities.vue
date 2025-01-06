@@ -1,5 +1,5 @@
 <template>
-  <div v-for="(ab, key) in abilities" :key>
+  <div v-for="(ab, key) in abilities ?? []" :key>
     <div v-if="ab">
       <div v-if="ab.StartDelay > 0">StartDelay: {{ ab.StartDelay }}</div>
       <div v-if="ab.$type === 'LevelDotAbility'">
@@ -26,7 +26,6 @@ import { SkillAbilityType } from "./schema";
 defineProps({
   abilities: {
     type: Array as PropType<ReadonlyDeep<(SkillAbilityType | null)[]>>,
-    required: true,
   },
   lv: {
     type: Number,

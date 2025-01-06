@@ -33,6 +33,13 @@
     :lv
     ref="base"
   />
+  <!-- 31 -->
+  <TargetAttachedEntity
+    v-else-if="entity.$type === 'TargetAttachedEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
   <!-- 33 -->
   <NormalAttackBulletEntity
     v-else-if="entity.$type === 'NormalAttackBulletEntity'"

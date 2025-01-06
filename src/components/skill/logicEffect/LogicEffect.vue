@@ -5,6 +5,10 @@
     <v-chip class="w-fit">Channel: {{ obj.Channel }}</v-chip>
 
     <DamageEffect v-if="obj?.$type === 'DamageEffect'" :data="obj" />
+    <StatChangeEffect
+      v-else-if="obj?.$type === 'StatChangeEffect'"
+      :data="obj"
+    />
     <div v-else>{{ obj }}</div>
   </div>
 </template>

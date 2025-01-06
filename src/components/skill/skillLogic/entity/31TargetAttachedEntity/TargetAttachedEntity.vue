@@ -5,12 +5,12 @@
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
-import { TZTargetSkillEntity } from ".";
+import { TZTargetAttachedEntity } from ".";
 import SkillEntityBase from "../SkillEntityBase.vue";
 
 defineProps({
   entity: {
-    type: Object as PropType<ReadonlyDeep<TZTargetSkillEntity>>,
+    type: Object as PropType<ReadonlyDeep<TZTargetAttachedEntity>>,
     required: true,
   },
   lv: {
@@ -18,7 +18,6 @@ defineProps({
     required: true,
   },
 });
-
 const base = ref<InstanceType<typeof SkillEntityBase>>();
 const info = computed(() => {
   return base.value?.info;

@@ -1,13 +1,13 @@
 <template>
-  <div v-if="entity.AreaAbilities">
-    <Abilities :abilities="entity.AreaAbilities" :lv />
-  </div>
+  <SkillEntityBase :entity ref="base" />
+  <Abilities :abilities="entity.AreaAbilities" :lv />
 </template>
 
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
 import { TZAuraEntity } from ".";
 import { InfoBuilder } from "../../misc";
+import SkillEntityBase from "../SkillEntityBase.vue";
 
 const props = defineProps({
   entity: {
@@ -20,7 +20,9 @@ const props = defineProps({
   },
 });
 
+const base = ref<InstanceType<typeof SkillEntityBase>>();
 const info = computed(() => {
+  if (base.value?.info == null) return base.value?.info;
   const builder = new InfoBuilder(props.entity);
   builder.add("AttachSpawnTarget", true);
   builder.add("RotateEntityDirectionEveryFrame", false);
@@ -32,7 +34,7 @@ const info = computed(() => {
   builder.add("RemoveEntityIfSkillCancel", true);
   builder.add("MovingAreaOption", 0);
 
-  return builder.arr;
+  return [...base.value.info, ...builder.arr];
 });
 defineExpose({ info });
 </script>
