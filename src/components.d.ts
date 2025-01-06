@@ -58,6 +58,7 @@ declare module 'vue' {
     Ground: typeof import('./components/stage/Ground.vue')['default']
     GuideMission: typeof import('./components/guide/GuideMission.vue')['default']
     HomeBirthday: typeof import('./components/home/HomeBirthday.vue')['default']
+    Info: typeof import('./components/misc/Info.vue')['default']
     ItemAmount: typeof import('./components/party/ItemAmount.vue')['default']
     ItemDetail: typeof import('./components/parcel/item/ItemDetail.vue')['default']
     Lazy: typeof import('./components/misc/Lazy.vue')['default']

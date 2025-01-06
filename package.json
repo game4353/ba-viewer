@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@esotericsoftware/spine-pixi": "^4.2.61",
-    "@mdi/font": "6.2.95",
+    "@mdi/font": "7.4.47",
     "@vercel/analytics": "^1.4.1",
     "@vueuse/components": "^12.2.0",
     "@vueuse/core": "^10.9.0",
