@@ -2,11 +2,19 @@ import { cache } from "@/utils/misc";
 import type {
   EliminateRaidSeasonManageExcelTable,
   EliminateRaidStageExcelTable,
-  GroundExcel,
+  MultiFloorRaidRewardExcel,
+  MultiFloorRaidSeasonManageExcel,
+  MultiFloorRaidStageExcel,
+  MultiFloorRaidStatChangeExcel,
   RaidSeasonManageExcelTable,
   RaidStageExcelTable,
 } from "~game/excelType";
-import { useExcelDbMapSingle, useExcelMapMany, useExcelMapSingle } from ".";
+import {
+  useExcelDbMapMany,
+  useExcelDbMapSingle,
+  useExcelMapMany,
+  useExcelMapSingle,
+} from ".";
 
 export const useExcelRaidSeasonManage = cache(() =>
   useExcelMapSingle<RaidSeasonManageExcelTable, "SeasonId">(
@@ -36,6 +44,30 @@ export const useExcelEliminateRaidStage = cache(() =>
   ),
 );
 
-export const useExcelGround = cache(() =>
-  useExcelDbMapSingle<GroundExcel, "Id">("Ground", "Id"),
+export const useExcelMultiFloorRaidSeasonManage = cache(() =>
+  useExcelDbMapSingle<MultiFloorRaidSeasonManageExcel, "SeasonId">(
+    "MultiFloorRaidSeasonManage",
+    "SeasonId",
+  ),
+);
+
+export const useExcelMultiFloorRaidStage = cache(() =>
+  useExcelDbMapMany<MultiFloorRaidStageExcel, "BossGroupId">(
+    "MultiFloorRaidStage",
+    "BossGroupId",
+  ),
+);
+
+export const useExcelMultiFloorRaidStatChange = cache(() =>
+  useExcelDbMapSingle<MultiFloorRaidStatChangeExcel, "StatChangeId">(
+    "MultiFloorRaidStatChange",
+    "StatChangeId",
+  ),
+);
+
+export const useExcelMultiFloorRaidReward = cache(() =>
+  useExcelDbMapMany<MultiFloorRaidRewardExcel, "RewardGroupId">(
+    "MultiFloorRaidReward",
+    "RewardGroupId",
+  ),
 );

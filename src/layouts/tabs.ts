@@ -25,11 +25,6 @@ export const TABS = {
   scrimmage: new Tab("学園交流会", "/scrimmage", "mdi-kabaddi"),
   event: new Tab("イベント", "/event", "mdi-calendar-star"),
   guide: new Tab("ガイドミッション", "/guide", "mdi-calendar-week"),
-  // balancingSchaleSBooks: new Tab(
-  //   "総決算",
-  //   "balancingschalesbooks",
-  //   "mdi-fountain-pen"
-  // ),
   totalAssault: new Tab("総力戦", "/totalassault", "mdi-emoticon-angry"),
   jointFiringDrill: new Tab(
     "合同火力演習",
@@ -37,7 +32,11 @@ export const TABS = {
     "mdi-clock-fast",
   ),
   grandAssault: new Tab("大決戦", "/grandassault", "mdi-emoticon-devil"),
-  set: new Tab("制約解除決戦", "/multifloor", "custom:evilTower"),
+  finalRestrictionRelease: new Tab(
+    "制約解除決戦",
+    "/finalrestrictionrelease",
+    "custom:evilTower",
+  ),
   message: new Tab("メッセージ", "/message", "mdi-chat"),
   storyBond: new Tab("絆ストーリー", "/story/bond", "mdi-heart"),
   gift: new Tab("プレゼント", "/gift", "mdi-gift"),
