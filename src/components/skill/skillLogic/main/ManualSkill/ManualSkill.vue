@@ -1,6 +1,8 @@
 <template>
-  {{ ManualSkillTypes[data.ManualSkillType] }}
-  {{ data.Abilities }}
+  <v-chip v-if="data.ManualSkillType !== ManualSkillTypes.None">{{
+    ManualSkillTypes[data.ManualSkillType]
+  }}</v-chip>
+  <Abilities :abilities="data.Abilities" :lv />
 </template>
 
 <script setup lang="ts">

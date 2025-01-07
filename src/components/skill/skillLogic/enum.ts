@@ -290,3 +290,15 @@ export enum IncludeType {
   Include,
   Exclude,
 }
+export enum DiffOperatorType {
+  None,
+  GreaterOrEqual,
+  LessOrEqual,
+  Equal,
+  NotEqual,
+}
+export enum HPRateConstraintType {
+  None,
+  HPOver,
+  HPUnder,
+}

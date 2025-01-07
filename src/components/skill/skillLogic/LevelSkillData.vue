@@ -1,19 +1,34 @@
 <template>
   <p>{{ group }}</p>
+  <Info>
+    <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
+  </Info>
   <Loading v-if="data == null" />
   <ManualSkill v-else-if="data.$type === 'ManualSkill'" :data :lv />
   <NormalAttackSkillAction
     v-else-if="data.$type === 'NormalAttackSkillAction'"
     :data
     :lv
+    ref="base"
   />
   <TimelineSkillAction
     v-else-if="data.$type === 'TimelineSkillAction'"
     :data
     :lv
+    ref="base"
   />
-  <PassiveSkill v-else-if="data.$type === 'PassiveSkill'" :data :lv />
-  <NewSkillAction v-else-if="data.$type === 'NewSkillAction'" :data :lv />
+  <PassiveSkill
+    v-else-if="data.$type === 'PassiveSkill'"
+    :data
+    :lv
+    ref="base"
+  />
+  <NewSkillAction
+    v-else-if="data.$type === 'NewSkillAction'"
+    :data
+    :lv
+    ref="base"
+  />
 </template>
 
 <script setup lang="ts">
@@ -43,4 +58,5 @@ const data = computed(() =>
     .unwrapOrElse(errHandle),
 );
 const lv = computed(() => props.lv ?? 1);
+const base = ref();
 </script>
