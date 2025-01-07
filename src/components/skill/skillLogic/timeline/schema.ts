@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Vector2 } from "../../misc";
+import { int, long, Vector2 } from "../../misc";
 import { SkillEntitySchema, SkillEntityType } from "../entity/schema";
 import {
   AbilityActivateTag,
@@ -8,41 +8,40 @@ import {
   SpawnDirectionTypes,
 } from "../enum";
 
-type SkillEntityTimelineType = {
+type TZSkillEntityTimeline = {
   Frame: number;
   DamageDistributeRate: number;
   Entity?: SkillEntityType;
 };
-export const ZSkillEntityTimeline: z.ZodType<SkillEntityTimelineType> =
-  z.object({
-    Frame: z.number(),
-    DamageDistributeRate: z.number(),
-    Entity: z.lazy(() => SkillEntitySchema).optional(),
-  });
-export type ExSkillEntityTimelineType = SkillEntityTimelineType & {
+export const ZSkillEntityTimeline: z.ZodType<TZSkillEntityTimeline> = z.object({
+  Frame: int(),
+  DamageDistributeRate: long(),
+  Entity: z.lazy(() => SkillEntitySchema).optional(),
+});
+export type TZExSkillEntityTimeline = TZSkillEntityTimeline & {
   Tag: AbilityActivateTag;
   InvokerDirectionOverride: SpawnDirectionTypes;
   InvokerDirectionOverrideWorldPosition: z.infer<typeof Vector2>;
 };
-export const ExSkillEntityTimeline: z.ZodType<ExSkillEntityTimelineType> =
+export const ZExSkillEntityTimeline: z.ZodType<TZExSkillEntityTimeline> =
   z.object({
-    Frame: z.number(),
-    DamageDistributeRate: z.number(),
+    Frame: int(),
+    DamageDistributeRate: long(),
     Entity: z.lazy(() => SkillEntitySchema).optional(),
     Tag: z.nativeEnum(AbilityActivateTag),
     InvokerDirectionOverride: z.nativeEnum(SpawnDirectionTypes),
     InvokerDirectionOverrideWorldPosition: Vector2,
   });
-type SkillEntitySpawnerTimelineType = SkillEntityTimelineType & {
+type TZSkillEntitySpawnerTimeline = TZSkillEntityTimeline & {
   SpawnCondition: EntitySpawnCondition;
   SpawnConditionParameter?: string;
   SpawnConditionParameterForTag?: string;
   SpawnConditionCheckTarget: EntitySpawnConditionCheckTarget;
 };
-export const SkillEntitySpawnerTimeline: z.ZodType<SkillEntitySpawnerTimelineType> =
+export const ZSkillEntitySpawnerTimeline: z.ZodType<TZSkillEntitySpawnerTimeline> =
   z.object({
-    Frame: z.number(),
-    DamageDistributeRate: z.number(),
+    Frame: int(),
+    DamageDistributeRate: long(),
     Entity: z.lazy(() => SkillEntitySchema).optional(),
     SpawnCondition: z.nativeEnum(EntitySpawnCondition),
     SpawnConditionParameter: z.string().optional(),
@@ -50,7 +49,7 @@ export const SkillEntitySpawnerTimeline: z.ZodType<SkillEntitySpawnerTimelineTyp
     SpawnConditionCheckTarget: z.nativeEnum(EntitySpawnConditionCheckTarget),
   });
 
-export type TimelineType =
-  | SkillEntityTimelineType
-  | ExSkillEntityTimelineType
-  | SkillEntitySpawnerTimelineType;
+export type TimelineTypes =
+  | TZSkillEntityTimeline
+  | TZExSkillEntityTimeline
+  | TZSkillEntitySpawnerTimeline;

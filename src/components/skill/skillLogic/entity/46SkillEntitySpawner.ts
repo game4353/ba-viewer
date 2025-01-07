@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { EntitySpawnRule, SkillToTargetDistributeType } from "../enum";
-import { SkillEntitySpawnerTimeline } from "../timeline/schema";
+import { ZSkillEntitySpawnerTimeline } from "../timeline/schema";
 import { ZSkillEntity } from "./_base";
 
 export const SkillEntitySpawner = ZSkillEntity.extend({
@@ -10,5 +10,5 @@ export const SkillEntitySpawner = ZSkillEntity.extend({
   OverrideSkillStartTimingWithSpawnerSpawn: z.boolean(),
   DistributeType: z.nativeEnum(SkillToTargetDistributeType),
   FireToNextTargetWhenEachToEach: z.boolean(),
-  EntityTimeline: SkillEntitySpawnerTimeline.array(),
+  EntityTimeline: ZSkillEntitySpawnerTimeline.array(),
 });

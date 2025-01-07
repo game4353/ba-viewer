@@ -39,11 +39,11 @@ import {
   EntitySpawnConditionCheckTarget,
   SpawnDirectionTypes,
 } from "../enum";
-import { TimelineType } from "./schema";
+import { TimelineTypes } from "./schema";
 
 defineProps({
   timelines: {
-    type: Array as PropType<ReadonlyDeep<TimelineType[]>>,
+    type: Array as PropType<ReadonlyDeep<TimelineTypes[]>>,
     required: true,
   },
   lv: {
