@@ -1,5 +1,8 @@
+import {
+  ZPassiveTriggerData,
+  ZTargetFindRule,
+} from "@/components/skill/misc/rule";
 import { z } from "zod";
-import { PassiveTriggerData, TargetFindRule } from "../../../misc";
 import { PassiveSkillTargetType } from "../../../misc/enum";
 import { ZExSkillEntityTimeline } from "../../timeline/schema";
 import { ZSkillLogic } from "../general";
@@ -11,8 +14,8 @@ export const ZPassiveSkill = ZSkillLogic.extend({
   CoolTimeNotTrigger: z.number(),
   TryCount: z.number(),
   ResetTryCountUseSkill: z.boolean(),
-  TriggerCondition: PassiveTriggerData,
-  TriggerSourceFindRule: TargetFindRule,
+  TriggerCondition: ZPassiveTriggerData,
+  TriggerSourceFindRule: ZTargetFindRule,
   SkillTargetType: z.nativeEnum(PassiveSkillTargetType),
   EntityTimeline: ZExSkillEntityTimeline.array(),
 });

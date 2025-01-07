@@ -1,10 +1,10 @@
-import { z } from "zod";
 import {
-  EssentialCandidateRule,
-  OptionalCandidateRule,
-  TargetSortRule,
-  Vector2,
-} from "../../../misc";
+  ZEssentialCandidateRule,
+  ZOptionalCandidateRule,
+  ZTargetSortRule,
+} from "@/components/skill/misc/rule";
+import { z } from "zod";
+import { Vector2 } from "../../../misc";
 import { SpawnDirectionTypes } from "../../../misc/enum";
 import { AutoUseRule } from "../../ability/schema";
 import { RootMotionMoveBaseSchema } from "../../entity/RootMotionMove";
@@ -23,9 +23,9 @@ export const ZNewSkillAction = ZSkillLogic.extend({
   RootMotionMoveData: RootMotionMoveBaseSchema.optional(),
   SkipAttackEnterAfterRootMotion: z.boolean(),
   MainEntityData: SkillEntitySchema.optional(),
-  TargetSortRule: TargetSortRule,
-  EssentialCandidateRule: EssentialCandidateRule,
-  OptionalCandidateRule: OptionalCandidateRule,
+  TargetSortRule: ZTargetSortRule,
+  EssentialCandidateRule: ZEssentialCandidateRule,
+  OptionalCandidateRule: ZOptionalCandidateRule,
   AutoUseRule: AutoUseRule,
   Duration: z.number(),
 });

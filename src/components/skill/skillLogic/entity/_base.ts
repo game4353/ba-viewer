@@ -1,10 +1,5 @@
 import { z } from "zod";
-import {
-  EssentialCandidateRule,
-  OptionalCandidateRule,
-  TargetSortRule,
-  Vector2,
-} from "../../misc";
+import { Vector2 } from "../../misc";
 import {
   HighlightOption,
   SkillApplyType,
@@ -12,6 +7,11 @@ import {
   SpawnPositionTypes,
   TransformDecideTiming,
 } from "../../misc/enum";
+import {
+  ZEssentialCandidateRule,
+  ZOptionalCandidateRule,
+  ZTargetSortRule,
+} from "../../misc/rule";
 
 export const ZSkillEntity = z.object({
   EntityName: z.string().optional(),
@@ -27,9 +27,9 @@ export const ZSkillEntity = z.object({
   OffsetDirectionType: z.nativeEnum(SpawnDirectionTypes),
   SpawnDirectionType: z.nativeEnum(SpawnDirectionTypes),
   OverrideTargetingRule: z.boolean(),
-  TargetSortRule: TargetSortRule,
-  EssentialCandidateRule: EssentialCandidateRule,
-  OptionalCandidateRule: OptionalCandidateRule,
+  TargetSortRule: ZTargetSortRule,
+  EssentialCandidateRule: ZEssentialCandidateRule,
+  OptionalCandidateRule: ZOptionalCandidateRule,
   HighlightOption: z.nativeEnum(HighlightOption),
   CheckSpawnPositionMovable: z.boolean(),
 });
