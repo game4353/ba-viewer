@@ -5,7 +5,6 @@ import { ZSkillLogic } from "../general";
 
 // 0
 export const ZManualSkill = ZSkillLogic.extend({
-  $type: z.literal("ManualSkill"),
   Abilities: SkillAbilitySchema.array(),
   ManualSkillType: z.nativeEnum(ManualSkillTypes),
 });

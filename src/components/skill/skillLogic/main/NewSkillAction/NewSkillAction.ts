@@ -13,7 +13,6 @@ import { ZSkillLogic } from "../general";
 
 // 4
 export const ZNewSkillAction = ZSkillLogic.extend({
-  $type: z.literal("NewSkillAction"),
   Range: z.number(),
   Angle: z.number(),
   MinRange: z.number(),

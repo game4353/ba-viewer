@@ -5,7 +5,6 @@ import { ZNewSkillAction } from "../NewSkillAction/NewSkillAction";
 
 // 2
 export const ZTimelineSkillAction = ZNewSkillAction.extend({
-  $type: z.literal("TimelineSkillAction"),
   DistributeType: z.nativeEnum(SkillToTargetDistributeType),
   // RotateTurretOnly: z.boolean(), // not important I guess
   // RotateTurretDirectionTargetTracking: z.boolean(), // not important I guess

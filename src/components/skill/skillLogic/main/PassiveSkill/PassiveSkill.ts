@@ -6,7 +6,6 @@ import { ZSkillLogic } from "../general";
 
 // 3
 export const ZPassiveSkill = ZSkillLogic.extend({
-  $type: z.literal("PassiveSkill"),
   Duration: z.number(),
   MaxTriggerCount: z.number(),
   CoolTimeNotTrigger: z.number(),

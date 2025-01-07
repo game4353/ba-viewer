@@ -6,11 +6,21 @@ import { ZPassiveSkill } from "./main/PassiveSkill/PassiveSkill";
 import { ZTimelineSkillAction } from "./main/TimelineSkillAction/TimelineSkillAction";
 
 export const SkillLogicSchema = z.discriminatedUnion("$type", [
-  ZManualSkill,
-  ZNormalAttackSkillAction,
-  ZTimelineSkillAction,
-  ZPassiveSkill,
-  ZNewSkillAction,
+  ZManualSkill.extend({
+    $type: z.literal("ManualSkill"),
+  }),
+  ZNormalAttackSkillAction.extend({
+    $type: z.literal("NormalAttackSkillAction"),
+  }),
+  ZTimelineSkillAction.extend({
+    $type: z.literal("TimelineSkillAction"),
+  }),
+  ZPassiveSkill.extend({
+    $type: z.literal("PassiveSkill"),
+  }),
+  ZNewSkillAction.extend({
+    $type: z.literal("NewSkillAction"),
+  }),
 ]);
 
 export type SkillLogicType = z.infer<typeof SkillLogicSchema>;

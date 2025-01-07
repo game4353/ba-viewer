@@ -7,7 +7,6 @@ import { ExtraFrameData, NormalAttackPhase } from "./phaseData/phaseData";
 
 // 1
 export const ZNormalAttackSkillAction = ZNewSkillAction.extend({
-  $type: z.literal("NormalAttackSkillAction"),
   ExclusiveIngInvokerDirectionOverride: z.nativeEnum(SpawnDirectionTypes),
   ExclusiveIngInvokerDirectionOverrideWorldPosition: Vector2,
   DistributeType: z.nativeEnum(SkillToTargetDistributeType),
