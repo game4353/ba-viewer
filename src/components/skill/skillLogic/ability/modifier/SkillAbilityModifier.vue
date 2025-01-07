@@ -1,5 +1,5 @@
 <template>
-  <Info>
+  <Info v-if="base?.info">
     <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
   </Info>
   <!-- 0 -->
@@ -17,6 +17,14 @@
       {{ modifier.IncludeType === IncludeType.Include ? "has" : "not has" }}
       {{ modifier.CountMin }}~{{ modifier.CountMax }}
       {{ modifier.TemplateId }}
+    </template>
+  </template>
+  <!-- 27 -->
+  <template v-else-if="modifier.$type === 'TagConditionalModifier'">
+    <template v-if="modifier.IncludeType !== IncludeType.None">
+      {{ ModifierCheckTarget[modifier.CheckTarget] }}
+      {{ modifier.IncludeType === IncludeType.Include ? "" : "not" }}
+      has tags {{ modifier.TagConstraintsInt }}
     </template>
   </template>
 
