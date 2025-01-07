@@ -4,15 +4,27 @@
     <v-chip v-if="data.Angle !== 0">Angle: {{ data.Angle }}</v-chip>
     <v-chip v-if="data.MinRange !== 0">MinRange: {{ data.MinRange }}</v-chip>
     <v-chip v-if="data.Duration !== 0">Duration: {{ data.Duration }}</v-chip>
+    <TargetFindRule
+      :rule="data.EssentialCandidateRule"
+      :sort="data.TargetSortRule"
+      :optional="data.OptionalCandidateRule"
+    />
+    <AutoUseRule :rule="data.AutoUseRule" />
+    <v-tooltip v-if="data.RootMotionMoveData" location="top">
+      <template v-slot:activator="{ props }">
+        <v-chip class="w-fit" v-bind="props">RootMotion</v-chip>
+      </template>
+      <div>
+        {{ data.RootMotionMoveData }}
+        <!-- TODO -->
+      </div>
+    </v-tooltip>
   </div>
-  <div v-for="key in keys" :key>
-    <div v-if="key in data">{{ key }} {{ data[key as keyof typeof data] }}</div>
-  </div>
+
   <div v-if="data.MainEntityData">
     <p>Main Entity:</p>
     <Entity :entity="data.MainEntityData" :lv />
   </div>
-  <SkillTarget :sort="data.TargetSortRule" />
 </template>
 
 <script setup lang="ts">
@@ -48,11 +60,4 @@ const info = computed(() => {
   return builder.arr;
 });
 defineExpose({ info });
-
-const keys = [
-  "RootMotionMoveData",
-  "EssentialCandidateRule",
-  "OptionalCandidateRule",
-  "AutoUseRule",
-] as const;
 </script>

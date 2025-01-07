@@ -6,7 +6,7 @@ import {
 import { z } from "zod";
 import { Vector2 } from "../../../misc";
 import { SpawnDirectionTypes } from "../../../misc/enum";
-import { AutoUseRule } from "../../ability/schema";
+import { ZAutoUseRule } from "../../ability/schema";
 import { RootMotionMoveBaseSchema } from "../../entity/RootMotionMove";
 import { SkillEntitySchema } from "../../entity/schema";
 import { ZSkillLogic } from "../general";
@@ -26,6 +26,6 @@ export const ZNewSkillAction = ZSkillLogic.extend({
   TargetSortRule: ZTargetSortRule,
   EssentialCandidateRule: ZEssentialCandidateRule,
   OptionalCandidateRule: ZOptionalCandidateRule,
-  AutoUseRule: AutoUseRule,
+  AutoUseRule: ZAutoUseRule,
   Duration: z.number(),
 });

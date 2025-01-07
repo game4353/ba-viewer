@@ -1,7 +1,14 @@
 <template>
-  <v-chip v-if="entity.SpawnRate !== 10000">
-    <span>SpawnRate: {{ entity.SpawnRate / 100 }}%</span>
-  </v-chip>
+  <div class="flex flex-row gap-1">
+    <v-chip v-if="entity.SpawnRate !== 10000">
+      <span>SpawnRate: {{ entity.SpawnRate / 100 }}%</span>
+    </v-chip>
+    <TargetFindRule
+      :rule="entity.EssentialCandidateRule"
+      :sort="entity.TargetSortRule"
+      :optional="entity.OptionalCandidateRule"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -30,9 +37,6 @@ const info = computed(() => {
     `OffsetDirectionType: ${props.entity.OffsetDirectionType}`,
     `SpawnDirectionType: ${props.entity.SpawnDirectionType}`,
     `OverrideTargetingRule: ${props.entity.OverrideTargetingRule}`,
-    `TargetSortRule: ${props.entity.TargetSortRule}`,
-    `EssentialCandidateRule: ${props.entity.EssentialCandidateRule}`,
-    `OptionalCandidateRule: ${props.entity.OptionalCandidateRule}`,
     `HighlightOption: ${props.entity.HighlightOption}`,
     `CheckSpawnPositionMovable: ${props.entity.CheckSpawnPositionMovable}`,
   ];

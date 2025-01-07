@@ -1,6 +1,19 @@
 <template>
-  <div v-for="key in keys" :key>
-    <div v-if="key in data">{{ key }} {{ data[key as keyof typeof data] }}</div>
+  <div class="flex flex-row gap-1">
+    <v-tooltip v-if="data.TriggerCondition" location="top">
+      <template v-slot:activator="{ props }">
+        <v-chip class="w-fit" v-bind="props">Trigger</v-chip>
+      </template>
+      <div>
+        {{ data.TriggerCondition }}
+        <!-- TODO -->
+      </div>
+    </v-tooltip>
+    <TargetFindRule
+      :rule="data.TriggerSourceFindRule.EssentialCandidate"
+      :sort="data.TriggerSourceFindRule.Sort"
+      :optional="data.TriggerSourceFindRule.OptionalCandidate"
+    />
   </div>
   <SkillEntityTimeline :timelines="data.EntityTimeline" :lv />
 </template>
@@ -38,6 +51,4 @@ const info = computed(() => {
   return builder.arr;
 });
 defineExpose({ info });
-
-const keys = ["TriggerCondition", "TriggerSourceFindRule"] as const;
 </script>

@@ -79,6 +79,7 @@ export const ZEssentialCandidateRule = z.object({
   ApplyEntityType: zFlag(TargetEntityType),
   MaxTargetCount: z.number(),
 });
+export type TZEssentialCandidateRule = z.infer<typeof ZEssentialCandidateRule>;
 
 export const ZTargetSortRule = z.object({
   SortCriteria: z.nativeEnum(TargetSortCriteria),
@@ -101,6 +102,7 @@ export const ZOptionalCandidateRule = z.object({
   HPRateConstraint: HPRateConstraint,
   TacticRoleConstraint: TacticRoleConstraint,
 });
+export type TZOptionalCandidateRule = z.infer<typeof ZOptionalCandidateRule>;
 
 export const ZPassiveTriggerData = z.object({
   Event: z.nativeEnum(PassiveTriggerEvent),

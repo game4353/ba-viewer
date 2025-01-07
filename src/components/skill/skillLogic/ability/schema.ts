@@ -32,7 +32,7 @@ export const AbilityWithOrder = z.object({
   Ability: SkillAbilitySchema,
 });
 
-export const AutoUseRule = z.object({
+export const ZAutoUseRule = z.object({
   ConditionType: z.nativeEnum(AutoUseConditionType),
   ConditionArgument: z.string().optional(),
   ConditionCheckTarget: z.nativeEnum(ModifierCheckTarget),
@@ -44,3 +44,4 @@ export const AutoUseRule = z.object({
   CheckMountStatus: z.boolean(),
   TryToUseSkillModifiers: ZSkillAbilityModifier.array().optional(),
 });
+export type TZAutoUseRule = z.infer<typeof ZAutoUseRule>;
