@@ -6,7 +6,9 @@
         <div>TotalCount: {{ ab.TotalCount }}</div>
         <div>Interval: {{ ab.Interval }}</div>
       </div>
-      <div v-if="ab.Modifiers">{{ ab.Modifiers }}</div>
+      <div v-for="(modifier, key) in ab.Modifiers" :key>
+        <SkillAbilityModifier :modifier />
+      </div>
       <div>
         <LogicEffect
           v-for="gid in ab.LogicEffectGroupIds"

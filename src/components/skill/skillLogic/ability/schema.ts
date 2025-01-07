@@ -1,17 +1,13 @@
 import { z } from "zod";
 import { AutoUseConditionType, ModifierCheckTarget } from "../enum";
 import { int } from "../misc";
-
-export const SkillAbilityModifier = z.object({
-  CheckTarget: z.nativeEnum(ModifierCheckTarget),
-  // TODO
-});
+import { ZSkillAbilityModifier } from "./modifier";
 
 const SkillAbility = z.object({
   name: z.string(),
   StartDelay: z.number(),
   LogicEffectGroupIds: z.string().array(),
-  Modifiers: SkillAbilityModifier.array().optional(),
+  Modifiers: ZSkillAbilityModifier.array().optional(),
 });
 
 const LevelDotAbility = SkillAbility.extend({
@@ -46,5 +42,5 @@ export const AutoUseRule = z.object({
   TriggerRate: z.number(),
   MaxTriggerCount: z.number(),
   CheckMountStatus: z.boolean(),
-  TryToUseSkillModifiers: SkillAbilityModifier.array().optional(),
+  TryToUseSkillModifiers: ZSkillAbilityModifier.array().optional(),
 });

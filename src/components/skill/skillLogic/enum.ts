@@ -285,3 +285,8 @@ export enum MovingAreaOptions {
   FixedAim = 1,
   CheckSpawnPositionOutOfMovingArea = 2,
 }
+export enum IncludeType {
+  None,
+  Include,
+  Exclude,
+}
