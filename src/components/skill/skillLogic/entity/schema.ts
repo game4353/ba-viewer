@@ -31,7 +31,7 @@ const RootMotionMove = ZSkillEntity.extend({
 });
 
 export const SkillEntitySchema = z.discriminatedUnion("$type", [
-  ...AreaEntityList, // 0
+  ...AreaEntityList, // 0~4, 52
   ZAuraEntity.extend({
     $type: z.literal("AuraEntity"),
   }), // 10

@@ -3,26 +3,27 @@ import { int } from "../../misc";
 import { AutoUseConditionType, ModifierCheckTarget } from "../../misc/enum";
 import { ZSkillAbilityModifier } from "./modifier";
 
-const SkillAbility = z.object({
+const ZSkillAbility = z.object({
   name: z.string(),
   StartDelay: z.number(),
   LogicEffectGroupIds: z.string().array(),
   Modifiers: ZSkillAbilityModifier.array().optional(),
 });
 
-const LevelDotAbility = SkillAbility.extend({
-  $type: z.literal("LevelDotAbility"),
+const ZLevelDotAbility = ZSkillAbility.extend({
   TotalCount: z.number(),
   Interval: z.number(),
 });
 
-const LevelOneTimeAbility = SkillAbility.extend({
-  $type: z.literal("LevelOneTimeAbility"),
-});
+export const ZLevelOneTimeAbility = ZSkillAbility.extend({});
 
 export const SkillAbilitySchema = z.discriminatedUnion("$type", [
-  LevelDotAbility,
-  LevelOneTimeAbility,
+  ZLevelDotAbility.extend({
+    $type: z.literal("LevelDotAbility"),
+  }),
+  ZLevelOneTimeAbility.extend({
+    $type: z.literal("LevelOneTimeAbility"),
+  }),
 ]);
 
 export type SkillAbilityType = z.infer<typeof SkillAbilitySchema>;
