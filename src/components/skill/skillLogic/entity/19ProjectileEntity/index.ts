@@ -1,5 +1,6 @@
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
+import { bool, int, long, Vector2 } from "../../../misc";
 import { SkillAbilitySchema } from "../../ability/schema";
 import {
   ProjectileTypes,
@@ -9,7 +10,6 @@ import {
   TargetEntityType,
   TargetSideId,
 } from "../../enum";
-import { bool, int, long, Vector2 } from "../../misc";
 import { AreaEntitySchema } from "../0AreaEntity";
 import { CharacterEntity } from "../37SummonEntity";
 import { AreaSpawner } from "../45AreaSpawner";

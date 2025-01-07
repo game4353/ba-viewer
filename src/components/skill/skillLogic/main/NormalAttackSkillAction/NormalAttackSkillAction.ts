@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { Vector2 } from "../../../misc";
 import { SkillToTargetDistributeType, SpawnDirectionTypes } from "../../enum";
-import { Vector2 } from "../../misc";
 import { ZSkillEntityTimeline } from "../../timeline/schema";
 import { ZNewSkillAction } from "../NewSkillAction/NewSkillAction";
 import { ExtraFrameData, NormalAttackPhase } from "./phaseData/phaseData";

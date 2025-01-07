@@ -1,17 +1,17 @@
 import { z } from "zod";
 import {
+  EssentialCandidateRule,
+  OptionalCandidateRule,
+  TargetSortRule,
+  Vector2,
+} from "../../misc";
+import {
   HighlightOption,
   SkillApplyType,
   SpawnDirectionTypes,
   SpawnPositionTypes,
   TransformDecideTiming,
 } from "../enum";
-import {
-  EssentialCandidateRule,
-  OptionalCandidateRule,
-  TargetSortRule,
-  Vector2,
-} from "../misc";
 
 export const ZSkillEntity = z.object({
   EntityName: z.string().optional(),

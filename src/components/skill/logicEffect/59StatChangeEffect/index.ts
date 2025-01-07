@@ -1,6 +1,6 @@
 import { EndCondition, StatType } from "@/assets/game/excelType";
 import { z } from "zod";
-import { bool, int, long } from "../../skillLogic/misc";
+import { bool, int, long } from "../../misc";
 import { ZLogicEffect } from "../_base";
 
 export const ZStatChangeEffect = ZLogicEffect.extend({

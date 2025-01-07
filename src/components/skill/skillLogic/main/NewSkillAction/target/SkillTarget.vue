@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { TargetSortRuleType } from "../../../misc";
+import type { TargetSortRuleType } from "../../../../misc";
 
 const props = defineProps({
   data: Object,

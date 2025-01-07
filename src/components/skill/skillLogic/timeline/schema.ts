@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Vector2 } from "../../misc";
 import { SkillEntitySchema, SkillEntityType } from "../entity/schema";
 import {
   AbilityActivateTag,
@@ -6,7 +7,6 @@ import {
   EntitySpawnConditionCheckTarget,
   SpawnDirectionTypes,
 } from "../enum";
-import { Vector2 } from "../misc";
 
 type SkillEntityTimelineType = {
   Frame: number;

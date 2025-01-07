@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
 import { TZAuraEntity } from ".";
-import { InfoBuilder } from "../../misc";
+import { InfoBuilder } from "../../../misc";
 import SkillEntityBase from "../SkillEntityBase.vue";
 
 const props = defineProps({

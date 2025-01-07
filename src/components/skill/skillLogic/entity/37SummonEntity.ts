@@ -1,9 +1,9 @@
 import { ArmorType, EntityMaterialType } from "@/assets/game/excelType";
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
+import { bool, float, int, long } from "../../misc";
 import { AbilityWithOrder, SkillAbilitySchema } from "../ability/schema";
 import { BarrierShape, MovingAreaOptions } from "../enum";
-import { bool, float, int, long } from "../misc";
 import { AreaSpawner } from "./45AreaSpawner";
 import { SkillEntitySpawner } from "./46SkillEntitySpawner";
 import { ZSkillEntity } from "./_base";

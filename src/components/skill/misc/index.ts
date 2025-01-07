@@ -10,7 +10,7 @@ import {
   TargetSortCriteria,
   TargetSortOrder,
   TargetingType,
-} from "./enum";
+} from "../skillLogic/enum";
 
 export const bool = () => z.boolean();
 export const float = () => z.number();

@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
 import { TZCircleAuraEntity } from ".";
-import { InfoBuilder } from "../../misc";
+import { InfoBuilder } from "../../../misc";
 import AuraEntity from "./AuraEntity.vue";
 
 const props = defineProps({

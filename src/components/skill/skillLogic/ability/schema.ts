@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { int } from "../../misc";
 import { AutoUseConditionType, ModifierCheckTarget } from "../enum";
-import { int } from "../misc";
 import { ZSkillAbilityModifier } from "./modifier";
 
 const SkillAbility = z.object({
