@@ -1,6 +1,6 @@
 import { bool, int } from "@/components/skill/misc";
 import { z } from "zod";
-import { SkillToTargetDistributeType } from "../../enum";
+import { SkillToTargetDistributeType } from "../../../misc/enum";
 import { ZExSkillEntityTimeline } from "../../timeline/schema";
 import { ZNewSkillAction } from "../NewSkillAction/NewSkillAction";
 

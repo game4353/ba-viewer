@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { PassiveTriggerData, TargetFindRule } from "../../../misc";
-import { PassiveSkillTargetType } from "../../enum";
+import { PassiveSkillTargetType } from "../../../misc/enum";
 import { ZExSkillEntityTimeline } from "../../timeline/schema";
 import { ZSkillLogic } from "../general";
 

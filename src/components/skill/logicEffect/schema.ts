@@ -10,7 +10,7 @@ import {
   StatType,
   TacticEntityType,
 } from "~game/excelType";
-import { TargetSideId } from "../skillLogic/enum";
+import { TargetSideId } from "../misc/enum";
 import { ZDamageEffect } from "./17DamageEffect/DamageEffect";
 import { ZLogicEffect } from "./_base";
 import * as DamageByHitEffectData from "./DamageByHitEffectData";

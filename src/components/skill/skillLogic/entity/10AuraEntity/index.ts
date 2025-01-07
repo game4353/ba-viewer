@@ -1,8 +1,8 @@
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { bool, int, long } from "../../../misc";
+import { MovingAreaOptions } from "../../../misc/enum";
 import { SkillAbilitySchema } from "../../ability/schema";
-import { MovingAreaOptions } from "../../enum";
 import { ZSkillEntity } from "../_base";
 import * as LevelAuraEntityData from "../LevelAuraEntityData";
 

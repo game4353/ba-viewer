@@ -38,7 +38,7 @@ import {
   EntitySpawnCondition,
   EntitySpawnConditionCheckTarget,
   SpawnDirectionTypes,
-} from "../enum";
+} from "../../misc/enum";
 import { TimelineTypes } from "./schema";
 
 defineProps({

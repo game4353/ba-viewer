@@ -1,7 +1,7 @@
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
+import { AreaTransformTypes, MovingAreaOptions } from "../../misc/enum";
 import { SkillAbilitySchema } from "../ability/schema";
-import { AreaTransformTypes, MovingAreaOptions } from "../enum";
 import { ZSkillEntity } from "./_base";
 
 const AreaCollisionProperty = z.object({

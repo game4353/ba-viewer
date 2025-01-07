@@ -1,6 +1,6 @@
 import { ArmorType } from "@/assets/game/excelType";
 import { z } from "zod";
-import { IncludeType } from "../../../enum";
+import { IncludeType } from "../../../../misc/enum";
 import { ZSkillAbilityModifier$base } from "../base";
 
 export const ZArmorConditionModifier = ZSkillAbilityModifier$base.extend({

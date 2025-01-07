@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { InfoBuilder } from "@/components/skill/misc";
 import { z } from "zod";
-import { SpawnDirectionTypes } from "../../enum";
+import { SpawnDirectionTypes } from "../../../misc/enum";
 import { ZNewSkillAction } from "./NewSkillAction";
 
 const props = defineProps({

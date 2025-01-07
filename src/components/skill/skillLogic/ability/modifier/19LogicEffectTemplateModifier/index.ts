@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { IncludeType } from "../../../enum";
+import { IncludeType } from "../../../../misc/enum";
 import { ZSkillAbilityModifier$base } from "../base";
 
 export const ZLogicEffectTemplateModifier = ZSkillAbilityModifier$base.extend({

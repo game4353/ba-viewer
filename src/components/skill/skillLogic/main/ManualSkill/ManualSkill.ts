@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { ManualSkillTypes } from "../../../misc/enum";
 import { SkillAbilitySchema } from "../../ability/schema";
-import { ManualSkillTypes } from "../../enum";
 import { ZSkillLogic } from "../general";
 
 // 0

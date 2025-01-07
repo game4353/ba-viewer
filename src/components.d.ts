@@ -21,7 +21,6 @@ declare module 'vue' {
     CurrencyDetail: typeof import('./components/parcel/currency/CurrencyDetail.vue')['default']
     DamageEffect: typeof import('./components/skill/logicEffect/17DamageEffect/DamageEffect.vue')['default']
     Dialog: typeof import('./components/audio/Dialog.vue')['default']
-    DistributeType: typeof import('./components/skill/misc/DistributeType.vue')['default']
     EmblemDetail: typeof import('./components/parcel/emblem/EmblemDetail.vue')['default']
     EnemyIcon: typeof import('./components/parcel/character/EnemyIcon.vue')['default']
     Entity: typeof import('./components/skill/skillLogic/entity/Entity.vue')['default']

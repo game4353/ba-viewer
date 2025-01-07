@@ -5,10 +5,10 @@ import {
   TargetSortRule,
   Vector2,
 } from "../../../misc";
+import { SpawnDirectionTypes } from "../../../misc/enum";
 import { AutoUseRule } from "../../ability/schema";
 import { RootMotionMoveBaseSchema } from "../../entity/RootMotionMove";
 import { SkillEntitySchema } from "../../entity/schema";
-import { SpawnDirectionTypes } from "../../enum";
 import { ZSkillLogic } from "../general";
 
 // 4

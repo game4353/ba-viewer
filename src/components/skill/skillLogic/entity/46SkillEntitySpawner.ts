@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EntitySpawnRule, SkillToTargetDistributeType } from "../enum";
+import { EntitySpawnRule, SkillToTargetDistributeType } from "../../misc/enum";
 import { ZSkillEntitySpawnerTimeline } from "../timeline/schema";
 import { ZSkillEntity } from "./_base";
 

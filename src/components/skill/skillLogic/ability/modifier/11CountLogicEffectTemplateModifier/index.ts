@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { int } from "../../../../misc";
-import { IncludeType } from "../../../enum";
+import { IncludeType } from "../../../../misc/enum";
 import { ZSkillAbilityModifier$base } from "../base";
 
 export const ZCountLogicEffectTemplateModifier =

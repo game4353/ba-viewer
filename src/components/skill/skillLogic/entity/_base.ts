@@ -11,7 +11,7 @@ import {
   SpawnDirectionTypes,
   SpawnPositionTypes,
   TransformDecideTiming,
-} from "../enum";
+} from "../../misc/enum";
 
 export const ZSkillEntity = z.object({
   EntityName: z.string().optional(),

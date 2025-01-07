@@ -29,7 +29,7 @@
 import { ArmorType } from "@/assets/game/excelType";
 import { ReadonlyDeep } from "type-fest";
 import { TZSkillAbilityModifier } from ".";
-import { IncludeType, ModifierCheckTarget } from "../../enum";
+import { IncludeType, ModifierCheckTarget } from "../../../misc/enum";
 
 defineProps({
   modifier: {

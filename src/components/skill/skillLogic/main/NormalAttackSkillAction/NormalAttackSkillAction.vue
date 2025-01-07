@@ -7,7 +7,10 @@
 <script setup lang="ts">
 import { InfoBuilder } from "@/components/skill/misc";
 import { z } from "zod";
-import { SkillToTargetDistributeType, SpawnDirectionTypes } from "../../enum";
+import {
+  SkillToTargetDistributeType,
+  SpawnDirectionTypes,
+} from "../../../misc/enum";
 import NewSkillAction from "../NewSkillAction/NewSkillAction.vue";
 import { ZNormalAttackSkillAction } from "./NormalAttackSkillAction";
 

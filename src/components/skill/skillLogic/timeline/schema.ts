@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { int, long, Vector2 } from "../../misc";
-import { SkillEntitySchema, SkillEntityType } from "../entity/schema";
 import {
   AbilityActivateTag,
   EntitySpawnCondition,
   EntitySpawnConditionCheckTarget,
   SpawnDirectionTypes,
-} from "../enum";
+} from "../../misc/enum";
+import { SkillEntitySchema, SkillEntityType } from "../entity/schema";
 
 type TZSkillEntityTimeline = {
   Frame: number;

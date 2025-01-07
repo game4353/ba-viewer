@@ -1,6 +1,6 @@
 import { zFlag } from "@/utils/types";
 import { z } from "zod";
-import { TargetEntityType } from "../enum";
+import { TargetEntityType } from "../../misc/enum";
 import { ZSkillEntity } from "./_base";
 
 const RootMotionMoveBase = ZSkillEntity.extend({});

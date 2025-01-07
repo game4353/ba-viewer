@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { InfoBuilder } from "@/components/skill/misc";
 import { z } from "zod";
-import { PassiveSkillTargetType } from "../../enum";
+import { PassiveSkillTargetType } from "../../../misc/enum";
 import { ZPassiveSkill } from "./PassiveSkill";
 
 const props = defineProps({

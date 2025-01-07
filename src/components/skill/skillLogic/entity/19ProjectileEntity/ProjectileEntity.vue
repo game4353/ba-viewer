@@ -19,7 +19,11 @@
 import { ReadonlyDeep } from "type-fest";
 import { TZTargetProjectileEntity } from ".";
 import { InfoBuilder } from "../../../misc";
-import { ShapeType, SpawnDirectionTypes, SpawnPositionTypes } from "../../enum";
+import {
+  ShapeType,
+  SpawnDirectionTypes,
+  SpawnPositionTypes,
+} from "../../../misc/enum";
 
 const props = defineProps({
   entity: {

@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { z } from "zod";
-import { ManualSkillTypes } from "../../enum";
+import { ManualSkillTypes } from "../../../misc/enum";
 import { ZManualSkill } from "./ManualSkill";
 
 defineProps({

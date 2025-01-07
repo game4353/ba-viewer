@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ReadonlyDeep } from "type-fest";
 import { formatVec2 } from "../../misc";
-import { SkillApplyType, TransformDecideTiming } from "../enum";
+import { SkillApplyType, TransformDecideTiming } from "../../misc/enum";
 import { TZSkillEntity } from "./_base";
 
 const props = defineProps({
