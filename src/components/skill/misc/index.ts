@@ -1,3 +1,4 @@
+import type { ReadonlyDeep } from "type-fest";
 import { z } from "zod";
 
 export const bool = () => z.boolean();
@@ -27,3 +28,7 @@ export class InfoBuilder<T> {
     if (val !== dft) this.arr.push(toKey(key) + toVal(val));
   }
 }
+
+export type PRZ<Z extends z.ZodType<any, any, any>> = PropType<
+  ReadonlyDeep<z.infer<Z>>
+>;

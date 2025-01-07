@@ -2,9 +2,43 @@
   <Info>
     <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
   </Info>
-
+  <!-- 0 -->
+  <AreaEntity v-if="entity.$type === 'AreaEntity'" :entity :lv ref="base" />
+  <!-- 1 -->
+  <CircleAreaEntity
+    v-else-if="entity.$type === 'CircleAreaEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
+  <!-- 2 -->
+  <ObbAreaEntity
+    v-else-if="entity.$type === 'ObbAreaEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
+  <!-- 3 -->
+  <FanAreaEntity
+    v-else-if="entity.$type === 'FanAreaEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
+  <!-- 4 -->
+  <DonutAreaEntity
+    v-else-if="entity.$type === 'DonutAreaEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
   <!-- 10 -->
-  <AuraEntity v-if="entity.$type === 'AuraEntity'" :entity :lv ref="base" />
+  <AuraEntity
+    v-else-if="entity.$type === 'AuraEntity'"
+    :entity
+    :lv
+    ref="base"
+  />
   <!-- 11 -->
   <CircleAuraEntity
     v-else-if="entity.$type === 'CircleAuraEntity'"

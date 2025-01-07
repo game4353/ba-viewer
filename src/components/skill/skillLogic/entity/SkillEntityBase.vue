@@ -8,6 +8,7 @@
       :sort="entity.TargetSortRule"
       :optional="entity.OptionalCandidateRule"
     />
+    <slot name="chips"></slot>
   </div>
 </template>
 

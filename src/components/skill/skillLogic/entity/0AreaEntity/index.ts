@@ -15,7 +15,7 @@ const AreaCollisionProperty = z.object({
 });
 
 // 0
-const ZAreaEntity = ZSkillEntity.extend({
+export const ZAreaEntity = ZSkillEntity.extend({
   AttachTarget: z.boolean(),
   AllowDuplicateHit: z.boolean(),
   RemoveEntityIfSkillCancel: z.boolean(),
@@ -31,31 +31,31 @@ const ZAreaEntity = ZSkillEntity.extend({
 });
 
 // 1
-const ZCircleAreaEntity = ZAreaEntity.extend({
+export const ZCircleAreaEntity = ZAreaEntity.extend({
   Radius: z.number(),
 });
 
 // 2
-const ZObbAreaEntity = ZAreaEntity.extend({
+export const ZObbAreaEntity = ZAreaEntity.extend({
   Width: z.number(),
   Height: z.number(),
   AngleOffset: z.number(),
 });
 
 // 3
-const ZFanAreaEntity = ZAreaEntity.extend({
+export const ZFanAreaEntity = ZAreaEntity.extend({
   Radius: z.number(),
   Degree: z.number(),
   AngleOffset: z.number(),
 });
 
 // 4
-const ZDonutAreaEntity = ZFanAreaEntity.extend({
+export const ZDonutAreaEntity = ZFanAreaEntity.extend({
   ExcludeRadius: z.number(),
 });
 
 // 52
-const ZBreathAreaEntity = ZFanAreaEntity.extend({
+export const ZBreathAreaEntity = ZFanAreaEntity.extend({
   BarrierTransferAbilities: SkillAbilitySchema.array().optional(),
   ExcludeRadius: long(),
   RemoveWhenHit: bool(),
