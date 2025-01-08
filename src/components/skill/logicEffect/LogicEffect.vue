@@ -1,15 +1,21 @@
 <template>
   <Loading v-if="obj === undefined" />
   <div v-else>
-    <div v-if="obj.ApplyRate < 10000">発動率: {{ obj.ApplyRate / 100 }}%</div>
-    <v-chip class="w-fit">Channel: {{ obj.Channel }}</v-chip>
+    <Info>
+      <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
+    </Info>
 
-    <DamageEffect v-if="obj?.$type === 'DamageEffect'" :data="obj" />
+    <!-- 17 -->
+    <DamageEffect v-if="obj.$type === 'DamageEffect'" :data="obj" ref="base" />
+    <!-- 59 -->
     <StatChangeEffect
-      v-else-if="obj?.$type === 'StatChangeEffect'"
+      v-else-if="obj.$type === 'StatChangeEffect'"
       :data="obj"
+      ref="base"
     />
-    <div v-else>{{ obj }}</div>
+    <div v-else>
+      <div>"{{ obj.$type }}" is not done yet.</div>
+    </div>
   </div>
 </template>
 
@@ -32,4 +38,5 @@ const props = defineProps({
 const obj = computed(() =>
   useLogicEffect(props.gid, props.lv).unwrapOrElse(errHandle),
 );
+const base = ref();
 </script>

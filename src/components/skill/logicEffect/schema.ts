@@ -11,7 +11,7 @@ import {
   TacticEntityType,
 } from "~game/excelType";
 import { TargetSideId } from "../misc/enum";
-import { ZDamageEffect } from "./17DamageEffect/DamageEffect";
+import { ZDamageEffect } from "./17DamageEffect";
 import { ZLogicEffect } from "./_base";
 import * as DamageByHitEffectData from "./DamageByHitEffectData";
 import * as DamageOverTimeEffectData from "./DamageOverTimeEffectData";

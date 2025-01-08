@@ -22,5 +22,3 @@ export const ZDamageEffect = ZLogicEffect.extend({
   ApplyExDamagedRatio: z.boolean(),
   ForceFloaterHide: z.boolean(),
 });
-
-export type ZDamageEffectType = z.infer<typeof ZDamageEffect>;

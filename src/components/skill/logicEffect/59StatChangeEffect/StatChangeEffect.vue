@@ -1,17 +1,18 @@
 <template>
+  <LogicEffectBase :data ref="base">
+    <template #chips>
+      <v-chip v-if="data.StackSameEffectApplied">
+        <span
+          >Stack: {{ data.StackSameEffectCount }} (old
+          {{ data.ExpireOldIfStackCountOver ? "<" : ">" }} new)</span
+        >
+      </v-chip>
+      <v-chip v-if="end">end: {{ end }}</v-chip>
+      <v-chip v-if="remove">remove: {{ remove }}</v-chip>
+      <slot name="chips"></slot>
+    </template>
+  </LogicEffectBase>
   <div>
-    <div v-if="data.Dispellable">
-      <v-chip class="w-fit">Dispellable ⭕</v-chip>
-    </div>
-    <div v-else>
-      <v-chip class="w-fit">Dispellable ❌</v-chip>
-    </div>
-    <div v-if="data.StackSameEffectApplied">
-      <v-chip class="w-fit"
-        >Stack: {{ data.StackSameEffectCount }} (old
-        {{ data.ExpireOldIfStackCountOver ? "<" : ">" }} new)</v-chip
-      >
-    </div>
     <p v-if="data.CasterCoefficientAmount">
       CasterCoefficientAmount:{{
         data.CasterCoefficientAmount
@@ -22,20 +23,19 @@
       ChangeRateByCost:{{ data.ChangeRateByCost }}
     </p>
     <div v-for="(eff, key) in effect" :key>{{ eff }}</div>
-    <p v-if="end">end:{{ end }}</p>
-    <p v-if="remove">remove:{{ remove }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { EndCondition, StatType } from "@/assets/game/excelType";
 import { noDefault } from "@/utils/misc";
-import { ReadonlyDeep } from "type-fest";
-import { TZStatChangeEffect } from ".";
+import { ZStatChangeEffect } from ".";
+import { InfoBuilder, PRZ } from "../../misc";
+import LogicEffectBase from "../LogicEffectBase.vue";
 
 const props = defineProps({
   data: {
-    type: Object as PropType<ReadonlyDeep<TZStatChangeEffect>>,
+    type: Object as PRZ<typeof ZStatChangeEffect>,
     required: true,
   },
 });
@@ -88,4 +88,16 @@ const remove = computed(() =>
     props.data.RemoveConditionArgumentSecond,
   ),
 );
+
+const base = ref<InstanceType<typeof LogicEffectBase>>();
+const info = computed(() => {
+  const arr = base.value?.info;
+  if (arr == null) return arr;
+
+  const builder = new InfoBuilder(props.data);
+  builder.add("Dispellable");
+
+  return [...arr, ...builder.arr];
+});
+defineExpose({ info });
 </script>

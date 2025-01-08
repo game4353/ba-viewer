@@ -1,62 +1,68 @@
 <template>
+  <LogicEffectBase :data ref="base">
+    <template #chips>
+      <v-chip v-if="data.CriticalCheck === DamageCriticalType.Always">
+        <span>会心 ⭕</span>
+      </v-chip>
+      <v-chip v-else-if="data.CriticalCheck === DamageCriticalType.Never">
+        <span>会心 ❌</span>
+      </v-chip>
+      <v-chip v-if="data.CanEvade === false">
+        <span>回避 ❌</span>
+      </v-chip>
+      <v-chip v-if="data.ApplyBulletType === false">
+        <span>BulletType ❌</span>
+      </v-chip>
+      <v-chip v-if="data.ApplyDefense === false">
+        <span>Defense ❌</span>
+      </v-chip>
+      <v-chip v-if="data.ApplyDamageRatio === false">
+        <span>DamageRatio ❌</span>
+      </v-chip>
+      <v-chip v-if="data.ApplyDamageRatio2 === false">
+        <span>DamageRatio2 ❌</span>
+      </v-chip>
+      <v-chip v-if="data.IgnoreShield === true">
+        <span>IgnoreShield ⭕</span>
+      </v-chip>
+      <v-chip v-if="data.ApplyStability === false">
+        <span>安定 ❌</span>
+      </v-chip>
+      <v-chip v-if="data.ApplyTerrainAdaptationDamage === false">
+        <span>TerrainAdaptationDamage ❌</span>
+      </v-chip>
+      <v-chip v-if="data.ApplyExDamagedRatio === false">
+        <span>ExDamagedRatio ❌</span>
+      </v-chip>
+      <v-chip v-if="data.DefensePenetrationRate !== 10000">
+        <span
+          >防御無視: {{ (10000 - data.DefensePenetrationRate) / 100 }}%</span
+        >
+      </v-chip>
+      <v-chip v-if="data.Amount > 0">
+        <span>Amount: {{ data.Amount }}</span>
+      </v-chip>
+      <v-chip v-if="data.LifeRecover > 0">
+        <span>LifeRecover: {{ data.LifeRecover }}</span>
+      </v-chip>
+      <slot name="chips"></slot>
+    </template>
+  </LogicEffectBase>
   <div>
-    <div v-if="data.CriticalCheck === DamageCriticalType.Always">
-      <v-chip class="w-fit">会心 ⭕</v-chip>
-    </div>
-    <div v-else-if="data.CriticalCheck === DamageCriticalType.Never">
-      <v-chip class="w-fit">会心 ❌</v-chip>
-    </div>
-    <div v-if="data.CanEvade === false">
-      <v-chip class="w-fit">回避 ❌</v-chip>
-    </div>
-    <div v-if="data.ApplyBulletType === false">
-      <v-chip class="w-fit">BulletType ❌</v-chip>
-    </div>
-    <div v-if="data.ApplyDefense === false">
-      <v-chip class="w-fit">Defense ❌</v-chip>
-    </div>
-    <div v-if="data.ApplyDamageRatio === false">
-      <v-chip class="w-fit">DamageRatio ❌</v-chip>
-    </div>
-    <div v-if="data.ApplyDamageRatio2 === false">
-      <v-chip class="w-fit">DamageRatio2 ❌</v-chip>
-    </div>
-    <div v-if="data.IgnoreShield === true">
-      <v-chip class="w-fit">IgnoreShield ⭕</v-chip>
-    </div>
-    <div v-if="data.ApplyStability === false">
-      <v-chip class="w-fit">安定 ❌</v-chip>
-    </div>
-    <div v-if="data.ApplyTerrainAdaptationDamage === false">
-      <v-chip class="w-fit">TerrainAdaptationDamage ❌</v-chip>
-    </div>
-    <div v-if="data.ApplyExDamagedRatio === false">
-      <v-chip class="w-fit">ExDamagedRatio ❌</v-chip>
-    </div>
-    <div v-if="data.DefensePenetrationRate !== 10000">
-      <v-chip class="w-fit"
-        >防御無視: {{ (10000 - data.DefensePenetrationRate) / 100 }}%</v-chip
-      >
-    </div>
-    <div v-if="data.Amount > 0">
-      <v-chip class="w-fit">Amount: {{ data.Amount }}</v-chip>
-    </div>
-    <div v-if="data.LifeRecover > 0">
-      <v-chip class="w-fit">LifeRecover: {{ data.LifeRecover }}</v-chip>
-    </div>
     <div>{{ StatType[data.BonusSourceFirst] }}× {{ damageRates }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { StatType } from "@/assets/game/excelType";
-import { ReadonlyDeep } from "type-fest";
+import { ZDamageEffect } from ".";
+import { PRZ } from "../../misc";
 import { DamageCriticalType } from "../enum";
-import { ZDamageEffectType } from "./DamageEffect";
+import LogicEffectBase from "../LogicEffectBase.vue";
 
 const props = defineProps({
   data: {
-    type: Object as PropType<ReadonlyDeep<ZDamageEffectType>>,
+    type: Object as PRZ<typeof ZDamageEffect>,
     required: true,
   },
 });
@@ -71,4 +77,10 @@ const damageRates = computed(() => {
     })
     .join(" → ");
 });
+
+const base = ref<InstanceType<typeof LogicEffectBase>>();
+const info = computed(() => {
+  return base.value?.info;
+});
+defineExpose({ info });
 </script>
