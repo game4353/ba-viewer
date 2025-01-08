@@ -7,6 +7,8 @@
 
     <!-- 17 -->
     <DamageEffect v-if="obj.$type === 'DamageEffect'" :data="obj" ref="base" />
+    <!-- 35 -->
+    <HealEffect v-else-if="obj.$type === 'HealEffect'" :data="obj" ref="base" />
     <!-- 59 -->
     <StatChangeEffect
       v-else-if="obj.$type === 'StatChangeEffect'"

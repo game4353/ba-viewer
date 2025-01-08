@@ -12,6 +12,7 @@ import {
 } from "~game/excelType";
 import { TargetSideId } from "../misc/enum";
 import { ZDamageEffect } from "./17DamageEffect";
+import { ZHealEffect } from "./35HealEffect";
 import { ZLogicEffect } from "./_base";
 import * as DamageByHitEffectData from "./DamageByHitEffectData";
 import * as DamageOverTimeEffectData from "./DamageOverTimeEffectData";
@@ -285,18 +286,6 @@ const HealedLimitEffect = LogicEffect.extend({
   EndConditionArgumentFirst: z.string(),
   EndConditionArgumentSecond: z.string(),
   Dispellable: z.boolean(),
-});
-
-// 35
-const HealEffect = LogicEffect.extend({
-  $type: z.literal("HealEffect"),
-  Amount: z.number(),
-  BonusSource: z.nativeEnum(StatType),
-  BonusRate: z.number(),
-  ExtraStatSource: z.nativeEnum(ExtraStatType),
-  ExtraStatRate: z.number(),
-  ChangeRateByCost: z.string(),
-  ForceFloaterHide: z.boolean(),
 });
 
 // 36
@@ -607,7 +596,9 @@ export const LogicEffectSchema = z.discriminatedUnion("$type", [
   HealByHitEffect, // 32
   HealConvertDamageEffect, // 33
   HealedLimitEffect, // 34
-  HealEffect, // 35
+  ZHealEffect.extend({
+    $type: z.literal("HealEffect"),
+  }), // 35
   HealOverTimeEffect, // 36
   HideCharacterEffect, // 37
   ImmediateKillEffect, // 38
