@@ -19,6 +19,24 @@
       {{ modifier.TemplateId }}
     </template>
   </template>
+  <!-- 16 -->
+  <template v-else-if="modifier.$type === 'HpRateDamageModifier'">
+    <p>
+      {{ ModifierCheckTarget[modifier.CheckTarget] }}
+      HP: {{ modifier.MinHpRate / 100 }}%~{{ modifier.MaxHpRate / 100 }}% →
+      Damage: {{ modifier.MinDamageMultiplier / 100 }}%~{{
+        modifier.MaxDamageMultiplier / 100
+      }}%
+    </p>
+  </template>
+  <!-- 19 -->
+  <template v-else-if="modifier.$type === 'LogicEffectTemplateModifier'">
+    <template v-if="modifier.IncludeType !== IncludeType.None">
+      {{ ModifierCheckTarget[modifier.CheckTarget] }}
+      {{ IncludeType[modifier.IncludeType] }}
+      {{ modifier.TemplateId }}
+    </template>
+  </template>
   <!-- 27 -->
   <template v-else-if="modifier.$type === 'TagConditionalModifier'">
     <template v-if="modifier.IncludeType !== IncludeType.None">

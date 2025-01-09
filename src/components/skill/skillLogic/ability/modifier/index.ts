@@ -1,5 +1,5 @@
 import { ArmorType } from "@/assets/game/excelType";
-import { int } from "@/components/skill/misc";
+import { int, long } from "@/components/skill/misc";
 import {
   CoverState,
   DiffOperatorType,
@@ -39,6 +39,14 @@ const ZCoverStateConditionalModifier = base.extend({
   CoverState: z.nativeEnum(CoverState),
 });
 
+// 16
+const ZHpRateDamageModifier = base.extend({
+  MinHpRate: long(),
+  MaxHpRate: long(),
+  MinDamageMultiplier: long(),
+  MaxDamageMultiplier: long(),
+});
+
 // 19
 const ZLogicEffectTemplateModifier = base.extend({
   TemplateId: z.string(),
@@ -76,7 +84,7 @@ export const ZSkillAbilityModifier = z.discriminatedUnion("$type", [
   }), // 13
   base.extend({ $type: z.literal("CoverStateDamageModifier") }), // 14
   base.extend({ $type: z.literal("FavorLevelStatModifier") }), // 15
-  base.extend({ $type: z.literal("HpRateDamageModifier") }), // 16
+  ZHpRateDamageModifier.extend({ $type: z.literal("HpRateDamageModifier") }), // 16
   base.extend({ $type: z.literal("HpRateModifier") }), // 17
   base.extend({ $type: z.literal("LogicEffectCategoryModifier") }), // 18
   ZLogicEffectTemplateModifier.extend({

@@ -20,7 +20,7 @@ export class InfoBuilder<T> {
 
   add<K extends keyof T>(
     key: K,
-    dft: T[K] | null = null,
+    dft?: T[K] | null,
     toVal = (val: T[K]) => String(val),
     toKey = (key: K) => String(key) + ": ",
   ) {
