@@ -1,5 +1,16 @@
 <template>
   <Loading v-if="skill == null" />
+  <v-card v-else-if="layout === 'env'">
+    <p v-if="group == null || lv == null">ERROR</p>
+    <template v-else>
+      <v-card-title>{{ group }}</v-card-title>
+      <v-card-text class="bg-surface-light !pt-4">
+        <div class="flex flex-col gap-2">
+          <LevelSkillData :group :lv />
+        </div>
+      </v-card-text>
+    </template>
+  </v-card>
   <div v-else>
     <v-card>
       <template v-slot:prepend>
@@ -70,8 +81,9 @@ const props = defineProps({
   cid: Number,
   skillNo: Number as PropType<0 | 1 | 2 | 3>,
   group: String,
-  layout: String as PropType<"default" | "full">,
+  layout: String as PropType<"default" | "env" | "full">,
   normalAttack: Boolean,
+  lv: Number,
 });
 const layout = props.layout ?? "default";
 
