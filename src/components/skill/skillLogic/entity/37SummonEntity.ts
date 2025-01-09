@@ -4,8 +4,8 @@ import { z } from "zod";
 import { bool, float, int, long } from "../../misc";
 import { BarrierShape, MovingAreaOptions } from "../../misc/enum";
 import { AbilityWithOrder, SkillAbilitySchema } from "../ability/schema";
-import { AreaSpawner } from "./45AreaSpawner";
-import { SkillEntitySpawner } from "./46SkillEntitySpawner";
+import { ZAreaSpawner } from "./45AreaSpawner";
+import { ZSkillEntitySpawner } from "./46SkillEntitySpawner";
 import { ZSkillEntity } from "./_base";
 
 export const SummonEntity = ZSkillEntity.extend({
@@ -13,8 +13,8 @@ export const SummonEntity = ZSkillEntity.extend({
   AngleOffset: z.number(),
   Duration: z.number(),
   DestroyAlreadyExist: z.boolean(),
-  InitialAreaSpawnerEntity: AreaSpawner.optional(),
-  InitialEntitySpawner: SkillEntitySpawner.optional(),
+  InitialAreaSpawnerEntity: ZAreaSpawner.optional(),
+  InitialEntitySpawner: ZSkillEntitySpawner.optional(),
   SpawnSameGridLayerAsInvoker: z.boolean(),
   SummonAsEnemy: z.boolean(),
   MovingAreaOption: zFlag(MovingAreaOptions),
@@ -36,18 +36,18 @@ const BattleItemEntity = SummonEntity.extend({
   LogicEffectGroupIds: z.string().array().optional(),
   Abilities: SkillAbilitySchema.array().optional(),
   AbilitiesInOrderOfInteraction: AbilityWithOrder.array().optional(),
-  InEffectRadiusAreaSpawnerEntity: AreaSpawner.optional(),
-  InEffectRadiusSkillEntitySpawnerEntity: SkillEntitySpawner.optional(),
+  InEffectRadiusAreaSpawnerEntity: ZAreaSpawner.optional(),
+  InEffectRadiusSkillEntitySpawnerEntity: ZSkillEntitySpawner.optional(),
 });
 
 const ObstacleEntity = SummonEntity.extend({
   InitialAbilities: SkillAbilitySchema.array(),
-  InitialSkillEntitySpawnerData: SkillEntitySpawner.optional(),
+  InitialSkillEntitySpawnerData: ZSkillEntitySpawner.optional(),
 });
 
 const BarrierObstacleEntity = SummonEntity.extend({
   InitialAbilities: SkillAbilitySchema.array(),
-  InitialSkillEntitySpawnerData: SkillEntitySpawner.optional(),
+  InitialSkillEntitySpawnerData: ZSkillEntitySpawner.optional(),
   BarrierShape: z.nativeEnum(BarrierShape),
   ShapeParameters: float().array(),
   ArmorType: z.nativeEnum(ArmorType),

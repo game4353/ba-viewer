@@ -1,6 +1,6 @@
 <template>
   <NewSkillAction :data :lv ref="base" />
-  <SkillEntityTimeline :timelines="data.EntityTimeline" :lv />
+  <SkillEntityTimelines :timelines="data.EntityTimeline" :lv />
 </template>
 
 <script setup lang="ts">

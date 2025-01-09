@@ -25,7 +25,10 @@ export class InfoBuilder<T> {
     toKey = (key: K) => String(key) + ": ",
   ) {
     const val = this.data[key];
-    if (val !== dft) this.arr.push(toKey(key) + toVal(val));
+    if (val !== dft) {
+      this.arr.push(toKey(key) + toVal(val));
+      return this;
+    }
   }
 }
 

@@ -12,8 +12,8 @@ import {
 import { SkillAbilitySchema } from "../../ability/schema";
 import { AreaEntitySchema } from "../0AreaEntity";
 import { CharacterEntity } from "../37SummonEntity";
-import { AreaSpawner } from "../45AreaSpawner";
-import { SkillEntitySpawner } from "../46SkillEntitySpawner";
+import { ZAreaSpawner } from "../45AreaSpawner";
+import { ZSkillEntitySpawner } from "../46SkillEntitySpawner";
 import { ZSkillEntity } from "../_base";
 import * as LevelNontargetProjectileEntityData from "../LevelNontargetProjectileEntityData";
 
@@ -35,8 +35,8 @@ const ProjectileEntity = ZSkillEntity.extend({
   Abilities: SkillAbilitySchema.array().optional(),
   SplashDelayFrame: z.number(),
   SplashAreaEntityData: AreaEntitySchema.optional(),
-  AreaSpawnerData: AreaSpawner.optional(),
-  SkillEntitySpawnerData: SkillEntitySpawner.optional(),
+  AreaSpawnerData: ZAreaSpawner.optional(),
+  SkillEntitySpawnerData: ZSkillEntitySpawner.optional(),
 });
 
 const ZTargetProjectileEntity = ProjectileEntity;
@@ -60,7 +60,7 @@ const NontargetProjectileEntity = ProjectileEntity.extend({
 
 const NontargetDestructibleProjectileEntity = NontargetProjectileEntity.extend({
   CharacterEntityForStat: CharacterEntity,
-  DestroyedSpawnEntity: SkillEntitySpawner,
+  DestroyedSpawnEntity: ZSkillEntitySpawner,
 });
 
 type TargetBounceProjectileEntityType = z.infer<

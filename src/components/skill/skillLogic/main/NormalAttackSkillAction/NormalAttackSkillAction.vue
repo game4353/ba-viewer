@@ -1,7 +1,7 @@
 <template>
   <NewSkillAction :data :lv ref="base" />
   <SkillPhaseData :data :phase="data.PhaseData" :frame="data.AnimationFrames" />
-  <SkillEntityTimeline :timelines="data.ShotFrames" :lv />
+  <SkillEntityTimelines :timelines="data.ShotFrames" :lv />
 </template>
 
 <script setup lang="ts">

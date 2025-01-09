@@ -4,13 +4,35 @@
       <Abilities :abilities="entity.Abilities" :lv />
     </div>
     <div v-if="entity.SplashAreaEntityData">
-      {{ entity.SplashAreaEntityData }}
+      <div class="flex flex-row gap-1">
+        <p>SplashAreaEntity</p>
+        <Info>
+          <p v-for="(str, key) in r1?.info" :key>{{ str }}</p>
+        </Info>
+      </div>
+      <Entity :entity="entity.SplashAreaEntityData" :lv ref="r1" />
     </div>
     <div v-if="entity.AreaSpawnerData">
-      {{ entity.AreaSpawnerData }}
+      <div class="flex flex-row gap-1">
+        <p>AreaSpawner</p>
+        <Info>
+          <p v-for="(str, key) in r2?.info" :key>{{ str }}</p>
+        </Info>
+      </div>
+      <AreaSpawner :entity="entity.AreaSpawnerData" :lv ref="r2" />
     </div>
     <div v-if="entity.SkillEntitySpawnerData">
-      {{ entity.SkillEntitySpawnerData }}
+      <div class="flex flex-row gap-1">
+        <p>SkillEntitySpawner</p>
+        <Info>
+          <p v-for="(str, key) in r3?.info" :key>{{ str }}</p>
+        </Info>
+      </div>
+      <SkillEntitySpawner
+        :entity="entity.SkillEntitySpawnerData"
+        :lv
+        ref="r3"
+      />
     </div>
   </div>
 </template>
@@ -24,6 +46,13 @@ import {
   SpawnDirectionTypes,
   SpawnPositionTypes,
 } from "../../../misc/enum";
+import AreaSpawner from "../45AreaSpawner/AreaSpawner.vue";
+import SkillEntitySpawner from "../46SkillEntitySpawner/SkillEntitySpawner.vue";
+import Entity from "../Entity.vue";
+
+const r1 = ref<InstanceType<typeof Entity>>();
+const r2 = ref<InstanceType<typeof AreaSpawner>>();
+const r3 = ref<InstanceType<typeof SkillEntitySpawner>>();
 
 const props = defineProps({
   entity: {

@@ -1,7 +1,4 @@
 <template>
-  <Info>
-    <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
-  </Info>
   <!-- 0 -->
   <AreaEntity v-if="entity.$type === 'AreaEntity'" :entity :lv ref="base" />
   <!-- 1 -->
@@ -110,4 +107,8 @@ defineProps({
 });
 
 const base = ref();
+const info = computed(() => {
+  return base.value?.info as string[] | undefined;
+});
+defineExpose({ info });
 </script>

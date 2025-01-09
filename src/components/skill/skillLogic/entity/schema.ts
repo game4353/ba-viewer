@@ -10,8 +10,8 @@ import { ZTargetAttachedEntity } from "./31TargetAttachedEntity";
 import { ZNormalAttackBulletEntity } from "./33NormalAttackBulletEntity";
 import { ZTargetSkillEntity } from "./34TargetSkillEntity";
 import { SummonEntityList } from "./37SummonEntity";
-import { AreaSpawner } from "./45AreaSpawner";
-import { SkillEntitySpawner } from "./46SkillEntitySpawner";
+import { ZAreaSpawner } from "./45AreaSpawner";
+import { ZSkillEntitySpawner } from "./46SkillEntitySpawner";
 import { ZSkillEntity } from "./_base";
 
 const RandomProjectileEntity = z.object({
@@ -53,10 +53,10 @@ export const SkillEntitySchema = z.discriminatedUnion("$type", [
     $type: z.literal("TargetSkillEntity"),
   }), // 34
   ...SummonEntityList, // 37~42, 49, 51
-  AreaSpawner.extend({
+  ZAreaSpawner.extend({
     $type: z.literal("AreaSpawner"),
   }), // 45
-  SkillEntitySpawner.extend({
+  ZSkillEntitySpawner.extend({
     $type: z.literal("SkillEntitySpawner"),
   }), // 46
   RandomProjectileEntitySpawner.extend({

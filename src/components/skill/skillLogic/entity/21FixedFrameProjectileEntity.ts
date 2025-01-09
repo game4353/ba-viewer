@@ -13,8 +13,8 @@ import { SkillAbilitySchema } from "../ability/schema";
 import { AreaEntitySchema } from "./0AreaEntity";
 import { TargetBounceProjectileEntity } from "./19ProjectileEntity";
 import { CharacterEntity } from "./37SummonEntity";
-import { AreaSpawner } from "./45AreaSpawner";
-import { SkillEntitySpawner } from "./46SkillEntitySpawner";
+import { ZAreaSpawner } from "./45AreaSpawner";
+import { ZSkillEntitySpawner } from "./46SkillEntitySpawner";
 import { ZSkillEntity } from "./_base";
 import * as LevelNontargetProjectileEntityData from "./LevelNontargetProjectileEntityData";
 
@@ -36,8 +36,8 @@ const FixedFrameProjectileEntity = ZSkillEntity.extend({
   Abilities: SkillAbilitySchema.array().optional(),
   SplashDelayFrame: int(),
   SplashAreaEntityData: AreaEntitySchema.optional(),
-  AreaSpawnerData: AreaSpawner.optional(),
-  SkillEntitySpawnerData: SkillEntitySpawner.optional(),
+  AreaSpawnerData: ZAreaSpawner.optional(),
+  SkillEntitySpawnerData: ZSkillEntitySpawner.optional(),
 });
 
 const FixedFrameTargetProjectileEntity = FixedFrameProjectileEntity;
@@ -61,7 +61,7 @@ const FixedFrameNontargetProjectileEntity = FixedFrameProjectileEntity.extend({
 const FixedFrameNontargetDestructibleProjectileEntity =
   FixedFrameNontargetProjectileEntity.extend({
     CharacterEntityForStat: CharacterEntity,
-    DestroyedSpawnEntity: SkillEntitySpawner,
+    DestroyedSpawnEntity: ZSkillEntitySpawner,
   });
 
 const FixedFrameTargetBounceProjectileEntity =

@@ -7,6 +7,7 @@ import {
   SpawnDirectionTypes,
 } from "../../misc/enum";
 import { SkillEntitySchema, SkillEntityType } from "../entity/schema";
+import type { TZAreaTimeline } from "./AreaTimeline";
 
 type TZSkillEntityTimeline = {
   Frame: number;
@@ -32,7 +33,7 @@ export const ZExSkillEntityTimeline: z.ZodType<TZExSkillEntityTimeline> =
     InvokerDirectionOverride: z.nativeEnum(SpawnDirectionTypes),
     InvokerDirectionOverrideWorldPosition: Vector2,
   });
-type TZSkillEntitySpawnerTimeline = TZSkillEntityTimeline & {
+export type TZSkillEntitySpawnerTimeline = TZSkillEntityTimeline & {
   SpawnCondition: EntitySpawnCondition;
   SpawnConditionParameter?: string;
   SpawnConditionParameterForTag?: string;
@@ -52,4 +53,5 @@ export const ZSkillEntitySpawnerTimeline: z.ZodType<TZSkillEntitySpawnerTimeline
 export type TimelineTypes =
   | TZSkillEntityTimeline
   | TZExSkillEntityTimeline
-  | TZSkillEntitySpawnerTimeline;
+  | TZSkillEntitySpawnerTimeline
+  | TZAreaTimeline;
