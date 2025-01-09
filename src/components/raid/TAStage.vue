@@ -26,16 +26,44 @@
             </div>
             <RichText :text="useLocalizeEtc(key, true)" />
           </div>
-          <div v-for="(s, key) in g.AllyPassiveSkillId" :key>
-            <Skill :group="s" layout="env" :lv="g.AllyPassiveSkillLevel[key]" />
-          </div>
-          <div v-for="(s, key) in g.EnemyPassiveSkillId" :key>
-            <Skill
-              :group="s"
-              layout="env"
-              :lv="g.EnemyPassiveSkillLevel[key]"
-            />
-          </div>
+
+          <v-tabs
+            v-model="tabSkill"
+            align-tabs="center"
+            center-active
+            color="deep-purple-accent-4"
+          >
+            <v-tab :value="0">味方スキル</v-tab>
+            <v-tab :value="1">敵スキル</v-tab>
+          </v-tabs>
+          <v-tabs-window v-model="tabSkill">
+            <v-tabs-window-item
+              class="flex flex-row gap-4 flex-wrap"
+              :value="0"
+            >
+              <Skill
+                class="w-fit"
+                v-for="(s, key) in g.AllyPassiveSkillId"
+                :key
+                :group="s"
+                layout="env"
+                :lv="g.AllyPassiveSkillLevel[key]"
+              />
+            </v-tabs-window-item>
+            <v-tabs-window-item
+              class="flex flex-row gap-4 flex-wrap"
+              :value="1"
+            >
+              <Skill
+                class="w-fit"
+                v-for="(s, key) in g.EnemyPassiveSkillId"
+                :key
+                :group="s"
+                layout="env"
+                :lv="g.EnemyPassiveSkillLevel[key]"
+              />
+            </v-tabs-window-item>
+          </v-tabs-window>
         </v-card>
       </v-tabs-window-item>
     </v-tabs-window>
@@ -58,6 +86,7 @@ const props = defineProps({
   },
 });
 const tab = ref(0);
+const tabSkill = ref(0);
 
 const geas = computed(() =>
   Result.all(
