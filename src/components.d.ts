@@ -7,8 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    2: typeof import('./components/skill/skillLogic/entity/0AreaEntity/FanAreaEntity copy 2.vue')['default']
-    3: typeof import('./components/skill/skillLogic/entity/0AreaEntity/FanAreaEntity copy 3.vue')['default']
     Abilities: typeof import('./components/skill/skillLogic/ability/Abilities.vue')['default']
     ActionButton: typeof import('./components/misc/ActionButton.vue')['default']
     AreaEntity: typeof import('./components/skill/skillLogic/entity/0AreaEntity/AreaEntity.vue')['default']
@@ -26,6 +24,7 @@ declare module 'vue' {
     CurrencyDetail: typeof import('./components/parcel/currency/CurrencyDetail.vue')['default']
     DamageEffect: typeof import('./components/skill/logicEffect/17DamageEffect/DamageEffect.vue')['default']
     Dialog: typeof import('./components/audio/Dialog.vue')['default']
+    DispelLogicEffectTemplateEffect: typeof import('./components/skill/logicEffect/22DispelLogicEffectTemplateEffect/DispelLogicEffectTemplateEffect.vue')['default']
     DonutAreaEntity: typeof import('./components/skill/skillLogic/entity/0AreaEntity/DonutAreaEntity.vue')['default']
     EmblemDetail: typeof import('./components/parcel/emblem/EmblemDetail.vue')['default']
     EnemyIcon: typeof import('./components/parcel/character/EnemyIcon.vue')['default']
@@ -101,6 +100,7 @@ declare module 'vue' {
     PartyOoparts: typeof import('./components/party/PartyOoparts.vue')['default']
     PartySelect: typeof import('./components/party/PartySelect.vue')['default']
     PassiveSkill: typeof import('./components/skill/skillLogic/main/PassiveSkill/PassiveSkill.vue')['default']
+    PassiveTriggerData: typeof import('./components/skill/misc/rule/PassiveTriggerData.vue')['default']
     ProjectileEntity: typeof import('./components/skill/skillLogic/entity/19ProjectileEntity/ProjectileEntity.vue')['default']
     RaidBanner: typeof import('./components/raid/RaidBanner.vue')['default']
     RaidList: typeof import('./components/raid/RaidList.vue')['default']

@@ -21,6 +21,7 @@ const props = defineProps({
 
 const info = computed(() => {
   const arr = [
+    `TemplateId: ${props.data.TemplateId}`,
     `Category: ${LogicEffectCategory[props.data.Category]}`,
     `Channel: ${props.data.Channel}`,
   ];

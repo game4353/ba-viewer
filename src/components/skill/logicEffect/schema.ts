@@ -12,6 +12,7 @@ import {
 } from "~game/excelType";
 import { TargetSideId } from "../misc/enum";
 import { ZDamageEffect } from "./17DamageEffect";
+import { ZDispelLogicEffectTemplateEffect } from "./22DispelLogicEffectTemplateEffect";
 import { ZHealEffect } from "./35HealEffect";
 import { ZLogicEffect } from "./_base";
 import * as DamageByHitEffectData from "./DamageByHitEffectData";
@@ -144,13 +145,6 @@ const DeadlyAttackEffect = LogicEffect.extend({
 const DispelEffect = LogicEffect.extend({
   $type: z.literal("DispelEffect"),
   DispelTarget: z.nativeEnum(LogicEffectCategory),
-  DispelCount: z.number(),
-});
-
-// 22
-const DispelLogicEffectTemplateEffect = LogicEffect.extend({
-  $type: z.literal("DispelLogicEffectTemplateEffect"),
-  LogicEffectTemplateToDispel: z.string(),
   DispelCount: z.number(),
 });
 
@@ -586,7 +580,9 @@ export const LogicEffectSchema = z.discriminatedUnion("$type", [
   DamageTransferEffect, // 19
   DeadlyAttackEffect, // 20
   DispelEffect, // 21
-  DispelLogicEffectTemplateEffect, // 22
+  ZDispelLogicEffectTemplateEffect.extend({
+    $type: z.literal("DispelLogicEffectTemplateEffect"),
+  }), // 22
   DummyEffect, // 23
   ExSkillCardRedrawGaugeEffect, // 25
   ExtraStatDamageEffect, // 26

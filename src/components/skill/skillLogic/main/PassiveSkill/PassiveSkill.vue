@@ -1,14 +1,6 @@
 <template>
   <div class="flex flex-row gap-1">
-    <v-tooltip v-if="data.TriggerCondition" location="top">
-      <template v-slot:activator="{ props }">
-        <v-chip class="w-fit" v-bind="props">Trigger</v-chip>
-      </template>
-      <div>
-        {{ data.TriggerCondition }}
-        <!-- TODO -->
-      </div>
-    </v-tooltip>
+    <PassiveTriggerData :data="data.TriggerCondition" />
     <TargetFindRule
       :rule="data.TriggerSourceFindRule.EssentialCandidate"
       :sort="data.TriggerSourceFindRule.Sort"
