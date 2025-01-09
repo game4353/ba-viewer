@@ -95,7 +95,7 @@ const info = computed(() => {
   if (arr == null) return arr;
 
   const builder = new InfoBuilder(props.data);
-  builder.add("Dispellable");
+  builder.add("Dispellable", false);
 
   return [...arr, ...builder.arr];
 });

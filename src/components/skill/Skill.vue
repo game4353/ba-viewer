@@ -3,7 +3,6 @@
   <v-card v-else-if="layout === 'env'">
     <p v-if="group == null || lv == null">ERROR</p>
     <template v-else>
-      <v-card-title>{{ group }}</v-card-title>
       <v-card-text class="bg-surface-light !pt-4">
         <div class="flex flex-col gap-2">
           <LevelSkillData :group :lv />

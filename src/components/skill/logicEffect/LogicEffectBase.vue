@@ -1,5 +1,8 @@
 <template>
   <div class="flex flex-row gap-1">
+    <v-chip>
+      <span>{{ LogicEffectCategory[props.data.Category] }}</span>
+    </v-chip>
     <v-chip v-if="data.ApplyRate !== 10000">
       <span>発動率: {{ data.ApplyRate / 100 }}%</span>
     </v-chip>
@@ -22,7 +25,6 @@ const props = defineProps({
 const info = computed(() => {
   const arr = [
     `TemplateId: ${props.data.TemplateId}`,
-    `Category: ${LogicEffectCategory[props.data.Category]}`,
     `Channel: ${props.data.Channel}`,
   ];
   return arr;

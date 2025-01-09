@@ -1,8 +1,11 @@
 <template>
-  <Info>
-    <p>Group: {{ group }}</p>
-    <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
-  </Info>
+  <div class="flex flex-row gap-2">
+    <p class="text-lg">Skill</p>
+    <Info>
+      <p>Group: {{ group }}</p>
+      <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
+    </Info>
+  </div>
   <Loading v-if="data == null" />
   <ManualSkill v-else-if="data.$type === 'ManualSkill'" :data :lv />
   <NormalAttackSkillAction

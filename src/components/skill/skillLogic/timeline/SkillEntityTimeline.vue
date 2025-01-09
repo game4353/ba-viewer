@@ -3,7 +3,7 @@
     <p class="text-lg" v-if="idx != null">{{ idx + 1 }}.</p>
     <p class="text-lg">Frame: {{ tl.Frame }}</p>
     <v-chip v-if="'Tag' in tl">{{ AbilityActivateTag[tl.Tag] }}</v-chip>
-    <Info>
+    <Info v-if="(info?.length ?? 0) > 0">
       <p v-for="(str, key) in info" :key>{{ str }}</p>
     </Info>
   </div>

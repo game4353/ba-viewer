@@ -72,6 +72,28 @@ const EchelonConstraint = z.object({
   SchoolConstraint: SchoolConstraint,
   WeaponConstraint: WeaponConstraint,
 });
+export function displayEchelonConstraint(
+  obj: z.infer<typeof EchelonConstraint>,
+) {
+  const arr = [];
+  if (obj.IsEmpty) arr.push("empty");
+  if (obj.CountConstraint.DiffOperator !== DiffOperatorType.None)
+    arr.push(
+      DiffOperatorType[obj.CountConstraint.DiffOperator] +
+        ` ${obj.CountConstraint.Count}`,
+    );
+  if (obj.SchoolConstraint.IncludeType !== IncludeType.None)
+    arr.push(
+      IncludeType[obj.SchoolConstraint.IncludeType] +
+        ` ${School[obj.SchoolConstraint.School]}`,
+    );
+  if (obj.WeaponConstraint.IncludeType !== IncludeType.None)
+    arr.push(
+      IncludeType[obj.WeaponConstraint.IncludeType] +
+        ` ${School[obj.WeaponConstraint.Weapon]}`,
+    );
+  return arr.join(", ");
+}
 
 export const ZEssentialCandidateRule = z.object({
   TargetSide: zFlag(TargetSideId),

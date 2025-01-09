@@ -10,23 +10,24 @@
       <p v-if="data.ConditionExpression">
         Condition: {{ data.ConditionExpression }}
       </p>
-
-      <p v-if="data.EchelonConstraint">
-        Constraint: {{ data.EchelonConstraint }}
-      </p>
+      <p v-if="echelonConstraint">Constraint: {{ echelonConstraint }}</p>
     </div>
   </v-tooltip>
 </template>
 
 <script setup lang="ts">
-import { ZPassiveTriggerData } from ".";
+import { displayEchelonConstraint, ZPassiveTriggerData } from ".";
 import { PRZ } from "..";
 import { PassiveTriggerEvent } from "../enum";
 
-defineProps({
+const props = defineProps({
   data: {
     type: Object as PRZ<typeof ZPassiveTriggerData>,
     required: true,
   },
 });
+
+const echelonConstraint = computed(() =>
+  displayEchelonConstraint(props.data.EchelonConstraint),
+);
 </script>
