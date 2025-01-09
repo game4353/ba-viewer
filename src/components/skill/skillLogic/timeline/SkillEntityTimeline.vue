@@ -1,14 +1,13 @@
 <template>
   <div class="flex flex-col gap-4">
     <div v-for="(tl, key) in timelines" :key>
-      <p class="text-lg">EntityTimeline {{ key + 1 }}:</p>
-
-      <div class="flex flex-row gap-6">
-        <div>Frame: {{ tl.Frame }}</div>
-        <div v-if="'Tag' in tl">{{ AbilityActivateTag[tl.Tag] }}</div>
-        <div v-if="tl.DamageDistributeRate > 0">
-          Damage: {{ tl.DamageDistributeRate / 100 }}%
-        </div>
+      <div class="flex flex-row gap-2">
+        <p class="text-lg">{{ key + 1 }}.</p>
+        <p class="text-lg">Frame: {{ tl.Frame }}</p>
+        <v-chip v-if="'Tag' in tl">{{ AbilityActivateTag[tl.Tag] }}</v-chip>
+      </div>
+      <div v-if="tl.DamageDistributeRate !== 0">
+        DamageRatio: {{ tl.DamageDistributeRate / 100 }}%
       </div>
       <Entity v-if="tl.Entity" :entity="tl.Entity" :lv />
       <div

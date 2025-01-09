@@ -21,10 +21,10 @@
     </v-tooltip>
   </div>
 
-  <div v-if="data.MainEntityData">
+  <!-- <div v-if="data.MainEntityData">
     <p>Main Entity:</p>
     <Entity :entity="data.MainEntityData" :lv />
-  </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">

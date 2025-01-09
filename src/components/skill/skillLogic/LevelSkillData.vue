@@ -1,6 +1,6 @@
 <template>
-  <p>{{ group }}</p>
   <Info>
+    <p>Group: {{ group }}</p>
     <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
   </Info>
   <Loading v-if="data == null" />

@@ -1,9 +1,15 @@
 <template>
   <Loading v-if="obj === undefined" />
   <div v-else>
-    <Info>
-      <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
-    </Info>
+    <div class="flex flex-row gap-2">
+      <p class="text-base">
+        効果<span v-if="idx != null">{{ idx + 1 }}</span
+        >.
+      </p>
+      <Info>
+        <p v-for="(str, key) in base?.info" :key>{{ str }}</p>
+      </Info>
+    </div>
 
     <!-- 17 -->
     <DamageEffect v-if="obj.$type === 'DamageEffect'" :data="obj" ref="base" />
@@ -36,6 +42,9 @@ const props = defineProps({
   gid: {
     type: String,
     required: true,
+  },
+  idx: {
+    type: Number,
   },
   lv: {
     type: Number,
