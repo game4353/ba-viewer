@@ -26,6 +26,16 @@
             </div>
             <RichText :text="useLocalizeEtc(key, true)" />
           </div>
+          <div v-for="(s, key) in g.AllyPassiveSkillId" :key>
+            <Skill :group="s" layout="env" :lv="g.AllyPassiveSkillLevel[key]" />
+          </div>
+          <div v-for="(s, key) in g.EnemyPassiveSkillId" :key>
+            <Skill
+              :group="s"
+              layout="env"
+              :lv="g.EnemyPassiveSkillLevel[key]"
+            />
+          </div>
         </v-card>
       </v-tabs-window-item>
     </v-tabs-window>
