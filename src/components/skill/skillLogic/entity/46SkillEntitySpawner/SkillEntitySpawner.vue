@@ -4,7 +4,7 @@
       <slot name="chips"></slot>
     </template>
   </SkillEntityBase>
-  <SkillEntityTimelines :timelines="entity.EntityTimeline" :lv />
+  <SkillEntityTimelines class="ml-2" :timelines="entity.EntityTimeline" :lv />
 </template>
 
 <script setup lang="ts">

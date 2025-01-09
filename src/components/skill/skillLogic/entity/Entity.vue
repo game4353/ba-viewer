@@ -85,6 +85,20 @@
     :lv
     ref="base"
   />
+  <!-- 45 -->
+  <AreaSpawner
+    v-else-if="entity.$type === 'AreaSpawner'"
+    :entity
+    :lv
+    ref="base"
+  />
+  <!-- 46 -->
+  <SkillEntitySpawner
+    v-else-if="entity.$type === 'SkillEntitySpawner'"
+    :entity
+    :lv
+    ref="base"
+  />
 
   <div v-else>
     <div>"{{ entity.$type }}" is not done yet.</div>
