@@ -119,12 +119,14 @@ export enum PassiveTriggerEvent {
   BattleEntity_AppliedLogicEffectCategory,
   BattleEntity_AppliedLogicEffectGroupId,
   BattleEntity_AppliedLogicEffectTemplate,
+  BattleEntity_AppliedLogicEffectData,
   Immediate = 1,
   Battle_Periodic = 0x69,
   Battle_Polling = 0x65,
   BattleEntityState_OnOff = 0x12d,
   BattleEntityState_NotMoving,
   BattleEntityState_Reloading,
+  BattleEntityState_Moving,
 }
 export enum PassiveSkillTargetType {
   None,
