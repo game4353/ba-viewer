@@ -27,10 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import { EndCondition, StatType } from "@/assets/game/excelType";
-import { noDefault } from "@/utils/misc";
+import { StatType } from "@/assets/game/excelType";
 import { ZStatChangeEffect } from ".";
 import { InfoBuilder, PRZ } from "../../misc";
+import { endCondition } from "../../misc/rule/endCondition";
 import LogicEffectBase from "../LogicEffectBase.vue";
 
 const props = defineProps({
@@ -56,33 +56,15 @@ const effect = computed(() => {
   return arr;
 });
 
-function stop(cond: EndCondition, arg1: string, arg2: string) {
-  switch (cond) {
-    case EndCondition.None:
-      return undefined;
-    case EndCondition.Duration:
-      return arg1 === "-1" ? undefined : `${Number(arg1) / 1000}秒まで`;
-    case EndCondition.ReloadCount:
-      return `リロード${arg1}回まで`;
-    case EndCondition.AmmoCount:
-    case EndCondition.AmmoHit:
-    case EndCondition.HitCount:
-    case EndCondition.UseExSkillCount:
-      return `${EndCondition[cond]} ${arg1} ${arg2}`;
-    default:
-      return noDefault(cond);
-  }
-}
-
 const end = computed(() =>
-  stop(
+  endCondition(
     props.data.EndCondition,
     props.data.EndConditionArgumentFirst,
     props.data.EndConditionArgumentSecond,
   ),
 );
 const remove = computed(() =>
-  stop(
+  endCondition(
     props.data.RemoveCondition,
     props.data.RemoveConditionArgumentFirst,
     props.data.RemoveConditionArgumentSecond,

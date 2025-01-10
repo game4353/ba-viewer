@@ -11,19 +11,9 @@
       </Info>
     </div>
 
-    <!-- 17 -->
-    <DamageEffect v-if="obj.$type === 'DamageEffect'" :data="obj" ref="base" />
-    <!-- 22 -->
-    <DispelLogicEffectTemplateEffect
-      v-else-if="obj.$type === 'DispelLogicEffectTemplateEffect'"
-      :data="obj"
-      ref="base"
-    />
-    <!-- 35 -->
-    <HealEffect v-else-if="obj.$type === 'HealEffect'" :data="obj" ref="base" />
-    <!-- 59 -->
-    <StatChangeEffect
-      v-else-if="obj.$type === 'StatChangeEffect'"
+    <component
+      v-if="obj.$type in doneEffects"
+      :is="obj.$type"
       :data="obj"
       ref="base"
     />
@@ -36,6 +26,7 @@
 <script setup lang="ts">
 import { ERR_HANDLE } from "@/components/warn/error";
 import { useLogicEffect } from ".";
+import { doneEffects } from "./schema";
 const errHandle = inject(ERR_HANDLE)!;
 
 const props = defineProps({

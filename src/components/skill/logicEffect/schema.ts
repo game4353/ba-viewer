@@ -4,7 +4,6 @@ import {
   BulletType,
   EndCondition,
   FontType,
-  KnockbackDirection,
   LogicEffectCategory,
   StageTopography,
   StatType,
@@ -14,6 +13,9 @@ import { TargetSideId } from "../misc/enum";
 import { ZDamageEffect } from "./17DamageEffect";
 import { ZDispelLogicEffectTemplateEffect } from "./22DispelLogicEffectTemplateEffect";
 import { ZHealEffect } from "./35HealEffect";
+import { ZKnockbackEffect } from "./44KnockbackEffect";
+import { ZSkillCostChangeEffect } from "./56SkillCostChangeEffect";
+import { ZStatChangeEffect } from "./59StatChangeEffect";
 import { ZLogicEffect } from "./_base";
 import * as DamageByHitEffectData from "./DamageByHitEffectData";
 import * as DamageOverTimeEffectData from "./DamageOverTimeEffectData";
@@ -375,14 +377,6 @@ const ImmuneInvokerWithoutLogicEffectIdEffect =
     $type: z.literal("ImmuneInvokerWithoutLogicEffectIdEffect"),
   });
 
-// 44
-const KnockbackEffect = LogicEffect.extend({
-  $type: z.literal("KnockbackEffect"),
-  MoveDuration: z.number(),
-  MoveDistance: z.number(),
-  KnockbackDirection: z.nativeEnum(KnockbackDirection),
-});
-
 // 45
 const MaxHPCapGaugeEffect = LogicEffect.extend({
   $type: z.literal("MaxHPCapGaugeEffect"),
@@ -435,16 +429,6 @@ const ShieldEffect = LogicEffect.extend({
   ChangeRateByCost: z.string(),
 });
 
-// 56
-const SkillCostChangeEffect = LogicEffect.extend({
-  $type: z.literal("SkillCostChangeEffect"),
-  BaseAmount: z.number(),
-  Coefficient: z.number(),
-  EndCondition: z.nativeEnum(EndCondition),
-  EndConditionArgument: z.number(),
-  Dispellable: z.boolean(),
-});
-
 // 57
 const StackDamageEffect = LogicEffect.extend({
   $type: z.literal("StackDamageEffect"),
@@ -486,27 +470,6 @@ const StatChangeByFavorRankEffect = LogicEffect.extend({
   StackSameEffectCount: z.number(),
   ExpireOldIfStackCountOver: z.boolean(),
   RatePerFavorRank: z.number(),
-});
-
-// 59
-const StatChangeEffect = LogicEffect.extend({
-  $type: z.literal("StatChangeEffect"),
-  StatType: z.nativeEnum(StatType),
-  EndCondition: z.nativeEnum(EndCondition),
-  EndConditionArgumentFirst: z.string(),
-  EndConditionArgumentSecond: z.string(),
-  RemoveCondition: z.nativeEnum(EndCondition),
-  RemoveConditionArgumentFirst: z.string(),
-  RemoveConditionArgumentSecond: z.string(),
-  BaseAmount: z.number(),
-  CasterCoefficientAmount: z.number(),
-  CasterStatType: z.nativeEnum(StatType),
-  TargetCoefficientAmount: z.number(),
-  Dispellable: z.boolean(),
-  StackSameEffectApplied: z.boolean(),
-  StackSameEffectCount: z.number(),
-  ExpireOldIfStackCountOver: z.boolean(),
-  ChangeRateByCost: z.string(),
 });
 
 // 60
@@ -602,17 +565,23 @@ export const LogicEffectSchema = z.discriminatedUnion("$type", [
   ImmuneGeneralEffect, // 41
   ImmuneInvokerWithLogicEffectIdEffect, // 42
   ImmuneInvokerWithoutLogicEffectIdEffect, // 43
-  KnockbackEffect, // 44
+  ZKnockbackEffect.extend({
+    $type: z.literal("KnockbackEffect"),
+  }), // 44
   MaxHPCapGaugeEffect, // 45
   MaxHPCapGaugeValueEffect, // 46
   NotMoveEffect, // 48
   OverrideStageTopographyEffect, // 49
   ReloadAmmoEffect, // 50
   ShieldEffect, // 53
-  SkillCostChangeEffect, // 56
+  ZSkillCostChangeEffect.extend({
+    $type: z.literal("SkillCostChangeEffect"),
+  }), // 56
   StackDamageEffect, // 57
   StatChangeByFavorRankEffect, // 58
-  StatChangeEffect, // 59
+  ZStatChangeEffect.extend({
+    $type: z.literal("StatChangeEffect"),
+  }), // 59
   StatusAddEffect, // 60
   StatusRemoveEffect, // 61
   StatusAddWithParameterEffect, // 62
@@ -623,3 +592,19 @@ export const LogicEffectSchema = z.discriminatedUnion("$type", [
 ]);
 
 export type LogicEffectType = z.infer<typeof LogicEffectSchema>;
+
+import DamageEffect from "./17DamageEffect/DamageEffect.vue";
+import DispelLogicEffectTemplateEffect from "./22DispelLogicEffectTemplateEffect/DispelLogicEffectTemplateEffect.vue";
+import HealEffect from "./35HealEffect/HealEffect.vue";
+import KnockbackEffect from "./44KnockbackEffect/KnockbackEffect.vue";
+import SkillCostChangeEffect from "./56SkillCostChangeEffect/SkillCostChangeEffect.vue";
+import StatChangeEffect from "./59StatChangeEffect/StatChangeEffect.vue";
+
+export const doneEffects = {
+  DamageEffect, // 17
+  DispelLogicEffectTemplateEffect, // 22
+  HealEffect, // 35
+  KnockbackEffect, // 44
+  SkillCostChangeEffect, // 56
+  StatChangeEffect, // 59
+};
