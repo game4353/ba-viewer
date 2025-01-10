@@ -3,6 +3,7 @@ import { zFlag } from "@/utils/types";
 import { z } from "zod";
 import { bool, float, int, long } from "../../misc";
 import { BarrierShape, MovingAreaOptions } from "../../misc/enum";
+import { ZTargetSortRule } from "../../misc/rule";
 import { AbilityWithOrder, SkillAbilitySchema } from "../ability/schema";
 import { ZAreaSpawner } from "./45AreaSpawner";
 import { ZSkillEntitySpawner } from "./46SkillEntitySpawner";
@@ -26,6 +27,20 @@ export const CharacterEntity = SummonEntity.extend({
   SuccessionFromCasterEquip: z.boolean(),
   SuccessionFromCasterCharacterWeapon: z.boolean(),
   SuccessionFromCasterCharacterGear: z.boolean(),
+});
+enum OverLimitBehavior {
+  None,
+  Kill,
+  Retreat,
+  OverLimitAbility,
+  ApplyAbilityAndRemoveFromGroup,
+}
+const LimitPopulationCharacterEntity = CharacterEntity.extend({
+  LimitPopulation: int(),
+  PopulationGroupId: z.string(),
+  OverLimitRule: z.nativeEnum(OverLimitBehavior),
+  OverLimitAbility: SkillAbilitySchema.array(),
+  OverLimitTarget: ZTargetSortRule,
 });
 
 const BattleItemEntity = SummonEntity.extend({
@@ -55,6 +70,10 @@ const BarrierObstacleEntity = SummonEntity.extend({
   ApplyLogicEffectToTarget: SkillAbilitySchema.array(),
   FixDirection: bool(),
 });
+
+const AttachedBattleItemEntity = BattleItemEntity.extend({});
+const BlockedAreaBattleItemEntity = BattleItemEntity.extend({});
+
 const SupporterEntity = SummonEntity.extend({
   CostumeId: long(),
   InitialAbilities: SkillAbilitySchema.nullable().array().optional(),
@@ -83,9 +102,26 @@ export const SummonEntityList = [
   BarrierObstacleEntity.extend({
     $type: z.literal("BarrierObstacleEntity"),
   }), // 5 // 49
-  // AttachedBattleItemEntity, // 6 // 51
-  // BlockedAreaBattleItemEntity, // 7 // 39
+  AttachedBattleItemEntity.extend({
+    $type: z.literal("AttachedBattleItemEntity"),
+  }), // 6 // 51
+  BlockedAreaBattleItemEntity.extend({
+    $type: z.literal("BlockedAreaBattleItemEntity"),
+  }), // 7 // 39
+  LimitPopulationCharacterEntity.extend({
+    $type: z.literal("LimitPopulationCharacterEntity"),
+  }), // 63 from 1
 ] as const;
 export const SummonEntitySchema = z.discriminatedUnion("$type", [
   ...SummonEntityList,
 ]);
+
+const ZSummonGroup = z.object({
+  GroupName: z.string(),
+  Rate: long(),
+  SummonEntities: SummonEntitySchema.array(),
+});
+
+export const ZSummonGroupSpawner = ZSkillEntity.extend({
+  SummonGroups: ZSummonGroup.array(),
+});

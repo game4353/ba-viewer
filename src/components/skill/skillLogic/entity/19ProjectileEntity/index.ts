@@ -63,6 +63,14 @@ const NontargetDestructibleProjectileEntity = NontargetProjectileEntity.extend({
   DestroyedSpawnEntity: ZSkillEntitySpawner,
 });
 
+const NontargetDestructibleOnRailsProjectileEntity =
+  NontargetDestructibleProjectileEntity.extend({
+    UseMovePoints: bool(),
+    MovePointCommandIdList: z.string().array(),
+    RepeatMove: bool(),
+    AllowDuplicateHit: bool(),
+  });
+
 type TargetBounceProjectileEntityType = z.infer<
   typeof ZTargetProjectileEntity
 > & {
@@ -103,8 +111,20 @@ export const ProjectileEntityList = [
   NontargetDestructibleProjectileEntity.extend({
     $type: z.literal("NontargetDestructibleProjectileEntity"),
   }), // 5 // 28
-  // NontargetDestructibleOnRailsProjectileEntity, // 6 // 50
+  NontargetDestructibleOnRailsProjectileEntity.extend({
+    $type: z.literal("NontargetDestructibleOnRailsProjectileEntity"),
+  }), // 6 // 50
 ] as const;
 export const ZProjectileEntity = z.discriminatedUnion("$type", [
   ...ProjectileEntityList,
 ]);
+
+const RandomProjectileEntity = z.object({
+  SpawnProb: int(),
+  ProjectileData: ZProjectileEntity,
+});
+
+// 47
+export const ZRandomProjectileEntitySpawner = ZSkillEntity.extend({
+  EntityList: RandomProjectileEntity.array(),
+});
