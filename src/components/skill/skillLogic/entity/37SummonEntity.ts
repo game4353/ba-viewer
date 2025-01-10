@@ -22,7 +22,7 @@ export const SummonEntity = ZSkillEntity.extend({
 
 export const CharacterEntity = SummonEntity.extend({
   CostumeId: z.number(),
-  InitialAbilities: SkillAbilitySchema.array(),
+  InitialAbilities: SkillAbilitySchema.nullable().array().optional(),
   SuccessionFromCasterEquip: z.boolean(),
   SuccessionFromCasterCharacterWeapon: z.boolean(),
   SuccessionFromCasterCharacterGear: z.boolean(),
@@ -41,12 +41,12 @@ const BattleItemEntity = SummonEntity.extend({
 });
 
 const ObstacleEntity = SummonEntity.extend({
-  InitialAbilities: SkillAbilitySchema.array(),
+  InitialAbilities: SkillAbilitySchema.nullable().array().optional(),
   InitialSkillEntitySpawnerData: ZSkillEntitySpawner.optional(),
 });
 
 const BarrierObstacleEntity = SummonEntity.extend({
-  InitialAbilities: SkillAbilitySchema.array(),
+  InitialAbilities: SkillAbilitySchema.nullable().array().optional(),
   InitialSkillEntitySpawnerData: ZSkillEntitySpawner.optional(),
   BarrierShape: z.nativeEnum(BarrierShape),
   ShapeParameters: float().array(),
@@ -57,7 +57,7 @@ const BarrierObstacleEntity = SummonEntity.extend({
 });
 const SupporterEntity = SummonEntity.extend({
   CostumeId: long(),
-  InitialAbilities: SkillAbilitySchema.array(),
+  InitialAbilities: SkillAbilitySchema.nullable().array().optional(),
   SuccessionFromCasterEquip: bool(),
   SuccessionFromCasterCharacterWeapon: bool(),
   SuccessionFromCasterCharacterGear: bool(),
