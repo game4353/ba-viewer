@@ -10,7 +10,7 @@ import {
   useExcelCharacterStat,
   useExcelCostume,
 } from "@/utils/data/excel/character";
-import { cache, range } from "@/utils/misc";
+import { cache } from "@/utils/misc";
 import { Result, asResult, findFirst } from "@/utils/result/result";
 import type { ReadonlyDeep } from "type-fest";
 import { toHiragana, toKatakana, toRomaji } from "wanakana";
@@ -18,18 +18,9 @@ import {
   ArmorType,
   BulletType,
   ParcelType,
-  PotentialStatBonusRateType,
   type CharacterExcel,
   type CostumeExcel,
 } from "~game/excelType";
-import {
-  usePotentialStatBonusRate,
-  usePotentialStatRecipeIngredient,
-} from "../../student/potential";
-import {
-  useTranscendenceBonusRate,
-  useTranscendenceRecipeIngredient,
-} from "../../student/star";
 import {
   CharacterTagArmorTypeGroup,
   CharacterTagBulletTypeGroup,
@@ -158,26 +149,6 @@ export class CCharacter extends AFilterableParcel<
     return asResult(
       this.skillGroups.andThen(
         (arr) => useSkill(arr[i], lv ?? this.statNow[`skill${i}`]).value,
-      ),
-    );
-  }
-
-  starBonus = useTranscendenceBonusRate;
-  starRecipe = useTranscendenceRecipeIngredient;
-  potentialBonus = usePotentialStatBonusRate;
-
-  usePotentialRecipe = usePotentialStatRecipeIngredient;
-  usePotentialRecipes(
-    type: Exclude<PotentialStatBonusRateType, PotentialStatBonusRateType.None>,
-    currentLevel?: number,
-    targetLevel?: number,
-  ) {
-    const i = type as 1 | 2 | 3;
-    currentLevel ??= this.statNow[`break${i}`];
-    targetLevel ??= this.statGoal[`break${i}`];
-    return Result.all(
-      [...range(currentLevel, targetLevel)].map((lv) =>
-        this.usePotentialRecipe(type, lv),
       ),
     );
   }

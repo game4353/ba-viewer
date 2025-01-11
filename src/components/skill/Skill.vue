@@ -1,5 +1,15 @@
 <template>
   <Loading v-if="skill == null" />
+  <v-card v-else-if="layout === 'env'">
+    <p v-if="group == null || lv == null">ERROR</p>
+    <template v-else>
+      <v-card-text class="bg-surface-light !pt-4">
+        <div class="flex flex-col gap-2">
+          <LevelSkillData :group :lv />
+        </div>
+      </v-card-text>
+    </template>
+  </v-card>
   <div v-else>
     <v-card>
       <template v-slot:prepend>
@@ -50,7 +60,7 @@
           <RichText :text="skill.desc" />
           <template v-if="layout === 'full' && group">
             <v-divider></v-divider>
-            <LevelSkillData :group />
+            <LevelSkillData :group :lv="lvVal" />
           </template>
         </div>
       </v-card-text>
@@ -70,8 +80,9 @@ const props = defineProps({
   cid: Number,
   skillNo: Number as PropType<0 | 1 | 2 | 3>,
   group: String,
-  layout: String as PropType<"default" | "full">,
+  layout: String as PropType<"default" | "env" | "full">,
   normalAttack: Boolean,
+  lv: Number,
 });
 const layout = props.layout ?? "default";
 
@@ -98,6 +109,7 @@ const lvNG = computed({
 const lvVal = ref(lvNG.value?.[0] ?? 1);
 
 const skill = computed(() => {
+  if (props.group === "EmptySkill") return null;
   if (props.group != null)
     return useSkill(props.group, lvVal.value).value.unwrapOrElse(errHandle);
   if (props.skillNo != null && student.value != null)
